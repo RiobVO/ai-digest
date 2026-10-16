@@ -92,6 +92,20 @@ VOTE_SCRIPT = """<script>
 (() => {
   const FB = %s;
   const mark = (box, v) => box.querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
+  // «Прочитано» = раскрыл разбор или ушёл к первоисточнику. В браузере запоминаем только после ответа воркера,
+  // иначе при сбое сети отметка не дошла бы до вечернего выпуска уже никогда
+  const markRead = (card) => {
+    card.classList.add("read");
+    const id = card.dataset.entry;
+    try { if (localStorage.getItem("r:" + id)) return; } catch (e) {}
+    fetch(FB + "/read?e=" + encodeURIComponent(id), {method: "POST"})
+      .then(r => { if (r.ok) { try { localStorage.setItem("r:" + id, "1"); } catch (e) {} } });
+  };
+  document.querySelectorAll("[data-entry]").forEach(card => {
+    try { if (localStorage.getItem("r:" + card.dataset.entry)) card.classList.add("read"); } catch (e) {}
+    card.querySelectorAll("details.more").forEach(d => d.addEventListener("toggle", () => { if (d.open) markRead(card); }));
+    card.querySelectorAll("a[href^='http']").forEach(a => a.addEventListener("click", () => markRead(card)));
+  });
   document.querySelectorAll(".vote").forEach(box => {
     const id = box.dataset.id;
     try { const saved = localStorage.getItem("v:" + id); if (saved) mark(box, saved); } catch (e) {}
@@ -204,6 +218,10 @@ def _term(commands: list[str]) -> str:
             f'<pre><code>{escape(chr(10).join(commands))}</code></pre></div>')
 
 
+def _entry_attr(entry: Entry) -> str:
+    return f' data-entry="{escape(entry.id)}"' if entry.id else ""
+
+
 def _anchor(entry: Entry) -> str:
     return f' id="e-{escape(entry.id)}"' if entry.id else ""
 
@@ -254,7 +272,7 @@ def _hero(entry: Entry, votes: bool, chip: str) -> str:
     share = round(entry.importance * 10)
     also = f"<span>{_also(entry)}</span>" if entry.item.also else ""
     return (
-        f'        <section class="card hero" id="main-story">\n'
+        f'        <section class="card hero" id="main-story"{_entry_attr(entry)}>\n'
         f'          <div class="hero-top"><span class="chip">{chip}</span>'
         f'<a class="btn" href="{_href(entry.item.url)}">Первоисточник {ARROW}</a></div>\n'
         f'          <h2{_anchor(entry)}>{escape(entry.title)}</h2>\n          {_story(entry)}\n          <p>{escape(entry.summary)}</p>\n'
@@ -271,7 +289,7 @@ def _item(n: int, entry: Entry, votes: bool) -> str:
     hot = " hot" if entry.importance >= 8 else ""
     also = f'<span>{_also(entry)}</span>' if entry.item.also else ""
     importance_css = "tag green" if entry.importance >= 8 else "tag"
-    return (f'<div class="item"><span class="num{hot}">{n}</span>'
+    return (f'<div class="item"{_entry_attr(entry)}><span class="num{hot}">{n}</span>'
             f'<div><div class="meta"><span class="{importance_css}">важность {entry.importance:g}</span>'
             f'{_source(entry.item.url)}{_buzz(entry.item)}{also}</div>'
             f'<h4{_anchor(entry)}>{escape(entry.title)}</h4>{_story(entry)}<p>{escape(entry.summary)}</p>{_why(entry)}'
@@ -282,7 +300,7 @@ def _paper(entry: Entry, votes: bool) -> str:
     match = ARXIV_ID.search(entry.item.url)
     ident = f"arXiv:{match.group(1)}" if match else _host(entry.item.url)
     score = f'<span class="tag green">{entry.item.score} ▲</span>' if entry.item.score else ""
-    return (f'<div class="paper"><div class="paper-foot">{score}'
+    return (f'<div class="paper"{_entry_attr(entry)}><div class="paper-foot">{score}'
             f'<a class="key" href="{_href(entry.item.url)}">{escape(ident)} {ARROW}</a></div>'
             f'<h4{_anchor(entry)}>{escape(entry.title)}</h4>{_story(entry)}<p>{escape(entry.summary)}</p>'
             f'{_actions(entry, votes, details=entry.details is not None)}</div>')
@@ -290,6 +308,14 @@ def _paper(entry: Entry, votes: bool) -> str:
 
 def _issue_day(issue: dict) -> str:
     return short_day(issue["date"]) + (" веч." if issue.get("slot") == "evening" else "")
+
+
+def _missed(missed: list[dict], morning_page: str) -> str:
+    links = "".join(f'<li><a href="{escape(morning_page)}#e-{escape(m["id"])}">{escape(m["title"])}</a></li>'
+                    for m in missed)
+    return (f'        <section class="card missed">\n          <div class="card-head"><h3>Утром ты пропустил</h3>'
+            f'<small>{plural(len(missed), "новость", "новости", "новостей")}</small></div>\n'
+            f'          <ul>{links}</ul>\n        </section>')
 
 
 def _archive_sidebar(issues: list[dict] | None, current: str = "") -> str:
@@ -312,10 +338,12 @@ def _summary(title: str, sub: str, lead: str, cards: list[tuple[int, str]]) -> s
 
 def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str], *,
                 feedback_url: str = "", issues: list[dict] | None = None, kind: str = "day", period: str = "",
-                page_name: str = "", slot: str = "morning") -> str:
+                page_name: str = "", slot: str = "morning", missed: list[dict] | None = None,
+                morning_page: str = "") -> str:
     votes = bool(feedback_url)
     top, rest = (digest.entries[0], digest.entries[1:]) if digest.entries else (None, [])
-    main = [_hero(top, votes, "Главное" if kind == "day" else "Сюжет недели №1")] if top else []
+    main = [_missed(missed, morning_page)] if missed else []
+    main += [_hero(top, votes, "Главное" if kind == "day" else "Сюжет недели №1")] if top else []
     nav = [_nav("main-story", "Главное", active=True)] if top else []
 
     for section, anchor, label, short in ROW_SECTIONS:

@@ -10,7 +10,8 @@ from digest import alert as breaking
 from digest.dedup import dedupe
 from digest.fetch import attach_discussions, fetch_all, fetch_articles
 from digest.llm import LlmError, explain, generate, select
-from digest.memory import Archive, Stories, fetch_votes, issue_slot, preferences_prompt, record_issue, resolve_votes
+from digest.memory import (Archive, Stories, fetch_feedback, issue_slot, missed_in_morning, preferences_prompt,
+                           record_issue, resolve_votes)
 from digest.render import DISPLAY_TZ, MONTHS, render_archive, render_page
 from digest.state import SeenStore
 from digest.telegram import build_keyboard, build_message, send
@@ -53,8 +54,9 @@ def build(args: argparse.Namespace) -> None:
 
     archive = Archive(args.state_dir / "issues.json")
     stories = Stories(args.state_dir / "stories.json")
-    feedback = resolve_votes(fetch_votes(feedback_url, os.environ.get("FEEDBACK_TOKEN", "")), archive)
-    log.info("оценок читателя: %d", len(feedback))
+    votes, reads = fetch_feedback(feedback_url, os.environ.get("FEEDBACK_TOKEN", ""))
+    feedback = resolve_votes(votes, archive)
+    log.info("оценок читателя: %d, прочитано записей: %d", len(feedback), len(reads))
 
     digest = select(merged, settings["audience"], settings["model"], api_key,
                     preferences=preferences_prompt(feedback), stories=stories.active(today))
@@ -70,10 +72,14 @@ def build(args: argparse.Namespace) -> None:
     # Утренний выпуск сохраняет прежнее имя страницы, вечерний — свою: ссылки на старые выпуски не ломаются
     slot = issue_slot(now)
     page_name = f"{today:%Y-%m-%d}.html" if slot == "morning" else f"{today:%Y-%m-%d}-evening.html"
+    morning_page = f"{today:%Y-%m-%d}.html"
+    # Оценённая запись тоже считается увиденной: чтобы поставить 👍/👎, её прочитали
+    opened = reads | {v["id"] for v in votes}
+    missed = missed_in_morning(archive, today, opened) if slot == "evening" and feedback_url else []
     record_issue(archive, stories, today, digest.headline, page_name, digest.entries, slot)
 
     page = render_page(digest, stats, now, failures, feedback_url=feedback_url, issues=archive.issues, page_name=page_name,
-                       slot=slot)
+                       slot=slot, missed=missed, morning_page=morning_page)
     args.site.mkdir(parents=True, exist_ok=True)
     for name in (page_name, "index.html"):
         (args.site / name).write_text(page, encoding="utf-8")
@@ -81,7 +87,9 @@ def build(args: argparse.Namespace) -> None:
 
     page_url = f"{os.environ['SITE_URL'].rstrip('/')}/{page_name}"
     label = "Утренний дайджест" if slot == "morning" else "Вечерний дайджест"
-    _write_message("message.json", build_message(digest, page_url, now, label=label), page_url, build_keyboard(digest))
+    morning_url = f"{os.environ['SITE_URL'].rstrip('/')}/{morning_page}"
+    message = build_message(digest, page_url, now, label=label, missed=missed, morning_url=morning_url)
+    _write_message("message.json", message, page_url, build_keyboard(digest))
     log.info("страница %s, сообщение в out/message.json", args.site / page_name)
     # State сохраняем только после успешного отбора: упавший запуск не должен «съесть» новости
     if not args.dry_run:

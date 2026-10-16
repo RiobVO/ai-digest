@@ -15,6 +15,7 @@ STORY_ACTIVE_DAYS = 7
 STORY_RETENTION_DAYS = 30
 STORY_PREV_SHOWN = 3
 FEEDBACK_IN_PROMPT = 20
+MISSED_SHOWN = 3
 # Сборка до этого часа по Ташкенту — утренний выпуск, после — вечерний
 EVENING_FROM_HOUR = 13
 
@@ -160,14 +161,23 @@ def preferences_prompt(feedback: list[dict]) -> str:
     return "\n".join(parts)
 
 
-def fetch_votes(feedback_url: str, token: str) -> list[dict]:
-    """Оценки из воркера обратной связи. Недоступный воркер не должен срывать выпуск — тогда отбор идёт без них."""
+def fetch_feedback(feedback_url: str, token: str) -> tuple[list[dict], set[str]]:
+    """Оценки и отметки «прочитано» из воркера. Недоступный воркер не должен срывать выпуск — тогда идём без них."""
     if not feedback_url or not token:
-        return []
+        return [], set()
     try:
         response = httpx.get(f"{feedback_url.rstrip('/')}/votes", headers={"Authorization": f"Bearer {token}"}, timeout=20)
         response.raise_for_status()
-        return list(response.json().get("votes", []))
-    except (httpx.HTTPError, ValueError) as exc:
-        log.error("оценки из воркера не получены: %s", exc)
+        data = response.json()
+        return list(data.get("votes", [])), {r["id"] for r in data.get("reads", [])}
+    except (httpx.HTTPError, ValueError, KeyError) as exc:
+        log.error("обратная связь из воркера не получена: %s", exc)
+        return [], set()
+
+
+def missed_in_morning(archive: Archive, day: date, opened: set[str]) -> list[dict]:
+    """Что из утреннего выпуска читатель не открыл и не оценил. Записи в выпуске уже идут по убыванию важности."""
+    morning = next((i for i in archive.issues if i["page"] == f"{day.isoformat()}.html"), None)
+    if morning is None:
         return []
+    return [e for e in morning["entries"] if e["id"] not in opened][:MISSED_SHOWN]

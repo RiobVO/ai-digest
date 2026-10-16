@@ -3,6 +3,7 @@
 
 const ID_RE = /^\d{8}-\d{1,3}$/;
 const VOTE_PREFIX = "vote:";
+const READ_PREFIX = "read:";
 const ANSWERS = { up: "👍 Учту — больше такого", down: "👎 Понял — меньше такого" };
 
 const enc = new TextEncoder();
@@ -88,20 +89,35 @@ async function pageVote(request, url, env) {
   return Response.json({ ok: true }, { headers: cors(env) });
 }
 
-async function listVotes(request, env) {
-  const auth = request.headers.get("Authorization") ?? "";
-  if (!safeEqual(auth, `Bearer ${env.READ_TOKEN}`)) return new Response("unauthorized", { status: 401 });
-  const votes = [];
+// Отметка «прочитано»: раскрытый разбор или переход к первоисточнику; вечерний выпуск по ним находит пропущенное
+async function pageRead(request, url, env) {
+  if (request.headers.get("Origin") !== env.PAGE_ORIGIN) return new Response("forbidden", { status: 403 });
+  if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors(env) });
+  if (request.method !== "POST") return new Response("method not allowed", { status: 405, headers: cors(env) });
+  const id = url.searchParams.get("e") ?? "";
+  if (!ID_RE.test(id)) return new Response("bad request", { status: 400, headers: cors(env) });
+  await env.VOTES.put(READ_PREFIX + id, JSON.stringify({ id, at: new Date().toISOString() }));
+  return Response.json({ ok: true }, { headers: cors(env) });
+}
+
+async function listPrefix(env, prefix) {
+  const rows = [];
   let cursor;
   do {
-    const page = await env.VOTES.list({ prefix: VOTE_PREFIX, cursor });
+    const page = await env.VOTES.list({ prefix, cursor });
     for (const { name } of page.keys) {
       const raw = await env.VOTES.get(name);
-      if (raw) votes.push(JSON.parse(raw));
+      if (raw) rows.push(JSON.parse(raw));
     }
     cursor = page.list_complete ? undefined : page.cursor;
   } while (cursor);
-  return Response.json({ votes });
+  return rows;
+}
+
+async function listVotes(request, env) {
+  const auth = request.headers.get("Authorization") ?? "";
+  if (!safeEqual(auth, `Bearer ${env.READ_TOKEN}`)) return new Response("unauthorized", { status: 401 });
+  return Response.json({ votes: await listPrefix(env, VOTE_PREFIX), reads: await listPrefix(env, READ_PREFIX) });
 }
 
 export default {
@@ -109,6 +125,7 @@ export default {
     const url = new URL(request.url);
     if (url.pathname === "/telegram" && request.method === "POST") return telegram(request, env);
     if (url.pathname === "/vote") return pageVote(request, url, env);
+    if (url.pathname === "/read") return pageRead(request, url, env);
     if (url.pathname === "/votes" && request.method === "GET") return listVotes(request, env);
     return new Response("not found", { status: 404 });
   },

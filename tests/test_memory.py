@@ -80,28 +80,29 @@ def test_stale_stories_are_not_active(tmp_path):
     assert stories.active(date(2026, 10, 16)) == []
 
 
-def test_fetch_votes_sends_token_and_survives_outage(monkeypatch):
+def test_fetch_feedback_sends_token_returns_votes_and_reads_and_survives_outage(monkeypatch):
     import httpx
     from digest import memory
     seen = {}
+    vote = {"id": "20261016-0", "v": "up", "at": "2026-10-16T09:00:00Z"}
 
     class Resp:
         status_code = 200
         def raise_for_status(self): pass
-        def json(self): return {"votes": [{"id": "20261016-0", "v": "up", "at": "2026-10-16T09:00:00Z"}]}
+        def json(self): return {"votes": [vote], "reads": [{"id": "20261016-1", "at": "2026-10-16T09:00:00Z"}]}
 
     def fake_get(url, headers, timeout):
         seen["url"], seen["auth"] = url, headers["Authorization"]
         return Resp()
     monkeypatch.setattr(memory.httpx, "get", fake_get)
-    assert memory.fetch_votes("https://fb.dev", "tok") == [{"id": "20261016-0", "v": "up", "at": "2026-10-16T09:00:00Z"}]
+    assert memory.fetch_feedback("https://fb.dev", "tok") == ([vote], {"20261016-1"})
     assert seen == {"url": "https://fb.dev/votes", "auth": "Bearer tok"}
 
     def down(*a, **k):
         raise httpx.ConnectError("down")
     monkeypatch.setattr(memory.httpx, "get", down)
-    assert memory.fetch_votes("https://fb.dev", "tok") == []
-    assert memory.fetch_votes("", "") == []
+    assert memory.fetch_feedback("https://fb.dev", "tok") == ([], set())
+    assert memory.fetch_feedback("", "") == ([], set())
 
 
 def test_new_story_id_reaches_the_archive(tmp_path):
@@ -166,3 +167,14 @@ def test_issue_slot_follows_tashkent_clock():
     from digest.memory import issue_slot
     assert issue_slot(datetime(2026, 10, 17, 3, tzinfo=timezone.utc)) == "morning"   # 08:00 Ташкент
     assert issue_slot(datetime(2026, 10, 17, 13, tzinfo=timezone.utc)) == "evening"  # 18:00 Ташкент
+
+
+
+def test_missed_lists_unopened_morning_entries_in_issue_order(tmp_path):
+    from digest.memory import missed_in_morning
+    archive, stories = Archive(tmp_path / "issues.json"), Stories(tmp_path / "stories.json")
+    day = date(2026, 10, 17)
+    record_issue(archive, stories, day, "Утро", "2026-10-17.html", [entry(t) for t in "ABCDE"])
+    missed = missed_in_morning(archive, day, opened={"20261017-0", "20261017-2"})
+    assert [m["title"] for m in missed] == ["B", "D", "E"]
+    assert missed_in_morning(archive, date(2026, 10, 18), opened=set()) == []

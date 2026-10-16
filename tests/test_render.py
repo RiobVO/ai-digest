@@ -197,3 +197,26 @@ def test_telegram_line_shows_loud_coverage():
 def test_evening_issue_is_labelled_in_crumbs():
     page = render_page(sample(), STATS, WHEN, failures=[], slot="evening")
     assert "16 октября · вечер" in page
+
+
+def test_evening_page_lists_missed_morning_news_with_links():
+    missed = [{"id": "20261017-1", "title": "Пропущенное <важное>"}]
+    page = render_page(sample(), STATS, WHEN, failures=[], slot="evening", missed=missed, morning_page="2026-10-17.html")
+    block = page[page.index("Утром ты пропустил"):]
+    assert 'href="2026-10-17.html#e-20261017-1"' in block and "Пропущенное &lt;важное&gt;" in block
+
+
+def test_cards_carry_entry_id_for_read_marks_when_feedback_is_on():
+    digest = sample()
+    digest.entries[0].id, digest.entries[1].id = "20261016-0", "20261016-1"
+    page = render_page(digest, STATS, WHEN, failures=[], feedback_url="https://fb.example.workers.dev")
+    assert 'data-entry="20261016-0"' in page and 'data-entry="20261016-1"' in page
+    assert "/read?e=" in page
+
+
+def test_telegram_evening_message_mentions_missed_morning_news():
+    missed = [{"id": "20261017-1", "title": "Пропущенное"}]
+    text = build_message(sample(), "https://x.io/e.html", WHEN, label="Вечерний дайджест", missed=missed,
+                         morning_url="https://x.io/2026-10-17.html")
+    assert "Утром ты пропустил" in text
+    assert '<a href="https://x.io/2026-10-17.html#e-20261017-1">Пропущенное</a>' in text

@@ -88,6 +88,18 @@ test("список оценок отдаётся только с токеном"
   assert.deepEqual(body.votes.map((v) => [v.id, v.v]), [["20261016-2", "down"]]);
 });
 
+test("отметка «прочитано» со страницы сохраняется и отдаётся вместе с оценками", async () => {
+  const read = (origin, id = "20261017-2") => new Request(`https://w.dev/read?e=${id}`, { method: "POST", headers: { Origin: origin } });
+  const ok = await worker.fetch(read("https://riobvo.github.io"), env);
+  assert.equal(ok.status, 200);
+  assert.equal((await worker.fetch(read("https://evil.example"), env)).status, 403);
+  assert.equal((await worker.fetch(read("https://riobvo.github.io", "../x"), env)).status, 400);
+  const res = await worker.fetch(new Request("https://w.dev/votes", { headers: { Authorization: "Bearer read" } }), env);
+  const body = await res.json();
+  assert.deepEqual(body.reads.map((r) => r.id), ["20261017-2"]);
+  assert.deepEqual(body.votes, []);
+});
+
 test("после голоса кнопки под сообщением отмечают выбор, повторный выбор переносит отметку", async () => {
   const markup = { inline_keyboard: [
     [{ text: "👍 1", callback_data: "u:20261016-0" }, { text: "👍 2", callback_data: "u:20261016-1" }],

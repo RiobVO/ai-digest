@@ -181,6 +181,12 @@ details a:hover{text-decoration:underline}
 .vote button:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
 .vote.err{border-color:var(--danger)}
 .kb{outline:2px solid var(--blue);outline-offset:3px}
+/* Прочитанное отходит на второй план, но остаётся доступным: при наведении возвращается полная яркость */
+.read{opacity:.6;transition:opacity .2s}
+.read:hover,.read:focus-within{opacity:1}
+.missed ul{margin:0;padding:0 20px 18px 38px;display:grid;gap:8px;font-size:.95rem;line-height:1.45}
+.missed a{color:var(--ink);font-weight:500;text-decoration:none}
+.missed a:hover{text-decoration:underline}
 .keys{display:block;margin-top:6px}
 .keys kbd{font:500 .75rem var(--f-mono);border:1px solid var(--border-2);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--inner);color:var(--ink-2)}
 @media (prefers-reduced-motion:reduce){.vote button{transition:none}}
@@ -227,7 +233,7 @@ details a:hover{text-decoration:underline}
     <div class="picker">$weekday <span>$short_date</span></div>
     <nav>$nav</nav>
     $archive
-    <div class="side-foot">Собирается каждое утро · 0 ₽<span class="keys"><kbd>j</kbd> <kbd>k</kbd> листать · <kbd>o</kbd> разбор</span></div>
+    <div class="side-foot">Утром и вечером · 0 ₽<span class="keys"><kbd>j</kbd> <kbd>k</kbd> листать · <kbd>o</kbd> разбор</span></div>
   </aside>
   <div class="page">
     <div class="head">
