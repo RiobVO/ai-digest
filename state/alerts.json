@@ -1,6 +1,15 @@
 {
  "sent": [],
- "rejected": [],
+ "rejected": [
+  {
+   "at": "2026-10-16T21:18:11.548629+00:00",
+   "keys": [
+    "anthropic.com/research/ecdsa-curve-origins",
+    "title:anthropic says claude traced nist s ecdsa curve seeds to a pseudorandom number generator challenging decades old suspicions of an nsa backdoor in the algorithm anthropic"
+   ],
+   "strength": 3
+  }
+ ],
  "undated": {
   "https://www.anthropic.com/news/cyber-verification-program": "2026-10-16T05:13:46.112322+00:00",
   "https://www.anthropic.com/news/an-update-on-independent-evaluators": "2026-10-16T05:13:46.112322+00:00",
