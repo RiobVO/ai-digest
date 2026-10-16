@@ -101,8 +101,9 @@ def test_fetch_feedback_sends_token_returns_votes_and_reads_and_survives_outage(
     def down(*a, **k):
         raise httpx.ConnectError("down")
     monkeypatch.setattr(memory.httpx, "get", down)
-    assert memory.fetch_feedback("https://fb.dev", "tok") == ([], set())
-    assert memory.fetch_feedback("", "") == ([], set())
+    # Сбой и отсутствие настройки — «неизвестно», а не «ничего не прочитано»
+    assert memory.fetch_feedback("https://fb.dev", "tok") is None
+    assert memory.fetch_feedback("", "") is None
 
 
 def test_new_story_id_reaches_the_archive(tmp_path):
@@ -189,3 +190,12 @@ def test_scheduler_slot_wins_over_late_start():
     assert issue_slot(late_morning, forced="") == "evening"
     with pytest.raises(ValueError):
         issue_slot(late_morning, forced="noon")
+
+
+def test_missed_is_empty_when_read_marks_are_unknown(tmp_path):
+    from digest.memory import missed_in_morning
+    archive, stories = Archive(tmp_path / "issues.json"), Stories(tmp_path / "stories.json")
+    day = date(2026, 10, 17)
+    record_issue(archive, stories, day, "Утро", "2026-10-17.html", [entry(t) for t in "ABC"])
+    # Воркер недоступен: нельзя объявлять пропущенным то, что могли прочитать
+    assert missed_in_morning(archive, day, opened=None) == []

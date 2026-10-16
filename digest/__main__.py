@@ -54,7 +54,8 @@ def build(args: argparse.Namespace) -> None:
 
     archive = Archive(args.state_dir / "issues.json")
     stories = Stories(args.state_dir / "stories.json")
-    votes, reads = fetch_feedback(feedback_url, os.environ.get("FEEDBACK_TOKEN", ""))
+    received = fetch_feedback(feedback_url, os.environ.get("FEEDBACK_TOKEN", ""))
+    votes, reads = received or ([], set())
     feedback = resolve_votes(votes, archive)
     log.info("оценок читателя: %d, прочитано записей: %d", len(feedback), len(reads))
 
@@ -74,8 +75,8 @@ def build(args: argparse.Namespace) -> None:
     page_name = f"{today:%Y-%m-%d}.html" if slot == "morning" else f"{today:%Y-%m-%d}-evening.html"
     morning_page = f"{today:%Y-%m-%d}.html"
     # Оценённая запись тоже считается увиденной: чтобы поставить 👍/👎, её прочитали
-    opened = reads | {v["id"] for v in votes}
-    missed = missed_in_morning(archive, today, opened) if slot == "evening" and feedback_url else []
+    opened = reads | {v["id"] for v in votes} if received is not None else None
+    missed = missed_in_morning(archive, today, opened) if slot == "evening" else []
     record_issue(archive, stories, today, digest.headline, page_name, digest.entries, slot)
 
     page = render_page(digest, stats, now, failures, feedback_url=feedback_url, issues=archive.issues, page_name=page_name,

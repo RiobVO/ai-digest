@@ -169,10 +169,11 @@ def preferences_prompt(feedback: list[dict]) -> str:
     return "\n".join(parts)
 
 
-def fetch_feedback(feedback_url: str, token: str) -> tuple[list[dict], set[str]]:
-    """Оценки и отметки «прочитано» из воркера. Недоступный воркер не должен срывать выпуск — тогда идём без них."""
+def fetch_feedback(feedback_url: str, token: str) -> tuple[list[dict], set[str]] | None:
+    """Оценки и отметки «прочитано» из воркера. Недоступный воркер не должен срывать выпуск — тогда идём без них.
+    None — «неизвестно»: пустой ответ означал бы «ничего не прочитано», и вечер объявил бы пропущенным всё утро."""
     if not feedback_url or not token:
-        return [], set()
+        return None
     try:
         response = httpx.get(f"{feedback_url.rstrip('/')}/votes", headers={"Authorization": f"Bearer {token}"}, timeout=20)
         response.raise_for_status()
@@ -180,12 +181,13 @@ def fetch_feedback(feedback_url: str, token: str) -> tuple[list[dict], set[str]]
         return list(data.get("votes", [])), {r["id"] for r in data.get("reads", [])}
     except (httpx.HTTPError, ValueError, KeyError) as exc:
         log.error("обратная связь из воркера не получена: %s", exc)
-        return [], set()
+        return None
 
 
-def missed_in_morning(archive: Archive, day: date, opened: set[str]) -> list[dict]:
-    """Что из утреннего выпуска читатель не открыл и не оценил. Записи в выпуске уже идут по убыванию важности."""
+def missed_in_morning(archive: Archive, day: date, opened: set[str] | None) -> list[dict]:
+    """Что из утреннего выпуска читатель не открыл и не оценил. Записи в выпуске уже идут по убыванию важности.
+    opened=None — отметки неизвестны (воркер недоступен): тогда не утверждаем, что что-то пропущено."""
     morning = next((i for i in archive.issues if i["page"] == f"{day.isoformat()}.html"), None)
-    if morning is None:
+    if morning is None or opened is None:
         return []
     return [e for e in morning["entries"] if e["id"] not in opened][:MISSED_SHOWN]
