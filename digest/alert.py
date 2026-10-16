@@ -128,17 +128,19 @@ class AlertState:
 
 
 def split_undated(items: list[Item], state: AlertState, now: datetime) -> list[Item]:
-    """Блоги без дат (Anthropic, Meta): срочной считается только ссылка, которой раньше не было.
-    Первый запуск лишь запоминает уже опубликованное — иначе старые посты разом стали бы «новостями»."""
+    """Блоги без дат (Anthropic, Meta): датой публикации считаем момент, когда ссылку увидели впервые.
+    Так новый пост живёт в окне столько же, сколько датированный, и не теряется, если в этот час его не успели
+    оценить. Первый запуск лишь запоминает уже опубликованное — иначе старые посты разом стали бы «новостями»."""
     fresh = []
     for item in items:
-        if item.published is not None:
+        if item.published is None:
+            if item.url not in state.undated:
+                # Базовую линию записываем «в прошлое», за пределы окна: эти посты вышли до начала наблюдения
+                first = now if state.primed else now - timedelta(hours=ALERT_HOURS)
+                state.undated[item.url] = first.isoformat()
+            item.published = datetime.fromisoformat(state.undated[item.url])
+        if now - item.published < timedelta(hours=ALERT_HOURS):
             fresh.append(item)
-            continue
-        if item.url not in state.undated:
-            state.undated[item.url] = now.isoformat()
-            if state.primed:
-                fresh.append(item)
     state.primed = True
     return fresh
 

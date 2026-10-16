@@ -56,6 +56,15 @@ def test_undated_posts_seen_on_first_run_are_a_baseline_not_news():
     assert [i.title for i in fresh] == ["New model"]
 
 
+def test_new_undated_post_stays_in_window_until_judged():
+    state = AlertState({"primed": True})
+    post = lambda: Item(source="anthropic", title="New model", url="https://anthropic.com/news/new", category="lab")
+    assert len(split_undated([post()], state, NOW)) == 1
+    # Не уместился в пятёрку кандидатов или модель его ещё не решала — через час он снова в окне
+    assert len(split_undated([post()], state, NOW + timedelta(hours=1))) == 1
+    assert split_undated([post()], state, NOW + timedelta(hours=7)) == []
+
+
 def test_daily_cap_counts_alerts_by_tashkent_date():
     state = AlertState({})
     late = datetime(2026, 10, 16, 18, 30, tzinfo=timezone.utc)  # 23:30 в Ташкенте
