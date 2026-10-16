@@ -54,8 +54,8 @@ def build_keyboard(digest: Digest) -> dict | None:
     ]}
 
 
-def send(text: str, page_url: str, token: str, chat_id: str, keyboard: dict | None = None) -> None:
-    payload = {"chat_id": chat_id, "text": text, "parse_mode": "HTML",
+def send(text: str, page_url: str, token: str, chat_id: str, keyboard: dict | None = None, silent: bool = False) -> None:
+    payload = {"chat_id": chat_id, "text": text, "parse_mode": "HTML", "disable_notification": silent,
                "link_preview_options": {"url": page_url, "prefer_small_media": True}}
     if keyboard:
         payload["reply_markup"] = keyboard

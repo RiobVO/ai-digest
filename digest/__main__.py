@@ -6,9 +6,10 @@ import tomllib
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+from digest import alert as breaking
 from digest.dedup import dedupe
 from digest.fetch import attach_discussions, fetch_all, fetch_articles
-from digest.llm import LlmError, explain, select
+from digest.llm import LlmError, explain, generate, select
 from digest.memory import Archive, Stories, fetch_votes, preferences_prompt, record_issue, resolve_votes
 from digest.render import DISPLAY_TZ, MONTHS, render_archive, render_page
 from digest.state import SeenStore
@@ -105,6 +106,35 @@ def weekly(args: argparse.Namespace) -> None:
     log.info("итог недели: %d сюжетов, страница %s", len(digest.entries), args.site / page_name)
 
 
+def alert(args: argparse.Namespace) -> None:
+    now = datetime.now(timezone.utc)
+    config = tomllib.loads(args.config.read_text(encoding="utf-8"))
+    settings = config["digest"]
+    sources = [{**src, "max_age_hours": breaking.ALERT_HOURS} for src in config["source"] if src.get("alert")]
+    items, failures = fetch_all(sources, now)
+    if len(failures) == len(sources):
+        # Молча выходить нельзя: срочные новости перестали бы приходить, и никто бы этого не заметил
+        raise SystemExit(f"ни один источник срочных новостей не собран: {failures}")
+    state = breaking.AlertState.load(args.state_dir / "alerts.json")
+    candidates = breaking.find_candidates(breaking.split_undated(items, state, now), state, now)
+    log.info("свежих записей %d, кандидатов в срочные %d, отправлено сегодня %d",
+             len(items), len(candidates), state.sent_today(now))
+    if candidates and state.sent_today(now) < breaking.DAILY_CAP:
+        attach_discussions(candidates)
+        raw = generate(breaking.build_prompt(candidates, state, settings["audience"]), breaking.ALERT_SCHEMA,
+                       settings["model"], os.environ["GEMINI_API_KEY"])
+        picked, rejected = breaking.choose(raw, candidates)
+        for item in rejected:
+            state.mark_rejected(item, now)
+        if picked:
+            item, title, text = picked
+            send(breaking.build_alert(item, title, text), item.url, os.environ["TELEGRAM_BOT_TOKEN"],
+                 os.environ["TELEGRAM_CHAT_ID"], silent=breaking.is_quiet(now))
+            state.mark_sent(item, title, now)
+            log.info("срочная новость отправлена: %s", title)
+    state.save(now)
+
+
 def send_message(args: argparse.Namespace) -> None:
     message = json.loads((OUT / args.message).read_text(encoding="utf-8"))
     send(message["text"], message["url"], os.environ["TELEGRAM_BOT_TOKEN"], os.environ["TELEGRAM_CHAT_ID"],
@@ -123,7 +153,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="ИИ-дайджест")
     commands = parser.add_subparsers(required=True)
     for name, run, help_text in (("build", build, "собрать, отфильтровать, сверстать страницу и сообщение"),
-                                 ("weekly", weekly, "собрать итог недели из архива")):
+                                 ("weekly", weekly, "собрать итог недели из архива"),
+                                 ("alert", alert, "проверить срочные новости и отправить громкую сразу")):
         cmd = commands.add_parser(name, help=help_text)
         cmd.add_argument("--config", type=Path, default=Path("sources.toml"))
         cmd.add_argument("--state-dir", type=Path, default=Path("state"))

@@ -1,0 +1,50 @@
+name: alert
+
+on:
+  schedule:
+    # Каждый час в :17 — не в начало часа, когда очередь GitHub Actions перегружена
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Своя группа, а не общая с дневным выпуском: GitHub отменяет ожидающий запуск, когда в группу встаёт новый,
+# и часовая проверка могла бы выбить утренний выпуск. Файлы state у них разные, гонку push снимает повтор ниже.
+concurrency:
+  group: alert
+  cancel-in-progress: false
+
+jobs:
+  alert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: pip install .
+
+      - name: Check breaking news
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python -m digest alert
+
+      - name: Commit alert state
+        run: |
+          git config user.name "digest-bot"
+          git config user.email "digest-bot@users.noreply.github.com"
+          git add state/alerts.json
+          git diff --cached --quiet && exit 0
+          git commit -m "chore(digest): alert state $(date -u +%FT%H:%M)"
+          for attempt in 1 2 3; do
+            git pull --rebase && git push && exit 0
+            sleep $((attempt * 5))
+          done
+          exit 1

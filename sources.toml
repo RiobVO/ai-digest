@@ -5,17 +5,20 @@ audience = "Человек из Узбекистана, который хоче�
 
 # Порядок важен: при склейке дублей основным остаётся источник, который выше в списке.
 # Типы: rss | hf_papers | hn | html. max_age_hours по умолчанию 48.
+# alert = true: источник проверяется каждый час на срочные новости (окно — последние часы).
 # publisher_in_title: заголовки вида «Заголовок - Издание» (Google News), источником считается издание.
 
 # --- Лаборатории ---
 [[source]]
 name = "openai"
+alert = true
 type = "rss"
 category = "lab"
 url = "https://openai.com/news/rss.xml"
 
 [[source]]
 name = "anthropic"
+alert = true
 type = "html"
 category = "lab"
 url = "https://www.anthropic.com/news"
@@ -24,12 +27,14 @@ strip_words = ["Announcements", "Policy", "Product", "Research", "Societal Impac
 
 [[source]]
 name = "deepmind"
+alert = true
 type = "rss"
 category = "lab"
 url = "https://deepmind.google/blog/rss.xml"
 
 [[source]]
 name = "google_ai"
+alert = true
 type = "rss"
 category = "lab"
 url = "https://blog.google/technology/ai/rss/"
@@ -42,6 +47,7 @@ url = "https://research.google/blog/rss/"
 
 [[source]]
 name = "meta_ai"
+alert = true
 type = "html"
 category = "lab"
 url = "https://ai.meta.com/blog/"
@@ -50,6 +56,7 @@ strip_words = ["FEATURED", "Open Source", "Research", "ML Applications", "Comput
 
 [[source]]
 name = "nvidia"
+alert = true
 type = "rss"
 category = "lab"
 url = "https://blogs.nvidia.com/feed/"
@@ -63,6 +70,7 @@ max_age_hours = 72
 
 [[source]]
 name = "mistral"
+alert = true
 type = "rss"
 category = "lab"
 url = "https://mistral.ai/news/rss"
@@ -76,12 +84,14 @@ url = "https://huggingface.co/blog/feed.xml"
 # --- Общая повестка: что сегодня обсуждает вся индустрия ---
 [[source]]
 name = "techmeme"
+alert = true
 type = "rss"
 category = "news"
 url = "https://www.techmeme.com/feed.xml"
 
 [[source]]
 name = "gnews_ai"
+alert = true
 type = "rss"
 category = "news"
 url = "https://news.google.com/rss/search?q=%22artificial+intelligence%22+OR+OpenAI+OR+Anthropic+OR+Nvidia+when:1d&hl=en-US&gl=US&ceid=US:en"
@@ -136,6 +146,7 @@ latest_only = true
 # --- Сообщество ---
 [[source]]
 name = "hn"
+alert = true
 type = "hn"
 category = "community"
 url = "https://hn.algolia.com/api/v1/search_by_date"
@@ -148,6 +159,7 @@ keywords = ["AI", "LLM", "LLMs", "GPT", "Claude", "Gemini", "Llama", "Mistral", 
 # Громкие технологические истории без фильтра по ИИ: «развитие технологий» шире нейросетей
 [[source]]
 name = "hn_top"
+alert = true
 type = "hn"
 category = "community"
 url = "https://hn.algolia.com/api/v1/search_by_date"
@@ -163,18 +175,21 @@ url = "https://www.reddit.com/r/LocalLLaMA/top/.rss?t=day"
 # --- Медиа и рассылки ---
 [[source]]
 name = "techcrunch"
+alert = true
 type = "rss"
 category = "news"
 url = "https://techcrunch.com/category/artificial-intelligence/feed/"
 
 [[source]]
 name = "verge"
+alert = true
 type = "rss"
 category = "news"
 url = "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"
 
 [[source]]
 name = "ars_ai"
+alert = true
 type = "rss"
 category = "news"
 url = "https://arstechnica.com/ai/feed/"
@@ -194,6 +209,7 @@ max_age_hours = 72
 
 [[source]]
 name = "the_decoder"
+alert = true
 type = "rss"
 category = "news"
 url = "https://the-decoder.com/feed/"

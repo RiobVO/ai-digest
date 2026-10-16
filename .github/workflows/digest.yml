@@ -104,8 +104,14 @@ jobs:
           git config user.name "digest-bot"
           git config user.email "digest-bot@users.noreply.github.com"
           git add state site
-          git diff --cached --quiet || git commit -m "chore(digest): issue $(date -u +%F)"
-          git push
+          git diff --cached --quiet && exit 0
+          git commit -m "chore(digest): issue $(date -u +%F)"
+          # Часовая проверка срочных новостей тоже коммитит state — при обгоне подтягиваем и пробуем снова
+          for attempt in 1 2 3; do
+            git pull --rebase && git push && exit 0
+            sleep $((attempt * 5))
+          done
+          exit 1
 
       - name: Alert on failure
         if: failure()
