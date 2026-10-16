@@ -1,0 +1,73 @@
+[
+ {
+  "date": "2026-10-16",
+  "headline": "Фронтирные открытые модели Meta и NVIDIA, новые архитектуры агентов",
+  "page": "2026-10-16.html",
+  "entries": [
+   {
+    "id": "20261016-0",
+    "title": "Meta выпустила открытую мультимодальную модель Muse Spark Open на 816B параметров",
+    "section": "model",
+    "source": "hf_blog",
+    "url": "https://huggingface.co/blog/meta-muse-spark-open",
+    "story": "s1"
+   },
+   {
+    "id": "20261016-1",
+    "title": "NVIDIA представила модели Nemotron 3.5 Super VL и Bolt 74B с поддержкой в Ollama",
+    "section": "model",
+    "source": "gh_ollama",
+    "url": "https://github.com/ollama/ollama/releases/tag/v0.40.5",
+    "story": "s2"
+   },
+   {
+    "id": "20261016-2",
+    "title": "Anthropic раскрыла архитектуру Dynamic Workflows для координации агентов Claude",
+    "section": "industry",
+    "source": "latent_space",
+    "url": "https://www.latent.space/p/claude-dynamic-workflows",
+    "story": "s3"
+   },
+   {
+    "id": "20261016-3",
+    "title": "Mistral представила линейку легковесных моделей прогнозирования Timestral",
+    "section": "model",
+    "source": "mistral",
+    "url": "https://mistral.ai/news/timestral/",
+    "story": "s4"
+   },
+   {
+    "id": "20261016-4",
+    "title": "IBM выпустила Granite Switch 4.1 для совмещения чата, решений и распознавания речи",
+    "section": "model",
+    "source": "hf_blog",
+    "url": "https://huggingface.co/blog/ibm-granite/granite-switch-4-1",
+    "story": "s5"
+   },
+   {
+    "id": "20261016-5",
+    "title": "Вышла модель генерации и редактирования изображений FLUX.3 Image Klein на 5.6B",
+    "section": "model",
+    "source": "hf_blog",
+    "url": "https://huggingface.co/blog/flux-3",
+    "story": "s6"
+   },
+   {
+    "id": "20261016-6",
+    "title": "OpenGCUA: открытый стек для автономного управления компьютером агентами",
+    "section": "paper",
+    "source": "hf_papers",
+    "url": "https://arxiv.org/abs/2610.22200",
+    "story": "s7"
+   },
+   {
+    "id": "20261016-7",
+    "title": "Выпущены сверхлёгкие тернарные модели Ternary Bonsai 2 на базе Qwen 3.5",
+    "section": "model",
+    "source": "r_localllama",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1x6w658/ternary_bonsai_2_2b_4b_and_9b_just_released_on/",
+    "story": "s8"
+   }
+  ]
+ }
+]
