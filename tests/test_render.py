@@ -140,6 +140,13 @@ def test_try_it_splits_shell_commands_from_prose():
     assert notes == ["Коллекция: black-forest-labs/flux"]
 
 
+def test_try_it_keeps_backslash_continuation_in_one_command():
+    from digest.render import split_try
+    commands, notes = split_try('curl https://api.x.io \\\n  -H "Accept: json"\nГотово.')
+    assert commands == ['curl https://api.x.io \\\n  -H "Accept: json"']
+    assert notes == ["Готово."]
+
+
 def test_try_today_lists_commands_linked_to_their_cards():
     from digest.llm import Details
     digest = sample()

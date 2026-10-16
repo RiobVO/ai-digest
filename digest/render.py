@@ -167,7 +167,14 @@ def _story(entry: Entry) -> str:
 
 def split_try(text: str) -> tuple[list[str], list[str]]:
     commands, notes = [], []
-    for line in filter(None, (raw.strip() for raw in text.splitlines())):
+    for raw in text.splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        # Строка после «\» — продолжение той же команды: без неё скопированная команда окажется неполной
+        if commands and commands[-1].endswith("\\"):
+            commands[-1] += "\n" + raw.rstrip()
+            continue
         match = SHELL_LINE.match(line)
         if match:
             commands.append(match.group(1))
