@@ -212,6 +212,8 @@ def test_cards_carry_entry_id_for_read_marks_when_feedback_is_on():
     page = render_page(digest, STATS, WHEN, failures=[], feedback_url="https://fb.example.workers.dev")
     assert 'data-entry="20261016-0"' in page and 'data-entry="20261016-1"' in page
     assert "/read?e=" in page
+    # Клик по первоисточнику уводит со страницы — без keepalive браузер оборвёт отметку
+    assert "keepalive: true" in page[page.index("/read?e="):][:200]
 
 
 def test_telegram_evening_message_mentions_missed_morning_news():

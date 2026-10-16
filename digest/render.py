@@ -98,7 +98,8 @@ VOTE_SCRIPT = """<script>
     card.classList.add("read");
     const id = card.dataset.entry;
     try { if (localStorage.getItem("r:" + id)) return; } catch (e) {}
-    fetch(FB + "/read?e=" + encodeURIComponent(id), {method: "POST"})
+    // keepalive: клик по первоисточнику уводит со страницы, и без него браузер оборвал бы запрос
+    fetch(FB + "/read?e=" + encodeURIComponent(id), {method: "POST", keepalive: true})
       .then(r => { if (r.ok) { try { localStorage.setItem("r:" + id, "1"); } catch (e) {} } });
   };
   document.querySelectorAll("[data-entry]").forEach(card => {
