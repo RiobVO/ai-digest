@@ -25,6 +25,7 @@ beforeEach(() => {
     READ_TOKEN: "read",
     TELEGRAM_BOT_TOKEN: "bot",
     OWNER_CHAT_ID: "42",
+    GITHUB_REPO: "RiobVO/ai-digest",
     PAGE_ORIGIN: "https://riobvo.github.io",
   };
   telegramCalls = [];
@@ -119,4 +120,55 @@ test("после голоса кнопки под сообщением отме�
   await worker.fetch(hook(withMessage("d:20261016-0")), env);
   const moved = telegramCalls.find((c) => c.url.endsWith("/editMessageReplyMarkup"));
   assert.deepEqual(moved.body.reply_markup.inline_keyboard.flat().map((b) => b.text), ["👍 1", "👍 2", "✅ 👎 1", "👎 2"]);
+});
+
+const tick = (cron, iso) => ({ cron, scheduledTime: Date.parse(iso) });
+const dispatches = () => telegramCalls.filter((c) => c.url.includes("api.github.com"));
+
+test("расписание запускает утренний и вечерний выпуски и часовую проверку срочных", async () => {
+  env.SCHEDULER_TOKEN = "gh";
+  await worker.scheduled(tick("7 3 * * *", "2026-10-17T03:07:00Z"), env);
+  await worker.scheduled(tick("7 13 * * *", "2026-10-17T13:07:00Z"), env);
+  await worker.scheduled(tick("17 * * * *", "2026-10-17T05:17:00Z"), env);
+  const [morning, evening, alert] = dispatches();
+  assert.match(morning.url, /\/actions\/workflows\/digest\.yml\/dispatches$/);
+  assert.deepEqual(morning.body, { ref: "main", inputs: { daily: "true", slot: "morning", weekly: "false" } });
+  assert.deepEqual(evening.body, { ref: "main", inputs: { daily: "true", slot: "evening", weekly: "false" } });
+  assert.match(alert.url, /\/actions\/workflows\/alert\.yml\/dispatches$/);
+  assert.deepEqual(alert.body, { ref: "main" });
+});
+
+test("итог недели — только с утренним выпуском воскресенья по Ташкенту", async () => {
+  env.SCHEDULER_TOKEN = "gh";
+  await worker.scheduled(tick("7 3 * * *", "2026-10-18T03:07:00Z"), env);   // воскресенье, 08:07
+  await worker.scheduled(tick("7 13 * * *", "2026-10-18T13:07:00Z"), env);  // воскресенье, 18:07
+  const [morning, evening] = dispatches();
+  assert.equal(morning.body.inputs.weekly, "true");
+  assert.equal(evening.body.inputs.weekly, "false");
+});
+
+test("отказ GitHub роняет запуск по расписанию, а токен не попадает в ошибку", async () => {
+  env.SCHEDULER_TOKEN = "secret-gh-token";
+  globalThis.fetch = async () => new Response("Bad credentials", { status: 401 });
+  await assert.rejects(worker.scheduled(tick("17 * * * *", "2026-10-17T05:17:00Z"), env),
+    (err) => /401/.test(err.message) && !err.message.includes("secret-gh-token"));
+});
+
+test("сбой запуска выпуска присылает владельцу предупреждение в Telegram", async () => {
+  env.SCHEDULER_TOKEN = "secret-gh-token";
+  const calls = [];
+  globalThis.fetch = async (url, init) => {
+    calls.push({ url: String(url), body: JSON.parse(init.body) });
+    return String(url).includes("api.github.com") ? new Response("Bad credentials", { status: 401 }) : new Response("{}");
+  };
+  await assert.rejects(worker.scheduled(tick("7 3 * * *", "2026-10-17T03:07:00Z"), env));
+  const warn = calls.find((c) => c.url.endsWith("/sendMessage"));
+  assert.equal(warn.body.chat_id, "42");
+  assert.match(warn.body.text, /утренний выпуск не запущен/);
+  assert.ok(!warn.body.text.includes("secret-gh-token"));
+});
+
+test("неизвестное расписание — ошибка, а не тихий пропуск", async () => {
+  env.SCHEDULER_TOKEN = "gh";
+  await assert.rejects(worker.scheduled(tick("0 0 * * *", "2026-10-17T00:00:00Z"), env), /расписани/);
 });

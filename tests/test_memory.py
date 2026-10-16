@@ -178,3 +178,14 @@ def test_missed_lists_unopened_morning_entries_in_issue_order(tmp_path):
     missed = missed_in_morning(archive, day, opened={"20261017-0", "20261017-2"})
     assert [m["title"] for m in missed] == ["B", "D", "E"]
     assert missed_in_morning(archive, date(2026, 10, 18), opened=set()) == []
+
+
+def test_scheduler_slot_wins_over_late_start():
+    import pytest
+    from datetime import datetime, timezone
+    from digest.memory import issue_slot
+    late_morning = datetime(2026, 10, 17, 9, tzinfo=timezone.utc)  # 14:00 Ташкент — утренний запуск сильно опоздал
+    assert issue_slot(late_morning, forced="morning") == "morning"
+    assert issue_slot(late_morning, forced="") == "evening"
+    with pytest.raises(ValueError):
+        issue_slot(late_morning, forced="noon")

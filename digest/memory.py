@@ -20,7 +20,15 @@ MISSED_SHOWN = 3
 EVENING_FROM_HOUR = 13
 
 
-def issue_slot(now: datetime) -> str:
+SLOTS = ("morning", "evening")
+
+
+def issue_slot(now: datetime, forced: str = "") -> str:
+    """Выпуск задаёт планировщик по запланированному времени; по часам сборки — только при ручном запуске."""
+    if forced:
+        if forced not in SLOTS:
+            raise ValueError(f"неизвестный выпуск {forced!r}, ожидается одно из {SLOTS}")
+        return forced
     return "evening" if now.astimezone(DISPLAY_TZ).hour >= EVENING_FROM_HOUR else "morning"
 
 

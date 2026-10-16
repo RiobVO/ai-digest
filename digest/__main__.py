@@ -70,7 +70,7 @@ def build(args: argparse.Namespace) -> None:
         log.error("подробные разборы не сгенерированы: %s", exc)
 
     # Утренний выпуск сохраняет прежнее имя страницы, вечерний — свою: ссылки на старые выпуски не ломаются
-    slot = issue_slot(now)
+    slot = issue_slot(now, os.environ.get("ISSUE_SLOT", ""))
     page_name = f"{today:%Y-%m-%d}.html" if slot == "morning" else f"{today:%Y-%m-%d}-evening.html"
     morning_page = f"{today:%Y-%m-%d}.html"
     # Оценённая запись тоже считается увиденной: чтобы поставить 👍/👎, её прочитали

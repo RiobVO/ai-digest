@@ -7,8 +7,12 @@
   "kv_namespaces": [{ "binding": "VOTES" }],
   "vars": {
     // Только с этого сайта страница может присылать оценки (CORS + проверка Origin)
-    "PAGE_ORIGIN": "https://riobvo.github.io"
+    "PAGE_ORIGIN": "https://riobvo.github.io",
+    // Репозиторий, в котором планировщик запускает сборки
+    "GITHUB_REPO": "RiobVO/ai-digest"
   },
+  // Время держит Cloudflare, а не GitHub: 08:07 и 18:07 по Ташкенту — выпуски, :17 каждого часа — срочные
+  "triggers": { "crons": ["7 3 * * *", "7 13 * * *", "17 * * * *"] },
   "observability": { "enabled": true }
-  // Секреты: TELEGRAM_BOT_TOKEN, WEBHOOK_SECRET, READ_TOKEN, OWNER_CHAT_ID — через `wrangler secret put`
+  // Секреты: TELEGRAM_BOT_TOKEN, WEBHOOK_SECRET, READ_TOKEN, OWNER_CHAT_ID, SCHEDULER_TOKEN — через `wrangler secret put`
 }

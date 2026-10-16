@@ -120,7 +120,56 @@ async function listVotes(request, env) {
   return Response.json({ votes: await listPrefix(env, VOTE_PREFIX), reads: await listPrefix(env, READ_PREFIX) });
 }
 
+// Расписание GitHub Actions на новом репозитории часами не срабатывало и опаздывает в пиковые минуты,
+// поэтому время держит cron Cloudflare, а GitHub только исполняет. Ключи — ровно строки из wrangler.jsonc.
+const JOBS = {
+  "7 3 * * *": { workflow: "digest.yml", slot: "morning", label: "утренний выпуск" },
+  "7 13 * * *": { workflow: "digest.yml", slot: "evening", label: "вечерний выпуск" },
+  "17 * * * *": { workflow: "alert.yml", label: "проверка срочных" },
+};
+const TASHKENT_OFFSET_MS = 5 * 3600 * 1000;
+const SUNDAY = 0;
+
+function dispatchBody(job, scheduledTime) {
+  if (!job.slot) return { ref: "main" };
+  // Итог недели — с утренним выпуском воскресенья по Ташкенту; день берём из запланированного времени, а не фактического
+  const sunday = new Date(scheduledTime + TASHKENT_OFFSET_MS).getUTCDay() === SUNDAY;
+  return { ref: "main", inputs: { daily: "true", slot: job.slot, weekly: String(job.slot === "morning" && sunday) } };
+}
+
+async function runSchedule(controller, env) {
+  const job = JOBS[controller.cron];
+  if (!job) throw new Error(`неизвестное расписание: ${controller.cron}`);
+  // Повтор после сбоя мог бы запустить один выпуск дважды и прислать два сообщения
+  controller.noRetry?.();
+  const response = await fetch(`https://api.github.com/repos/${env.GITHUB_REPO}/actions/workflows/${job.workflow}/dispatches`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${env.SCHEDULER_TOKEN}`,
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+      "User-Agent": "ai-digest-scheduler",
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(dispatchBody(job, controller.scheduledTime)),
+  });
+  if (response.ok) return;
+  // Без запуска workflow его собственное оповещение о сбое не сработает — предупреждаем отсюда.
+  // Часовую проверку срочных не дублируем в Telegram, иначе при истёкшем токене было бы сообщение каждый час
+  if (job.slot) {
+    await callTelegram(env, "sendMessage", {
+      chat_id: env.OWNER_CHAT_ID,
+      text: `⚠️ ИИ-дайджест: ${job.label} не запущен — GitHub ответил ${response.status}. Проверь токен SCHEDULER_TOKEN.`,
+    });
+  }
+  throw new Error(`GitHub не запустил ${job.workflow}: ${response.status}`);
+}
+
 export default {
+  async scheduled(controller, env) {
+    await runSchedule(controller, env);
+  },
+
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/telegram" && request.method === "POST") return telegram(request, env);

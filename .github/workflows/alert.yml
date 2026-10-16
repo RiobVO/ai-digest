@@ -1,9 +1,7 @@
 name: alert
 
 on:
-  schedule:
-    # Каждый час в :17 — не в начало часа, когда очередь GitHub Actions перегружена
-    - cron: "17 * * * *"
+  # Каждый час в :17 запускает воркер ai-digest-feedback по cron Cloudflare (worker/wrangler.jsonc)
   workflow_dispatch:
 
 permissions:

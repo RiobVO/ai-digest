@@ -1,10 +1,8 @@
 name: digest
 
 on:
-  schedule:
-    # 08:07 и 18:07 по Ташкенту (03:07 и 13:07 UTC): в :00 у GitHub пик нагрузки, запуски опаздывают или теряются
-    - cron: "7 3 * * *"
-    - cron: "7 13 * * *"
+  # Расписания здесь нет: GitHub-cron на этом репозитории часами молчал. Запускает воркер ai-digest-feedback
+  # по cron Cloudflare (worker/wrangler.jsonc) через workflow_dispatch
   workflow_dispatch:
     inputs:
       daily:
@@ -12,9 +10,13 @@ on:
         type: boolean
         default: true
       weekly:
-        description: "Собрать итог недели (по расписанию — сам по воскресеньям)"
+        description: "Собрать итог недели (планировщик ставит сам утром в воскресенье)"
         type: boolean
         default: false
+      slot:
+        description: "Выпуск: morning или evening; пусто — по текущему часу Ташкента"
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -34,8 +36,7 @@ jobs:
     env:
       SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
       FEEDBACK_URL: ${{ vars.FEEDBACK_URL }}
-      # По расписанию дневной выпуск всегда; итог недели — по воскресеньям Ташкента или по галочке при ручном запуске
-      RUN_DAILY: ${{ github.event_name == 'schedule' || inputs.daily }}
+      RUN_DAILY: ${{ inputs.daily }}
       WEEKLY_INPUT: ${{ inputs.weekly }}
     steps:
       - uses: actions/checkout@v4
@@ -58,8 +59,7 @@ jobs:
         id: plan
         run: |
           weekly=false
-          # Итог недели — только с утренним выпуском воскресенья, иначе вечерний запуск собрал бы его второй раз
-          if [ "$WEEKLY_INPUT" = "true" ] || { [ "${{ github.event_name }}" = "schedule" ] && [ "$(TZ=Asia/Tashkent date +%u)" = "7" ] && [ "$(TZ=Asia/Tashkent date +%H)" -lt 13 ]; }; then weekly=true; fi
+          if [ "$WEEKLY_INPUT" = "true" ]; then weekly=true; fi
           echo "daily=$RUN_DAILY" >> "$GITHUB_OUTPUT"
           echo "weekly=$weekly" >> "$GITHUB_OUTPUT"
 
@@ -68,6 +68,8 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           FEEDBACK_TOKEN: ${{ secrets.FEEDBACK_TOKEN }}
+          # Утро или вечер задаёт планировщик по запланированному времени: опоздавший запуск не сменит выпуск
+          ISSUE_SLOT: ${{ inputs.slot }}
         run: python -m digest build
 
       - name: Build weekly
