@@ -31,6 +31,13 @@ def absorb(primary: Item, dup: Item) -> None:
         primary.score = dup.score
     if not primary.summary:
         primary.summary = dup.summary
+    if dup.hn_points > primary.hn_points:
+        primary.hn_points, primary.hn_comments, primary.hn_url = dup.hn_points, dup.hn_comments, dup.hn_url
+
+
+def coverage(item: Item) -> int:
+    """Сколько разных источников написали о событии — главный бесплатный признак, что его обсуждают все."""
+    return len({item.source, *(source for source, _ in item.also)})
 
 
 def dedupe(items: list[Item]) -> list[Item]:

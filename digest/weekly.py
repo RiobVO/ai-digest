@@ -70,6 +70,10 @@ def build_week_prompt(groups: list[dict], audience: str) -> str:
         blocks.append(f"[{n}] {g['name']}\n{lines}")
     return WEEK_PROMPT.format(audience=audience, top=WEEK_TOP, groups="\n\n".join(blocks))
 
+# Выпуски до смены разделов (16.10.2026) хранят старые имена; когда они выпадут из окна недели (после 23.10.2026),
+# сопоставление можно удалить
+LEGACY_SECTIONS = {"release": "dev", "industry": "business"}
+
 
 def parse_week(raw: dict, groups: list[dict]) -> Digest:
     entries = []
@@ -79,8 +83,9 @@ def parse_week(raw: dict, groups: list[dict]) -> Digest:
             continue
         g = groups[n]
         last = g["events"][-1]
-        item = Item(source=last["source"], title=last["title"], url=last["url"], category=last["section"])
-        entry = Entry(item, last["section"], float(row.get("importance", 0)), row["title"], row["summary"], row.get("why", ""))
+        section = LEGACY_SECTIONS.get(last["section"], last["section"])
+        item = Item(source=last["source"], title=last["title"], url=last["url"], category=section)
+        entry = Entry(item, section, float(row.get("importance", 0)), row["title"], row["summary"], row.get("why", ""))
         entry.details = Details(row.get("narrative", ""), [f"{short_day(e['date'])} — {e['title']}" for e in g["events"]], "", "")
         entry.story_name = g["name"]
         entry.story_day = len({e["date"] for e in g["events"]})

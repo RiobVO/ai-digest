@@ -6,8 +6,9 @@ from pathlib import Path
 from string import Template
 from urllib.parse import urlsplit
 
-from digest.dedup import ARXIV_ID
+from digest.dedup import ARXIV_ID, coverage
 from digest.llm import Digest, Entry
+from digest.models import Item
 
 TEMPLATE = Template((Path(__file__).parent / "templates" / "page.html").read_text(encoding="utf-8"))
 # Читатель в Ташкенте: даты на странице — по его времени, а не по UTC раннера
@@ -16,9 +17,16 @@ MONTHS = ["января", "февраля", "марта", "апреля", "ма�
           "августа", "сентября", "октября", "ноября", "декабря"]
 MONTHS_SHORT = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"]
 WEEKDAYS = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
-SECTION_LABELS = {"model": "Модель", "release": "Релиз", "paper": "Статья", "industry": "Индустрия"}
-ROW_SECTIONS = [("model", "models", "Модели"), ("release", "releases", "Релизы"), ("industry", "industry", "Индустрия")]
+SECTION_LABELS = {"product": "Компании и продукты", "model": "Модели и исследования", "business": "Деньги и законы",
+                  "dev": "Для тебя", "paper": "Статья"}
+# (раздел, якорь, заголовок раздела, короткое имя для бокового меню)
+ROW_SECTIONS = [("product", "products", "Компании и продукты", "Компании"),
+                ("model", "models", "Модели и исследования", "Модели"),
+                ("business", "business", "Деньги, законы, люди", "Деньги и законы"), ("dev", "dev", "Для тебя", "Для тебя")]
 ARCHIVE_IN_SIDEBAR = 7
+ALSO_SHOWN = 4
+# Тред с парой баллов — не обсуждение, а чей-то репост; такой не показываем
+HN_MIN_SHOWN = 20
 # Средняя скорость чтения русского текста с экрана, слов в минуту
 WORDS_PER_MINUTE = 180
 
@@ -26,9 +34,10 @@ _SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=
 ICONS = {
     "main-story": _SVG.format('<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>'),
     "models": _SVG.format('<path d="M12 3l1.8 4.7L18 9.5l-4.2 1.8L12 16l-1.8-4.7L6 9.5l4.2-1.8z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>'),
-    "releases": _SVG.format('<path d="M8 6l-6 6 6 6M16 6l6 6-6 6"/>'),
+    "products": _SVG.format('<path d="M4 7h16v13H4zM9 7V4h6v3"/>'),
+    "dev": _SVG.format('<path d="M8 6l-6 6 6 6M16 6l6 6-6 6"/>'),
     "papers": _SVG.format('<path d="M6 3h9l5 5v13H6zM14 3v6h6"/>'),
-    "industry": _SVG.format('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'),
+    "business": _SVG.format('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'),
     "noise": _SVG.format('<path d="M3 5h18l-7 8v6l-4 2v-8z"/>'),
     "archive": _SVG.format('<path d="M3 5h18v4H3zM5 9v10h14V9M10 13h4"/>'),
     "up": _SVG.format('<path d="M7 10v11M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9z"/>'),
@@ -116,7 +125,20 @@ def _host(url: str) -> str:
 
 def _also(entry: Entry) -> str:
     names = list(dict.fromkeys(s for s, _ in entry.item.also))
-    return f"также: {escape(', '.join(names))}" if names else ""
+    # Громкую новость пишут десятки изданий — все не перечисляем, охват и так виден в плашке резонанса
+    shown = ", ".join(names[:ALSO_SHOWN]) + (f" и ещё {len(names) - ALSO_SHOWN}" if len(names) > ALSO_SHOWN else "")
+    return f"также: {escape(shown)}" if names else ""
+
+
+def _buzz(item: Item) -> str:
+    parts = []
+    reach = coverage(item)
+    if reach > 1:
+        parts.append(f'<span class="buzz">{plural(reach, "источник", "источника", "источников")}</span>')
+    if item.hn_points >= HN_MIN_SHOWN:
+        parts.append(f'<a class="buzz" href="{_href(item.hn_url)}">HN {item.hn_points} ▲ · '
+                     f'{item.hn_comments} комм.</a>')
+    return "".join(parts)
 
 
 def _source(url: str) -> str:
@@ -134,7 +156,7 @@ def reading_minutes(entries: list[Entry]) -> int:
 
 
 def _why(entry: Entry) -> str:
-    return f'<div class="why"><b>Зачем тебе:</b> {escape(entry.why)}</div>' if entry.why else ""
+    return f'<div class="why"><b>Почему важно:</b> {escape(entry.why)}</div>' if entry.why else ""
 
 
 def _vote(entry: Entry, enabled: bool) -> str:
@@ -224,7 +246,8 @@ def _hero(entry: Entry, votes: bool, chip: str) -> str:
         f'          {_why(entry)}\n'
         f'          <div class="meter"><div class="meter-row">Важность<span>{entry.importance:g} / 10</span></div>'
         f'<div class="bar"><i style="width:{share}%"></i></div></div>\n'
-        f'          <div class="legend"><span>{SECTION_LABELS[entry.section]}</span>{_source(entry.item.url)}{also}</div>\n'
+        f'          <div class="legend"><span>{SECTION_LABELS.get(entry.section, "Событие")}</span>{_source(entry.item.url)}'
+        f'{_buzz(entry.item)}{also}</div>\n'
         f'          {_actions(entry, votes)}\n'
         f'        </section>')
 
@@ -235,7 +258,7 @@ def _item(n: int, entry: Entry, votes: bool) -> str:
     importance_css = "tag green" if entry.importance >= 8 else "tag"
     return (f'<div class="item"><span class="num{hot}">{n}</span>'
             f'<div><div class="meta"><span class="{importance_css}">важность {entry.importance:g}</span>'
-            f'{_source(entry.item.url)}{also}</div>'
+            f'{_source(entry.item.url)}{_buzz(entry.item)}{also}</div>'
             f'<h4{_anchor(entry)}>{escape(entry.title)}</h4>{_story(entry)}<p>{escape(entry.summary)}</p>{_why(entry)}'
             f'{_actions(entry, votes)}</div></div>')
 
@@ -276,7 +299,7 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
     main = [_hero(top, votes, "Главное" if kind == "day" else "Сюжет недели №1")] if top else []
     nav = [_nav("main-story", "Главное", active=True)] if top else []
 
-    for section, anchor, label in ROW_SECTIONS:
+    for section, anchor, label, short in ROW_SECTIONS:
         group = [e for e in rest if e.section == section]
         if not group:
             continue
@@ -284,7 +307,7 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
         main.append(f'        <section class="card" id="{anchor}">\n'
                     f'          <div class="card-head"><h3>{label}</h3><small>{len(group)}</small></div>\n'
                     f'          <div class="card-body">{items}</div>\n        </section>')
-        nav.append(_nav(anchor, label, len(group)))
+        nav.append(_nav(anchor, short, len(group)))
 
     aside = []
     papers = [e for e in rest if e.section == "paper"]

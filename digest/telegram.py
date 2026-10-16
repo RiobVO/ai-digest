@@ -30,7 +30,7 @@ def build_message(digest: Digest, page_url: str, when: datetime, label: str = "�
     if shown:
         body.append(_line(1, shown[0]))
         if shown[0].why:
-            body.append(f"<b>Зачем тебе:</b> {escape(_clip(shown[0].why, 500))}")
+            body.append(f"<b>Почему важно:</b> {escape(_clip(shown[0].why, 500))}")
         body.append("")
         body += [_line(n, e) for n, e in enumerate(shown[1:], start=2)]
         hidden = len(digest.entries) - len(shown)

@@ -162,3 +162,19 @@ def test_week_summary_uses_correct_plural_forms():
     page = render_page(sample(), {"issues": 1, "events": 3}, WHEN, failures=[], kind="week", period="10–16 октября")
     assert "<b>1</b><span>выпуск</span>" in page and "<b>3</b><span>события</span>" in page
     assert "<b>2</b><span>сюжета</span>" in page
+
+
+def test_buzz_badge_shows_coverage_and_links_hn_thread():
+    digest = sample()
+    item = digest.entries[0].item
+    item.also = [("verge", "https://v/1"), ("Reuters", "https://r/1")]
+    item.hn_points, item.hn_comments, item.hn_url = 540, 212, "https://news.ycombinator.com/item?id=9"
+    page = render_page(digest, STATS, WHEN, failures=[])
+    assert "3 источника" in page and "HN 540" in page and "212 комм." in page
+    assert 'href="https://news.ycombinator.com/item?id=9"' in page
+
+
+def test_tiny_hn_thread_is_not_shown_as_discussion():
+    digest = sample()
+    digest.entries[0].item.hn_points, digest.entries[0].item.hn_url = 2, "https://news.ycombinator.com/item?id=1"
+    assert "HN 2" not in render_page(digest, STATS, WHEN, failures=[])

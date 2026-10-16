@@ -33,13 +33,19 @@ def parse_feed(body: bytes, src: dict) -> list[Item]:
     for entry in feedparser.parse(body).entries:
         stamp = entry.get("published_parsed") or entry.get("updated_parsed")
         title = _text(entry.get("title", ""))
+        source, summary = src["name"], _text(entry.get("summary", ""))[:600]
+        publisher = _text(entry.get("source", {}).get("title", ""))
+        if src.get("publisher_in_title") and publisher:
+            # Google News: «Заголовок - Издание». Издание становится источником, чтобы охват считался по изданиям;
+            # описание у него — список ссылок на те же статьи, а не текст
+            title, source, summary = title.removesuffix(f" - {publisher}"), publisher, ""
         items.append(Item(
-            source=src["name"],
+            source=source,
             title=f"{prefix} {title}" if prefix else title,
             url=entry.get("link", ""),
             category=src["category"],
             published=datetime.fromtimestamp(timegm(stamp), timezone.utc) if stamp else None,
-            summary=_text(entry.get("summary", ""))[:600],
+            summary=summary,
         ))
     if src.get("latest_only"):
         # Репозитории вроде llama.cpp выпускают десяток сборок в день; в дайджест идёт одна стабильная
@@ -81,8 +87,38 @@ def parse_hn(payload: dict, src: dict) -> list[Item]:
             category=src["category"],
             published=_iso(hit["created_at"]),
             score=hit.get("points"),
+            hn_points=hit.get("points") or 0,
+            hn_comments=hit.get("num_comments") or 0,
+            hn_url=f"https://news.ycombinator.com/item?id={hit['objectID']}",
         ))
     return items
+
+
+HN_SEARCH = "https://hn.algolia.com/api/v1/search"
+
+
+def parse_discussion(payload: dict) -> tuple[int, int, str] | None:
+    hits = [h for h in payload.get("hits", []) if h.get("points")]
+    if not hits:
+        return None
+    top = max(hits, key=lambda h: h["points"])
+    return top["points"], top.get("num_comments") or 0, f"https://news.ycombinator.com/item?id={top['objectID']}"
+
+
+def attach_discussions(items: list[Item]) -> None:
+    """Ищет тред на HN по ссылке события: так видно обсуждение и у новостей, пришедших не из HN."""
+    with httpx.Client(timeout=20, headers={"User-Agent": USER_AGENT}) as client:
+        for item in items:
+            try:
+                response = client.get(HN_SEARCH, params={"query": item.url, "tags": "story",
+                                                         "restrictSearchableAttributes": "url"})
+                response.raise_for_status()
+                found = parse_discussion(response.json())
+            except (httpx.HTTPError, ValueError) as exc:
+                log.error("обсуждение на HN для %s не найдено: %s", item.url, exc)
+                continue
+            if found and found[0] > item.hn_points:
+                item.hn_points, item.hn_comments, item.hn_url = found
 
 
 def _clean_title(text: str, strip_words: list[str]) -> str:

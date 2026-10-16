@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from digest.dedup import dedupe
-from digest.fetch import fetch_all, fetch_articles
+from digest.fetch import attach_discussions, fetch_all, fetch_articles
 from digest.llm import LlmError, explain, select
 from digest.memory import Archive, Stories, fetch_votes, preferences_prompt, record_issue, resolve_votes
 from digest.render import DISPLAY_TZ, MONTHS, render_archive, render_page
@@ -58,6 +58,7 @@ def build(args: argparse.Namespace) -> None:
     digest = select(merged, settings["audience"], settings["model"], api_key,
                     preferences=preferences_prompt(feedback), stories=stories.active(today))
     log.info("в выпуске %d событий, в шуме %d", len(digest.entries), len(digest.noise))
+    attach_discussions([e.item for e in digest.entries])
     texts = fetch_articles([e.item.url for e in digest.entries])
     try:
         explain(digest.entries, texts, settings["audience"], settings["model"], api_key)

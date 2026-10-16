@@ -41,3 +41,13 @@ def test_parse_week_builds_timeline_from_archive_not_from_model():
     top = digest.entries[0]
     assert top.story_day == 2 and top.item.url == "https://x/20261016-0"
     assert top.details.points == ["15 окт — NVIDIA выпустила Nemotron", "16 окт — Ollama поддержала Nemotron"]
+
+
+def test_week_maps_sections_from_older_issues():
+    issues = [issue("2026-10-16", [ev("20261016-0", "Ollama", "s1", section="release"),
+                                   ev("20261016-1", "Сделка", "s2", section="industry")])]
+    groups = collect_week(issues, {}, date(2026, 10, 18))
+    raw = {"headline": "h", "lead": "l", "items": [
+        {"group": n, "importance": 8, "title": "t", "summary": "s", "why": ""} for n in range(len(groups))]}
+    digest = parse_week(raw, groups)
+    assert {e.section for e in digest.entries} == {"dev", "business"}

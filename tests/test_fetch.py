@@ -69,3 +69,34 @@ def test_article_text_drops_scripts_nav_and_caps_length():
     text = extract_text(html, limit=1000)
     assert text == "Title First & main paragraph."
     assert len(extract_text("<p>" + "word " * 5000 + "</p>", limit=200)) <= 200
+
+
+GNEWS_RSS = b"""<?xml version="1.0"?><rss version="2.0"><channel>
+<item><title>OpenAI ships GPT-6 - Reuters</title><link>https://news.google.com/rss/articles/abc</link>
+<pubDate>Fri, 16 Oct 2026 08:00:00 GMT</pubDate><description>&lt;a href="x"&gt;junk&lt;/a&gt;</description>
+<source url="https://www.reuters.com">Reuters</source></item>
+</channel></rss>"""
+
+
+def test_google_news_takes_publisher_as_source_and_strips_it_from_title():
+    src = {"name": "gnews_ai", "category": "news", "publisher_in_title": True}
+    item = parse_feed(GNEWS_RSS, src)[0]
+    assert item.title == "OpenAI ships GPT-6"
+    assert item.source == "Reuters"
+    assert item.summary == ""
+
+
+def test_hn_hits_carry_points_comments_and_thread():
+    payload = {"hits": [{"title": "GPT-6", "url": "https://openai.com/x", "points": 540, "num_comments": 212,
+                         "objectID": "7", "created_at": "2026-10-16T01:00:00Z"}]}
+    item = parse_hn(payload, {"name": "hn", "category": "community"})[0]
+    assert (item.hn_points, item.hn_comments) == (540, 212)
+    assert item.hn_url == "https://news.ycombinator.com/item?id=7"
+
+
+def test_hn_discussion_picks_the_loudest_thread_for_url():
+    from digest.fetch import parse_discussion
+    payload = {"hits": [{"points": 12, "num_comments": 3, "objectID": "1"},
+                        {"points": 410, "num_comments": 150, "objectID": "2"}]}
+    assert parse_discussion(payload) == (410, 150, "https://news.ycombinator.com/item?id=2")
+    assert parse_discussion({"hits": []}) is None

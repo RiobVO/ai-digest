@@ -1,10 +1,11 @@
 [digest]
 # Алиас сам переезжает на новые flash-версии; закрепить версию — указать, например, "gemini-3.5-flash"
 model = "gemini-flash-latest"
-audience = "Разработчик из Узбекистана: Python, Telegram-боты, Cloudflare Workers, Claude Code. Строит ИИ-ассистентов для малого бизнеса, следит за открытыми моделями, которые можно запустить локально, и за лимитами и ценами API."
+audience = "Человек из Узбекистана, который хочет первым знать всё главное в мире ИИ и технологий: крупные релизы, компании, деньги, законы, исследования. Сам разработчик: Python, Telegram-боты, Cloudflare Workers, Claude Code, ИИ-ассистенты для малого бизнеса."
 
 # Порядок важен: при склейке дублей основным остаётся источник, который выше в списке.
 # Типы: rss | hf_papers | hn | html. max_age_hours по умолчанию 48.
+# publisher_in_title: заголовки вида «Заголовок - Издание» (Google News), источником считается издание.
 
 # --- Лаборатории ---
 [[source]]
@@ -48,6 +49,19 @@ link_pattern = "https://ai\\.meta\\.com/blog/[a-z0-9-]+"
 strip_words = ["FEATURED", "Open Source", "Research", "ML Applications", "Computer Vision", "Hardware"]
 
 [[source]]
+name = "nvidia"
+type = "rss"
+category = "lab"
+url = "https://blogs.nvidia.com/feed/"
+
+[[source]]
+name = "apple_ml"
+type = "rss"
+category = "lab"
+url = "https://machinelearning.apple.com/rss.xml"
+max_age_hours = 72
+
+[[source]]
 name = "mistral"
 type = "rss"
 category = "lab"
@@ -58,6 +72,21 @@ name = "hf_blog"
 type = "rss"
 category = "lab"
 url = "https://huggingface.co/blog/feed.xml"
+
+# --- Общая повестка: что сегодня обсуждает вся индустрия ---
+[[source]]
+name = "techmeme"
+type = "rss"
+category = "news"
+url = "https://www.techmeme.com/feed.xml"
+
+[[source]]
+name = "gnews_ai"
+type = "rss"
+category = "news"
+url = "https://news.google.com/rss/search?q=%22artificial+intelligence%22+OR+OpenAI+OR+Anthropic+OR+Nvidia+when:1d&hl=en-US&gl=US&ceid=US:en"
+max_age_hours = 30
+publisher_in_title = true
 
 # --- Статьи (HF Daily Papers = arXiv, отобранный людьми) ---
 [[source]]
@@ -116,6 +145,15 @@ keywords = ["AI", "LLM", "LLMs", "GPT", "Claude", "Gemini", "Llama", "Mistral", 
             "Qwen", "DeepSeek", "model", "models", "agent", "agents", "inference", "transformer", "diffusion",
             "fine-tuning", "RAG", "embedding", "embeddings", "Hugging Face", "neural"]
 
+# Громкие технологические истории без фильтра по ИИ: «развитие технологий» шире нейросетей
+[[source]]
+name = "hn_top"
+type = "hn"
+category = "community"
+url = "https://hn.algolia.com/api/v1/search_by_date"
+min_points = 400
+max_age_hours = 30
+
 [[source]]
 name = "r_localllama"
 type = "rss"
@@ -134,6 +172,31 @@ name = "verge"
 type = "rss"
 category = "news"
 url = "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"
+
+[[source]]
+name = "ars_ai"
+type = "rss"
+category = "news"
+url = "https://arstechnica.com/ai/feed/"
+
+[[source]]
+name = "wired_ai"
+type = "rss"
+category = "news"
+url = "https://www.wired.com/feed/tag/ai/latest/rss"
+
+[[source]]
+name = "mit_tr_ai"
+type = "rss"
+category = "news"
+url = "https://www.technologyreview.com/topic/artificial-intelligence/feed"
+max_age_hours = 72
+
+[[source]]
+name = "the_decoder"
+type = "rss"
+category = "news"
+url = "https://the-decoder.com/feed/"
 
 [[source]]
 name = "import_ai"

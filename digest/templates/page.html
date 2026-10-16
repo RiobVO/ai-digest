@@ -88,7 +88,10 @@ h1{font-size:clamp(1.6rem,2.6vw,2.15rem);font-weight:500;letter-spacing:-.02em;m
 .bar i{display:block;height:100%;background:var(--green);border-radius:inherit}
 .legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.86rem;color:var(--ink-2)}
 .legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--green);margin-right:7px}
-.legend .src::before{display:none}
+.legend .src::before,.legend .buzz::before{display:none}
+.buzz{display:inline-flex;align-items:center;gap:4px;background:var(--blue-soft);color:var(--blue);border-radius:5px;padding:2px 8px;
+  font-size:.76rem;font-weight:600;white-space:nowrap;text-decoration:none;font-variant-numeric:tabular-nums}
+a.buzz:hover{text-decoration:underline}
 .src{display:inline-flex;align-items:center;gap:6px}
 .fav{width:14px;height:14px;border-radius:3px;flex:none}
 

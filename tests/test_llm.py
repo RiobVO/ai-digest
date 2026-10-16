@@ -95,3 +95,16 @@ def test_selection_keeps_story_links():
     ]}
     entry = parse_selection(raw, items()).entries[0]
     assert entry.story == "s4"
+
+
+def test_prompt_shows_resonance_of_merged_stories():
+    item = Item(source="verge", title="GPT-6", url="https://v/1", category="news",
+                also=[("Reuters", "https://r/1"), ("techcrunch", "https://t/1")], hn_points=540, hn_comments=212)
+    prompt = build_prompt([item], "читатель")
+    assert "источников=3" in prompt and "HN=540/212" in prompt
+
+
+def test_unknown_section_falls_back_to_products():
+    raw = {"headline": "h", "lead": "l", "items": [
+        {"ids": [0], "section": "weird", "importance": 7, "title": "t", "summary": "s", "why": "", "story": "", "story_name": ""}]}
+    assert parse_selection(raw, items()).entries[0].section == "product"
