@@ -88,7 +88,10 @@ h1{font-size:clamp(1.6rem,2.6vw,2.15rem);font-weight:500;letter-spacing:-.02em;m
 .bar i{display:block;height:100%;background:var(--green);border-radius:inherit}
 .legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.86rem;color:var(--ink-2)}
 .legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--green);margin-right:7px}
-.legend .src::before{display:none}
+.legend .src::before,.legend .buzz::before{display:none}
+.buzz{display:inline-flex;align-items:center;gap:4px;background:var(--blue-soft);color:var(--blue);border-radius:5px;padding:2px 8px;
+  font-size:.76rem;font-weight:600;white-space:nowrap;text-decoration:none;font-variant-numeric:tabular-nums}
+a.buzz:hover{text-decoration:underline}
 .src{display:inline-flex;align-items:center;gap:6px}
 .fav{width:14px;height:14px;border-radius:3px;flex:none}
 
@@ -223,7 +226,7 @@ details a:hover{text-decoration:underline}
     <div class="logo"><div class="logo-mark">ai</div><div><b>сигнал</b><small>ИИ-дайджест</small></div></div>
     <div class="picker">Архив <span>16.10</span></div>
     <nav><a class="on" href="#main-story"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18v4H3zM5 9v10h14V9M10 13h4"/></svg>Все выпуски</a></nav>
-    <div class="arch"><div class="arch-title">Архив</div><a href="2026-10-16.html"><b>16 окт</b><span>Фронтирные открытые модели Meta и NVIDIA, новые архитектуры агентов</span></a><a class="arch-all" href="archive.html">Все выпуски →</a></div>
+    <div class="arch"><div class="arch-title">Архив</div><a href="2026-10-16.html"><b>16 окт</b><span>Отрезвление инвесторов, побеги агентов в сеть и новый ход Microsoft</span></a><a class="arch-all" href="archive.html">Все выпуски →</a></div>
     <div class="side-foot">Собирается каждое утро · 0 ₽<span class="keys"><kbd>j</kbd> <kbd>k</kbd> листать · <kbd>o</kbd> разбор</span></div>
   </aside>
   <div class="page">
@@ -237,14 +240,14 @@ details a:hover{text-decoration:underline}
       <main class="stack">
         <section class="card" id="main-story">
           <div class="card-head"><h3>Все выпуски</h3><small>1</small></div>
-          <div class="card-body"><a class="item issue-link" href="2026-10-16.html"><span class="num">16</span><div><h4>Фронтирные открытые модели Meta и NVIDIA, новые архитектуры агентов</h4><div class="meta"><span class="tag">16 окт</span><span>8 событий</span></div></div></a></div>
+          <div class="card-body"><a class="item issue-link" href="2026-10-16.html"><span class="num">16</span><div><h4>Отрезвление инвесторов, побеги агентов в сеть и новый ход Microsoft</h4><div class="meta"><span class="tag">16 окт</span><span>9 событий</span></div></div></a></div>
         </section>
       </main>
       <aside class="stack">
         <section class="card">
           <div class="card-head"><h3>Архив</h3><small></small></div>
           
-          <div class="stats"><div class="stat"><b>1</b><span>выпусков</span></div><div class="stat"><b>8</b><span>событий</span></div></div>
+          <div class="stats"><div class="stat"><b>1</b><span>выпусков</span></div><div class="stat"><b>9</b><span>событий</span></div></div>
         </section>
 
         <div class="foot"><span>Стоимость 0 ₽</span></div>

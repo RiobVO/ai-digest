@@ -1,9 +1,83 @@
 [
  {
   "date": "2026-10-16",
-  "headline": "Фронтирные открытые модели Meta и NVIDIA, новые архитектуры агентов",
+  "headline": "Отрезвление инвесторов, побеги агентов в сеть и новый ход Microsoft",
   "page": "2026-10-16.html",
   "entries": [
+   {
+    "id": "20261016-8",
+    "title": "Anthropic отчиталась о $16,8 млрд выручки, но темпы роста упали перед IPO",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/anthropics-q3-revenue-hits-16-8b-but-growth-slows-ahead-of-planned-november-ipo/",
+    "story": "s9"
+   },
+   {
+    "id": "20261016-9",
+    "title": "Агент OpenAI нашел чужой криптокошелек через сид-фразы и оплатил транзакцию",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://www.techmeme.com/261016/p4#a261016p4",
+    "story": "s10"
+   },
+   {
+    "id": "20261016-10",
+    "title": "FTC потребовала документы у OpenAI и Anthropic из-за сбоев безопасности",
+    "section": "business",
+    "source": "Axios",
+    "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPYjhiN3cyd3BLTEFKVUhHVEVLWU1RdlBUU2dvVEdWb1JaN3UyU0JfV2I4Qnl4ZWFlcFJsU1J1aW1DR3dvT3E1bnkxemE0R05JT3lRWG41UEo2Nmw1NXg5NER3dDg4SXgwd19mNndCV0xFbFlodVM2TDNRUFpjWE9lV2F3Zw?oc=5",
+    "story": "s11"
+   },
+   {
+    "id": "20261016-11",
+    "title": "Microsoft показала MAI-Base-2 на 2,8 трлн параметров и обошла модели OpenAI",
+    "section": "model",
+    "source": "techmeme",
+    "url": "https://www.techmeme.com/261015/p59#a261015p59",
+    "story": "s12"
+   },
+   {
+    "id": "20261016-12",
+    "title": "AdFection: таргетированную рекламу превратили в zero-click шпионский софт",
+    "section": "business",
+    "source": "hn_top",
+    "url": "https://citizenlab.ca/research/how-discover-tech-turned-targeted-ads-into-a-pipeline-for-spyware/",
+    "story": "s13"
+   },
+   {
+    "id": "20261016-13",
+    "title": "Modal утроил оценку до $16 млрд и перешагнул планку $1 млрд ARR",
+    "section": "dev",
+    "source": "latent_space",
+    "url": "https://www.latent.space/p/ainews-modals-1b-arr-16b-series-d",
+    "story": "s14"
+   },
+   {
+    "id": "20261016-14",
+    "title": "Восемь штатов США подали иск против OpenAI из-за угроз детям и манипуляций",
+    "section": "business",
+    "source": "Fox Business",
+    "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9EeUFkNGJISFppMTNDd2tXZ0NkbnlDUUFMbGd6amwtMUVvNDhpWVgySjhsT2d2V0FvVFlBdWVlcmFyVW95LXpGa3M5cVVFU192Y3FaMVg5QmJLd0E?oc=5",
+    "story": "s15"
+   },
+   {
+    "id": "20261016-15",
+    "title": "ChatGPT получил доступ к открытым вкладкам браузера Chrome",
+    "section": "product",
+    "source": "verge",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/1012510/openai-chatgpt-google-chrome-tabs",
+    "story": "s16"
+   },
+   {
+    "id": "20261016-16",
+    "title": "Тайвань сделает нелегальные поставки ИИ-серверов в Китай уголовным делом",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.techmeme.com/261016/p8#a261016p8",
+    "story": "s17"
+   }
+  ],
+  "replaced": [
    {
     "id": "20261016-0",
     "title": "Meta выпустила открытую мультимодальную модель Muse Spark Open на 816B параметров",
