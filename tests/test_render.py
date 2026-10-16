@@ -192,3 +192,8 @@ def test_telegram_line_shows_loud_coverage():
     digest.entries[0].item.also = [("verge", "https://v/1"), ("Reuters", "https://r/1")]
     text = build_message(digest, "https://x.io/p.html", WHEN)
     assert "3 издания" in text.splitlines()[3]
+
+
+def test_evening_issue_is_labelled_in_crumbs():
+    page = render_page(sample(), STATS, WHEN, failures=[], slot="evening")
+    assert "16 октября · вечер" in page

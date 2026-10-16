@@ -1,12 +1,13 @@
 """Память между выпусками: архив, сюжетные линии и оценки читателя. Всё хранится JSON-файлами в state/."""
 import json
 import logging
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 import httpx
 
 from digest.llm import Entry
+from digest.render import DISPLAY_TZ
 
 log = logging.getLogger(__name__)
 
@@ -14,6 +15,17 @@ STORY_ACTIVE_DAYS = 7
 STORY_RETENTION_DAYS = 30
 STORY_PREV_SHOWN = 3
 FEEDBACK_IN_PROMPT = 20
+# Сборка до этого часа по Ташкенту — утренний выпуск, после — вечерний
+EVENING_FROM_HOUR = 13
+
+
+def issue_slot(now: datetime) -> str:
+    return "evening" if now.astimezone(DISPLAY_TZ).hour >= EVENING_FROM_HOUR else "morning"
+
+
+def _issue_of(event: dict) -> str:
+    # События до появления вечерних выпусков не хранят страницу — тогда это утренний выпуск своего дня
+    return event.get("issue") or f"{event['date']}.html"
 
 
 def _load(path: Path, default):
@@ -32,27 +44,24 @@ class Archive:
         self.path = Path(path)
         self.issues: list[dict] = _load(self.path, [])
 
-    def _day(self, day: date) -> dict | None:
-        return next((i for i in self.issues if i["date"] == day.isoformat()), None)
-
     def next_index(self, day: date) -> int:
-        """Номера записей за день не переиспользуются: голос за старую запись не должен перейти к новой."""
-        issue = self._day(day)
-        if issue is None:
-            return 0
-        used = [int(e["id"].rsplit("-", 1)[1]) for e in issue["entries"] + issue.get("replaced", [])]
+        """Номера записей сквозные на весь день (утро и вечер) и не переиспользуются:
+        голос за старую запись не должен перейти к новой."""
+        used = [int(e["id"].rsplit("-", 1)[1]) for i in self.issues if i["date"] == day.isoformat()
+                for e in i["entries"] + i.get("replaced", [])]
         return max(used, default=-1) + 1
 
-    def add(self, day: date, headline: str, page: str, entries: list[Entry]) -> None:
-        previous = self._day(day)
-        issue = {"date": day.isoformat(), "headline": headline, "page": page,
+    def add(self, day: date, headline: str, page: str, entries: list[Entry], slot: str = "morning") -> None:
+        # Выпуск определяется страницей, а не датой: в один день их два — утренний и вечерний
+        previous = next((i for i in self.issues if i["page"] == page), None)
+        issue = {"date": day.isoformat(), "slot": slot, "headline": headline, "page": page,
                  "entries": [{"id": e.id, "title": e.title, "section": e.section, "source": e.item.source,
                               "url": e.item.url, "story": e.story} for e in entries]}
         if previous:
-            # Повторный запуск в тот же день заменяет выпуск, но записи прежней версии остаются для разбора старых голосов
+            # Пересборка заменяет выпуск, но записи прежней версии остаются для разбора старых голосов
             issue["replaced"] = previous.get("replaced", []) + previous["entries"]
-        self.issues = [issue] + [i for i in self.issues if i["date"] != issue["date"]]
-        self.issues.sort(key=lambda i: i["date"], reverse=True)
+        self.issues = [issue] + [i for i in self.issues if i["page"] != page]
+        self.issues.sort(key=lambda i: (i["date"], i.get("slot") == "evening"), reverse=True)
 
     def entry(self, entry_id: str) -> dict | None:
         for issue in self.issues:
@@ -84,11 +93,12 @@ class Stories:
                              "days": len({ev["date"] for ev in story["events"]})})
         return sorted(rows, key=lambda r: r["last_date"], reverse=True)
 
-    def apply(self, entries: list[Entry], today: date) -> None:
+    def apply(self, entries: list[Entry], today: date, issue: str) -> None:
         day = today.isoformat()
-        # Пересборка дня заменяет его события целиком, иначе в хронологии остаются новости заменённого выпуска
+        # Пересборка выпуска заменяет его события целиком, иначе в хронологии остаются новости заменённой версии;
+        # события другого выпуска того же дня (утро/вечер) не трогаем
         for sid in list(self.stories):
-            events = [ev for ev in self.stories[sid]["events"] if ev["date"] != day]
+            events = [ev for ev in self.stories[sid]["events"] if _issue_of(ev) != issue]
             if events:
                 self.stories[sid]["events"] = events
             else:
@@ -101,9 +111,9 @@ class Stories:
                 self.stories[e.story] = {"name": (e.story_name or e.title)[:60], "events": []}
             story = self.stories[e.story]
             e.story_name = story["name"]
-            earlier = [ev for ev in story["events"] if ev["date"] < day]
+            earlier = [ev for ev in story["events"] if _issue_of(ev) != issue]
             e.story_prev = [(ev["date"], ev["title"]) for ev in earlier[-STORY_PREV_SHOWN:]]
-            story["events"].append({"date": day, "title": e.title, "entry": e.id})
+            story["events"].append({"date": day, "title": e.title, "entry": e.id, "issue": issue})
             e.story_day = len({ev["date"] for ev in story["events"]})
 
     def save(self, today: date | None = None) -> None:
@@ -113,13 +123,14 @@ class Stories:
         _dump(self.path, {"next": self.next, "stories": self.stories})
 
 
-def record_issue(archive: Archive, stories: Stories, day: date, headline: str, page: str, entries: list[Entry]) -> None:
+def record_issue(archive: Archive, stories: Stories, day: date, headline: str, page: str, entries: list[Entry],
+                 slot: str = "morning") -> None:
     """Порядок важен: id записей → сюжеты (им нужны id) → архив (ему нужен уже назначенный сюжет)."""
     start = archive.next_index(day)
     for n, e in enumerate(entries):
         e.id = f"{day:%Y%m%d}-{start + n}"
-    stories.apply(entries, day)
-    archive.add(day, headline, page, entries)
+    stories.apply(entries, day, page)
+    archive.add(day, headline, page, entries, slot)
 
 
 def resolve_votes(votes: list[dict], archive: Archive) -> list[dict]:

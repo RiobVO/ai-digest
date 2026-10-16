@@ -288,12 +288,16 @@ def _paper(entry: Entry, votes: bool) -> str:
             f'{_actions(entry, votes, details=entry.details is not None)}</div>')
 
 
+def _issue_day(issue: dict) -> str:
+    return short_day(issue["date"]) + (" веч." if issue.get("slot") == "evening" else "")
+
+
 def _archive_sidebar(issues: list[dict] | None, current: str = "") -> str:
     if not issues:
         return ""
     links = "".join(
         f'<a href="{escape(i["page"])}"{" class=\"on\"" if i["page"] == current else ""}>'
-        f'<b>{short_day(i["date"])}</b><span>{escape(i["headline"])}</span></a>'
+        f'<b>{_issue_day(i)}</b><span>{escape(i["headline"])}</span></a>'
         for i in issues[:ARCHIVE_IN_SIDEBAR])
     return (f'<div class="arch"><div class="arch-title">Архив</div>{links}'
             f'<a class="arch-all" href="archive.html">Все выпуски {ARROW}</a></div>')
@@ -308,7 +312,7 @@ def _summary(title: str, sub: str, lead: str, cards: list[tuple[int, str]]) -> s
 
 def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str], *,
                 feedback_url: str = "", issues: list[dict] | None = None, kind: str = "day", period: str = "",
-                page_name: str = "") -> str:
+                page_name: str = "", slot: str = "morning") -> str:
     votes = bool(feedback_url)
     top, rest = (digest.entries[0], digest.entries[1:]) if digest.entries else (None, [])
     main = [_hero(top, votes, "Главное" if kind == "day" else "Сюжет недели №1")] if top else []
@@ -354,7 +358,7 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
         lead = ""
         funnel = []
     else:
-        crumbs = f"Дайджест<span>/</span>{human_date(when)}"
+        crumbs = f"Дайджест<span>/</span>{human_date(when)}{' · вечер' if slot == 'evening' else ''}"
         # Цифры воронки читателю почти ничего не дают — они уходят в подвал, а место справа занимают готовые команды
         summary = _try_today(digest.entries)
         lead = f'<p class="lead-top">{escape(digest.lead)}</p>' if digest.lead else ""
@@ -380,7 +384,7 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
 def render_archive(issues: list[dict], when: datetime) -> str:
     cards = "".join(
         f'<a class="item issue-link" href="{escape(i["page"])}"><span class="num">{short_day(i["date"]).split()[0]}</span>'
-        f'<div><h4>{escape(i["headline"])}</h4><div class="meta"><span class="tag">{short_day(i["date"])}</span>'
+        f'<div><h4>{escape(i["headline"])}</h4><div class="meta"><span class="tag">{_issue_day(i)}</span>'
         f'<span>{plural(len(i["entries"]), "событие", "события", "событий")}</span></div></div></a>'
         for i in issues)
     main = (f'        <section class="card" id="main-story">\n          <div class="card-head"><h3>Все выпуски</h3>'

@@ -2,8 +2,9 @@ name: digest
 
 on:
   schedule:
-    # 03:00 UTC = 08:00 в Ташкенте
+    # 03:00 UTC = 08:00 в Ташкенте — утренний выпуск; 13:00 UTC = 18:00 — вечерний (что случилось за день)
     - cron: "0 3 * * *"
+    - cron: "0 13 * * *"
   workflow_dispatch:
     inputs:
       daily:
@@ -57,7 +58,8 @@ jobs:
         id: plan
         run: |
           weekly=false
-          if [ "$WEEKLY_INPUT" = "true" ] || { [ "${{ github.event_name }}" = "schedule" ] && [ "$(TZ=Asia/Tashkent date +%u)" = "7" ]; }; then weekly=true; fi
+          # Итог недели — только с утренним выпуском воскресенья, иначе вечерний запуск собрал бы его второй раз
+          if [ "$WEEKLY_INPUT" = "true" ] || { [ "${{ github.event_name }}" = "schedule" ] && [ "$(TZ=Asia/Tashkent date +%u)" = "7" ] && [ "$(TZ=Asia/Tashkent date +%H)" -lt 13 ]; }; then weekly=true; fi
           echo "daily=$RUN_DAILY" >> "$GITHUB_OUTPUT"
           echo "weekly=$weekly" >> "$GITHUB_OUTPUT"
 

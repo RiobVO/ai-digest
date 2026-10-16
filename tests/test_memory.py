@@ -54,12 +54,12 @@ def test_empty_feedback_gives_empty_prompt():
 def test_stories_continue_and_count_days(tmp_path):
     stories = Stories(tmp_path / "stories.json")
     day1 = [entry("Nemotron 3.5 вышел", story="", story_name="Nemotron 3.5")]
-    stories.apply(day1, date(2026, 10, 15))
+    stories.apply(day1, date(2026, 10, 15), "2026-10-15.html")
     sid = day1[0].story
     assert sid and day1[0].story_day == 1 and day1[0].story_prev == []
 
     day2 = [entry("Ollama поддержала Nemotron", story=sid)]
-    stories.apply(day2, date(2026, 10, 16))
+    stories.apply(day2, date(2026, 10, 16), "2026-10-16.html")
     assert day2[0].story_day == 2
     assert day2[0].story_prev == [("2026-10-15", "Nemotron 3.5 вышел")]
     stories.save()
@@ -70,13 +70,13 @@ def test_stories_continue_and_count_days(tmp_path):
 def test_unknown_story_id_from_model_starts_a_new_story(tmp_path):
     stories = Stories(tmp_path / "stories.json")
     e = entry("X", story="s999", story_name="Икс")
-    stories.apply([e], date(2026, 10, 16))
+    stories.apply([e], date(2026, 10, 16), "2026-10-16.html")
     assert e.story != "s999" and e.story_day == 1
 
 
 def test_stale_stories_are_not_active(tmp_path):
     stories = Stories(tmp_path / "stories.json")
-    stories.apply([entry("Old", story_name="Old")], date(2026, 10, 1))
+    stories.apply([entry("Old", story_name="Old")], date(2026, 10, 1), "2026-10-01.html")
     assert stories.active(date(2026, 10, 16)) == []
 
 
@@ -132,3 +132,37 @@ def test_same_day_rebuild_replaces_story_events_of_that_day(tmp_path):
     record_issue(archive, stories, date(2026, 10, 16), "v2", "p.html", [entry("B", story_name="Линия B")])
     names = [s["name"] for s in stories.active(date(2026, 10, 16))]
     assert names == ["Линия B"]
+
+
+def test_morning_and_evening_issues_live_side_by_side(tmp_path):
+    archive, stories = Archive(tmp_path / "issues.json"), Stories(tmp_path / "stories.json")
+    day = date(2026, 10, 17)
+    morning = [entry("A", story_name="Линия A"), entry("B")]
+    record_issue(archive, stories, day, "Утро", "2026-10-17.html", morning)
+    evening = [entry("C", story=morning[0].story)]
+    record_issue(archive, stories, day, "Вечер", "2026-10-17-evening.html", evening, slot="evening")
+    # Номера за день сквозные: голос за утреннюю запись не должен попасть на вечернюю
+    assert [e.id for e in morning + evening] == ["20261017-0", "20261017-1", "20261017-2"]
+    assert [i["headline"] for i in archive.issues] == ["Вечер", "Утро"]
+    # Вечер продолжает утренний сюжет и не стирает его утреннее событие
+    titles = [ev["title"] for ev in stories.stories[morning[0].story]["events"]]
+    assert titles == ["A", "C"]
+    assert evening[0].story_prev == [("2026-10-17", "A")]
+
+
+def test_rebuilding_evening_keeps_the_morning(tmp_path):
+    archive, stories = Archive(tmp_path / "issues.json"), Stories(tmp_path / "stories.json")
+    day = date(2026, 10, 17)
+    record_issue(archive, stories, day, "Утро", "2026-10-17.html", [entry("A", story_name="A")])
+    record_issue(archive, stories, day, "Вечер v1", "2026-10-17-evening.html", [entry("B", story_name="B")], slot="evening")
+    record_issue(archive, stories, day, "Вечер v2", "2026-10-17-evening.html", [entry("C", story_name="C")], slot="evening")
+    assert [i["headline"] for i in archive.issues] == ["Вечер v2", "Утро"]
+    events = [ev["title"] for s in stories.stories.values() for ev in s["events"]]
+    assert sorted(events) == ["A", "C"]
+
+
+def test_issue_slot_follows_tashkent_clock():
+    from datetime import datetime, timezone
+    from digest.memory import issue_slot
+    assert issue_slot(datetime(2026, 10, 17, 3, tzinfo=timezone.utc)) == "morning"   # 08:00 Ташкент
+    assert issue_slot(datetime(2026, 10, 17, 13, tzinfo=timezone.utc)) == "evening"  # 18:00 Ташкент

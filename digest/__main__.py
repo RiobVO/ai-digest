@@ -10,7 +10,7 @@ from digest import alert as breaking
 from digest.dedup import dedupe
 from digest.fetch import attach_discussions, fetch_all, fetch_articles
 from digest.llm import LlmError, explain, generate, select
-from digest.memory import Archive, Stories, fetch_votes, preferences_prompt, record_issue, resolve_votes
+from digest.memory import Archive, Stories, fetch_votes, issue_slot, preferences_prompt, record_issue, resolve_votes
 from digest.render import DISPLAY_TZ, MONTHS, render_archive, render_page
 from digest.state import SeenStore
 from digest.telegram import build_keyboard, build_message, send
@@ -67,17 +67,21 @@ def build(args: argparse.Namespace) -> None:
         # Подробные разборы — надстройка: без них выпуск всё равно выходит, с кнопкой на первоисточник
         log.error("подробные разборы не сгенерированы: %s", exc)
 
-    page_name = f"{today:%Y-%m-%d}.html"
-    record_issue(archive, stories, today, digest.headline, page_name, digest.entries)
+    # Утренний выпуск сохраняет прежнее имя страницы, вечерний — свою: ссылки на старые выпуски не ломаются
+    slot = issue_slot(now)
+    page_name = f"{today:%Y-%m-%d}.html" if slot == "morning" else f"{today:%Y-%m-%d}-evening.html"
+    record_issue(archive, stories, today, digest.headline, page_name, digest.entries, slot)
 
-    page = render_page(digest, stats, now, failures, feedback_url=feedback_url, issues=archive.issues, page_name=page_name)
+    page = render_page(digest, stats, now, failures, feedback_url=feedback_url, issues=archive.issues, page_name=page_name,
+                       slot=slot)
     args.site.mkdir(parents=True, exist_ok=True)
     for name in (page_name, "index.html"):
         (args.site / name).write_text(page, encoding="utf-8")
     (args.site / "archive.html").write_text(render_archive(archive.issues, now), encoding="utf-8")
 
     page_url = f"{os.environ['SITE_URL'].rstrip('/')}/{page_name}"
-    _write_message("message.json", build_message(digest, page_url, now), page_url, build_keyboard(digest))
+    label = "Утренний дайджест" if slot == "morning" else "Вечерний дайджест"
+    _write_message("message.json", build_message(digest, page_url, now, label=label), page_url, build_keyboard(digest))
     log.info("страница %s, сообщение в out/message.json", args.site / page_name)
     # State сохраняем только после успешного отбора: упавший запуск не должен «съесть» новости
     if not args.dry_run:
