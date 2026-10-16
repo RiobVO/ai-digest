@@ -4,10 +4,13 @@ from html import escape
 import httpx
 
 from digest.llm import Digest, Entry
-from digest.render import human_date
+from digest.dedup import coverage
+from digest.render import human_date, plural
 
 TG_LIMIT = 4096
 SHOWN = 5
+# С какого охвата помечать пункт: одно-два издания — обычная новость, три и больше — её обсуждают
+LOUD_COVERAGE = 3
 
 
 class TelegramError(RuntimeError):
@@ -20,7 +23,9 @@ def _clip(text: str, limit: int) -> str:
 
 def _line(n: int, entry: Entry) -> str:
     story = f" <i>· сюжет, {entry.story_day}-й день</i>" if entry.story_day >= 2 else ""
-    return f"<b>{n}.</b> {escape(_clip(entry.title, 300))}{story}"
+    reach = coverage(entry.item)
+    loud = f" <i>· {plural(reach, 'издание', 'издания', 'изданий')}</i>" if reach >= LOUD_COVERAGE else ""
+    return f"<b>{n}.</b> {escape(_clip(entry.title, 300))}{loud}{story}"
 
 
 def build_message(digest: Digest, page_url: str, when: datetime, label: str = "ИИ-дайджест") -> str:

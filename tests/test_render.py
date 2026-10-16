@@ -178,3 +178,17 @@ def test_tiny_hn_thread_is_not_shown_as_discussion():
     digest = sample()
     digest.entries[0].item.hn_points, digest.entries[0].item.hn_url = 2, "https://news.ycombinator.com/item?id=1"
     assert "HN 2" not in render_page(digest, STATS, WHEN, failures=[])
+
+
+def test_also_line_uses_readable_source_names():
+    digest = sample()
+    digest.entries[0].item.also = [("gh_transformers", "https://g/1"), ("r_localllama", "https://r/1"), ("Reuters", "https://x/1")]
+    page = render_page(digest, STATS, WHEN, failures=[])
+    assert "также: GitHub · transformers, Reddit · LocalLLaMA, Reuters" in page
+
+
+def test_telegram_line_shows_loud_coverage():
+    digest = sample()
+    digest.entries[0].item.also = [("verge", "https://v/1"), ("Reuters", "https://r/1")]
+    text = build_message(digest, "https://x.io/p.html", WHEN)
+    assert "3 издания" in text.splitlines()[3]

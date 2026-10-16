@@ -25,6 +25,17 @@ ROW_SECTIONS = [("product", "products", "Компании и продукты", 
                 ("business", "business", "Деньги, законы, люди", "Деньги и законы"), ("dev", "dev", "Для тебя", "Для тебя")]
 ARCHIVE_IN_SIDEBAR = 7
 ALSO_SHOWN = 4
+# Читаемые имена служебных id источников из sources.toml; у Google News источник уже равен названию издания
+SOURCE_LABELS = {
+    "openai": "OpenAI", "anthropic": "Anthropic", "deepmind": "DeepMind", "google_ai": "Google", "google_research": "Google Research",
+    "meta_ai": "Meta AI", "nvidia": "NVIDIA", "apple_ml": "Apple ML", "mistral": "Mistral", "hf_blog": "Hugging Face",
+    "techmeme": "Techmeme", "hf_papers": "HF Papers", "gh_vllm": "GitHub · vLLM", "gh_ollama": "GitHub · Ollama",
+    "gh_llama_cpp": "GitHub · llama.cpp", "gh_transformers": "GitHub · transformers", "hn": "Hacker News",
+    "hn_top": "Hacker News", "r_localllama": "Reddit · LocalLLaMA", "techcrunch": "TechCrunch", "verge": "The Verge",
+    "ars_ai": "Ars Technica", "wired_ai": "Wired", "mit_tr_ai": "MIT Technology Review", "the_decoder": "The Decoder",
+    "import_ai": "Import AI", "last_week_in_ai": "Last Week in AI", "simon_willison": "Simon Willison",
+    "latent_space": "Latent Space", "interconnects": "Interconnects",
+}
 # Тред с парой баллов — не обсуждение, а чей-то репост; такой не показываем
 HN_MIN_SHOWN = 20
 # Средняя скорость чтения русского текста с экрана, слов в минуту
@@ -124,10 +135,14 @@ def _host(url: str) -> str:
 
 
 def _also(entry: Entry) -> str:
-    names = list(dict.fromkeys(s for s, _ in entry.item.also))
+    names = list(dict.fromkeys(source_label(s) for s, _ in entry.item.also))
     # Громкую новость пишут десятки изданий — все не перечисляем, охват и так виден в плашке резонанса
     shown = ", ".join(names[:ALSO_SHOWN]) + (f" и ещё {len(names) - ALSO_SHOWN}" if len(names) > ALSO_SHOWN else "")
     return f"также: {escape(shown)}" if names else ""
+
+
+def source_label(source: str) -> str:
+    return SOURCE_LABELS.get(source, source)
 
 
 def _buzz(item: Item) -> str:
@@ -319,9 +334,9 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
 
     if digest.noise:
         by_source = Counter(i.source for i in digest.noise)
-        noise_rows = "".join(f'<li><a href="{_href(i.url)}">{escape(i.title)}</a> · {escape(i.source)}</li>'
+        noise_rows = "".join(f'<li><a href="{_href(i.url)}">{escape(i.title)}</a> · {escape(source_label(i.source))}</li>'
                              for i in digest.noise)
-        sources = ", ".join(f"{escape(s)} {n}" for s, n in by_source.most_common(5))
+        sources = ", ".join(f"{escape(source_label(s))} {n}" for s, n in by_source.most_common(5))
         aside.append(f'        <section class="card noise" id="noise">\n          <h3>Отсеяно как шум: {len(digest.noise)}</h3>\n'
                      f'          <p>Больше всего: {sources}</p>\n'
                      f'          <details><summary>Показать отсеянное</summary><ul>{noise_rows}</ul></details>\n'
