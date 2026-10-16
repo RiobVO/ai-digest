@@ -50,13 +50,15 @@ def test_explanations_attach_to_entries_by_position_and_skip_unknown():
     from digest.llm import Entry, attach_explanations
     entries = [Entry(items()[0], "model", 9, "A", "s", ""), Entry(items()[2], "release", 6, "B", "s", "")]
     raw = {"items": [
-        {"id": 1, "what": "Вышел Ollama.", "points": ["Новая версия"], "try_it": "ollama pull x", "caveats": ""},
-        {"id": 7, "what": "мусор", "points": [], "try_it": "", "caveats": ""},
+        {"id": 1, "what": "Вышел Ollama.", "points": ["Новая версия"], "try_it": "Есть в Ollama.", "caveats": "",
+         "commands": ["$ ollama pull x", " "]},
+        {"id": 7, "what": "мусор", "points": [], "try_it": "", "caveats": "", "commands": []},
     ]}
     attach_explanations(entries, raw)
     assert entries[0].details is None
     assert entries[1].details.what == "Вышел Ollama."
     assert entries[1].details.points == ["Новая версия"]
+    assert entries[1].details.commands == ["ollama pull x"]
 
 
 def test_transport_errors_become_llm_errors(monkeypatch):

@@ -47,12 +47,14 @@ def test_telegram_message_is_escaped_linked_and_short():
 def test_read_more_expands_inline_with_source_link():
     from digest.llm import Details
     digest = sample()
-    digest.entries[1].details = Details("Суть <b>статьи</b>.", ["Пункт 1"], "pip install x", "Только английский.")
+    digest.entries[1].details = Details("Суть <b>статьи</b>.", ["Пункт 1"], "Код на GitHub.", "Только английский.",
+                                        ["pip install x"])
     page = render_page(digest, STATS, WHEN, failures=[])
     block = page[page.index("Суть"):]
     assert "Суть &lt;b&gt;статьи&lt;/b&gt;." in page
     assert "<summary" in page[:page.index("Суть")]
-    assert "Пункт 1" in block and "pip install x" in block and "Только английский." in block
+    assert "Пункт 1" in block and "Только английский." in block
+    assert 'class="term"' in block and "pip install x" in block and "Код на GitHub." in block
     assert 'href="https://arxiv.org/abs/2610.1"' in block
 
 
@@ -133,25 +135,11 @@ def test_source_icon_only_for_web_links():
     assert "ip3/.ico" not in render_page(digest, STATS, WHEN, failures=[])
 
 
-def test_try_it_splits_shell_commands_from_prose():
-    from digest.render import split_try
-    commands, notes = split_try("pip install -U diffusers\nКоллекция: black-forest-labs/flux\n$ ollama run nemotron")
-    assert commands == ["pip install -U diffusers", "ollama run nemotron"]
-    assert notes == ["Коллекция: black-forest-labs/flux"]
-
-
-def test_try_it_keeps_backslash_continuation_in_one_command():
-    from digest.render import split_try
-    commands, notes = split_try('curl https://api.x.io \\\n  -H "Accept: json"\nГотово.')
-    assert commands == ['curl https://api.x.io \\\n  -H "Accept: json"']
-    assert notes == ["Готово."]
-
-
 def test_try_today_lists_commands_linked_to_their_cards():
     from digest.llm import Details
     digest = sample()
     digest.entries[0].id = "20261016-0"
-    digest.entries[0].details = Details("Суть.", [], "ollama run muse <x>", "")
+    digest.entries[0].details = Details("Суть.", [], "Веса на HF.", "", ["ollama run muse <x>"])
     page = render_page(digest, STATS, WHEN, failures=[])
     block = page[page.index("Попробовать сегодня"):]
     assert 'href="#e-20261016-0"' in block and "ollama run muse &lt;x&gt;" in block
@@ -164,7 +152,7 @@ def test_try_today_skips_commands_already_shown():
     digest = sample()
     for n, entry in enumerate(digest.entries):
         entry.id = f"20261016-{n}"
-        entry.details = Details("Суть.", [], "pip install -U diffusers", "")
+        entry.details = Details("Суть.", [], "", "", ["pip install -U diffusers"])
     page = render_page(digest, STATS, WHEN, failures=[])
     block = page[page.index("Попробовать сегодня"):page.index('id="papers"')]
     assert block.count("pip install -U diffusers") == 1

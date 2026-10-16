@@ -1,5 +1,4 @@
 import json
-import re
 from collections import Counter
 from datetime import date, datetime, timedelta, timezone
 from html import escape
@@ -38,9 +37,6 @@ ICONS = {
     "down": _SVG.format('<path d="M17 14V3M9 18.1 10 14H4.2a2 2 0 0 1-1.9-2.6l2.3-7A2 2 0 0 1 6.5 3H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-2.8a2 2 0 0 0-1.8 1.1L12 22a3.1 3.1 0 0 1-3-3.9z"/>'),
 }
 TRY_TODAY_MAX = 4
-# Строка «Как попробовать» от модели смешивает команды и пояснения; в терминал попадают только команды
-SHELL_LINE = re.compile(r"^(?:\$\s*)?((?:pip3?|uvx?|ollama|npm|npx|pnpm|yarn|bun|git|curl|wget|python3?|docker|brew|hf|"
-                        r"huggingface-cli|llama-cli|llama-server|vllm|cargo|go|conda|mlx_lm\.\w+|claude|gh|wrangler)\s.*)$")
 # Без сторонних скриптов и сетевых запросов: листание карточек с клавиатуры и копирование команд
 PAGE_SCRIPT = """<script>
 (() => {
@@ -165,24 +161,6 @@ def _story(entry: Entry) -> str:
             f'{f"<ul>{prev}</ul>" if prev else ""}</div>')
 
 
-def split_try(text: str) -> tuple[list[str], list[str]]:
-    commands, notes = [], []
-    for raw in text.splitlines():
-        line = raw.strip()
-        if not line:
-            continue
-        # Строка после «\» — продолжение той же команды: без неё скопированная команда окажется неполной
-        if commands and commands[-1].endswith("\\"):
-            commands[-1] += "\n" + raw.rstrip()
-            continue
-        match = SHELL_LINE.match(line)
-        if match:
-            commands.append(match.group(1))
-        else:
-            notes.append(line)
-    return commands, notes
-
-
 def _term(commands: list[str]) -> str:
     return (f'<div class="term"><div class="term-bar">{ICONS["terminal"]}<span>Терминал</span>'
             f'<button type="button" class="copy">Скопировать</button></div>'
@@ -202,11 +180,10 @@ def _more(entry: Entry) -> str:
     if d.points:
         points = "".join(f"<li>{escape(p)}</li>" for p in d.points)
         parts.append(f'<section><div class="more-label">Ключевые детали</div><ol class="points">{points}</ol></section>')
-    if d.try_it:
-        commands, notes = split_try(d.try_it)
-        notes_html = "".join(f'<p class="note">{escape(n)}</p>' for n in notes)
+    if d.try_it or d.commands:
+        note = f'<p class="note">{escape(d.try_it)}</p>' if d.try_it else ""
         parts.append(f'<section><div class="more-label">Как попробовать</div>'
-                     f'{_term(commands) if commands else ""}{notes_html}</section>')
+                     f'{_term(d.commands) if d.commands else ""}{note}</section>')
     if d.caveats:
         parts.append(f'<div class="caveat">{ICONS["warn"]}<div><b>Ограничения</b><p>{escape(d.caveats)}</p></div></div>')
     parts.append(f'<div class="more-links">{source}</div>')
@@ -216,7 +193,7 @@ def _more(entry: Entry) -> str:
 def _try_today(entries: list[Entry]) -> str:
     rows, shown = [], set()
     for entry in entries:
-        commands = split_try(entry.details.try_it)[0] if entry.details and entry.details.try_it else []
+        commands = entry.details.commands if entry.details else []
         # Общие команды вроде «pip install transformers» повторяются у разных новостей — показываем один раз
         commands = [c for c in commands if c not in shown]
         shown.update(commands)
