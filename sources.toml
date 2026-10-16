@@ -1,0 +1,170 @@
+[digest]
+# Алиас сам переезжает на новые flash-версии; закрепить версию — указать, например, "gemini-3.5-flash"
+model = "gemini-flash-latest"
+audience = "Разработчик из Узбекистана: Python, Telegram-боты, Cloudflare Workers, Claude Code. Строит ИИ-ассистентов для малого бизнеса, следит за открытыми моделями, которые можно запустить локально, и за лимитами и ценами API."
+
+# Порядок важен: при склейке дублей основным остаётся источник, который выше в списке.
+# Типы: rss | hf_papers | hn | html. max_age_hours по умолчанию 48.
+
+# --- Лаборатории ---
+[[source]]
+name = "openai"
+type = "rss"
+category = "lab"
+url = "https://openai.com/news/rss.xml"
+
+[[source]]
+name = "anthropic"
+type = "html"
+category = "lab"
+url = "https://www.anthropic.com/news"
+link_pattern = "/news/[a-z0-9-]+"
+strip_words = ["Announcements", "Policy", "Product", "Research", "Societal Impacts", "Interpretability", "Alignment"]
+
+[[source]]
+name = "deepmind"
+type = "rss"
+category = "lab"
+url = "https://deepmind.google/blog/rss.xml"
+
+[[source]]
+name = "google_ai"
+type = "rss"
+category = "lab"
+url = "https://blog.google/technology/ai/rss/"
+
+[[source]]
+name = "google_research"
+type = "rss"
+category = "lab"
+url = "https://research.google/blog/rss/"
+
+[[source]]
+name = "meta_ai"
+type = "html"
+category = "lab"
+url = "https://ai.meta.com/blog/"
+link_pattern = "https://ai\\.meta\\.com/blog/[a-z0-9-]+"
+strip_words = ["FEATURED", "Open Source", "Research", "ML Applications", "Computer Vision", "Hardware"]
+
+[[source]]
+name = "mistral"
+type = "rss"
+category = "lab"
+url = "https://mistral.ai/news/rss"
+
+[[source]]
+name = "hf_blog"
+type = "rss"
+category = "lab"
+url = "https://huggingface.co/blog/feed.xml"
+
+# --- Статьи (HF Daily Papers = arXiv, отобранный людьми) ---
+[[source]]
+name = "hf_papers"
+type = "hf_papers"
+category = "paper"
+url = "https://huggingface.co/api/daily_papers"
+min_upvotes = 5
+
+# --- Релизы инструментов ---
+[[source]]
+name = "gh_vllm"
+type = "rss"
+category = "release"
+url = "https://github.com/vllm-project/vllm/releases.atom"
+title_prefix = "vLLM"
+max_age_hours = 30
+latest_only = true
+
+[[source]]
+name = "gh_ollama"
+type = "rss"
+category = "release"
+url = "https://github.com/ollama/ollama/releases.atom"
+title_prefix = "Ollama"
+max_age_hours = 30
+latest_only = true
+
+[[source]]
+name = "gh_llama_cpp"
+type = "rss"
+category = "release"
+url = "https://github.com/ggml-org/llama.cpp/releases.atom"
+title_prefix = "llama.cpp"
+max_age_hours = 30
+latest_only = true
+
+[[source]]
+name = "gh_transformers"
+type = "rss"
+category = "release"
+url = "https://github.com/huggingface/transformers/releases.atom"
+title_prefix = "transformers"
+max_age_hours = 30
+latest_only = true
+
+# --- Сообщество ---
+[[source]]
+name = "hn"
+type = "hn"
+category = "community"
+url = "https://hn.algolia.com/api/v1/search_by_date"
+min_points = 100
+max_age_hours = 30
+keywords = ["AI", "LLM", "LLMs", "GPT", "Claude", "Gemini", "Llama", "Mistral", "OpenAI", "Anthropic", "DeepMind",
+            "Qwen", "DeepSeek", "model", "models", "agent", "agents", "inference", "transformer", "diffusion",
+            "fine-tuning", "RAG", "embedding", "embeddings", "Hugging Face", "neural"]
+
+[[source]]
+name = "r_localllama"
+type = "rss"
+category = "community"
+url = "https://www.reddit.com/r/LocalLLaMA/top/.rss?t=day"
+
+# --- Медиа и рассылки ---
+[[source]]
+name = "techcrunch"
+type = "rss"
+category = "news"
+url = "https://techcrunch.com/category/artificial-intelligence/feed/"
+
+[[source]]
+name = "verge"
+type = "rss"
+category = "news"
+url = "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"
+
+[[source]]
+name = "import_ai"
+type = "rss"
+category = "newsletter"
+url = "https://importai.substack.com/feed"
+max_age_hours = 170
+
+[[source]]
+name = "last_week_in_ai"
+type = "rss"
+category = "newsletter"
+url = "https://lastweekin.ai/feed"
+max_age_hours = 170
+
+[[source]]
+name = "simon_willison"
+type = "rss"
+category = "newsletter"
+url = "https://simonwillison.net/atom/everything/"
+
+[[source]]
+name = "latent_space"
+type = "rss"
+category = "newsletter"
+url = "https://www.latent.space/feed"
+max_age_hours = 170
+
+[[source]]
+name = "interconnects"
+type = "rss"
+category = "newsletter"
+url = "https://www.interconnects.ai/feed"
+max_age_hours = 170
