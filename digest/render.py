@@ -18,11 +18,13 @@ MONTHS = ["января", "февраля", "марта", "апреля", "ма�
 MONTHS_SHORT = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"]
 WEEKDAYS = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
 SECTION_LABELS = {"product": "Компании и продукты", "model": "Модели и исследования", "business": "Деньги и законы",
-                  "dev": "Для тебя", "paper": "Статья"}
+                  "dev": "Для тебя", "paper": "Статья", "voices": "Инженеры"}
 # (раздел, якорь, заголовок раздела, короткое имя для бокового меню)
 ROW_SECTIONS = [("product", "products", "Компании и продукты", "Компании"),
                 ("model", "models", "Модели и исследования", "Модели"),
-                ("business", "business", "Деньги, законы, люди", "Деньги и законы"), ("dev", "dev", "Для тебя", "Для тебя")]
+                ("business", "business", "Деньги, законы, люди", "Деньги и законы"), ("dev", "dev", "Для тебя", "Для тебя"),
+                ("voices", "voices", "Что пишут инженеры", "Инженеры")]
+BRIEF_LABELS = {section: short for section, _, _, short in ROW_SECTIONS} | {"paper": "Статья"}
 ARCHIVE_IN_SIDEBAR = 7
 ALSO_SHOWN = 4
 # Читаемые имена служебных id источников из sources.toml; у Google News источник уже равен названию издания
@@ -35,6 +37,10 @@ SOURCE_LABELS = {
     "ars_ai": "Ars Technica", "wired_ai": "Wired", "mit_tr_ai": "MIT Technology Review", "the_decoder": "The Decoder",
     "import_ai": "Import AI", "last_week_in_ai": "Last Week in AI", "simon_willison": "Simon Willison",
     "latent_space": "Latent Space", "interconnects": "Interconnects",
+    "karpathy": "Andrej Karpathy", "armin_ronacher": "Armin Ronacher", "mitchell_hashimoto": "Mitchell Hashimoto",
+    "thorsten_ball": "Thorsten Ball", "hamel_husain": "Hamel Husain", "sebastian_raschka": "Sebastian Raschka",
+    "addy_osmani": "Addy Osmani", "ethan_mollick": "Ethan Mollick", "dwarkesh": "Dwarkesh Patel",
+    "pragmatic_engineer": "Pragmatic Engineer",
 }
 # Тред с парой баллов — не обсуждение, а чей-то репост; такой не показываем
 HN_MIN_SHOWN = 20
@@ -51,6 +57,7 @@ ICONS = {
     "business": _SVG.format('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'),
     "noise": _SVG.format('<path d="M3 5h18l-7 8v6l-4 2v-8z"/>'),
     "archive": _SVG.format('<path d="M3 5h18v4H3zM5 9v10h14V9M10 13h4"/>'),
+    "voices": _SVG.format('<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/>'),
     "up": _SVG.format('<path d="M7 10v11M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9z"/>'),
     "warn": _SVG.format('<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0zM12 9v4M12 17h.01"/>'),
     "terminal": _SVG.format('<path d="M4 17l6-6-6-6M12 19h8"/>'),
@@ -94,16 +101,18 @@ VOTE_SCRIPT = """<script>
   const mark = (box, v) => box.querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
   // «Прочитано» = раскрыл разбор или ушёл к первоисточнику. В браузере запоминаем только после ответа воркера,
   // иначе при сбое сети отметка не дошла бы до вечернего выпуска уже никогда
+  const tocRead = (id) => document.querySelectorAll('[data-toc="' + CSS.escape(id) + '"]').forEach(li => li.classList.add("read"));
   const markRead = (card) => {
     card.classList.add("read");
     const id = card.dataset.entry;
+    tocRead(id);
     try { if (localStorage.getItem("r:" + id)) return; } catch (e) {}
     // keepalive: клик по первоисточнику уводит со страницы, и без него браузер оборвал бы запрос
     fetch(FB + "/read?e=" + encodeURIComponent(id), {method: "POST", keepalive: true})
       .then(r => { if (r.ok) { try { localStorage.setItem("r:" + id, "1"); } catch (e) {} } });
   };
   document.querySelectorAll("[data-entry]").forEach(card => {
-    try { if (localStorage.getItem("r:" + card.dataset.entry)) card.classList.add("read"); } catch (e) {}
+    try { if (localStorage.getItem("r:" + card.dataset.entry)) { card.classList.add("read"); tocRead(card.dataset.entry); } } catch (e) {}
     card.querySelectorAll("details.more").forEach(d => d.addEventListener("toggle", () => { if (d.open) markRead(card); }));
     card.querySelectorAll("a[href^='http']").forEach(a => a.addEventListener("click", () => markRead(card)));
   });
@@ -230,9 +239,10 @@ def _anchor(entry: Entry) -> str:
 def _more(entry: Entry) -> str:
     source = f'<a class="pill" href="{_href(entry.item.url)}">Первоисточник {ARROW}</a>'
     d = entry.details
-    if d is None:
+    # Пустой разбор — честный ответ модели, когда текста первоисточника не было: раскрывать нечего
+    if d is None or not (d.what or d.points or d.try_it or d.commands or d.caveats):
         return f'<div class="more-links">{source}</div>'
-    parts = [f'<p class="more-lead">{escape(d.what)}</p>']
+    parts = [f'<p class="more-lead">{escape(d.what)}</p>'] if d.what else []
     if d.points:
         points = "".join(f"<li>{escape(p)}</li>" for p in d.points)
         parts.append(f'<section><div class="more-label">Ключевые детали</div><ol class="points">{points}</ol></section>')
@@ -244,6 +254,16 @@ def _more(entry: Entry) -> str:
         parts.append(f'<div class="caveat">{ICONS["warn"]}<div><b>Ограничения</b><p>{escape(d.caveats)}</p></div></div>')
     parts.append(f'<div class="more-links">{source}</div>')
     return f'<details class="more"><summary>Подробнее</summary><div class="more-body">{"".join(parts)}</div></details>'
+
+
+def _brief(entries: list[Entry]) -> str:
+    """Весь выпуск списком заголовков: за полминуты видно всё, а читать идёшь к нужной карточке по якорю."""
+    rows = "".join(f'<li data-toc="{escape(e.id)}"><a href="#e-{escape(e.id)}">{escape(e.title)}</a>'
+                   f'<span>{BRIEF_LABELS.get(e.section, "")}</span></li>' for e in entries if e.id)
+    if not rows:
+        return ""
+    return (f'        <section class="card brief" id="brief">\n          <div class="card-head"><h3>Коротко</h3>'
+            f'<small>весь выпуск за полминуты</small></div>\n          <ol>{rows}</ol>\n        </section>')
 
 
 def _try_today(entries: list[Entry]) -> str:
@@ -342,7 +362,9 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
                 page_name: str = "", slot: str = "morning", missed: list[dict] | None = None,
                 morning_page: str = "") -> str:
     votes = bool(feedback_url)
-    top, rest = (digest.entries[0], digest.entries[1:]) if digest.entries else (None, [])
+    # Героем идёт событие: если модель вернула одни авторские посты, «Главного» нет, они остаются в своём разделе
+    top = next((e for e in digest.entries if e.section != "voices"), None)
+    rest = [e for e in digest.entries if e is not top]
     main = [_missed(missed, morning_page)] if missed else []
     main += [_hero(top, votes, "Главное" if kind == "day" else "Сюжет недели №1")] if top else []
     nav = [_nav("main-story", "Главное", active=True)] if top else []
@@ -388,8 +410,9 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
         funnel = []
     else:
         crumbs = f"Дайджест<span>/</span>{human_date(when)}{' · вечер' if slot == 'evening' else ''}"
-        # Цифры воронки читателю почти ничего не дают — они уходят в подвал, а место справа занимают готовые команды
-        summary = _try_today(digest.entries)
+        # Цифры воронки читателю почти ничего не дают — они уходят в подвал, а место справа занимают оглавление
+        # выпуска и готовые команды
+        summary = "\n".join(block for block in (_brief(digest.entries), _try_today(digest.entries)) if block)
         lead = f'<p class="lead-top">{escape(digest.lead)}</p>' if digest.lead else ""
         funnel = [f'<span>Просмотрено {stats["raw"]}, новых {stats["merged"]}, в выпуске {len(digest.entries)}</span>']
 

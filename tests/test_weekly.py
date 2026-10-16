@@ -51,3 +51,13 @@ def test_week_maps_sections_from_older_issues():
         {"group": n, "importance": 8, "title": "t", "summary": "s", "why": ""} for n in range(len(groups))]}
     digest = parse_week(raw, groups)
     assert {e.section for e in digest.entries} == {"dev", "business"}
+
+
+def test_week_puts_engineer_posts_after_story_lines():
+    issues = [issue("2026-10-16", [ev("20261016-0", "Пост Ронахера", "s1", section="voices"),
+                                   ev("20261016-1", "Сделка", "s2", section="business")])]
+    groups = collect_week(issues, {}, date(2026, 10, 16))
+    raw = {"headline": "h", "lead": "l", "items": [
+        {"group": 0, "importance": 9, "title": "Ронахер", "summary": "s", "why": ""},
+        {"group": 1, "importance": 7, "title": "Сделка", "summary": "s", "why": ""}]}
+    assert [e.section for e in parse_week(raw, groups).entries] == ["business", "voices"]

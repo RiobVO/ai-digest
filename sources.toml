@@ -88,6 +88,8 @@ alert = true
 type = "rss"
 category = "news"
 url = "https://www.techmeme.com/feed.xml"
+# Ссылка записи — страница-подборка Techmeme; оригинал статьи берётся из описания
+original_link = true
 
 [[source]]
 name = "gnews_ai"
@@ -172,6 +174,7 @@ name = "r_localllama"
 type = "rss"
 category = "community"
 url = "https://www.reddit.com/r/LocalLLaMA/top/.rss?t=day"
+# Второй сабреддит не добавлять: без авторизации Reddit отдаёт одну ленту, следующая получает 429 и выбивает эту
 
 # --- Медиа и рассылки ---
 [[source]]
@@ -248,3 +251,65 @@ type = "rss"
 category = "newsletter"
 url = "https://www.interconnects.ai/feed"
 max_age_hours = 170
+
+# --- Инженеры: авторские блоги. X без платного API не читается; эти люди пишут и здесь ---
+# Отбор кладёт их посты в раздел «Что пишут инженеры», а не в шум «мнения без новости»
+[[source]]
+name = "karpathy"
+type = "rss"
+category = "engineer"
+url = "https://karpathy.bearblog.dev/feed/"
+
+[[source]]
+name = "armin_ronacher"
+type = "rss"
+category = "engineer"
+url = "https://lucumr.pocoo.org/feed.atom"
+
+[[source]]
+name = "mitchell_hashimoto"
+type = "rss"
+category = "engineer"
+url = "https://mitchellh.com/feed.xml"
+
+[[source]]
+name = "thorsten_ball"
+type = "rss"
+category = "engineer"
+url = "https://registerspill.thorstenball.com/feed"
+
+[[source]]
+name = "hamel_husain"
+type = "rss"
+category = "engineer"
+url = "https://hamel.dev/index.xml"
+
+[[source]]
+name = "sebastian_raschka"
+type = "rss"
+category = "engineer"
+url = "https://magazine.sebastianraschka.com/feed"
+
+[[source]]
+name = "addy_osmani"
+type = "rss"
+category = "engineer"
+url = "https://addyo.substack.com/feed"
+
+[[source]]
+name = "ethan_mollick"
+type = "rss"
+category = "engineer"
+url = "https://www.oneusefulthing.org/feed"
+
+[[source]]
+name = "dwarkesh"
+type = "rss"
+category = "engineer"
+url = "https://www.dwarkesh.com/feed"
+
+[[source]]
+name = "pragmatic_engineer"
+type = "rss"
+category = "engineer"
+url = "https://newsletter.pragmaticengineer.com/feed"

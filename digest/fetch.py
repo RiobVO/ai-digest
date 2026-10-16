@@ -3,11 +3,12 @@ import re
 from calendar import timegm
 from datetime import datetime, timedelta, timezone
 from html import unescape
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlsplit
 
 import feedparser
 import httpx
 
+from digest.dedup import is_aggregator
 from digest.models import Item
 
 log = logging.getLogger(__name__)
@@ -17,6 +18,7 @@ DEFAULT_MAX_AGE_HOURS = 48
 DATE_TOKEN = r"(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.? \d{1,2}, \d{4}"
 TAG = re.compile(r"<[^>]+>")
 PRERELEASE = re.compile(r"[-.]?(rc|alpha|beta|dev|pre)\d*\b", re.I)
+HREF = re.compile(r'href="(https?://[^"]+)"', re.I)
 
 
 def _text(html: str) -> str:
@@ -25,6 +27,17 @@ def _text(html: str) -> str:
 
 def _iso(value: str) -> datetime:
     return datetime.fromisoformat(value.replace("Z", "+00:00"))
+
+
+def _original_link(link: str, summary_html: str) -> str:
+    """Techmeme ведёт на свою страницу-подборку; статья-оригинал — первая внешняя ссылка в описании.
+    Ссылка на главную издания (путь «/») — подпись к статье, а не она сама."""
+    own = urlsplit(link).netloc
+    for href in map(unescape, HREF.findall(summary_html)):
+        parts = urlsplit(href)
+        if parts.netloc != own and parts.path.strip("/"):
+            return href
+    return link
 
 
 def parse_feed(body: bytes, src: dict) -> list[Item]:
@@ -39,10 +52,13 @@ def parse_feed(body: bytes, src: dict) -> list[Item]:
             # Google News: «Заголовок - Издание». Издание становится источником, чтобы охват считался по изданиям;
             # описание у него — список ссылок на те же статьи, а не текст
             title, source, summary = title.removesuffix(f" - {publisher}"), publisher, ""
+        url = entry.get("link", "")
+        if src.get("original_link"):
+            url = _original_link(url, entry.get("summary", ""))
         items.append(Item(
             source=source,
             title=f"{prefix} {title}" if prefix else title,
-            url=entry.get("link", ""),
+            url=url,
             category=src["category"],
             published=datetime.fromtimestamp(timegm(stamp), timezone.utc) if stamp else None,
             summary=summary,
@@ -145,6 +161,9 @@ def parse_html(body: str, src: dict) -> list[Item]:
 NOISE_BLOCKS = re.compile(r"<(script|style|noscript|svg|nav|header|footer|aside|form)\b.*?</\1>", re.S | re.I)
 MAIN_BLOCK = re.compile(r"<(article|main)\b[^>]*>(.*)</\1>", re.S | re.I)
 ARTICLE_LIMIT = 8000
+# Короче — заглушка («Google News», «включите JavaScript»), а не статья: модель получит «текст недоступен»
+# и не станет додумывать по мусору
+MIN_ARTICLE_CHARS = 300
 
 
 def extract_text(html: str, limit: int = ARTICLE_LIMIT) -> str:
@@ -162,10 +181,14 @@ def fetch_articles(urls: list[str]) -> dict[str, str]:
     texts = {}
     with httpx.Client(timeout=30, follow_redirects=True, headers={"User-Agent": USER_AGENT}) as client:
         for url in urls:
+            if is_aggregator(url):
+                texts[url] = ""
+                continue
             try:
                 response = client.get(url)
                 response.raise_for_status()
-                texts[url] = extract_text(response.text)
+                text = extract_text(response.text)
+                texts[url] = text if len(text) >= MIN_ARTICLE_CHARS else ""
             except httpx.HTTPError as exc:
                 log.error("текст первоисточника %s не получен: %s", url, exc)
                 texts[url] = ""

@@ -108,3 +108,24 @@ def test_unknown_section_falls_back_to_products():
     raw = {"headline": "h", "lead": "l", "items": [
         {"ids": [0], "section": "weird", "importance": 7, "title": "t", "summary": "s", "why": "", "story": "", "story_name": ""}]}
     assert parse_selection(raw, items()).entries[0].section == "product"
+
+
+def test_aggregator_link_never_becomes_the_primary_source():
+    pool = [Item(source="Axios", title="FTC subpoenas labs", url="https://news.google.com/rss/articles/abc", category="news"),
+            Item(source="verge", title="FTC subpoenas OpenAI", url="https://www.theverge.com/ftc", category="news")]
+    raw = {"headline": "h", "lead": "l", "items": [
+        {"ids": [0, 1], "section": "business", "importance": 8, "title": "FTC", "summary": "s", "why": ""}]}
+    top = parse_selection(raw, pool).entries[0]
+    assert top.item.url == "https://www.theverge.com/ftc"
+    assert [s for s, _ in top.item.also] == ["Axios"]
+
+
+def test_engineer_posts_get_their_own_section_and_never_lead_the_issue():
+    pool = items() + [Item(source="armin_ronacher", title="Agents need taste", url="https://lucumr.pocoo.org/x",
+                           category="engineer")]
+    raw = {"headline": "h", "lead": "l", "items": [
+        {"ids": [4], "section": "voices", "importance": 9, "title": "Ронахер о вкусе агентов", "summary": "s", "why": ""},
+        {"ids": [0], "section": "model", "importance": 7, "title": "Meta открыла веса", "summary": "s", "why": ""}]}
+    digest = parse_selection(raw, pool)
+    assert [(e.section, e.title) for e in digest.entries] == [("model", "Meta открыла веса"),
+                                                             ("voices", "Ронахер о вкусе агентов")]

@@ -1,7 +1,7 @@
 """Итог недели: главные сюжетные линии за 7 дней. Хронологию строим из архива, модель только отбирает и пересказывает."""
 from datetime import date, timedelta
 
-from digest.llm import Details, Digest, Entry, generate
+from digest.llm import Details, Digest, Entry, entry_rank, generate
 from digest.models import Item
 from digest.render import short_day
 
@@ -90,7 +90,7 @@ def parse_week(raw: dict, groups: list[dict]) -> Digest:
         entry.story_name = g["name"]
         entry.story_day = len({e["date"] for e in g["events"]})
         entries.append(entry)
-    entries.sort(key=lambda e: e.importance, reverse=True)
+    entries.sort(key=entry_rank)
     return Digest(raw.get("headline", ""), raw.get("lead", ""), entries)
 
 

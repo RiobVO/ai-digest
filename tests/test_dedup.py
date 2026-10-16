@@ -73,3 +73,15 @@ def test_merged_story_keeps_loudest_hn_discussion():
     b.hn_points, b.hn_comments, b.hn_url = 300, 90, "https://news.ycombinator.com/item?id=1"
     merged = dedupe([a, b])[0]
     assert (merged.hn_points, merged.hn_comments, merged.hn_url) == (300, 90, "https://news.ycombinator.com/item?id=1")
+
+
+def test_aggregator_yields_primary_to_direct_link_of_the_same_story():
+    # Google News стоит в sources.toml выше изданий и индексирует их же статьи с теми же заголовками
+    items = [
+        make("The Verge", "ChatGPT can now read your Chrome tabs", "https://news.google.com/rss/articles/abc"),
+        make("verge", "ChatGPT can now read your Chrome tabs", "https://www.theverge.com/ai/1012510"),
+    ]
+    out = dedupe(items)
+    assert len(out) == 1
+    assert out[0].url == "https://www.theverge.com/ai/1012510"
+    assert [s for s, _ in out[0].also] == ["The Verge"]

@@ -100,3 +100,40 @@ def test_hn_discussion_picks_the_loudest_thread_for_url():
                         {"points": 410, "num_comments": 150, "objectID": "2"}]}
     assert parse_discussion(payload) == (410, 150, "https://news.ycombinator.com/item?id=2")
     assert parse_discussion({"hits": []}) is None
+
+
+TECHMEME_RSS = b"""<?xml version="1.0"?><rss version="2.0"><channel>
+<item><title>Intuit buys Sequence (The Times)</title><link>https://www.techmeme.com/261016/p13#a261016p13</link>
+<pubDate>Fri, 16 Oct 2026 08:00:00 GMT</pubDate><description><![CDATA[<p><a href="https://www.techmeme.com/261016/p13#a261016p13">
+<img src="https://www.techmeme.com/img/x.jpg"></a></p><p><a href="https://www.thetimes.com/">The Times</a>:
+<a href="https://www.thetimes.com/business/article/intuit-sequence">Intuit buys Sequence</a></p>]]></description></item>
+<item><title>Only Techmeme links here</title><link>https://www.techmeme.com/261016/p14#a261016p14</link>
+<pubDate>Fri, 16 Oct 2026 08:00:00 GMT</pubDate><description><![CDATA[<a href="https://www.techmeme.com/261016/p14">x</a>]]></description></item>
+</channel></rss>"""
+
+
+def test_techmeme_entry_points_to_original_article_not_its_cluster_page():
+    src = {"name": "techmeme", "category": "news", "original_link": True}
+    items = parse_feed(TECHMEME_RSS, src)
+    # Главная издания (путь «/») — не статья; берём первую внешнюю ссылку с путём
+    assert items[0].url == "https://www.thetimes.com/business/article/intuit-sequence"
+    assert items[1].url == "https://www.techmeme.com/261016/p14#a261016p14"
+
+
+def test_article_texts_skip_aggregators_and_treat_stub_pages_as_empty(monkeypatch):
+    import httpx
+    from digest import fetch
+    requested = []
+
+    def handler(request):
+        requested.append(str(request.url))
+        body = "<article>" + "Полный текст статьи. " * 40 + "</article>" if "long" in request.url.path else "<p>Google News</p>"
+        return httpx.Response(200, text=body)
+
+    real_client = httpx.Client
+    monkeypatch.setattr(fetch.httpx, "Client", lambda **kw: real_client(transport=httpx.MockTransport(handler), **kw))
+    texts = fetch.fetch_articles(["https://news.google.com/rss/articles/abc", "https://x.io/stub", "https://x.io/long"])
+    assert texts["https://news.google.com/rss/articles/abc"] == ""
+    assert texts["https://x.io/stub"] == ""
+    assert texts["https://x.io/long"].startswith("Полный текст статьи.")
+    assert requested == ["https://x.io/stub", "https://x.io/long"]

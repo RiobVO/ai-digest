@@ -222,3 +222,45 @@ def test_telegram_evening_message_mentions_missed_morning_news():
                          morning_url="https://x.io/2026-10-17.html")
     assert "Утром ты пропустил" in text
     assert '<a href="https://x.io/2026-10-17.html#e-20261017-1">Пропущенное</a>' in text
+
+
+def test_brief_lists_every_entry_with_a_link_to_its_card():
+    digest = sample()
+    digest.entries[0].id, digest.entries[1].id = "20261016-0", "20261016-1"
+    page = render_page(digest, STATS, WHEN, failures=[])
+    block = page[page.index('id="brief"'):]
+    block = block[:block.index("</section>")]
+    assert block.index('href="#e-20261016-0"') < block.index('href="#e-20261016-1"')
+    assert "Meta выпустила &lt;Muse&gt; &amp; co" in block
+    # Без id записей ссылаться не на что — блока нет (итог недели)
+    assert 'id="brief"' not in render_page(sample(), STATS, WHEN, failures=[])
+
+
+def test_engineer_posts_render_as_their_own_section_with_nav():
+    digest = sample()
+    post = Item(source="armin_ronacher", title="Agents", url="https://lucumr.pocoo.org/x", category="engineer")
+    digest.entries.append(Entry(post, "voices", 6, "Ронахер о вкусе агентов", "Мысль.", ""))
+    page = render_page(digest, STATS, WHEN, failures=[])
+    block = page[page.index('id="voices"'):]
+    assert "Что пишут инженеры" in block and "Ронахер о вкусе агентов" in block
+    assert 'href="#voices"' in page
+
+
+def test_empty_explanation_shows_only_the_source_link():
+    from digest.llm import Details
+    digest = sample()
+    # Текста первоисточника не было: модель честно вернула пустой разбор — кнопка «Подробнее» не нужна
+    digest.entries[0].details = Details("", [], "", "", [])
+    digest.entries[1].details = Details("", ["Факт из ленты"], "", "", [])
+    page = render_page(digest, STATS, WHEN, failures=[])
+    hero = page[page.index('id="main-story"'):page.index('id="papers"')]
+    assert "<details" not in hero and 'href="https://hf.co/blog/muse"' in hero
+    assert "Факт из ленты" in page and '<p class="more-lead"></p>' not in page
+
+
+def test_engineer_post_never_becomes_the_lead_story():
+    post = Item(source="armin_ronacher", title="Agents", url="https://lucumr.pocoo.org/x", category="engineer")
+    digest = Digest("h", "l", [Entry(post, "voices", 9, "Ронахер о вкусе агентов", "Мысль.", "")])
+    page = render_page(digest, STATS, WHEN, failures=[])
+    assert 'id="main-story"' not in page
+    assert "Ронахер о вкусе агентов" in page[page.index('id="voices"'):]
