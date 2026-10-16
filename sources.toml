@@ -94,7 +94,8 @@ name = "gnews_ai"
 alert = true
 type = "rss"
 category = "news"
-url = "https://news.google.com/rss/search?q=%22artificial+intelligence%22+OR+OpenAI+OR+Anthropic+OR+Nvidia+when:1d&hl=en-US&gl=US&ceid=US:en"
+# Без названий компаний в запросе: иначе лента приносит в основном их и выпуск перекашивается
+url = "https://news.google.com/rss/search?q=%22artificial+intelligence%22+OR+AI+OR+robotics+OR+chips+OR+semiconductor+when:1d&hl=en-US&gl=US&ceid=US:en"
 max_age_hours = 30
 publisher_in_title = true
 
