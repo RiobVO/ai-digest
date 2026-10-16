@@ -1,4 +1,5 @@
 import json
+import re
 from collections import Counter
 from datetime import date, datetime, timedelta, timezone
 from html import escape
@@ -17,10 +18,10 @@ MONTHS = ["января", "февраля", "марта", "апреля", "ма�
 MONTHS_SHORT = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"]
 WEEKDAYS = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
 SECTION_LABELS = {"model": "Модель", "release": "Релиз", "paper": "Статья", "industry": "Индустрия"}
-# (секция, якорь, заголовок, css-класс цвета иконки во вкладках)
-ROW_SECTIONS = [("model", "models", "Модели", "t1"), ("release", "releases", "Релизы", "t2"),
-                ("industry", "industry", "Индустрия", "t4")]
+ROW_SECTIONS = [("model", "models", "Модели"), ("release", "releases", "Релизы"), ("industry", "industry", "Индустрия")]
 ARCHIVE_IN_SIDEBAR = 7
+# Средняя скорость чтения русского текста с экрана, слов в минуту
+WORDS_PER_MINUTE = 180
 
 _SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{}</svg>'
 ICONS = {
@@ -31,7 +32,43 @@ ICONS = {
     "industry": _SVG.format('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'),
     "noise": _SVG.format('<path d="M3 5h18l-7 8v6l-4 2v-8z"/>'),
     "archive": _SVG.format('<path d="M3 5h18v4H3zM5 9v10h14V9M10 13h4"/>'),
+    "up": _SVG.format('<path d="M7 10v11M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9z"/>'),
+    "warn": _SVG.format('<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0zM12 9v4M12 17h.01"/>'),
+    "terminal": _SVG.format('<path d="M4 17l6-6-6-6M12 19h8"/>'),
+    "down": _SVG.format('<path d="M17 14V3M9 18.1 10 14H4.2a2 2 0 0 1-1.9-2.6l2.3-7A2 2 0 0 1 6.5 3H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-2.8a2 2 0 0 0-1.8 1.1L12 22a3.1 3.1 0 0 1-3-3.9z"/>'),
 }
+TRY_TODAY_MAX = 4
+# Строка «Как попробовать» от модели смешивает команды и пояснения; в терминал попадают только команды
+SHELL_LINE = re.compile(r"^(?:\$\s*)?((?:pip3?|uvx?|ollama|npm|npx|pnpm|yarn|bun|git|curl|wget|python3?|docker|brew|hf|"
+                        r"huggingface-cli|llama-cli|llama-server|vllm|cargo|go|conda|mlx_lm\.\w+|claude|gh|wrangler)\s.*)$")
+# Без сторонних скриптов и сетевых запросов: листание карточек с клавиатуры и копирование команд
+PAGE_SCRIPT = """<script>
+(() => {
+  document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => {
+    const code = b.closest(".term").querySelector("code").textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      b.textContent = "Скопировано";
+      setTimeout(() => { b.textContent = "Скопировать"; }, 1500);
+    }, () => { b.textContent = "Не вышло"; });
+  }));
+})();
+(() => {
+  const cards = [...document.querySelectorAll(".hero, .item, .paper")];
+  let at = -1;
+  const go = (i) => {
+    cards[at]?.classList.remove("kb");
+    at = Math.max(0, Math.min(cards.length - 1, i));
+    cards[at].classList.add("kb");
+    cards[at].scrollIntoView({block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
+  };
+  document.addEventListener("keydown", (e) => {
+    if (e.ctrlKey || e.metaKey || e.altKey || /input|textarea/i.test(e.target.tagName) || !cards.length) return;
+    if (e.key === "j") go(at + 1);
+    else if (e.key === "k") go(at - 1);
+    else if (e.key === "o" && at >= 0) { const d = cards[at].querySelector("details.more"); if (d) d.open = !d.open; }
+  });
+})();
+</script>"""
 ARROW = "→"
 
 # Кнопки оценок шлют POST в воркер обратной связи; выбор запоминается в браузере, чтобы не мигал при перезагрузке
@@ -86,6 +123,20 @@ def _also(entry: Entry) -> str:
     return f"также: {escape(', '.join(names))}" if names else ""
 
 
+def _source(url: str) -> str:
+    host = escape(_host(url))
+    if urlsplit(url).scheme not in ("http", "https") or not host:
+        return f"<span>{host}</span>"
+    # Иконку отдаёт DuckDuckGo: он не ставит куки и не требует ключа; битая иконка с пустым alt просто не видна
+    return (f'<span class="src"><img class="fav" src="https://icons.duckduckgo.com/ip3/{host}.ico" alt="" '
+            f'width="14" height="14" loading="lazy">{host}</span>')
+
+
+def reading_minutes(entries: list[Entry]) -> int:
+    words = sum(len(f"{e.title} {e.summary} {e.why}".split()) for e in entries)
+    return max(1, round(words / WORDS_PER_MINUTE))
+
+
 def _why(entry: Entry) -> str:
     return f'<div class="why"><b>Зачем тебе:</b> {escape(entry.why)}</div>' if entry.why else ""
 
@@ -94,8 +145,15 @@ def _vote(entry: Entry, enabled: bool) -> str:
     if not enabled or not entry.id:
         return ""
     return (f'<span class="vote" data-id="{escape(entry.id)}">'
-            f'<button type="button" data-v="up" aria-label="Полезно">👍</button>'
-            f'<button type="button" data-v="down" aria-label="Мимо">👎</button></span>')
+            f'<button type="button" data-v="up" aria-label="Полезно" title="Полезно">{ICONS["up"]}</button>'
+            f'<button type="button" data-v="down" aria-label="Мимо" title="Мимо">{ICONS["down"]}</button></span>')
+
+
+def _actions(entry: Entry, votes: bool, details: bool = True) -> str:
+    # Оценки прижаты к строке «Подробнее» абсолютно: раскрытый разбор занимает всю ширину карточки
+    more = _more(entry) if details else ""
+    vote = _vote(entry, votes)
+    return f'<div class="actions">{more}{vote}</div>' if more or vote else ""
 
 
 def _story(entry: Entry) -> str:
@@ -107,21 +165,62 @@ def _story(entry: Entry) -> str:
             f'{f"<ul>{prev}</ul>" if prev else ""}</div>')
 
 
+def split_try(text: str) -> tuple[list[str], list[str]]:
+    commands, notes = [], []
+    for line in filter(None, (raw.strip() for raw in text.splitlines())):
+        match = SHELL_LINE.match(line)
+        if match:
+            commands.append(match.group(1))
+        else:
+            notes.append(line)
+    return commands, notes
+
+
+def _term(commands: list[str]) -> str:
+    return (f'<div class="term"><div class="term-bar">{ICONS["terminal"]}<span>Терминал</span>'
+            f'<button type="button" class="copy">Скопировать</button></div>'
+            f'<pre><code>{escape(chr(10).join(commands))}</code></pre></div>')
+
+
+def _anchor(entry: Entry) -> str:
+    return f' id="e-{escape(entry.id)}"' if entry.id else ""
+
+
 def _more(entry: Entry) -> str:
     source = f'<a class="pill" href="{_href(entry.item.url)}">Первоисточник {ARROW}</a>'
     d = entry.details
     if d is None:
         return f'<div class="more-links">{source}</div>'
-    points = "".join(f"<li>{escape(p)}</li>" for p in d.points)
-    parts = [f"<p>{escape(d.what)}</p>"]
-    if points:
-        parts.append(f'<div class="more-label">Ключевые детали</div><ul>{points}</ul>')
+    parts = [f'<p class="more-lead">{escape(d.what)}</p>']
+    if d.points:
+        points = "".join(f"<li>{escape(p)}</li>" for p in d.points)
+        parts.append(f'<section><div class="more-label">Ключевые детали</div><ol class="points">{points}</ol></section>')
     if d.try_it:
-        parts.append(f'<div class="more-label">Как попробовать</div><div class="code">{escape(d.try_it)}</div>')
+        commands, notes = split_try(d.try_it)
+        notes_html = "".join(f'<p class="note">{escape(n)}</p>' for n in notes)
+        parts.append(f'<section><div class="more-label">Как попробовать</div>'
+                     f'{_term(commands) if commands else ""}{notes_html}</section>')
     if d.caveats:
-        parts.append(f'<div class="caveat"><b>Ограничения:</b> {escape(d.caveats)}</div>')
+        parts.append(f'<div class="caveat">{ICONS["warn"]}<div><b>Ограничения</b><p>{escape(d.caveats)}</p></div></div>')
     parts.append(f'<div class="more-links">{source}</div>')
     return f'<details class="more"><summary>Подробнее</summary><div class="more-body">{"".join(parts)}</div></details>'
+
+
+def _try_today(entries: list[Entry]) -> str:
+    rows, shown = [], set()
+    for entry in entries:
+        commands = split_try(entry.details.try_it)[0] if entry.details and entry.details.try_it else []
+        # Общие команды вроде «pip install transformers» повторяются у разных новостей — показываем один раз
+        commands = [c for c in commands if c not in shown]
+        shown.update(commands)
+        if commands and entry.id:
+            rows.append(f'<div class="try"><a class="try-title" href="#e-{escape(entry.id)}">{escape(entry.title)}</a>'
+                        f'{_term(commands[:2])}</div>')
+    if not rows:
+        return ""
+    return (f'        <section class="card" id="try">\n          <div class="card-head"><h3>Попробовать сегодня</h3>'
+            f'<small>из разборов</small></div>\n'
+            f'          <div class="card-body">{"".join(rows[:TRY_TODAY_MAX])}</div>\n        </section>')
 
 
 def _nav(anchor: str, label: str, count: int | None = None, active: bool = False) -> str:
@@ -137,12 +236,12 @@ def _hero(entry: Entry, votes: bool, chip: str) -> str:
         f'        <section class="card hero" id="main-story">\n'
         f'          <div class="hero-top"><span class="chip">{chip}</span>'
         f'<a class="btn" href="{_href(entry.item.url)}">Первоисточник {ARROW}</a></div>\n'
-        f'          <h2>{escape(entry.title)}</h2>\n          {_story(entry)}\n          <p>{escape(entry.summary)}</p>\n'
+        f'          <h2{_anchor(entry)}>{escape(entry.title)}</h2>\n          {_story(entry)}\n          <p>{escape(entry.summary)}</p>\n'
         f'          {_why(entry)}\n'
         f'          <div class="meter"><div class="meter-row">Важность<span>{entry.importance:g} / 10</span></div>'
         f'<div class="bar"><i style="width:{share}%"></i></div></div>\n'
-        f'          <div class="legend"><span>{SECTION_LABELS[entry.section]} · {escape(_host(entry.item.url))}</span>{also}</div>\n'
-        f'          <div class="hero-actions">{_more(entry)}{_vote(entry, votes)}</div>\n'
+        f'          <div class="legend"><span>{SECTION_LABELS[entry.section]}</span>{_source(entry.item.url)}{also}</div>\n'
+        f'          {_actions(entry, votes)}\n'
         f'        </section>')
 
 
@@ -151,26 +250,20 @@ def _item(n: int, entry: Entry, votes: bool) -> str:
     also = f'<span>{_also(entry)}</span>' if entry.item.also else ""
     importance_css = "tag green" if entry.importance >= 8 else "tag"
     return (f'<div class="item"><span class="num{hot}">{n}</span>'
-            f'<div><h4>{escape(entry.title)}</h4>{_story(entry)}<p>{escape(entry.summary)}</p>{_why(entry)}'
-            f'<div class="meta"><span class="{importance_css}">важность {entry.importance:g}</span>'
-            f'<span>{escape(_host(entry.item.url))}</span>{also}{_vote(entry, votes)}</div>{_more(entry)}</div></div>')
+            f'<div><div class="meta"><span class="{importance_css}">важность {entry.importance:g}</span>'
+            f'{_source(entry.item.url)}{also}</div>'
+            f'<h4{_anchor(entry)}>{escape(entry.title)}</h4>{_story(entry)}<p>{escape(entry.summary)}</p>{_why(entry)}'
+            f'{_actions(entry, votes)}</div></div>')
 
 
 def _paper(entry: Entry, votes: bool) -> str:
     match = ARXIV_ID.search(entry.item.url)
     ident = f"arXiv:{match.group(1)}" if match else _host(entry.item.url)
     score = f'<span class="tag green">{entry.item.score} ▲</span>' if entry.item.score else ""
-    return (f'<div class="paper"><h4>{escape(entry.title)}</h4>{_story(entry)}<p>{escape(entry.summary)}</p>'
-            f'<div class="paper-foot">{score}{_vote(entry, votes)}'
+    return (f'<div class="paper"><div class="paper-foot">{score}'
             f'<a class="key" href="{_href(entry.item.url)}">{escape(ident)} {ARROW}</a></div>'
-            f'{_more(entry) if entry.details else ""}</div>')
-
-
-def _tabs(groups: list[tuple[str, str, str, int]]) -> str:
-    links = "".join(f'<a href="#{anchor}"{" class=\"on\"" if i == 0 else ""}><span class="{tone}">{ICONS[anchor]}</span>'
-                    f'{label} <small>{count}</small></a>'
-                    for i, (anchor, label, tone, count) in enumerate(groups))
-    return f'        <nav class="card tabs" aria-label="Разделы">{links}</nav>'
+            f'<h4{_anchor(entry)}>{escape(entry.title)}</h4>{_story(entry)}<p>{escape(entry.summary)}</p>'
+            f'{_actions(entry, votes, details=entry.details is not None)}</div>')
 
 
 def _archive_sidebar(issues: list[dict] | None, current: str = "") -> str:
@@ -198,9 +291,8 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
     top, rest = (digest.entries[0], digest.entries[1:]) if digest.entries else (None, [])
     main = [_hero(top, votes, "Главное" if kind == "day" else "Сюжет недели №1")] if top else []
     nav = [_nav("main-story", "Главное", active=True)] if top else []
-    tabs = []
 
-    for section, anchor, label, tone in ROW_SECTIONS:
+    for section, anchor, label in ROW_SECTIONS:
         group = [e for e in rest if e.section == section]
         if not group:
             continue
@@ -209,7 +301,6 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
                     f'          <div class="card-head"><h3>{label}</h3><small>{len(group)}</small></div>\n'
                     f'          <div class="card-body">{items}</div>\n        </section>')
         nav.append(_nav(anchor, label, len(group)))
-        tabs.append((anchor, label, tone, len(group)))
 
     aside = []
     papers = [e for e in rest if e.section == "paper"]
@@ -218,7 +309,6 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
                      f'          <div class="card-head"><h3>Статьи</h3><small>HF Daily Papers</small></div>\n'
                      f'          <div class="card-body">{"".join(_paper(e, votes) for e in papers)}</div>\n        </section>')
         nav.append(_nav("papers", "Статьи", len(papers)))
-        tabs.append(("papers", "Статьи", "t3", len(papers)))
 
     if digest.noise:
         by_source = Counter(i.source for i in digest.noise)
@@ -239,22 +329,29 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
                                (stats["issues"], ("выпуск", "выпуска", "выпусков")),
                                (stats["events"], ("событие", "события", "событий")),
                                (len(digest.entries), ("сюжет", "сюжета", "сюжетов")))])
+        lead = ""
+        funnel = []
     else:
         crumbs = f"Дайджест<span>/</span>{human_date(when)}"
-        summary = _summary("Фильтр за сутки", human_date(when), digest.lead,
-                           [(stats["raw"], "собрано"), (stats["merged"], "новых"), (len(digest.entries), "в выпуске")])
+        # Цифры воронки читателю почти ничего не дают — они уходят в подвал, а место справа занимают готовые команды
+        summary = _try_today(digest.entries)
+        lead = f'<p class="lead-top">{escape(digest.lead)}</p>' if digest.lead else ""
+        funnel = [f'<span>Просмотрено {stats["raw"]}, новых {stats["merged"]}, в выпуске {len(digest.entries)}</span>']
 
-    footer = [f"<span>Собрано {local:%d.%m} в {local:%H:%M}</span>", "<span>Стоимость 0 ₽</span>"]
+    footer = [*funnel, f"<span>Собрано {local:%d.%m} в {local:%H:%M}</span>", "<span>Стоимость 0 ₽</span>"]
     if failures:
         footer.append(f'<span class="fail">Не собрались: {escape(", ".join(f.split(":")[0] for f in failures))}</span>')
 
+    count = plural(len(digest.entries), *(("сюжет", "сюжета", "сюжетов") if kind == "week"
+                                         else ("событие", "события", "событий")))
     description = f"{len(digest.entries)} событий. {digest.lead}"
     return TEMPLATE.substitute(
-        headline=escape(digest.headline), description=escape(description[:300]), crumbs=crumbs,
+        headline=escape(digest.headline), description=escape(description[:300]), crumbs=crumbs, lead=lead,
+        sub=f"{count} · ≈{reading_minutes(digest.entries)} мин чтения",
         short_date=f"{local:%d.%m}", weekday=WEEKDAYS[local.weekday()] if kind == "day" else "Неделя",
         nav="".join(nav), archive=_archive_sidebar(issues, page_name),
-        tabs=_tabs(tabs) if len(tabs) > 1 else "", main="\n".join(main), summary=summary, aside="\n".join(aside),
-        footer="".join(footer), script=VOTE_SCRIPT % json.dumps(feedback_url) if votes else "",
+        main="\n".join(main), summary=summary, aside="\n".join(aside), footer="".join(footer),
+        script=(VOTE_SCRIPT % json.dumps(feedback_url) if votes else "") + PAGE_SCRIPT,
     )
 
 
@@ -269,8 +366,9 @@ def render_archive(issues: list[dict], when: datetime) -> str:
     local = when.astimezone(DISPLAY_TZ)
     return TEMPLATE.substitute(
         headline="Архив выпусков", description=f"{len(issues)} выпусков ИИ-дайджеста", crumbs="Дайджест<span>/</span>Архив",
+        sub=plural(len(issues), "выпуск", "выпуска", "выпусков"), lead="",
         short_date=f"{local:%d.%m}", weekday="Архив", nav=f'<a class="on" href="#main-story">{ICONS["archive"]}Все выпуски</a>',
-        archive=_archive_sidebar(issues), tabs="", main=main,
+        archive=_archive_sidebar(issues), main=main,
         summary=_summary("Архив", "", "", [(len(issues), "выпусков"), (sum(len(i["entries"]) for i in issues), "событий")]),
         aside="", footer="<span>Стоимость 0 ₽</span>", script="",
     )

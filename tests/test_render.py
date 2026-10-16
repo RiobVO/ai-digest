@@ -118,6 +118,51 @@ def test_no_keyboard_without_entry_ids():
     assert build_keyboard(sample()) is None
 
 
+def test_header_shows_event_count_and_reading_time():
+    digest = sample()
+    digest.entries[0].summary = "слово " * 900
+    page = render_page(digest, STATS, WHEN, failures=[])
+    assert "2 события · ≈5 мин чтения" in page
+
+
+def test_source_icon_only_for_web_links():
+    page = render_page(sample(), STATS, WHEN, failures=[])
+    assert 'src="https://icons.duckduckgo.com/ip3/hf.co.ico"' in page
+    digest = sample()
+    digest.entries[0].item.url = "javascript:alert(1)"
+    assert "ip3/.ico" not in render_page(digest, STATS, WHEN, failures=[])
+
+
+def test_try_it_splits_shell_commands_from_prose():
+    from digest.render import split_try
+    commands, notes = split_try("pip install -U diffusers\nКоллекция: black-forest-labs/flux\n$ ollama run nemotron")
+    assert commands == ["pip install -U diffusers", "ollama run nemotron"]
+    assert notes == ["Коллекция: black-forest-labs/flux"]
+
+
+def test_try_today_lists_commands_linked_to_their_cards():
+    from digest.llm import Details
+    digest = sample()
+    digest.entries[0].id = "20261016-0"
+    digest.entries[0].details = Details("Суть.", [], "ollama run muse <x>", "")
+    page = render_page(digest, STATS, WHEN, failures=[])
+    block = page[page.index("Попробовать сегодня"):]
+    assert 'href="#e-20261016-0"' in block and "ollama run muse &lt;x&gt;" in block
+    assert 'id="e-20261016-0"' in page
+    assert "Попробовать сегодня" not in render_page(sample(), STATS, WHEN, failures=[])
+
+
+def test_try_today_skips_commands_already_shown():
+    from digest.llm import Details
+    digest = sample()
+    for n, entry in enumerate(digest.entries):
+        entry.id = f"20261016-{n}"
+        entry.details = Details("Суть.", [], "pip install -U diffusers", "")
+    page = render_page(digest, STATS, WHEN, failures=[])
+    block = page[page.index("Попробовать сегодня"):page.index('id="papers"')]
+    assert block.count("pip install -U diffusers") == 1
+
+
 def test_week_summary_uses_correct_plural_forms():
     page = render_page(sample(), {"issues": 1, "events": 3}, WHEN, failures=[], kind="week", period="10–16 октября")
     assert "<b>1</b><span>выпуск</span>" in page and "<b>3</b><span>события</span>" in page
