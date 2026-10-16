@@ -87,3 +87,24 @@ test("список оценок отдаётся только с токеном"
   const body = await res.json();
   assert.deepEqual(body.votes.map((v) => [v.id, v.v]), [["20261016-2", "down"]]);
 });
+
+test("после голоса кнопки под сообщением отмечают выбор, повторный выбор переносит отметку", async () => {
+  const markup = { inline_keyboard: [
+    [{ text: "👍 1", callback_data: "u:20261016-0" }, { text: "👍 2", callback_data: "u:20261016-1" }],
+    [{ text: "👎 1", callback_data: "d:20261016-0" }, { text: "👎 2", callback_data: "d:20261016-1" }],
+  ] };
+  const withMessage = (data) => ({ callback_query: { id: "cb", from: { id: 42 }, data,
+    message: { message_id: 7, chat: { id: 42 }, reply_markup: markup } } });
+
+  await worker.fetch(hook(withMessage("u:20261016-0")), env);
+  const edit = telegramCalls.find((c) => c.url.endsWith("/editMessageReplyMarkup"));
+  assert.equal(edit.body.message_id, 7);
+  const texts = edit.body.reply_markup.inline_keyboard.flat().map((b) => b.text);
+  assert.deepEqual(texts, ["✅ 👍 1", "👍 2", "👎 1", "👎 2"]);
+
+  telegramCalls = [];
+  markup.inline_keyboard = edit.body.reply_markup.inline_keyboard;
+  await worker.fetch(hook(withMessage("d:20261016-0")), env);
+  const moved = telegramCalls.find((c) => c.url.endsWith("/editMessageReplyMarkup"));
+  assert.deepEqual(moved.body.reply_markup.inline_keyboard.flat().map((b) => b.text), ["👍 1", "👍 2", "✅ 👎 1", "👎 2"]);
+});

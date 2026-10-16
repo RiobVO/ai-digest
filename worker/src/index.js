@@ -21,12 +21,30 @@ async function saveVote(env, id, v, via) {
   await env.VOTES.put(VOTE_PREFIX + id, JSON.stringify({ id, v, via, at: new Date().toISOString() }));
 }
 
-async function answerCallback(env, callbackId, text) {
-  await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/answerCallbackQuery`, {
+async function callTelegram(env, method, body) {
+  await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/${method}`, {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ callback_query_id: callbackId, text }),
+    body: JSON.stringify(body),
   });
+}
+
+async function answerCallback(env, callbackId, text) {
+  await callTelegram(env, "answerCallbackQuery", { callback_query_id: callbackId, text });
+}
+
+const MARK = "✅ ";
+
+// Отмечаем выбранную кнопку записи, снимая отметку с парной: кнопки остаются, чтобы можно было передумать
+function markVoted(markup, id, chosen) {
+  return {
+    inline_keyboard: markup.inline_keyboard.map((row) => row.map((button) => {
+      const [kind, buttonId] = String(button.callback_data ?? "").split(":");
+      if (buttonId !== id) return button;
+      const base = button.text.startsWith(MARK) ? button.text.slice(MARK.length) : button.text;
+      return { ...button, text: kind === chosen ? MARK + base : base };
+    })),
+  };
 }
 
 async function telegram(request, env) {
@@ -45,6 +63,13 @@ async function telegram(request, env) {
   if (!v || !ID_RE.test(id ?? "")) return new Response("ok");
   await saveVote(env, id, v, "telegram");
   await answerCallback(env, cb.id, ANSWERS[v]);
+  const message = cb.message;
+  if (message?.reply_markup) {
+    // Повторное нажатие той же кнопки Telegram отклонит как «message is not modified» — это безвредно
+    await callTelegram(env, "editMessageReplyMarkup", {
+      chat_id: message.chat.id, message_id: message.message_id, reply_markup: markVoted(message.reply_markup, id, kind),
+    });
+  }
   return new Response("ok");
 }
 
