@@ -56,6 +56,18 @@ def test_undated_posts_seen_on_first_run_are_a_baseline_not_news():
     assert [i.title for i in fresh] == ["New model"]
 
 
+def test_undated_post_still_on_the_blog_is_never_forgotten(tmp_path):
+    path = tmp_path / "alerts.json"
+    state = AlertState({"primed": True}, path)
+    post = lambda: Item(source="anthropic", title="Claude 9", url="https://anthropic.com/news/c9", category="lab")
+    split_undated([post()], state, NOW)
+    later = NOW + timedelta(days=40)
+    split_undated([post()], state, later)
+    state.save(later)
+    reloaded = AlertState.load(path)
+    assert split_undated([post()], reloaded, later + timedelta(hours=1)) == []
+
+
 def test_new_undated_post_stays_in_window_until_judged():
     state = AlertState({"primed": True})
     post = lambda: Item(source="anthropic", title="New model", url="https://anthropic.com/news/new", category="lab")

@@ -17,6 +17,7 @@ SENT_DAYS = 3
 REJECT_COOLDOWN = timedelta(hours=6)
 # Отказ модели пересматриваем раньше срока, только если о событии заметно больше пишут или спорят
 REJECT_RECHECK_GAIN = 2
+# Сколько помнить ссылки без даты, которые уже пропали со страницы блога
 UNDATED_DAYS = 30
 QUIET_FROM, QUIET_TO = 23, 8
 # Агрегаторы повторяют чужие статьи: Techmeme + HN + само издание — это одна статья, а не три подтверждения
@@ -82,6 +83,7 @@ class AlertState:
         self.rejected: list[dict] = data.get("rejected", [])
         self.undated: dict[str, str] = data.get("undated", {})
         self.primed: bool = data.get("primed", False)
+        self.on_page: set[str] = set()
 
     @classmethod
     def load(cls, path: Path) -> "AlertState":
@@ -121,7 +123,8 @@ class AlertState:
         data = {
             "sent": [r for r in self.sent if fresh(r["at"], SENT_DAYS)],
             "rejected": [r for r in self.rejected if now - datetime.fromisoformat(r["at"]) < REJECT_COOLDOWN * 4],
-            "undated": {u: at for u, at in self.undated.items() if fresh(at, UNDATED_DAYS)},
+            # Ссылку, которая ещё висит в блоге, не забываем никогда: иначе через месяц старый пост стал бы «свежим»
+            "undated": {u: at for u, at in self.undated.items() if u in self.on_page or fresh(at, UNDATED_DAYS)},
             "primed": True,
         }
         self.path.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -134,6 +137,7 @@ def split_undated(items: list[Item], state: AlertState, now: datetime) -> list[I
     fresh = []
     for item in items:
         if item.published is None:
+            state.on_page.add(item.url)
             if item.url not in state.undated:
                 # Базовую линию записываем «в прошлое», за пределы окна: эти посты вышли до начала наблюдения
                 first = now if state.primed else now - timedelta(hours=ALERT_HOURS)
