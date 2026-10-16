@@ -3,11 +3,11 @@ from html import escape
 
 import httpx
 
-from digest.llm import Digest
+from digest.llm import Digest, Entry
 from digest.render import human_date
 
 TG_LIMIT = 4096
-BULLETS = 4
+SHOWN = 5
 
 
 class TelegramError(RuntimeError):
@@ -18,17 +18,22 @@ def _clip(text: str, limit: int) -> str:
     return text if len(text) <= limit else text[:limit - 1].rstrip() + "…"
 
 
-def build_message(digest: Digest, page_url: str, when: datetime) -> str:
-    head = [f"<b>{escape(_clip(digest.headline, 200))}</b>", f"<i>ИИ-дайджест · {human_date(when)}</i>", ""]
+def _line(n: int, entry: Entry) -> str:
+    story = f" <i>· сюжет, {entry.story_day}-й день</i>" if entry.story_day >= 2 else ""
+    return f"<b>{n}.</b> {escape(_clip(entry.title, 300))}{story}"
+
+
+def build_message(digest: Digest, page_url: str, when: datetime, label: str = "ИИ-дайджест") -> str:
+    head = [f"<b>{escape(_clip(digest.headline, 200))}</b>", f"<i>{escape(label)} · {human_date(when)}</i>", ""]
     body = []
-    if digest.entries:
-        top = digest.entries[0]
-        body.append(f"<b>Главное:</b> {escape(_clip(top.title, 300))}")
-        if top.why:
-            body.append(f"<b>Зачем тебе:</b> {escape(_clip(top.why, 500))}")
+    shown = digest.entries[:SHOWN]
+    if shown:
+        body.append(_line(1, shown[0]))
+        if shown[0].why:
+            body.append(f"<b>Зачем тебе:</b> {escape(_clip(shown[0].why, 500))}")
         body.append("")
-        body += [f"• {escape(_clip(e.title, 300))}" for e in digest.entries[1:1 + BULLETS]]
-        hidden = len(digest.entries) - 1 - BULLETS
+        body += [_line(n, e) for n, e in enumerate(shown[1:], start=2)]
+        hidden = len(digest.entries) - len(shown)
         if hidden > 0:
             body.append(f"…и ещё {hidden} в разборе")
     tail = ["", f'<a href="{escape(page_url)}">Разбор целиком</a>']
@@ -38,9 +43,22 @@ def build_message(digest: Digest, page_url: str, when: datetime) -> str:
     return "\n".join(head + body + tail)
 
 
-def send(text: str, page_url: str, token: str, chat_id: str) -> None:
+def build_keyboard(digest: Digest) -> dict | None:
+    """Кнопки оценок под сообщением: номер кнопки = номер пункта в тексте; нажатия принимает воркер обратной связи."""
+    shown = [(n, e) for n, e in enumerate(digest.entries[:SHOWN], start=1) if e.id]
+    if not shown:
+        return None
+    return {"inline_keyboard": [
+        [{"text": f"👍 {n}", "callback_data": f"u:{e.id}"} for n, e in shown],
+        [{"text": f"👎 {n}", "callback_data": f"d:{e.id}"} for n, e in shown],
+    ]}
+
+
+def send(text: str, page_url: str, token: str, chat_id: str, keyboard: dict | None = None) -> None:
     payload = {"chat_id": chat_id, "text": text, "parse_mode": "HTML",
                "link_preview_options": {"url": page_url, "prefer_small_media": True}}
+    if keyboard:
+        payload["reply_markup"] = keyboard
     try:
         response = httpx.post(f"https://api.telegram.org/bot{token}/sendMessage", json=payload, timeout=30)
     except httpx.HTTPError as exc:

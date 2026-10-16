@@ -69,3 +69,56 @@ def test_telegram_message_stays_within_limit_with_huge_headline():
     digest.headline = "Я" * 5000
     digest.entries[0].why = "Ж" * 5000
     assert len(build_message(digest, "https://x.io/p.html", WHEN)) <= TG_LIMIT
+
+
+def test_vote_buttons_carry_entry_ids_only_when_feedback_is_configured():
+    digest = sample()
+    digest.entries[0].id, digest.entries[1].id = "20261016-0", "20261016-1"
+    page = render_page(digest, STATS, WHEN, failures=[], feedback_url="https://fb.example.workers.dev")
+    assert 'data-id="20261016-0"' in page and 'data-id="20261016-1"' in page
+    assert "https://fb.example.workers.dev" in page
+    assert 'data-id="' not in render_page(digest, STATS, WHEN, failures=[])
+
+
+def test_continuing_story_shows_day_and_previous_events():
+    digest = sample()
+    top = digest.entries[0]
+    top.story_name, top.story_day = "Muse Spark", 3
+    top.story_prev = [("2026-10-14", "Анонс Muse"), ("2026-10-15", "Бенчмарки <Muse>")]
+    page = render_page(digest, STATS, WHEN, failures=[])
+    assert "3-й день" in page and "Muse Spark" in page
+    assert "Бенчмарки &lt;Muse&gt;" in page and "15 окт" in page
+
+
+def test_sidebar_lists_recent_issues_and_archive_page_lists_all():
+    from digest.render import render_archive
+    issues = [{"date": "2026-10-16", "headline": "Сегодня", "page": "2026-10-16.html", "entries": [{}, {}]},
+              {"date": "2026-10-15", "headline": "Вчера <b>", "page": "2026-10-15.html", "entries": [{}]}]
+    page = render_page(sample(), STATS, WHEN, failures=[], issues=issues)
+    assert 'href="2026-10-15.html"' in page and 'href="archive.html"' in page
+    archive = render_archive(issues, WHEN)
+    assert 'href="2026-10-16.html"' in archive and "Вчера &lt;b&gt;" in archive and "2 события" in archive
+
+
+def test_telegram_numbers_items_and_keyboard_maps_numbers_to_entry_ids():
+    from digest.telegram import build_keyboard
+    digest = sample()
+    digest.entries[0].id, digest.entries[1].id = "20261016-0", "20261016-1"
+    digest.entries[1].story_name, digest.entries[1].story_day = "Waypoint", 2
+    text = build_message(digest, "https://x.io/p.html", WHEN)
+    assert "<b>1.</b>" in text and "<b>2.</b>" in text and "2-й день" in text
+    keyboard = build_keyboard(digest)["inline_keyboard"]
+    assert [b["text"] for b in keyboard[0]] == ["👍 1", "👍 2"]
+    assert [b["callback_data"] for b in keyboard[1]] == ["d:20261016-0", "d:20261016-1"]
+    assert all(len(b["callback_data"].encode()) <= 64 for row in keyboard for b in row)
+
+
+def test_no_keyboard_without_entry_ids():
+    from digest.telegram import build_keyboard
+    assert build_keyboard(sample()) is None
+
+
+def test_week_summary_uses_correct_plural_forms():
+    page = render_page(sample(), {"issues": 1, "events": 3}, WHEN, failures=[], kind="week", period="10–16 октября")
+    assert "<b>1</b><span>выпуск</span>" in page and "<b>3</b><span>события</span>" in page
+    assert "<b>2</b><span>сюжета</span>" in page

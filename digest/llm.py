@@ -33,7 +33,14 @@ PROMPT = """Ты редактор ежедневного ИИ-дайджеста
 - title: по-русски, до 90 символов, суть без кликбейта. Названия продуктов и моделей не переводи.
 - summary: 1–3 предложения по-русски, только факты из текста записи. Если описания нет, не додумывай — опиши по заголовку.
 - why: одно предложение «зачем это читателю» с учётом профиля, только при importance >= 8, иначе пустая строка.
-- headline: главный итог дня по-русски, до 70 символов. lead: 1–2 предложения, о чём выпуск.
+- story: если событие продолжает один из активных сюжетов ниже — его id (например, "s4"), иначе пустая строка.
+- story_name: для нового сюжета — короткое имя линии до 40 символов (например, «Nemotron 3.5»); для продолжения — пустая строка.
+- headline: общая тема дня по-русски, до 70 символов; не пересказывай заголовок главного события, а назови, что объединяет выпуск. lead: 1–2 предложения, о чём выпуск.
+
+{preferences}
+
+Активные сюжеты последних дней (id, имя, последнее событие):
+{stories}
 
 Записи:
 {items}"""
@@ -52,8 +59,10 @@ SCHEMA = {
                 "title": {"type": "STRING"},
                 "summary": {"type": "STRING"},
                 "why": {"type": "STRING"},
+                "story": {"type": "STRING"},
+                "story_name": {"type": "STRING"},
             },
-            "required": ["ids", "section", "importance", "title", "summary", "why"],
+            "required": ["ids", "section", "importance", "title", "summary", "why", "story", "story_name"],
         }},
     },
     "required": ["headline", "lead", "items"],
@@ -115,6 +124,12 @@ class Entry:
     summary: str
     why: str
     details: Details | None = None
+    # Заполняются памятью (digest.memory): id для оценок, сюжетная линия и её история
+    id: str = ""
+    story: str = ""
+    story_name: str = ""
+    story_day: int = 0
+    story_prev: list[tuple[str, str]] = field(default_factory=list)
 
 
 @dataclass
@@ -125,13 +140,16 @@ class Digest:
     noise: list[Item] = field(default_factory=list)
 
 
-def build_prompt(items: list[Item], audience: str) -> str:
+def build_prompt(items: list[Item], audience: str, preferences: str = "", stories: list[dict] | None = None) -> str:
     lines = []
     for n, item in enumerate(items):
         score = f" score={item.score}" if item.score is not None else ""
         summary = f"\n    {item.summary[:400]}" if item.summary else ""
         lines.append(f"[{n}] ({item.source}, {item.category}{score}) {item.title}{summary}")
-    return PROMPT.format(audience=audience, items="\n".join(lines))
+    story_lines = [f"[{s['id']}] {s['name']} — {s['last_date']}: {s['last_title']} (дней: {s['days']})"
+                   for s in stories or []] or ["(нет)"]
+    return PROMPT.format(audience=audience, preferences=preferences or "Оценок читателя пока нет.",
+                         stories="\n".join(story_lines), items="\n".join(lines))
 
 
 def parse_selection(raw: dict, items: list[Item]) -> Digest:
@@ -147,7 +165,9 @@ def parse_selection(raw: dict, items: list[Item]) -> Digest:
         for extra in ids[1:]:
             absorb(primary, items[extra])
         section = row["section"] if row.get("section") in SECTIONS else "industry"
-        entries.append(Entry(primary, section, float(row.get("importance", 0)), row["title"], row["summary"], row.get("why", "")))
+        entry = Entry(primary, section, float(row.get("importance", 0)), row["title"], row["summary"], row.get("why", ""))
+        entry.story, entry.story_name = row.get("story", ""), row.get("story_name", "")
+        entries.append(entry)
     entries.sort(key=lambda e: e.importance, reverse=True)
     noise = [item for n, item in enumerate(items) if n not in used]
     return Digest(raw.get("headline", ""), raw.get("lead", ""), entries, noise)
@@ -162,7 +182,7 @@ def attach_explanations(entries: list[Entry], raw: dict) -> None:
         entries[n].details = Details(row["what"], list(row.get("points", [])), row.get("try_it", ""), row.get("caveats", ""))
 
 
-def _generate(prompt: str, schema: dict, model: str, api_key: str) -> dict:
+def generate(prompt: str, schema: dict, model: str, api_key: str) -> dict:
     body = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {"responseMimeType": "application/json", "responseSchema": schema, "temperature": 0.3},
@@ -192,8 +212,10 @@ def _generate(prompt: str, schema: dict, model: str, api_key: str) -> dict:
     return raw
 
 
-def select(items: list[Item], audience: str, model: str, api_key: str) -> Digest:
-    return parse_selection(_generate(build_prompt(items, audience), SCHEMA, model, api_key), items)
+def select(items: list[Item], audience: str, model: str, api_key: str,
+           preferences: str = "", stories: list[dict] | None = None) -> Digest:
+    prompt = build_prompt(items, audience, preferences, stories)
+    return parse_selection(generate(prompt, SCHEMA, model, api_key), items)
 
 
 def explain(entries: list[Entry], texts: dict[str, str], audience: str, model: str, api_key: str) -> None:
@@ -202,5 +224,5 @@ def explain(entries: list[Entry], texts: dict[str, str], audience: str, model: s
         source = texts.get(entry.item.url, "") or "(текст недоступен)"
         events.append(f"### id={n}\nКарточка: {entry.title}. {entry.summary}\n"
                       f"Описание из ленты: {entry.item.summary[:600]}\nТекст первоисточника:\n{source}")
-    raw = _generate(EXPLAIN_PROMPT.format(audience=audience, events="\n\n".join(events)), EXPLAIN_SCHEMA, model, api_key)
+    raw = generate(EXPLAIN_PROMPT.format(audience=audience, events="\n\n".join(events)), EXPLAIN_SCHEMA, model, api_key)
     attach_explanations(entries, raw)

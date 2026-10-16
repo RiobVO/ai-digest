@@ -32,7 +32,7 @@ a{color:inherit}
 a:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:6px}
 
 .app{display:grid;grid-template-columns:232px minmax(0,1fr);min-height:100vh}
-.side{background:var(--side);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.side{min-width:0;background:var(--side);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
 .logo{display:flex;align-items:center;gap:10px;padding:30px 24px 26px}
 .logo-mark{width:38px;height:38px;border-radius:9px;background:var(--cta);color:var(--cta-ink);display:grid;place-items:center;font:700 14px var(--f-mono)}
 .logo b{font-size:1.65rem;font-weight:600;letter-spacing:-.03em;display:block;line-height:1}
@@ -143,17 +143,42 @@ details ul{margin:12px 0 0;padding:12px 14px 12px 30px;background:var(--inner);b
 details a{text-decoration:none}
 details a:hover{text-decoration:underline}
 .fail{background:var(--danger-soft);color:var(--danger);border-radius:5px;padding:2px 8px;font-size:.76rem;font-weight:600}
+.vote{display:inline-flex;gap:4px;margin-left:auto}
+.vote button{border:1px solid var(--border-3);background:var(--inner);border-radius:999px;padding:4px 12px;font-size:.95rem;line-height:1.3;cursor:pointer;transition:background .15s,border-color .15s,transform .1s}
+.vote button:hover{background:var(--hover);border-color:var(--ink-2)}
+.vote button:active{transform:scale(.94)}
+.vote button.on{border-color:var(--green-ink);background:var(--green-soft);box-shadow:inset 0 0 0 1px var(--green-ink)}
+.vote button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.vote.err button{border-color:var(--danger)}
+.hero-actions{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;max-width:62ch}
+.hero-actions .more{margin-top:0;flex:1 1 auto}
+.hero-actions .vote{margin-top:2px}
+.story{display:grid;gap:6px;margin:6px 0 2px}
+.story-tag{background:var(--blue-soft);color:var(--blue);justify-self:start}
+.story ul{margin:0;padding:0;list-style:none;display:grid;gap:3px;font-size:.86rem;color:var(--muted);border-left:2px solid var(--border-3);padding-left:10px}
+.story li b{color:var(--ink-2);font-weight:600;margin-right:6px}
+.arch{border-top:1px solid var(--border);padding:16px;display:grid;gap:2px;overflow:auto}
+.arch-title{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:0 10px 6px}
+.arch a{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;padding:6px 10px;border-radius:7px;text-decoration:none;font-size:.84rem;color:var(--muted)}
+.arch a b{font-weight:600;color:var(--ink-2);white-space:nowrap}
+.arch a span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.arch a:hover{background:var(--hover);color:var(--ink)}
+.arch a.on{background:var(--inner);color:var(--ink);box-shadow:inset 0 0 0 1px var(--border-2)}
+.arch .arch-all{display:block;color:var(--blue);font-weight:500}
+.issue-link{text-decoration:none;color:inherit}
+.issue-link:hover{border-color:var(--border-3)}
 .foot{color:var(--muted);font-size:.8rem;display:flex;flex-wrap:wrap;gap:6px 16px;font-variant-numeric:tabular-nums;padding:2px 4px}
 
 @media (max-width:1180px){.grid{grid-template-columns:minmax(0,1fr);max-width:900px}}
 @media (max-width:860px){
-  .app{grid-template-columns:1fr}
+  .app{grid-template-columns:minmax(0,1fr)}
   .side{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border)}
   .logo{padding:18px 16px 10px}
   .picker{margin:4px 16px 10px}
   nav{display:flex;overflow-x:auto;padding:10px 16px}
   nav a{white-space:nowrap}
-  .side-foot{display:none}
+  .side-foot,.arch-title,.arch a:not(.arch-all){display:none}
+  .arch{padding:4px 16px 12px;border-top:0}
   .head{padding:20px 16px 8px}
   .grid{padding:6px 16px 40px}
   .hero{padding:22px 18px}
@@ -168,11 +193,12 @@ details a:hover{text-decoration:underline}
     <div class="logo"><div class="logo-mark">ai</div><div><b>сигнал</b><small>ИИ-дайджест</small></div></div>
     <div class="picker">$weekday <span>$short_date</span></div>
     <nav>$nav</nav>
+    $archive
     <div class="side-foot">Собирается каждое утро · 0 ₽</div>
   </aside>
   <div class="page">
     <div class="head">
-      <div class="crumbs">Дайджест<span>/</span>$date</div>
+      <div class="crumbs">$crumbs</div>
       <h1>$headline</h1>
     </div>
     <div class="grid">
@@ -181,20 +207,13 @@ $tabs
 $main
       </main>
       <aside class="stack">
-        <section class="card">
-          <div class="card-head"><h3>Фильтр за сутки</h3><small>$date</small></div>
-          <p class="lead">$lead</p>
-          <div class="stats">
-            <div class="stat"><b>$raw</b><span>собрано</span></div>
-            <div class="stat"><b>$new</b><span>новых</span></div>
-            <div class="stat"><b>$selected</b><span>в выпуске</span></div>
-          </div>
-        </section>
+$summary
 $aside
         <div class="foot">$footer</div>
       </aside>
     </div>
   </div>
 </div>
+$script
 </body>
 </html>

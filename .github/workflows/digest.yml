@@ -5,6 +5,15 @@ on:
     # 03:00 UTC = 08:00 в Ташкенте
     - cron: "0 3 * * *"
   workflow_dispatch:
+    inputs:
+      daily:
+        description: "Собрать дневной выпуск (повтор в тот же день пересоберёт его из оставшихся новостей)"
+        type: boolean
+        default: true
+      weekly:
+        description: "Собрать итог недели (по расписанию — сам по воскресеньям)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -23,6 +32,10 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     env:
       SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+      FEEDBACK_URL: ${{ vars.FEEDBACK_URL }}
+      # По расписанию дневной выпуск всегда; итог недели — по воскресеньям Ташкента или по галочке при ручном запуске
+      RUN_DAILY: ${{ github.event_name == 'schedule' || inputs.daily }}
+      WEEKLY_INPUT: ${{ inputs.weekly }}
     steps:
       - uses: actions/checkout@v4
 
@@ -37,10 +50,29 @@ jobs:
       - name: Test
         run: pytest -q
 
+      - name: Test feedback worker
+        run: node --test "worker/test/*.test.js"
+
+      - name: Decide what to build
+        id: plan
+        run: |
+          weekly=false
+          if [ "$WEEKLY_INPUT" = "true" ] || { [ "${{ github.event_name }}" = "schedule" ] && [ "$(TZ=Asia/Tashkent date +%u)" = "7" ]; }; then weekly=true; fi
+          echo "daily=$RUN_DAILY" >> "$GITHUB_OUTPUT"
+          echo "weekly=$weekly" >> "$GITHUB_OUTPUT"
+
       - name: Build digest
+        if: steps.plan.outputs.daily == 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          FEEDBACK_TOKEN: ${{ secrets.FEEDBACK_TOKEN }}
         run: python -m digest build
+
+      - name: Build weekly
+        if: steps.plan.outputs.weekly == 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python -m digest weekly
 
       - uses: actions/configure-pages@v5
 
@@ -52,10 +84,18 @@ jobs:
         uses: actions/deploy-pages@v4
 
       - name: Send to Telegram
+        if: steps.plan.outputs.daily == 'true'
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python -m digest send
+
+      - name: Send weekly to Telegram
+        if: steps.plan.outputs.weekly == 'true'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python -m digest send --message weekly.json
 
       # State коммитим последним: если публикация или отправка упали, новости не помечаются прочитанными
       # и попадут в повторный запуск; state/seen.json и архив страниц живут в репозитории

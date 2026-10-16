@@ -77,3 +77,19 @@ def test_http_client_logs_do_not_expose_request_urls():
     from digest.__main__ import configure_logging
     configure_logging()
     assert logging.getLogger("httpx").getEffectiveLevel() >= logging.WARNING
+
+
+def test_prompt_carries_preferences_and_active_stories():
+    stories = [{"id": "s4", "name": "Nemotron 3.5", "last_date": "2026-10-15", "last_title": "Вышел", "days": 1}]
+    prompt = build_prompt(items(), audience="dev", preferences="Зашло:\n- Llama 5", stories=stories)
+    assert "Зашло:\n- Llama 5" in prompt
+    assert "[s4] Nemotron 3.5" in prompt
+
+
+def test_selection_keeps_story_links():
+    raw = {"headline": "h", "lead": "l", "items": [
+        {"ids": [2], "section": "release", "importance": 6, "title": "Ollama", "summary": "s", "why": "",
+         "story": "s4", "story_name": ""},
+    ]}
+    entry = parse_selection(raw, items()).entries[0]
+    assert entry.story == "s4"

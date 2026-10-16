@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "ai-digest-feedback",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-01",
+  // KV создаётся автоматически при первом деплое (id не указан)
+  "kv_namespaces": [{ "binding": "VOTES" }],
+  "vars": {
+    // Только с этого сайта страница может присылать оценки (CORS + проверка Origin)
+    "PAGE_ORIGIN": "https://riobvo.github.io"
+  },
+  "observability": { "enabled": true }
+  // Секреты: TELEGRAM_BOT_TOKEN, WEBHOOK_SECRET, READ_TOKEN, OWNER_CHAT_ID — через `wrangler secret put`
+}

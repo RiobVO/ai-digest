@@ -65,7 +65,7 @@ name = "hf_papers"
 type = "hf_papers"
 category = "paper"
 url = "https://huggingface.co/api/daily_papers"
-min_upvotes = 5
+min_upvotes = 25
 
 # --- Релизы инструментов ---
 [[source]]
