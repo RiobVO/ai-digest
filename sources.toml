@@ -222,7 +222,8 @@ url = "https://the-decoder.com/feed/"
 name = "import_ai"
 type = "rss"
 category = "newsletter"
-url = "https://importai.substack.com/feed"
+# Зеркало рассылки на сайте автора: адреса *.substack.com отдают 403 запросам с серверов GitHub Actions
+url = "https://jack-clark.net/feed/"
 max_age_hours = 170
 
 [[source]]
@@ -294,7 +295,8 @@ url = "https://magazine.sebastianraschka.com/feed"
 name = "addy_osmani"
 type = "rss"
 category = "engineer"
-url = "https://addyo.substack.com/feed"
+# Личный блог, а не рассылка addyo.substack.com: та отдаёт 403 запросам с серверов GitHub Actions
+url = "https://addyosmani.com/rss.xml"
 
 [[source]]
 name = "ethan_mollick"
