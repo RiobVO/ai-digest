@@ -187,6 +187,12 @@ def resolve_gnews(items: list[Item]) -> None:
                 # LookupError — и KeyError, и IndexError: ответ другой структуры не должен сорвать выпуск
                 log.error("ссылка Google News не раскодирована: %s (%s)", type(exc).__name__, item.url)
                 continue
+            except Exception:
+                # Раскодирование — необязательное улучшение поверх недокументированного API: перечислить все способы,
+                # которыми чужой ответ ломает разбор, нельзя (так нашлись KeyError, ValueError, RecursionError).
+                # Любой сбой оставляет прежнюю ссылку; traceback в логе, чтобы не спрятать ошибку в нашем коде
+                log.error("неожиданный сбой раскодирования ссылки Google News (%s)", item.url, exc_info=True)
+                continue
             if not valid:
                 log.error("Google News вернул не адрес статьи: %r (%s)", str(target)[:100], item.url)
                 continue
