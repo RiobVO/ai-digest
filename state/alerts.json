@@ -33,6 +33,23 @@
     "title:deepseek deepseek v4 1 flash 1017"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-10-17T21:18:06.670038+00:00",
+   "keys": [
+    "title:opencode hacked user credentials leaked",
+    "twitter.com/opencode/status/2111516673953935833"
+   ],
+   "strength": 4
+  },
+  {
+   "at": "2026-10-17T21:18:06.670038+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/local-ai-rtx-spark-windows-laptops-celebration",
+    "news.google.com/rss/articles/CBMigwFBVV95cUxOMzJueHF6Vmtud2x5M0lqa280dVpiTFY3X1lVTWZabWNQdkdqRFNRSHNZLTMtRFhiSFVzcHNtYWRqNEVzVlJiVXFxU2ZMQy1vUlc5NW5nZGUtbmZZZnVPMWdJaUxiTEZqeWN6YTdfTC1aUnp5Y0ltdHVtNHpPRE1HcjIzYw?oc=5",
+    "title:rtx spark ignites global celebration as new windows pcs arrive"
+   ],
+   "strength": 2
   }
  ],
  "undated": {
