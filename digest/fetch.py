@@ -1,9 +1,10 @@
+import json
 import logging
 import re
 from calendar import timegm
 from datetime import datetime, timedelta, timezone
 from html import unescape
-from urllib.parse import urljoin, urlsplit
+from urllib.parse import urlencode, urljoin, urlsplit
 
 import feedparser
 import httpx
@@ -135,6 +136,58 @@ def attach_discussions(items: list[Item]) -> None:
                 continue
             if found and found[0] > item.hn_points:
                 item.hn_points, item.hn_comments, item.hn_url = found
+
+
+GNEWS_ARTICLE = "https://news.google.com/rss/articles/{}"
+GNEWS_BATCH = "https://news.google.com/_/DotsSplashUi/data/batchexecute"
+GNEWS_SIGNATURE = re.compile(r'data-n-a-sg="([^"]+)"')
+GNEWS_TIMESTAMP = re.compile(r'data-n-a-ts="(\d+)"')
+
+
+def _gnews_form(article_id: str, page: str) -> str | None:
+    """Тело запроса, которым страница Google News сама узнаёт адрес статьи; подпись и время — из её разметки."""
+    signature, stamp = GNEWS_SIGNATURE.search(page), GNEWS_TIMESTAMP.search(page)
+    if not (signature and stamp):
+        return None
+    context = [["X", "X", ["X", "X"], None, None, 1, 1, "US:en", None, 1, None, None, None, None, None, 0, 1],
+               "X", "X", 1, [1, 1, 1], 1, 1, None, 0, 0, None, 0]
+    inner = json.dumps(["garturlreq", context, article_id, int(stamp.group(1)), signature.group(1)], separators=(",", ":"))
+    return urlencode({"f.req": json.dumps([[["Fbv4je", inner, None, "generic"]]], separators=(",", ":"))})
+
+
+def _gnews_target(reply: str) -> str:
+    # Ответ: строка-заглушка «)]}'», пустая строка, JSON; адрес статьи — во вложенном JSON третьего поля
+    return json.loads(json.loads(reply.split("\n\n", 1)[1])[0][2])[1]
+
+
+def resolve_gnews(items: list[Item]) -> None:
+    """Ссылки Google News открываются только через JS: без адреса статьи у события нет ни текста для разбора,
+    ни обсуждения на HN. Узнаём адрес тем же внутренним запросом, что делает их страница, — только для событий,
+    уже попавших в выпуск: десяток запросов, а не сотня. API недокументированный, поэтому при любом сбое
+    ссылка остаётся прежней и выпуск выходит как раньше."""
+    with httpx.Client(timeout=20, follow_redirects=True, headers={"User-Agent": USER_AGENT}) as client:
+        for item in items:
+            if bare_host(item.url) != "news.google.com":
+                continue
+            article_id = urlsplit(item.url).path.rsplit("/", 1)[-1]
+            try:
+                page = client.get(GNEWS_ARTICLE.format(article_id))
+                page.raise_for_status()
+                form = _gnews_form(article_id, page.text)
+                if form is None:
+                    log.error("ссылка Google News не раскодирована: на странице нет подписи (%s)", item.url)
+                    continue
+                reply = client.post(GNEWS_BATCH, content=form,
+                                    headers={"Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"})
+                reply.raise_for_status()
+                target = _gnews_target(reply.text)
+            except (httpx.HTTPError, ValueError, IndexError, TypeError) as exc:
+                log.error("ссылка Google News не раскодирована: %s (%s)", type(exc).__name__, item.url)
+                continue
+            if not isinstance(target, str) or urlsplit(target).scheme not in ("http", "https") or is_aggregator(target):
+                log.error("Google News вернул не адрес статьи: %r (%s)", str(target)[:100], item.url)
+                continue
+            item.url = target
 
 
 def _clean_title(text: str, strip_words: list[str]) -> str:

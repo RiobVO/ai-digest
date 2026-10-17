@@ -8,7 +8,7 @@ from pathlib import Path
 
 from digest import alert as breaking
 from digest.dedup import dedupe
-from digest.fetch import attach_discussions, fetch_all, fetch_articles
+from digest.fetch import attach_discussions, fetch_all, fetch_articles, resolve_gnews
 from digest.llm import LlmError, explain, generate, select
 from digest.memory import (Archive, Stories, fetch_feedback, issue_slot, missed_in_morning, preferences_prompt,
                            record_issue, resolve_votes)
@@ -62,6 +62,8 @@ def build(args: argparse.Namespace) -> None:
     digest = select(merged, settings["audience"], settings["model"], api_key,
                     preferences=preferences_prompt(feedback), stories=stories.active(today))
     log.info("в выпуске %d событий, в шуме %d", len(digest.entries), len(digest.noise))
+    # Сначала настоящий адрес статьи: по нему ищется обсуждение на HN и скачивается текст для разбора
+    resolve_gnews([e.item for e in digest.entries])
     attach_discussions([e.item for e in digest.entries])
     texts = fetch_articles([e.item.url for e in digest.entries])
     try:

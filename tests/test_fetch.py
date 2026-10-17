@@ -151,3 +151,50 @@ def test_items_remember_the_site_of_their_feed(monkeypatch):
     src = {"name": "blog", "type": "rss", "category": "engineer", "url": "https://www.example.com/feed"}
     items, failures = fetch.fetch_all([src], datetime(2026, 10, 17, tzinfo=timezone.utc))
     assert failures == [] and {i.feed_host for i in items} == {"example.com"}
+
+
+GNEWS_PAGE = '<div jscontroller="aLI87" data-n-a-id="CBMiAAA" data-n-a-ts="1760680000" data-n-a-sg="AZ5r3eQsig"></div>'
+GNEWS_REPLY = (')]}\'\n\n[["wrb.fr","Fbv4je","[\\"garturlres\\",\\"https://www.politico.com/news/2026/10/16/anthropic\\",1]",'
+               'null,null,null,"generic"],["di",14],["af.httprm",13,"-23076",148]]')
+
+
+def gnews_transport(requests, page=GNEWS_PAGE, reply=GNEWS_REPLY):
+    import httpx
+
+    def handler(request):
+        requests.append((request.method, request.url.path))
+        if request.method == "GET":
+            return httpx.Response(200, text=page)
+        return httpx.Response(200, text=reply)
+    return httpx.MockTransport(handler)
+
+
+def test_chosen_google_news_link_resolves_to_the_article(monkeypatch):
+    import httpx
+    from digest import fetch
+    from digest.models import Item
+    requests = []
+    real_client = httpx.Client
+    monkeypatch.setattr(fetch.httpx, "Client", lambda **kw: real_client(transport=gnews_transport(requests), **kw))
+    story = Item(source="Politico", title="t", url="https://news.google.com/rss/articles/CBMiAAA?oc=5", category="news")
+    direct = Item(source="verge", title="t", url="https://www.theverge.com/x", category="news")
+    fetch.resolve_gnews([story, direct])
+    assert story.url == "https://www.politico.com/news/2026/10/16/anthropic"
+    assert direct.url == "https://www.theverge.com/x"
+    # Подпись берётся со страницы статьи, адрес — из batchexecute; прямые ссылки никуда не ходят
+    assert requests == [("GET", "/rss/articles/CBMiAAA"), ("POST", "/_/DotsSplashUi/data/batchexecute")]
+
+
+def test_google_news_link_stays_when_decoding_fails(monkeypatch):
+    import httpx
+    from digest import fetch
+    from digest.models import Item
+    real_client = httpx.Client
+    link = "https://news.google.com/rss/articles/CBMiAAA"
+    for page, reply in (("<html>no signature</html>", GNEWS_REPLY), (GNEWS_PAGE, ")]}'\n\nunexpected"),
+                        (GNEWS_PAGE, GNEWS_REPLY.replace("https://www.politico.com", "javascript:alert(1)//x"))):
+        monkeypatch.setattr(fetch.httpx, "Client",
+                            lambda page=page, reply=reply, **kw: real_client(transport=gnews_transport([], page, reply), **kw))
+        story = Item(source="Politico", title="t", url=link, category="news")
+        fetch.resolve_gnews([story])
+        assert story.url == link
