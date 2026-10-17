@@ -192,7 +192,10 @@ def test_google_news_link_stays_when_decoding_fails(monkeypatch):
     real_client = httpx.Client
     link = "https://news.google.com/rss/articles/CBMiAAA"
     for page, reply in (("<html>no signature</html>", GNEWS_REPLY), (GNEWS_PAGE, ")]}'\n\nunexpected"),
-                        (GNEWS_PAGE, GNEWS_REPLY.replace("https://www.politico.com", "javascript:alert(1)//x"))):
+                        (GNEWS_PAGE, GNEWS_REPLY.replace("https://www.politico.com", "javascript:alert(1)//x")),
+                        # Другая структура JSON и адрес, на котором падает разбор URL, — тоже отказ одного события
+                        (GNEWS_PAGE, ")]}'\n\n{}"), (GNEWS_PAGE, ")]}'\n\n[{}]"),
+                        (GNEWS_PAGE, GNEWS_REPLY.replace("https://www.politico.com", "https://[broken"))):
         monkeypatch.setattr(fetch.httpx, "Client",
                             lambda page=page, reply=reply, **kw: real_client(transport=gnews_transport([], page, reply), **kw))
         story = Item(source="Politico", title="t", url=link, category="news")

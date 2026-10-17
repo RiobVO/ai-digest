@@ -181,10 +181,13 @@ def resolve_gnews(items: list[Item]) -> None:
                                     headers={"Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"})
                 reply.raise_for_status()
                 target = _gnews_target(reply.text)
-            except (httpx.HTTPError, ValueError, IndexError, TypeError) as exc:
+                # Внутри try: urlsplit сам бросает ValueError на адресах вроде «https://[broken»
+                valid = isinstance(target, str) and urlsplit(target).scheme in ("http", "https") and not is_aggregator(target)
+            except (httpx.HTTPError, ValueError, LookupError, TypeError) as exc:
+                # LookupError — и KeyError, и IndexError: ответ другой структуры не должен сорвать выпуск
                 log.error("ссылка Google News не раскодирована: %s (%s)", type(exc).__name__, item.url)
                 continue
-            if not isinstance(target, str) or urlsplit(target).scheme not in ("http", "https") or is_aggregator(target):
+            if not valid:
                 log.error("Google News вернул не адрес статьи: %r (%s)", str(target)[:100], item.url)
                 continue
             item.url = target
