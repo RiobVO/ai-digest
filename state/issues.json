@@ -1,5 +1,85 @@
 [
  {
+  "date": "2026-10-17",
+  "slot": "morning",
+  "headline": "Долговой кризис ИИ, дерзкие агенты и открытый Beam на 501B",
+  "page": "2026-10-17.html",
+  "entries": [
+   {
+    "id": "20261017-0",
+    "title": "Уолл-стрит паникует из-за долговой пирамиды ИИ: у CoreWeave и Anthropic проблемы",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.ft.com/content/cb4034e1-475f-40b9-a5f9-256e91aacb89",
+    "story": "s18"
+   },
+   {
+    "id": "20261017-1",
+    "title": "Автономные агенты вышли из-под контроля: взломы криптокошельков и прод-систем",
+    "section": "product",
+    "source": "ars_ai",
+    "url": "https://arstechnica.com/security/2026/10/openai-models-hacked-a-crypto-wallet-and-breached-more-websites/",
+    "story": "s10"
+   },
+   {
+    "id": "20261017-2",
+    "title": "Китай вводит жесткий экспортный контроль на 23 ключевые технологии в сфере ИИ",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/china-plans-to-tighten-export-controls-on-open-weight-models-and-23-key-ai-technologies/",
+    "story": "s19"
+   },
+   {
+    "id": "20261017-3",
+    "title": "Claude раскрыл многолетнюю загадку бэкдора АНБ в эллиптических кривых NIST",
+    "section": "paper",
+    "source": "techmeme",
+    "url": "https://www.anthropic.com/research/ecdsa-curve-origins",
+    "story": "s20"
+   },
+   {
+    "id": "20261017-4",
+    "title": "Reflection AI выкатила открытую MoE-модель Beam на 501B параметров",
+    "section": "model",
+    "source": "hf_blog",
+    "url": "https://huggingface.co/blog/reflection-beam",
+    "story": "s21"
+   },
+   {
+    "id": "20261017-5",
+    "title": "Релиз PostgreSQL 19 отложили из-за архитектурных багов, найденных ИИ",
+    "section": "dev",
+    "source": "techmeme",
+    "url": "https://www.theregister.com/databases/2026/10/16/postgres-19-delayed-after-ai-reviewers-find-more-bugs-than-humans-can-fix/5303471",
+    "story": "s22"
+   },
+   {
+    "id": "20261017-6",
+    "title": "Meta обновила условия: компания будет бесплатно обучать ИИ на сайтах партнеров",
+    "section": "business",
+    "source": "verge",
+    "url": "https://www.theverge.com/tech/1012846/meta-business-terms-scrape-news-publishers",
+    "story": "s23"
+   },
+   {
+    "id": "20261017-7",
+    "title": "Google показала Gemini 4 Argon с результатом 97,5% на ARC-AGI-3",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/googles-gemini-4-argon-is-closer-to-the-ai-frontier-than-any-google-model-in-months/",
+    "story": "s24"
+   },
+   {
+    "id": "20261017-8",
+    "title": "Саймон Уиллисон о том, как команда Claude Code переизобрела код-ревью",
+    "section": "voices",
+    "source": "simon_willison",
+    "url": "https://simonwillison.net/2026/Oct/16/code-review/",
+    "story": "s25"
+   }
+  ]
+ },
+ {
   "date": "2026-10-16",
   "headline": "Отрезвление инвесторов, побеги агентов в сеть и новый ход Microsoft",
   "page": "2026-10-16.html",
