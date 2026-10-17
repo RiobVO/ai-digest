@@ -16,6 +16,15 @@
     "title:anthropic says claude traced nist s ecdsa curve seeds to a pseudorandom number generator challenging decades old suspicions of an nsa backdoor in the algorithm anthropic"
    ],
    "strength": 5
+  },
+  {
+   "at": "2026-10-17T00:18:05.138920+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMiV0FVX3lxTE80N2VrejZPN1lRYmFiSTl4MXdWYnYwN1VZN2N0SWFKeW1lWVFMTmU2WkZ5dzI2SmF4VWM3MnhJX09LU2RvSy00YlA3OE1SWUZEX01ya1gwOA?oc=5",
+    "openai.com/index/itau-generative-ai",
+    "title:how itaú is building generative ai for its entire customer base"
+   ],
+   "strength": 2
   }
  ],
  "undated": {
