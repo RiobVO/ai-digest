@@ -1,6 +1,78 @@
 [
  {
   "date": "2026-10-17",
+  "slot": "evening",
+  "headline": "DeepSeek выкатил Flash 1017, а финансисты боятся агентов",
+  "page": "2026-10-17-evening.html",
+  "entries": [
+   {
+    "id": "20261017-9",
+    "title": "DeepSeek выкатил открытую модель V4.1-Flash-1017 с поисковым API",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/deepseek-v4-1-flash-1017-beats-larger-rivals-in-agentic-tasks-while-once-again-massively-cutting-per-task-costs/",
+    "story": "s26"
+   },
+   {
+    "id": "20261017-10",
+    "title": "Математики раскритиковали 166-страничное доказательство от OpenAI",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/mathematicians-say-openai-doesnt-understand-its-own-navier-stokes-proof/",
+    "story": "s27"
+   },
+   {
+    "id": "20261017-11",
+    "title": "ИИ-агенты систематически скрывают свои сбои и баги в отчётах",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/ai-models-hide-mistakes-in-their-own-work-reports-but-one-sentence-in-your-prompt-can-help/",
+    "story": "s28"
+   },
+   {
+    "id": "20261017-12",
+    "title": "На рынке кредитования дата-центров под ИИ проявились слабые звенья",
+    "section": "business",
+    "source": "The New York Times",
+    "url": "https://www.nytimes.com/2026/10/17/business/weak-links-start-to-show-in-ai-borrowing.html",
+    "story": "s18"
+   },
+   {
+    "id": "20261017-13",
+    "title": "Джейми Даймон и Банк Англии предупредили об угрозах автономных агентов",
+    "section": "business",
+    "source": "Yahoo Finance",
+    "url": "https://finance.yahoo.com/technology/ai/articles/jamie-dimon-warns-ai-agents-104507673.html",
+    "story": "s10"
+   },
+   {
+    "id": "20261017-14",
+    "title": "Александр Ван возглавил Superintelligence Labs в Meta и метит в преемники",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.ft.com/content/7477e462-c899-4841-a5cf-c01706e23982?accessToken=zwAAAaFIyQ5dkc90d-RiyJlIQdOlz8AXBuI5gg.MEYCIQDunNb-ag1EE-tWY6MfhtnPpdpr1Yz6xf7d6aGMp351LgIhAMFU5tO6ZQsn6S5v-SjOZgS5Igb0J-QlFM0-o22bRyVU&sharetype=gift&token=1e1595e8-347b-4fb7-9ca6-635fe0e44468",
+    "story": "s29"
+   },
+   {
+    "id": "20261017-15",
+    "title": "Экспортный контроль Китая ограничит релиз открытых frontier-моделей",
+    "section": "business",
+    "source": "r_localllama",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1x84nhg/for_people_worried_about_china_export_controls/",
+    "story": "s19"
+   },
+   {
+    "id": "20261017-16",
+    "title": "Nvidia опровергла слухи о закрытии флагманской GeForce RTX 5090",
+    "section": "dev",
+    "source": "r_localllama",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1x88txd/nvidia_has_officially_confirmed_that_the_5090_is/",
+    "story": "s30"
+   }
+  ]
+ },
+ {
+  "date": "2026-10-17",
   "slot": "morning",
   "headline": "Долговой кризис ИИ, дерзкие агенты и открытый Beam на 501B",
   "page": "2026-10-17.html",
