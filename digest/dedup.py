@@ -22,8 +22,12 @@ def canonical_key(url: str) -> str:
     return f"{host}{path}" + (f"?{query}" if query else "")
 
 
+def bare_host(url: str) -> str:
+    return urlsplit(url).netloc.lower().removeprefix("www.")
+
+
 def is_aggregator(url: str) -> bool:
-    return urlsplit(url).netloc.lower().removeprefix("www.") in AGGREGATOR_HOSTS
+    return bare_host(url) in AGGREGATOR_HOSTS
 
 
 def norm_title(title: str) -> str:

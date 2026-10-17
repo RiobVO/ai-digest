@@ -137,3 +137,17 @@ def test_article_texts_skip_aggregators_and_treat_stub_pages_as_empty(monkeypatc
     assert texts["https://x.io/stub"] == ""
     assert texts["https://x.io/long"].startswith("Полный текст статьи.")
     assert requested == ["https://x.io/stub", "https://x.io/long"]
+
+
+def test_items_remember_the_site_of_their_feed(monkeypatch):
+    import httpx
+    from digest import fetch
+    rss = (b'<?xml version="1.0"?><rss version="2.0"><channel>'
+           b'<item><title>Own post</title><link>https://www.example.com/post</link></item>'
+           b'<item><title>Linked elsewhere</title><link>https://evil.example/x</link></item></channel></rss>')
+    real_client = httpx.Client
+    monkeypatch.setattr(fetch.httpx, "Client",
+                        lambda **kw: real_client(transport=httpx.MockTransport(lambda r: httpx.Response(200, content=rss)), **kw))
+    src = {"name": "blog", "type": "rss", "category": "engineer", "url": "https://www.example.com/feed"}
+    items, failures = fetch.fetch_all([src], datetime(2026, 10, 17, tzinfo=timezone.utc))
+    assert failures == [] and {i.feed_host for i in items} == {"example.com"}

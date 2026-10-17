@@ -8,7 +8,7 @@ from urllib.parse import urljoin, urlsplit
 import feedparser
 import httpx
 
-from digest.dedup import is_aggregator
+from digest.dedup import bare_host, is_aggregator
 from digest.models import Item
 
 log = logging.getLogger(__name__)
@@ -231,6 +231,8 @@ def fetch_all(sources: list[dict], now: datetime) -> tuple[list[Item], list[str]
                 continue
             cutoff = now - timedelta(hours=src.get("max_age_hours", DEFAULT_MAX_AGE_HOURS))
             fresh = [i for i in fetched if i.url and (i.published is None or i.published >= cutoff)]
+            for item in fresh:
+                item.feed_host = bare_host(src["url"])
             log.info("%s: %d из %d свежих", src["name"], len(fresh), len(fetched))
             items.extend(fresh)
     return items, failures

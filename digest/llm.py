@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 
 import httpx
 
-from digest.dedup import absorb, coverage, is_aggregator
+from digest.dedup import absorb, bare_host, coverage, is_aggregator
 from digest.models import Item
 
 log = logging.getLogger(__name__)
@@ -226,15 +226,37 @@ def parse_selection(raw: dict, items: list[Item]) -> Digest:
     return Digest(raw.get("headline", ""), raw.get("lead", ""), entries, noise)
 
 
-def attach_explanations(entries: list[Entry], raw: dict) -> None:
+# Команды показываются с кнопкой «Скопировать», поэтому берём их только с сайтов, которые выбрали сами (sources.toml):
+# официальные блоги, релизы на GitHub, авторы — и только со страниц на сайте самой ленты. Страницы, куда ведут HN, Reddit,
+# новостные ленты или ссылка внутри доверенной ленты, — любой сайт в интернете. Редирект с доверенного сайта считаем его
+# собственным выбором: это та же граница доверия, что и для его текста
+TRUSTED_COMMAND_CATEGORIES = {"lab", "release", "engineer", "newsletter"}
+
+
+def _commands_trusted(item: Item) -> bool:
+    return item.category in TRUSTED_COMMAND_CATEGORIES and bool(item.feed_host) and bare_host(item.url) == item.feed_host
+
+
+def _squash(text: str) -> str:
+    return " ".join(text.split())
+
+
+def attach_explanations(entries: list[Entry], raw: dict, texts: dict[str, str]) -> None:
     for row in raw.get("items", []):
         n = row.get("id")
         if not isinstance(n, int) or not 0 <= n < len(entries):
             log.warning("разбор с неизвестным id %r пропущен", n)
             continue
+        # Дословность отсекает выдумку модели, но не доказывает безопасность: вредоносная страница сама содержит
+        # «curl … | sh». Поэтому сверяем только с текстами доверенных источников, у остальных команд не бывает
+        item = entries[n].item
+        source = _squash(texts.get(item.url, "")) if _commands_trusted(item) else ""
         commands = [c.strip().removeprefix("$").strip() for c in row.get("commands", [])]
+        verbatim = [c for c in commands if c and _squash(c) in source]
+        if len(verbatim) < len([c for c in commands if c]):
+            log.warning("команды не из текста доверенного первоисточника отброшены: %s", item.url)
         entries[n].details = Details(row["what"], list(row.get("points", [])), row.get("try_it", ""),
-                                     row.get("caveats", ""), [c for c in commands if c])
+                                     row.get("caveats", ""), verbatim)
 
 
 def generate(prompt: str, schema: dict, model: str, api_key: str) -> dict:
@@ -280,4 +302,4 @@ def explain(entries: list[Entry], texts: dict[str, str], audience: str, model: s
         events.append(f"### id={n}\nКарточка: {entry.title}. {entry.summary}\n"
                       f"Описание из ленты: {entry.item.summary[:600]}\nТекст первоисточника:\n{source}")
     raw = generate(EXPLAIN_PROMPT.format(audience=audience, events="\n\n".join(events)), EXPLAIN_SCHEMA, model, api_key)
-    attach_explanations(entries, raw)
+    attach_explanations(entries, raw, texts)
