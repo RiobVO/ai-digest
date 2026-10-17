@@ -5,6 +5,9 @@ const ID_RE = /^\d{8}-\d{1,3}$/;
 const VOTE_PREFIX = "vote:";
 const READ_PREFIX = "read:";
 const ANSWERS = { up: "👍 Учту — больше такого", down: "👎 Понял — меньше такого" };
+// «Прочитано» нужно только вечернему выпуску того же дня — неделя с запасом, дальше ключ удаляет сам KV.
+// Оценки без срока: промпт берёт последние 20, как бы редко читатель ни голосовал
+const READ_TTL_SECONDS = 7 * 24 * 3600;
 
 const enc = new TextEncoder();
 
@@ -18,8 +21,14 @@ function safeEqual(a, b) {
   return diff === 0;
 }
 
+// Запись дублируется в metadata ключа: list отдаёт её сразу, без get на каждый ключ — у KV лимит 1000 операций
+// на вызов, и с get на ключ /votes упал бы через пару месяцев отметок. Запись короткая, лимит metadata — 1024 байта
+async function putRecord(env, key, record, options = {}) {
+  await env.VOTES.put(key, JSON.stringify(record), { metadata: record, ...options });
+}
+
 async function saveVote(env, id, v, via) {
-  await env.VOTES.put(VOTE_PREFIX + id, JSON.stringify({ id, v, via, at: new Date().toISOString() }));
+  await putRecord(env, VOTE_PREFIX + id, { id, v, via, at: new Date().toISOString() });
 }
 
 async function callTelegram(env, method, body) {
@@ -96,7 +105,7 @@ async function pageRead(request, url, env) {
   if (request.method !== "POST") return new Response("method not allowed", { status: 405, headers: cors(env) });
   const id = url.searchParams.get("e") ?? "";
   if (!ID_RE.test(id)) return new Response("bad request", { status: 400, headers: cors(env) });
-  await env.VOTES.put(READ_PREFIX + id, JSON.stringify({ id, at: new Date().toISOString() }));
+  await putRecord(env, READ_PREFIX + id, { id, at: new Date().toISOString() }, { expirationTtl: READ_TTL_SECONDS });
   return Response.json({ ok: true }, { headers: cors(env) });
 }
 
@@ -105,7 +114,12 @@ async function listPrefix(env, prefix) {
   let cursor;
   do {
     const page = await env.VOTES.list({ prefix, cursor });
-    for (const { name } of page.keys) {
+    for (const { name, metadata } of page.keys) {
+      if (metadata) {
+        rows.push(metadata);
+        continue;
+      }
+      // Ключи, записанные до переноса записи в metadata (октябрь 2026): их набор фиксирован, get нужен только им
       const raw = await env.VOTES.get(name);
       if (raw) rows.push(JSON.parse(raw));
     }

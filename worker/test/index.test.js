@@ -3,17 +3,36 @@ import { beforeEach, test } from "node:test";
 
 import worker from "../src/index.js";
 
-function memoryKV() {
+// Как настоящий KV: list отдаёт страницы по курсору и metadata ключа; emptyFirst — пустая незавершённая первая страница,
+// которую KV вправе вернуть. Счётчики показывают, сколько операций ушло на один запрос
+function memoryKV({ pageSize = 1000, emptyFirst = false } = {}) {
   const store = new Map();
+  const calls = { get: 0, list: [] };
   return {
     store,
-    async put(key, value) { store.set(key, value); },
-    async get(key) { return store.get(key) ?? null; },
-    async list({ prefix }) {
-      return { keys: [...store.keys()].filter((k) => k.startsWith(prefix)).map((name) => ({ name })), list_complete: true };
+    calls,
+    async put(key, value, options = {}) { store.set(key, { value, ...options }); },
+    async get(key) { calls.get += 1; return store.get(key)?.value ?? null; },
+    async list({ prefix, cursor }) {
+      calls.list.push({ prefix, cursor });
+      if (emptyFirst && cursor === undefined) return { keys: [], list_complete: false, cursor: "0" };
+      const names = [...store.keys()].filter((k) => k.startsWith(prefix)).sort();
+      const start = Number(cursor ?? 0);
+      const done = start + pageSize >= names.length;
+      const keys = names.slice(start, start + pageSize).map((name) => {
+        const { metadata } = store.get(name);
+        return metadata ? { name, metadata } : { name };
+      });
+      return done ? { keys, list_complete: true } : { keys, list_complete: false, cursor: String(start + pageSize) };
     },
   };
 }
+
+const votesOf = async (env) =>
+  (await worker.fetch(new Request("https://w.dev/votes", { headers: { Authorization: "Bearer read" } }), env)).json();
+const pageVote = (id, v) =>
+  new Request(`https://w.dev/vote?e=${id}&v=${v}`, { method: "POST", headers: { Origin: "https://riobvo.github.io" } });
+const pageRead = (id) => new Request(`https://w.dev/read?e=${id}`, { method: "POST", headers: { Origin: "https://riobvo.github.io" } });
 
 let env;
 let telegramCalls;
@@ -45,7 +64,7 @@ const hook = (update, secret = "hook") => new Request("https://w.dev/telegram", 
 test("кнопка в Telegram сохраняет оценку и сразу отвечает", async () => {
   const res = await worker.fetch(hook(callback("u:20261016-0")), env);
   assert.equal(res.status, 200);
-  const saved = JSON.parse(env.VOTES.store.get("vote:20261016-0"));
+  const saved = JSON.parse(env.VOTES.store.get("vote:20261016-0").value);
   assert.equal(saved.v, "up");
   assert.equal(saved.via, "telegram");
   assert.match(telegramCalls[0].url, /answerCallbackQuery$/);
@@ -75,7 +94,7 @@ test("оценка со страницы принимается только с 
   const ok = await worker.fetch(vote("https://riobvo.github.io"), env);
   assert.equal(ok.status, 200);
   assert.equal(ok.headers.get("Access-Control-Allow-Origin"), "https://riobvo.github.io");
-  assert.equal(JSON.parse(env.VOTES.store.get("vote:20261016-1")).v, "down");
+  assert.equal(JSON.parse(env.VOTES.store.get("vote:20261016-1").value).v, "down");
   const evil = await worker.fetch(vote("https://evil.example"), env);
   assert.equal(evil.status, 403);
 });
@@ -171,4 +190,46 @@ test("сбой запуска выпуска присылает владельц
 test("неизвестное расписание — ошибка, а не тихий пропуск", async () => {
   env.SCHEDULER_TOKEN = "gh";
   await assert.rejects(worker.scheduled(tick("0 0 * * *", "2026-10-17T00:00:00Z"), env), /расписани/);
+});
+
+test("новые записи читаются из metadata без get на каждый ключ, старые — через get", async () => {
+  // Ключ, записанный до переноса записи в metadata: значение есть, metadata нет
+  env.VOTES.store.set("vote:20261016-0", { value: JSON.stringify({ id: "20261016-0", v: "up", via: "telegram", at: "2026-10-16T09:00:00Z" }) });
+  await worker.fetch(pageVote("20261017-1", "down"), env);
+  await worker.fetch(pageRead("20261017-2"), env);
+  await worker.fetch(hook(callback("u:20261017-3")), env);
+  env.VOTES.calls.get = 0;
+  const body = await votesOf(env);
+  assert.deepEqual(body.votes.map((v) => [v.id, v.v]).sort(), [["20261016-0", "up"], ["20261017-1", "down"], ["20261017-3", "up"]]);
+  assert.deepEqual(body.reads.map((r) => r.id), ["20261017-2"]);
+  assert.equal(env.VOTES.calls.get, 1);
+});
+
+test("отметка «прочитано» истекает через неделю, оценка хранится бессрочно", async () => {
+  await worker.fetch(pageVote("20261017-1", "up"), env);
+  await worker.fetch(pageRead("20261017-2"), env);
+  const vote = env.VOTES.store.get("vote:20261017-1");
+  const read = env.VOTES.store.get("read:20261017-2");
+  assert.equal(vote.expirationTtl, undefined);
+  assert.equal(read.expirationTtl, 7 * 24 * 3600);
+  assert.deepEqual(vote.metadata, JSON.parse(vote.value));
+  assert.deepEqual(read.metadata, JSON.parse(read.value));
+});
+
+test("список обходит все страницы, включая пустую незавершённую, и не теряет префикс", async () => {
+  env.VOTES = memoryKV({ pageSize: 2, emptyFirst: true });
+  for (const n of [1, 2, 3, 4, 5]) await worker.fetch(pageVote(`20261017-${n}`, "up"), env);
+  const body = await votesOf(env);
+  assert.deepEqual(body.votes.map((v) => v.id).sort(), ["20261017-1", "20261017-2", "20261017-3", "20261017-4", "20261017-5"]);
+  assert.ok(env.VOTES.calls.list.every((c) => c.prefix === "vote:" || c.prefix === "read:"));
+  assert.equal(env.VOTES.calls.list.filter((c) => c.prefix === "vote:").length, 4);
+  assert.equal(env.VOTES.calls.get, 0);
+});
+
+test("повторный голос заменяет и значение, и metadata", async () => {
+  await worker.fetch(pageVote("20261017-1", "up"), env);
+  await worker.fetch(pageVote("20261017-1", "down"), env);
+  const body = await votesOf(env);
+  assert.deepEqual(body.votes.map((v) => [v.id, v.v]), [["20261017-1", "down"]]);
+  assert.equal(env.VOTES.store.get("vote:20261017-1").metadata.v, "down");
 });
