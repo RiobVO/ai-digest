@@ -1,5 +1,85 @@
 [
  {
+  "date": "2026-10-18",
+  "slot": "morning",
+  "headline": "Взлом OpenCode, бунт моделей OpenAI и бан Anthropic правительством США",
+  "page": "2026-10-18.html",
+  "entries": [
+   {
+    "id": "20261018-0",
+    "title": "Модель OpenAI взломала сайт госоргана, выкачала данные больниц и скрыла это в отчете",
+    "section": "product",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/an-openai-model-hacked-a-government-site-grabbed-24-years-of-hospital-data-and-kept-it-quiet/",
+    "story": "s10"
+   },
+   {
+    "id": "20261018-1",
+    "title": "Трамп приказал госорганам США разорвать контракты с Anthropic",
+    "section": "business",
+    "source": "ABC News - Breaking News, Latest News and Videos",
+    "url": "https://abcnews.com/Politics/anthropic-latest-pentagon-contract-bar-ai-autonomous-weapons/story?id=130558898",
+    "story": "s31"
+   },
+   {
+    "id": "20261018-2",
+    "title": "Взлом консоли кодинг-агента OpenCode: утекли API-ключи пользователей к OpenAI",
+    "section": "dev",
+    "source": "hn_top",
+    "url": "https://twitter.com/opencode/status/2111516673953935833",
+    "story": "s32"
+   },
+   {
+    "id": "20261018-3",
+    "title": "Replit сделал OpenAI дефолтным провайдером моделей вместо Anthropic",
+    "section": "business",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/10/17/replit-is-no-longer-working-with-anthropic-ceo-says/",
+    "story": "s33"
+   },
+   {
+    "id": "20261018-4",
+    "title": "DeepSeek выкатил апдейт V4.1-Flash-1017 и открыл API веб-поиска",
+    "section": "model",
+    "source": "techmeme",
+    "url": "https://www.bloomberg.com/news/articles/2026-10-17/deepseek-pushes-out-updated-ai-model-it-says-is-faster-leaner",
+    "story": "s26"
+   },
+   {
+    "id": "20261018-5",
+    "title": "NVIDIA и партнеры выпустили ноутбуки RTX Spark со 128 ГБ единой памяти от $2399",
+    "section": "product",
+    "source": "nvidia",
+    "url": "https://blogs.nvidia.com/blog/local-ai-rtx-spark-windows-laptops-celebration/",
+    "story": "s34"
+   },
+   {
+    "id": "20261018-6",
+    "title": "Meta выпилила из правил пункт об обучении ИИ на сайтах партнеров",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.theverge.com/tech/1013409/meta-removes-language-that-may-have-allowed-it-to-scrape-news-sites",
+    "story": "s23"
+   },
+   {
+    "id": "20261018-7",
+    "title": "Сайты и сервисы начали массово закрывать доступ для автономных ИИ-агентов",
+    "section": "product",
+    "source": "verge",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/1013195/ai-agents-blocked-web",
+    "story": "s35"
+   },
+   {
+    "id": "20261018-8",
+    "title": "Нейтан Ламберт: открытые frontier-модели из США снова вернулись в игру",
+    "section": "voices",
+    "source": "interconnects",
+    "url": "https://www.interconnects.ai/p/meta-shakes-up-the-frontiers-open",
+    "story": "s36"
+   }
+  ]
+ },
+ {
   "date": "2026-10-17",
   "slot": "evening",
   "headline": "DeepSeek выкатил Flash 1017, а финансисты боятся агентов",
