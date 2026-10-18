@@ -2,14 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-10-17T13:18:04.625774+00:00",
-   "keys": [
-    "openrouter.ai/deepseek/deepseek-v4.1-flash-1017",
-    "title:deepseek deepseek v4 1 flash 1017"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-10-17T21:18:06.670038+00:00",
    "keys": [
     "blogs.nvidia.com/blog/local-ai-rtx-spark-windows-laptops-celebration",
