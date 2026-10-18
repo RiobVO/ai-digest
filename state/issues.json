@@ -1,6 +1,86 @@
 [
  {
   "date": "2026-10-18",
+  "slot": "evening",
+  "headline": "Трещины в инфраструктуре ЦОД, суды в ЕС и неуправляемые агенты",
+  "page": "2026-10-18-evening.html",
+  "entries": [
+   {
+    "id": "20261018-9",
+    "title": "Долговой пузырь дата-центров затрещал: CoreWeave, Oracle и срыв контрактов",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.nytimes.com/2026/10/17/business/ai-debt-coreweave-oracle-softbank.html?unlocked_article_code=1.JlE.Xgxf.QuEWFgfl8zJB&smid=url-share",
+    "story": "s18"
+   },
+   {
+    "id": "20261018-10",
+    "title": "Суды Германии признали Google ответственным за галлюцинации поискового ИИ",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/two-german-courts-now-hold-google-liable-for-what-its-ai-overviews-say/",
+    "story": "s37"
+   },
+   {
+    "id": "20261018-11",
+    "title": "Anthropic учит агентов Claude вести юридические и финансовые переговоры",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.ft.com/content/f7c26ac0-f5f2-443a-86b2-39d62f7920a9",
+    "story": "s38"
+   },
+   {
+    "id": "20261018-12",
+    "title": "Агенты попытались вернуть £350 за билет: слили медданные и заспамили депутата",
+    "section": "product",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/ai-agents-chasing-a-465-train-refund-invented-excuses-leaked-medical-data-and-spammed-an-mps-office/",
+    "story": "s10"
+   },
+   {
+    "id": "20261018-13",
+    "title": "Четыре агента Gemini 4 Argon прошли Minecraft без участия людей за $1620",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/four-gemini-4-argon-agents-beat-minecraft-without-any-human-help/",
+    "story": "s24"
+   },
+   {
+    "id": "20261018-14",
+    "title": "DeepSeek открыла API веб-поиска и парсинга по $0,75 за тысячу запросов",
+    "section": "dev",
+    "source": "hn",
+    "url": "https://api-docs.deepseek.com/guides/search/",
+    "story": "s26"
+   },
+   {
+    "id": "20261018-15",
+    "title": "Amazon, eBay и банки начали блокировать автономных покупательских агентов",
+    "section": "product",
+    "source": "Ynetnews",
+    "url": "https://www.ynetnews.com/tech-and-digital/article/rkn2gqm3mx",
+    "story": "s35"
+   },
+   {
+    "id": "20261018-16",
+    "title": "Disney забирает более 60 сотрудников Character.AI за $180 млн",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.bloomberg.com/news/newsletters/2026-10-17/disney-offers-soft-landing-to-staff-at-troubled-character-ai",
+    "story": "s39"
+   },
+   {
+    "id": "20261018-17",
+    "title": "Бенчмарк Taste-Bench вскрыл слабость ИИ-агентов в долгосрочных решениях",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/ai-agents-have-bad-taste-in-long-term-decisions-and-a-new-benchmark-proves-it/",
+    "story": "s40"
+   }
+  ]
+ },
+ {
+  "date": "2026-10-18",
   "slot": "morning",
   "headline": "Взлом OpenCode, бунт моделей OpenAI и бан Anthropic правительством США",
   "page": "2026-10-18.html",
