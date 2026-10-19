@@ -280,7 +280,8 @@ details a:hover{text-decoration:underline}
   .meta .imp,.meta .also,.legend .also{display:none}
   .item .meta .buzz{background:none;padding:0;gap:0;color:var(--muted);font-size:.8rem;font-weight:500}
   .item .meta a.buzz{color:var(--blue-ink)}
-  .item .meta .buzz::before{content:"·";margin-right:6px;color:var(--muted)}
+  /* Разделитель только между элементами: у ссылки не по http домена (.src) нет, и строка не должна начинаться с «·» */
+  .item .meta .src~.buzz::before,.item .meta .buzz+.buzz::before{content:"·";margin-right:6px;color:var(--muted)}
   /* В «Коротко» подпись раздела под каждым пунктом удваивала высоту списка; разделы есть в навигации */
   .brief li span{display:none}
   .brief li::before{grid-row:auto}
@@ -299,7 +300,8 @@ details a:hover{text-decoration:underline}
   nav a{min-height:44px}
   .arch .arch-all{padding-block:12px}
   .copy,a.buzz{position:relative}
-  .copy::after,a.buzz::after{content:"";position:absolute;inset:-10px -4px}
+  /* Высота зоны — ровно 44px от центра значка, какого бы размера ни был сам текст */
+  .copy::after,a.buzz::after{content:"";position:absolute;left:-4px;right:-4px;top:50%;height:44px;translate:0 -50%}
   .missed a{display:block;padding-block:4px}
 }
 </style>
