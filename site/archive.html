@@ -140,7 +140,14 @@ a.buzz:hover{text-decoration:underline}
 h2[id],h4[id]{scroll-margin-top:90px}
 .more-links{display:flex;gap:8px;flex-wrap:wrap}
 .hero .more,.hero .more-links{max-width:62ch}
-@media (prefers-reduced-motion:reduce){.more summary::after{transition:none}}
+/* Разбор раскрывается плавно там, где браузер умеет анимировать высоту до auto (Chrome 131+);
+   в остальных — мгновенно, как раньше */
+@supports (interpolate-size:allow-keywords) and selector(::details-content){
+  .more{interpolate-size:allow-keywords}
+  .more::details-content{block-size:0;overflow:clip;transition:block-size .26s cubic-bezier(.25,1,.5,1),content-visibility .26s allow-discrete}
+  .more[open]::details-content{block-size:auto}
+}
+@media (prefers-reduced-motion:reduce){.more summary::after,.more::details-content{transition:none}}
 .num{width:26px;height:26px;border-radius:50%;border:1px solid var(--border-3);display:grid;place-items:center;font-size:.78rem;font-weight:600;color:var(--muted)}
 .num.hot{background:var(--cta);color:var(--cta-ink);border-color:var(--cta)}
 .item h4{margin:6px 0 0;font-size:1.02rem;font-weight:600;line-height:1.4}
@@ -200,7 +207,13 @@ details a:hover{text-decoration:underline}
 .story{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;margin:6px 0 2px}
 /* Имя сюжета бывает длиной с заголовок: в одну строку оно распирало карточку шире экрана телефона */
 .story-tag{background:var(--blue-soft);color:var(--blue-ink);justify-self:start;white-space:normal}
-.story ul{margin:0;padding:0;list-style:none;display:grid;gap:3px;font-size:.86rem;color:var(--muted);border-left:2px solid var(--border-3);padding-left:10px}
+/* «3-й день» не рвётся на дефисе при переносе длинного имени */
+.story-day{white-space:nowrap}
+/* Прошлые события сюжета — хронология: точка на каждое событие, тонкая нить между ними */
+.story ul{margin:0;padding:0;list-style:none;display:grid;gap:4px;font-size:.86rem;color:var(--muted)}
+.story li{position:relative;padding-left:16px}
+.story li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--border-3)}
+.story li:not(:last-child)::after{content:"";position:absolute;left:4.5px;top:calc(.62em + 9px);bottom:calc(-1px - .62em);width:1px;background:var(--border-2)}
 .story li b{color:var(--ink-2);font-weight:600;margin-right:6px}
 .arch{border-top:1px solid var(--border);padding:16px;display:grid;gap:2px;overflow:auto}
 .arch-title{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:0 10px 6px}
@@ -253,12 +266,25 @@ details a:hover{text-decoration:underline}
   .grid{padding:6px 16px 40px}
   .hero{padding:22px 18px}
   .card-head{padding:16px 14px 12px}
-  .card-body{padding:0 8px 8px}
+  /* Карточка в карточке на узком экране съедала ширину строки тремя рамками и отступами: внутри раздела
+     новости идут плоским списком через тонкую линию, «Почему важно» — абзац с подписью, а не плашка */
+  .card-body{padding:0;gap:0}
+  .item,.paper,.try{background:none;border:0;border-radius:0;box-shadow:none;border-top:1px solid var(--border-2);padding:16px 14px}
+  .item .why{background:none;border:0;padding:0}
   /* Текст во всю ширину карточки: номер дублирует «Коротко», заголовок идёт первым, служебная строка — под ним */
-  .item{grid-template-columns:minmax(0,1fr);padding:14px}
+  .item{grid-template-columns:minmax(0,1fr)}
   .item .num{display:none}
   .item>div{display:flex;flex-direction:column}
   .item h4{order:-1;margin:0 0 6px}
+  /* Служебная строка в одну тихую линию: оценки важности почти все 7.5–8.5 и ничего не различают,
+     а список «также» дублирует плашку охвата */
+  .meta .imp,.meta .also,.legend .also{display:none}
+  .item .meta .buzz{background:none;padding:0;gap:0;color:var(--muted);font-size:.8rem;font-weight:500}
+  .item .meta a.buzz{color:var(--blue-ink)}
+  .item .meta .buzz::before{content:"·";margin-right:6px;color:var(--muted)}
+  /* В «Коротко» подпись раздела под каждым пунктом удваивала высоту списка; разделы есть в навигации */
+  .brief li span{display:none}
+  .brief li::before{grid-row:auto}
   .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 /* Пальцевые цели не меньше 44px (Apple HIG, WCAG 2.5.5). Мелким значкам — копированию и плашке HN — зона нажатия
