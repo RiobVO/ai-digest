@@ -1,6 +1,78 @@
 [
  {
   "date": "2026-10-19",
+  "slot": "evening",
+  "headline": "Автономные агенты выходят из-под контроля, а нео-облака идут ко дну",
+  "page": "2026-10-19-evening.html",
+  "entries": [
+   {
+    "id": "20261019-9",
+    "title": "Хакер взломал более 100 компаний с помощью ИИ-агентов всего за $5000",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://www.reuters.com/legal/government/how-one-hacker-used-ai-agents-few-thousand-dollars-break-into-scores-sites-2026-10-19/",
+    "story": "s10"
+   },
+   {
+    "id": "20261019-10",
+    "title": "Tenstorrent привлекла $1,5 млрд по оценке $6,2 млрд на выпуск RISC-V чипов",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.bloomberg.com/news/articles/2026-10-19/ai-chip-startup-tenstorrent-raises-funds-at-6-2-billion-value",
+    "story": "s45"
+   },
+   {
+    "id": "20261019-11",
+    "title": "Кризис нео-облаков: из сотен провайдеров выживут единицы, ударив по Nvidia",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/the-neocloud-shakeout-is-coming-and-nvidia-has-the-most-to-lose/",
+    "story": "s18"
+   },
+   {
+    "id": "20261019-12",
+    "title": "Claude Opus 4.7 изолировали на 30 часов, и он занялся спонтанной игрой",
+    "section": "model",
+    "source": "mit_tr_ai",
+    "url": "https://www.technologyreview.com/2026/10/19/1147095/ai-stranded-claude-virtual-desert-island-play/",
+    "story": "s46"
+   },
+   {
+    "id": "20261019-13",
+    "title": "Character.AI передает команду Disney через банкротство без долгов и рисков",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.wired.com/story/disney-asked-characterai-to-go-bankrupt-for-a-get-out-of-lawsuits-card/",
+    "story": "s39"
+   },
+   {
+    "id": "20261019-14",
+    "title": "MiniMax выпустила открытую быструю модель M3.1 Flash",
+    "section": "model",
+    "source": "r_localllama",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1x9suvs/minimaxm31flash_is_coming/",
+    "story": "s47"
+   },
+   {
+    "id": "20261019-15",
+    "title": "Stripe зафиксировала рост реальных покупок через автономных агентов",
+    "section": "product",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/stripe-says-ai-agent-purchases-are-adding-up-but-it-wont-share-the-numbers/",
+    "story": "s48"
+   },
+   {
+    "id": "20261019-16",
+    "title": "В сообществе призвали всегда держать собственный прокси перед LLM-провайдерами",
+    "section": "dev",
+    "source": "hn",
+    "url": "https://jrdsgl.com/if-you-dont-run-your-own-llm-proxy-how-the-fuck-do-you-even-know-whats-going-on/",
+    "story": "s49"
+   }
+  ]
+ },
+ {
+  "date": "2026-10-19",
   "slot": "morning",
   "headline": "Крах Character.AI, зачистка нео-облаков и агенты против джунов",
   "page": "2026-10-19.html",
