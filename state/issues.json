@@ -1,5 +1,85 @@
 [
  {
+  "date": "2026-10-19",
+  "slot": "morning",
+  "headline": "Крах Character.AI, зачистка нео-облаков и агенты против джунов",
+  "page": "2026-10-19.html",
+  "entries": [
+   {
+    "id": "20261019-0",
+    "title": "Character.AI подал на банкротство, а Disney забирает команду",
+    "section": "business",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/10/18/disney-agrees-to-hire-the-majority-of-character-ais-workforce/",
+    "story": "s39"
+   },
+   {
+    "id": "20261019-1",
+    "title": "Anthropic урезала наем джунов до 9%: агенты работают в 6 раз больше людей",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/anthropic-has-nearly-stopped-hiring-junior-staff-because-ai-agents-now-work-six-times-as-many-hours/",
+    "story": "s41"
+   },
+   {
+    "id": "20261019-2",
+    "title": "Инвесторы сбивают оценку Nscale, а среди нео-облаков выживут единицы",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.theinformation.com/articles/neocloud-shakeout-looms-nvidia-lot-lose",
+    "story": "s18"
+   },
+   {
+    "id": "20261019-3",
+    "title": "Samsung впервые выпустит чипы на фабриках TSMC по заказу Nvidia",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.reuters.com/world/asia-pacific/samsung-use-tsmc-technology-nvidias-next-generation-memory-chips-seoul-newspaper-2026-10-18/",
+    "story": "s42"
+   },
+   {
+    "id": "20261019-4",
+    "title": "Google выкатила Harness2 для автоматической самонастройки ИИ-агентов",
+    "section": "dev",
+    "source": "r_localllama",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1x9gfnb/google_open_sources_harness2_for_self_improving/",
+    "story": "s43"
+   },
+   {
+    "id": "20261019-5",
+    "title": "Китай предложил расширить экспортный контроль на технологии ИИ",
+    "section": "business",
+    "source": "Global Sanctions and Export Controls Blog",
+    "url": "https://sanctionsnews.bakermckenzie.com/china-proposes-expanded-export-controls-on-ai-biopharma-and-solar-energy-technologies/",
+    "story": "s19"
+   },
+   {
+    "id": "20261019-6",
+    "title": "Together AI показала Hybrid Reasoning: рассуждения прямо в latent space",
+    "section": "model",
+    "source": "hn",
+    "url": "https://arxiv.org/abs/2610.18861",
+    "story": "s44"
+   },
+   {
+    "id": "20261019-7",
+    "title": "OpenCode атаковали через дистилляцию: утечка затронула ключи провайдеров",
+    "section": "dev",
+    "source": "Step Security",
+    "url": "https://www.stepsecurity.io/blog/opencode-security-breach",
+    "story": "s32"
+   },
+   {
+    "id": "20261019-8",
+    "title": "Anthropic выделит до 20% акций в фонд борьбы с последствиями ИИ",
+    "section": "business",
+    "source": "anthropic",
+    "url": "https://www.anthropic.com/news/public-benefit-fund",
+    "story": "s9"
+   }
+  ]
+ },
+ {
   "date": "2026-10-18",
   "slot": "evening",
   "headline": "Трещины в инфраструктуре ЦОД, суды в ЕС и неуправляемые агенты",
