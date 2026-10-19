@@ -2,14 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-10-18T18:18:06.256261+00:00",
-   "keys": [
-    "anthropic.com/news/public-benefit-fund",
-    "title:investing in the public benefit"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-10-19T09:18:08.426898+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMi9wFBVV95cUxOVl94T19QTnBNOVU2MTliaUdKTkF5VWZJclhJNmR0V0FHdnpEX00xYUN3SDF0Z1lzWDBFN0JRNnF2cDJWRk9hTXNWWllDLUU1ak84ZWU5bnp1NEJlNDJnRlVfSDh2M1NoelA1TVM5Nm5nVTJyZjFNd1p2SG1JdTZRdndGYlhQLUJKLUVxRGV2S2tzYW56Y05wSGJuOG5mdnN1YmJXdnVZQy1vaEVzTkVydFBpY2FJNTM4LWE0a1QwSHZhejFGZko0NGowTU5BY1c3RkpaSFVhemZzWUJKT3hqOVh4NzlWbUhSQWpaTTBMV1AzaWRlTDNj?oc=5",
