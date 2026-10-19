@@ -67,6 +67,13 @@ def test_stories_continue_and_count_days(tmp_path):
     assert [s["name"] for s in active] == ["Nemotron 3.5"]
 
 
+def test_long_story_name_is_cut_on_a_word_boundary(tmp_path):
+    stories = Stories(tmp_path / "stories.json")
+    e = entry("Disney забирает более 60 сотрудников Character.AI за $180 млн")
+    stories.apply([e], date(2026, 10, 18), "2026-10-18.html")
+    assert e.story_name == "Disney забирает более 60 сотрудников Character.AI за $180…"
+
+
 def test_unknown_story_id_from_model_starts_a_new_story(tmp_path):
     stories = Stories(tmp_path / "stories.json")
     e = entry("X", story="s999", story_name="Икс")

@@ -3,6 +3,7 @@ import json
 import logging
 from datetime import date, datetime, timedelta
 from pathlib import Path
+from textwrap import shorten
 
 import httpx
 
@@ -14,6 +15,7 @@ log = logging.getLogger(__name__)
 STORY_ACTIVE_DAYS = 7
 STORY_RETENTION_DAYS = 30
 STORY_PREV_SHOWN = 3
+STORY_NAME_MAX = 60
 FEEDBACK_IN_PROMPT = 20
 MISSED_SHOWN = 3
 # Сборка до этого часа по Ташкенту — утренний выпуск, после — вечерний
@@ -117,7 +119,9 @@ class Stories:
                 # Пустой или выдуманный моделью id — значит, сюжет новый
                 e.story = f"s{self.next}"
                 self.next += 1
-                self.stories[e.story] = {"name": (e.story_name or e.title)[:60], "events": []}
+                # Без имени от модели сюжет называется заголовком новости — режем по слову, а не посреди «млн»
+                name = shorten(e.story_name or e.title, STORY_NAME_MAX, placeholder="…")
+                self.stories[e.story] = {"name": name, "events": []}
             story = self.stories[e.story]
             e.story_name = story["name"]
             earlier = [ev for ev in story["events"] if _issue_of(ev) != issue]
