@@ -93,6 +93,28 @@ PAGE_SCRIPT = """<script>
     else if (e.key === "o" && at >= 0) { const d = cards[at].querySelector("details.more"); if (d) d.open = !d.open; }
   });
 })();
+(() => {
+  // Подсветка раздела, который сейчас читают: верхний из разделов, пересекающих полосу у верха экрана
+  const nav = document.querySelector("nav");
+  const links = [...document.querySelectorAll('nav a[href^="#"]')];
+  const sections = links.map(a => document.getElementById(a.getAttribute("href").slice(1))).filter(Boolean);
+  if (!nav || !sections.length || !("IntersectionObserver" in window)) return;
+  const inBand = new Set();
+  const pick = () => {
+    const current = sections.find(s => inBand.has(s));
+    if (!current) return;
+    const on = links.find(a => a.getAttribute("href") === "#" + current.id);
+    links.forEach(a => a.classList.toggle("on", a === on));
+    // На телефоне лента разделов прокручивается вбок: подсвеченный раздел подтягиваем в кадр
+    const r = on.getBoundingClientRect(), n = nav.getBoundingClientRect();
+    if (r.left < n.left || r.right > n.right) nav.scrollBy({left: r.left - n.left - 16});
+  };
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => e.isIntersecting ? inBand.add(e.target) : inBand.delete(e.target));
+    pick();
+  }, {rootMargin: "-80px 0px -55% 0px"});
+  sections.forEach(s => io.observe(s));
+})();
 </script>"""
 ARROW = "→"
 
@@ -104,10 +126,19 @@ VOTE_SCRIPT = """<script>
   // «Прочитано» = раскрыл разбор или ушёл к первоисточнику. В браузере запоминаем только после ответа воркера,
   // иначе при сбое сети отметка не дошла бы до вечернего выпуска уже никогда
   const tocRead = (id) => document.querySelectorAll('[data-toc="' + CSS.escape(id) + '"]').forEach(li => li.classList.add("read"));
+  // Сколько прочитано: строка под заголовком и полоска под лентой разделов на телефоне
+  const cards = document.querySelectorAll("[data-entry]");
+  const progress = () => {
+    const done = document.querySelectorAll("[data-entry].read").length;
+    const line = document.querySelector(".sub .progress");
+    if (line && done) { line.hidden = false; line.textContent = " · прочитано " + done + " из " + cards.length; }
+    document.querySelector(".side")?.style.setProperty("--read", cards.length ? done / cards.length : 0);
+  };
   const markRead = (card) => {
     card.classList.add("read");
     const id = card.dataset.entry;
     tocRead(id);
+    progress();
     try { if (localStorage.getItem("r:" + id)) return; } catch (e) {}
     // keepalive: клик по первоисточнику уводит со страницы, и без него браузер оборвал бы запрос
     // Сбой сети не страшен: отметки в браузере нет, и следующее раскрытие или клик отправит её снова
@@ -115,11 +146,12 @@ VOTE_SCRIPT = """<script>
       .then(r => { if (r.ok) { try { localStorage.setItem("r:" + id, "1"); } catch (e) {} } })
       .catch(() => {});
   };
-  document.querySelectorAll("[data-entry]").forEach(card => {
+  cards.forEach(card => {
     try { if (localStorage.getItem("r:" + card.dataset.entry)) { card.classList.add("read"); tocRead(card.dataset.entry); } } catch (e) {}
     card.querySelectorAll("details.more").forEach(d => d.addEventListener("toggle", () => { if (d.open) markRead(card); }));
     card.querySelectorAll("a[href^='http']").forEach(a => a.addEventListener("click", () => markRead(card)));
   });
+  progress();
   document.querySelectorAll(".vote").forEach(box => {
     const id = box.dataset.id;
     try { const saved = localStorage.getItem("v:" + id); if (saved) mark(box, saved); } catch (e) {}
@@ -364,10 +396,23 @@ def _summary(title: str, sub: str, lead: str, cards: list[tuple[int, str]]) -> s
             f'          {lead_html}\n          <div class="stats">{tiles}</div>\n        </section>')
 
 
+def issue_summary(entries: list[Entry], kind: str = "day") -> str:
+    """Строка «9 событий · ≈2 мин чтения» — под заголовком страницы и на обложке выпуска."""
+    count = plural(len(entries), *(("сюжет", "сюжета", "сюжетов") if kind == "week" else ("событие", "события", "событий")))
+    return f"{count} · ≈{reading_minutes(entries)} мин чтения"
+
+
+def _og_image(url: str) -> str:
+    if not url:
+        return ""
+    return (f'\n<meta property="og:image" content="{escape(url)}">\n<meta property="og:image:width" content="1200">'
+            '\n<meta property="og:image:height" content="630">\n<meta name="twitter:card" content="summary_large_image">')
+
+
 def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str], *,
                 feedback_url: str = "", issues: list[dict] | None = None, kind: str = "day", period: str = "",
                 page_name: str = "", slot: str = "morning", missed: list[dict] | None = None,
-                morning_page: str = "") -> str:
+                morning_page: str = "", og_image: str = "") -> str:
     votes = bool(feedback_url)
     # Героем идёт событие: если модель вернула одни авторские посты, «Главного» нет, они остаются в своём разделе
     top = next((e for e in digest.entries if e.section != "voices"), None)
@@ -427,12 +472,10 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
     if failures:
         footer.append(f'<span class="fail">Не собрались: {escape(", ".join(f.split(":")[0] for f in failures))}</span>')
 
-    count = plural(len(digest.entries), *(("сюжет", "сюжета", "сюжетов") if kind == "week"
-                                         else ("событие", "события", "событий")))
     description = f"{len(digest.entries)} событий. {digest.lead}"
     return TEMPLATE.substitute(
         headline=escape(digest.headline), description=escape(description[:300]), crumbs=crumbs, lead=lead,
-        sub=f"{count} · ≈{reading_minutes(digest.entries)} мин чтения",
+        og_image=_og_image(og_image), sub=issue_summary(digest.entries, kind),
         short_date=f"{local:%d.%m}", weekday=WEEKDAYS[local.weekday()] if kind == "day" else "Неделя",
         nav="".join(nav), archive=_archive_sidebar(issues, page_name),
         main="\n".join(main), summary=summary, aside="\n".join(aside), footer="".join(footer),
@@ -451,6 +494,7 @@ def render_archive(issues: list[dict], when: datetime) -> str:
     local = when.astimezone(DISPLAY_TZ)
     return TEMPLATE.substitute(
         headline="Архив выпусков", description=f"{len(issues)} выпусков ИИ-дайджеста", crumbs="Дайджест<span>/</span>Архив",
+        og_image="",
         sub=plural(len(issues), "выпуск", "выпуска", "выпусков"), lead="",
         short_date=f"{local:%d.%m}", weekday="Архив", nav=f'<a class="on" href="#main-story">{ICONS["archive"]}Все выпуски</a>',
         archive=_archive_sidebar(issues), main=main,

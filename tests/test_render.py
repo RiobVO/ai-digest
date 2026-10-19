@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 
 from digest.llm import Digest, Entry
 from digest.models import Item
-from digest.render import render_page
+from digest.render import render_archive, render_page
 from digest.telegram import TG_LIMIT, build_message
 
 WHEN = datetime(2026, 10, 16, 3, tzinfo=timezone.utc)
@@ -35,6 +35,24 @@ def test_page_puts_top_entry_in_lead_and_shows_noise_and_paper_votes():
     assert "83 ▲" in page
     assert "Save 50% &lt;now&gt;" in page
     assert "verge" in page
+
+
+def test_cover_image_goes_into_link_preview_tags_only_when_present():
+    page = render_page(sample(), STATS, WHEN, failures=[], og_image="https://x.io/og/2026-10-16.png")
+    assert '<meta property="og:image" content="https://x.io/og/2026-10-16.png">' in page
+    assert '<meta name="twitter:card" content="summary_large_image">' in page
+    assert "og:image" not in render_page(sample(), STATS, WHEN, failures=[])
+
+
+def test_pages_link_the_home_screen_icon_and_manifest():
+    for page in (render_page(sample(), STATS, WHEN, failures=[]), render_archive([], WHEN)):
+        assert '<link rel="manifest" href="manifest.webmanifest">' in page
+        assert '<link rel="apple-touch-icon" href="icon-180.png">' in page
+
+
+def test_reading_progress_slot_sits_in_the_header_line():
+    page = render_page(sample(), STATS, WHEN, failures=[], feedback_url="https://fb.example")
+    assert '<span class="progress" hidden></span>' in page and "прочитано" in page
 
 
 def test_telegram_message_is_escaped_linked_and_short():

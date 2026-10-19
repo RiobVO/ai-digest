@@ -130,3 +130,19 @@ def test_silent_send_disables_notification(monkeypatch):
     monkeypatch.setattr(telegram.httpx, "post", fake_post)
     telegram.send("t", "https://x.io", "tok", "1", silent=True)
     assert sent["disable_notification"] is True
+
+
+def test_issue_link_preview_is_large_and_alert_preview_stays_small(monkeypatch):
+    import httpx
+    from digest import telegram
+    sent = []
+
+    def fake_post(url, json, timeout):
+        sent.append(json["link_preview_options"])
+        return httpx.Response(200, json={"ok": True})
+
+    monkeypatch.setattr(telegram.httpx, "post", fake_post)
+    telegram.send("t", "https://x.io/issue.html", "tok", "1", large_preview=True)
+    telegram.send("t", "https://news.example/a", "tok", "1")
+    assert sent[0].get("prefer_large_media") is True and "prefer_small_media" not in sent[0]
+    assert sent[1].get("prefer_small_media") is True

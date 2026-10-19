@@ -167,3 +167,12 @@ def test_trusted_feed_link_to_another_site_gives_no_commands():
     raw = {"items": [{"id": 0, "what": "w", "points": [], "try_it": "", "caveats": "", "commands": ["pip install tool"]}]}
     attach_explanations(entries, raw, {"https://evil.example/tool": "Run pip install tool"})
     assert entries[0].details.commands == []
+
+
+def test_importance_scale_has_anchors_and_why_is_asked_for_every_event():
+    prompt = build_prompt(items(), "разработчик")
+    # Без опорных точек модель ставила 7–9.5 всему подряд, и шкала ничего не различала
+    assert "8–8.9 — главное за день" in prompt and "бывает и ноль" in prompt
+    assert "на оценку не влияет" in prompt
+    # «Почему важно» не зависит от балла: иначе сдвиг шкалы срезал бы его у большинства карточек
+    assert "Только при importance" not in prompt and "для каждого события" in prompt
