@@ -108,8 +108,10 @@ VOTE_SCRIPT = """<script>
     tocRead(id);
     try { if (localStorage.getItem("r:" + id)) return; } catch (e) {}
     // keepalive: клик по первоисточнику уводит со страницы, и без него браузер оборвал бы запрос
+    // Сбой сети не страшен: отметки в браузере нет, и следующее раскрытие или клик отправит её снова
     fetch(FB + "/read?e=" + encodeURIComponent(id), {method: "POST", keepalive: true})
-      .then(r => { if (r.ok) { try { localStorage.setItem("r:" + id, "1"); } catch (e) {} } });
+      .then(r => { if (r.ok) { try { localStorage.setItem("r:" + id, "1"); } catch (e) {} } })
+      .catch(() => {});
   };
   document.querySelectorAll("[data-entry]").forEach(card => {
     try { if (localStorage.getItem("r:" + card.dataset.entry)) { card.classList.add("read"); tocRead(card.dataset.entry); } } catch (e) {}
