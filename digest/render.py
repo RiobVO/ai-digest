@@ -64,6 +64,8 @@ ICONS = {
     "down": _SVG.format('<path d="M17 14V3M9 18.1 10 14H4.2a2 2 0 0 1-1.9-2.6l2.3-7A2 2 0 0 1 6.5 3H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-2.8a2 2 0 0 0-1.8 1.1L12 22a3.1 3.1 0 0 1-3-3.9z"/>'),
 }
 TRY_TODAY_MAX = 4
+# Тот же предел, что модели задан в промпте для имени сюжета (digest/llm.py)
+STORY_TAG_NAME_MAX = 40
 # Без сторонних скриптов и сетевых запросов: листание карточек с клавиатуры и копирование команд
 PAGE_SCRIPT = """<script>
 (() => {
@@ -220,7 +222,10 @@ def _story(entry: Entry) -> str:
     if entry.story_day < 2:
         return ""
     prev = "".join(f"<li><b>{short_day(day)}</b> {escape(title)}</li>" for day, title in entry.story_prev)
-    return (f'<div class="story"><span class="tag story-tag">Сюжет · {escape(entry.story_name)} · {entry.story_day}-й день</span>'
+    # Модель нередко называет сюжет целым заголовком вместо короткого имени: такое имя лишь повторяет
+    # хронологию под меткой и растягивает её на две строки
+    name = f"{escape(entry.story_name)} · " if 0 < len(entry.story_name) <= STORY_TAG_NAME_MAX else ""
+    return (f'<div class="story"><span class="tag story-tag">Сюжет · {name}<span class="story-day">{entry.story_day}-й день</span></span>'
             f'{f"<ul>{prev}</ul>" if prev else ""}</div>')
 
 
@@ -293,7 +298,7 @@ def _nav(anchor: str, label: str, count: int | None = None, active: bool = False
 
 def _hero(entry: Entry, votes: bool, chip: str) -> str:
     share = round(entry.importance * 10)
-    also = f"<span>{_also(entry)}</span>" if entry.item.also else ""
+    also = f'<span class="also">{_also(entry)}</span>' if entry.item.also else ""
     return (
         f'        <section class="card hero" id="main-story"{_entry_attr(entry)}>\n'
         f'          <div class="hero-top"><span class="chip">{chip}</span>'
@@ -310,8 +315,8 @@ def _hero(entry: Entry, votes: bool, chip: str) -> str:
 
 def _item(n: int, entry: Entry, votes: bool) -> str:
     hot = " hot" if entry.importance >= 8 else ""
-    also = f'<span>{_also(entry)}</span>' if entry.item.also else ""
-    importance_css = "tag green" if entry.importance >= 8 else "tag"
+    also = f'<span class="also">{_also(entry)}</span>' if entry.item.also else ""
+    importance_css = "tag imp green" if entry.importance >= 8 else "tag imp"
     return (f'<div class="item"{_entry_attr(entry)}><span class="num{hot}">{n}</span>'
             f'<div><div class="meta"><span class="{importance_css}">важность {entry.importance:g}</span>'
             f'{_source(entry.item.url)}{_buzz(entry.item)}{also}</div>'

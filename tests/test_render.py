@@ -92,6 +92,15 @@ def test_continuing_story_shows_day_and_previous_events():
     assert "Бенчмарки &lt;Muse&gt;" in page and "15 окт" in page
 
 
+def test_headline_long_story_name_is_left_out_of_the_tag():
+    digest = sample()
+    top = digest.entries[0]
+    top.story_name, top.story_day = "Disney забирает более 60 сотрудников Character.AI за $180…", 2
+    top.story_prev = [("2026-10-18", "Disney забирает более 60 сотрудников Character.AI за $180 млн")]
+    page = render_page(digest, STATS, WHEN, failures=[])
+    assert '<span class="tag story-tag">Сюжет · <span class="story-day">2-й день</span></span>' in page
+
+
 def test_sidebar_lists_recent_issues_and_archive_page_lists_all():
     from digest.render import render_archive
     issues = [{"date": "2026-10-16", "headline": "Сегодня", "page": "2026-10-16.html", "entries": [{}, {}]},
