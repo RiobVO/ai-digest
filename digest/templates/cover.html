@@ -12,7 +12,8 @@ body{width:1200px;height:630px;overflow:hidden;color:var(--ink);-webkit-font-smo
   background:linear-gradient(100deg,rgba(254,252,245,.97) 0%,rgba(254,252,245,.8) 45%,rgba(254,252,245,0) 80%),
     $landscape center/cover no-repeat,var(--bg)}
 .card{box-sizing:border-box;height:630px;padding:60px 72px 56px;display:grid;grid-template-rows:auto 1fr auto;gap:24px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:24px}
+/* Правый верхний угол крупного превью Telegram закрывает своей кнопкой-лупой: дата живёт внизу, рядом с охватом */
+.foot{display:flex;justify-content:space-between;align-items:center;gap:24px}
 .brand{display:flex;align-items:center;gap:16px}
 .brand svg{width:56px;height:56px;color:var(--blue)}
 .brand b{display:block;font-size:40px;font-weight:600;letter-spacing:-.025em;line-height:1}
@@ -26,12 +27,9 @@ h1{align-self:center;margin:0;max-width:960px;font-size:64px;font-weight:500;lin
 </head>
 <body>
 <div class="card">
-  <div class="top">
-    <div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.5" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".2"/><circle cx="16" cy="16" r="9.5" fill="none" stroke="currentColor" stroke-width="1.8" opacity=".45"/><circle cx="16" cy="16" r="4.6" fill="currentColor"/></svg><div><b>сигнал</b><small>ИИ-дайджест</small></div></div>
-    <span class="date">$date</span>
-  </div>
+  <div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.5" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".2"/><circle cx="16" cy="16" r="9.5" fill="none" stroke="currentColor" stroke-width="1.8" opacity=".45"/><circle cx="16" cy="16" r="4.6" fill="currentColor"/></svg><div><b>сигнал</b><small>ИИ-дайджест</small></div></div>
   <h1>$headline</h1>
-  <div class="sub">$sub</div>
+  <div class="foot"><span class="sub">$sub</span><span class="date">$date</span></div>
 </div>
 </body>
 </html>
