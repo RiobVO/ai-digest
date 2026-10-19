@@ -65,9 +65,12 @@ def build_keyboard(digest: Digest) -> dict | None:
     ]}
 
 
-def send(text: str, page_url: str, token: str, chat_id: str, keyboard: dict | None = None, silent: bool = False) -> None:
+def send(text: str, page_url: str, token: str, chat_id: str, keyboard: dict | None = None, silent: bool = False,
+         large_preview: bool = False) -> None:
+    # У выпуска своя обложка — её показываем крупно; превью чужих статей в срочных новостях остаётся маленьким
+    media = {"prefer_large_media": True} if large_preview else {"prefer_small_media": True}
     payload = {"chat_id": chat_id, "text": text, "parse_mode": "HTML", "disable_notification": silent,
-               "link_preview_options": {"url": page_url, "prefer_small_media": True}}
+               "link_preview_options": {"url": page_url, **media}}
     if keyboard:
         payload["reply_markup"] = keyboard
     try:

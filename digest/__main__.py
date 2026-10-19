@@ -7,12 +7,13 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from digest import alert as breaking
+from digest.cover import make_cover
 from digest.dedup import dedupe
 from digest.fetch import attach_discussions, fetch_all, fetch_articles, resolve_gnews
 from digest.llm import LlmError, explain, generate, select
 from digest.memory import (Archive, Stories, fetch_feedback, issue_slot, missed_in_morning, preferences_prompt,
                            record_issue, resolve_votes)
-from digest.render import DISPLAY_TZ, MONTHS, render_archive, render_page
+from digest.render import DISPLAY_TZ, MONTHS, human_date, issue_summary, render_archive, render_page
 from digest.state import SeenStore
 from digest.telegram import build_keyboard, build_message, send
 from digest.weekly import WEEK_DAYS, summarize_week
@@ -35,6 +36,14 @@ def _write_message(name: str, text: str, url: str, keyboard: dict | None) -> Non
     OUT.mkdir(exist_ok=True)
     (OUT / name).write_text(json.dumps({"text": text, "url": url, "keyboard": keyboard}, ensure_ascii=False),
                             encoding="utf-8")
+
+
+def _cover(site: Path, page_name: str, headline: str, date_label: str, sub: str) -> str:
+    """Снимает обложку выпуска в site/og/ и возвращает её адрес для og:image; без обложки — пустая строка."""
+    cover = site / "og" / f"{Path(page_name).stem}.png"
+    if not make_cover(headline, date_label, sub, cover):
+        return ""
+    return f"{os.environ['SITE_URL'].rstrip('/')}/og/{cover.name}"
 
 
 def build(args: argparse.Namespace) -> None:
@@ -81,8 +90,10 @@ def build(args: argparse.Namespace) -> None:
     missed = missed_in_morning(archive, today, opened) if slot == "evening" else []
     record_issue(archive, stories, today, digest.headline, page_name, digest.entries, slot)
 
+    date_label = f"{human_date(now)}{' · вечер' if slot == 'evening' else ''}"
+    og_image = _cover(args.site, page_name, digest.headline, date_label, issue_summary(digest.entries))
     page = render_page(digest, stats, now, failures, feedback_url=feedback_url, issues=archive.issues, page_name=page_name,
-                       slot=slot, missed=missed, morning_page=morning_page)
+                       slot=slot, missed=missed, morning_page=morning_page, og_image=og_image)
     args.site.mkdir(parents=True, exist_ok=True)
     for name in (page_name, "index.html"):
         (args.site / name).write_text(page, encoding="utf-8")
@@ -113,7 +124,9 @@ def weekly(args: argparse.Namespace) -> None:
     period = (f"{start.day}–{today.day} {MONTHS[today.month - 1]}" if start.month == today.month
               else f"{start.day} {MONTHS[start.month - 1]} – {today.day} {MONTHS[today.month - 1]}")
     page_name = f"week-{today:%Y-%m-%d}.html"
-    page = render_page(digest, stats, now, [], issues=archive.issues, kind="week", period=period, page_name=page_name)
+    og_image = _cover(args.site, page_name, digest.headline, f"Итог недели · {period}", issue_summary(digest.entries, "week"))
+    page = render_page(digest, stats, now, [], issues=archive.issues, kind="week", period=period, page_name=page_name,
+                       og_image=og_image)
     args.site.mkdir(parents=True, exist_ok=True)
     (args.site / page_name).write_text(page, encoding="utf-8")
     page_url = f"{os.environ['SITE_URL'].rstrip('/')}/{page_name}"
@@ -153,7 +166,7 @@ def alert(args: argparse.Namespace) -> None:
 def send_message(args: argparse.Namespace) -> None:
     message = json.loads((OUT / args.message).read_text(encoding="utf-8"))
     send(message["text"], message["url"], os.environ["TELEGRAM_BOT_TOKEN"], os.environ["TELEGRAM_CHAT_ID"],
-         message.get("keyboard"))
+         message.get("keyboard"), large_preview=True)
     log.info("отправлено в Telegram: %s", message["url"])
 
 
