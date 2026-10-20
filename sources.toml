@@ -1,7 +1,7 @@
 [digest]
 # Алиас сам переезжает на новые flash-версии; закрепить версию — указать, например, "gemini-3.5-flash"
 model = "gemini-flash-latest"
-audience = "Русскоязычные читатели Telegram-канала из Узбекистана и СНГ. Интересуются ИИ и технологиями, но не программисты. Хотят первыми узнавать главное — крупные релизы, компании, деньги, законы, исследования — и понимать простыми словами, что это меняет для людей и бизнеса."
+audience = "Человек из Ташкента с образованием по ИИ, шарит в программировании: Python, Telegram-боты, Cloudflare Workers, Claude Code, ИИ-ассистенты для малого бизнеса. Хочет первым знать всё главное в мире ИИ и технологий: крупные релизы, компании, деньги, законы, исследования."
 
 # Порядок важен: при склейке дублей основным остаётся источник, который выше в списке.
 # Типы: rss | hf_papers | hn | html. max_age_hours по умолчанию 48.
@@ -218,6 +218,55 @@ type = "rss"
 category = "news"
 url = "https://the-decoder.com/feed/"
 
+# --- Крупные мировые издания: разделы о технологиях ---
+# Ниже открытых медиа намеренно: у Bloomberg и FT тексты за пейволом, и разбор по ним пустой. При склейке дублей основным
+# остаётся источник выше, так что ссылкой события станет открытое издание, а платное добавит ему охват.
+# NYT, WSJ, Economist и Nikkei не взяты: о технологиях пишут единицы статей в сутки, их громкое и так приносит Techmeme
+[[source]]
+name = "the_guardian"
+type = "rss"
+category = "news"
+url = "https://www.theguardian.com/uk/technology/rss"
+
+[[source]]
+name = "the_register"
+alert = true
+type = "rss"
+category = "news"
+url = "https://www.theregister.com/headlines.atom"
+
+[[source]]
+name = "scmp_tech"
+type = "rss"
+category = "news"
+url = "https://www.scmp.com/rss/36/feed"
+
+[[source]]
+name = "technode"
+type = "rss"
+category = "news"
+url = "https://technode.com/feed/"
+
+[[source]]
+name = "sifted"
+type = "rss"
+category = "news"
+url = "https://sifted.eu/feed"
+
+[[source]]
+name = "bloomberg_tech"
+alert = true
+type = "rss"
+category = "news"
+url = "https://feeds.bloomberg.com/technology/news.rss"
+
+[[source]]
+name = "ft_tech"
+alert = true
+type = "rss"
+category = "news"
+url = "https://www.ft.com/technology?format=rss"
+
 [[source]]
 name = "import_ai"
 type = "rss"
@@ -252,6 +301,42 @@ type = "rss"
 category = "newsletter"
 url = "https://www.interconnects.ai/feed"
 max_age_hours = 170
+
+# --- Информационная безопасность: массовые инциденты и уязвимости, а не CVE для специалистов ---
+# The Hacker News и SecurityWeek не взяты: в первом сплошные CVE корпоративных продуктов, во втором — безопасность
+# компаний; SecurityLab.ru смешивает ИБ с научпопом, Хабр — инструкции для специалистов
+[[source]]
+name = "bleepingcomputer"
+alert = true
+type = "rss"
+category = "security"
+url = "https://www.bleepingcomputer.com/feed/"
+
+[[source]]
+name = "krebs"
+type = "rss"
+category = "security"
+url = "https://krebsonsecurity.com/feed/"
+max_age_hours = 72
+
+[[source]]
+name = "the_record"
+alert = true
+type = "rss"
+category = "security"
+url = "https://therecord.media/feed"
+
+[[source]]
+name = "ars_security"
+type = "rss"
+category = "security"
+url = "https://arstechnica.com/security/feed/"
+
+[[source]]
+name = "wired_security"
+type = "rss"
+category = "security"
+url = "https://www.wired.com/feed/category/security/latest/rss"
 
 # --- Инженеры: авторские блоги. X без платного API не читается; эти люди пишут и здесь ---
 # Отбор кладёт их посты в раздел «Что пишут инженеры», а не в шум «мнения без новости»

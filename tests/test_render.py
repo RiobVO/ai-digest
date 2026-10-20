@@ -291,3 +291,21 @@ def test_engineer_post_never_becomes_the_lead_story():
     page = render_page(digest, STATS, WHEN, failures=[])
     assert 'id="main-story"' not in page
     assert "Ронахер о вкусе агентов" in page[page.index('id="voices"'):]
+
+
+def test_every_model_section_has_a_label_a_row_and_an_icon():
+    # Разделы — контракт между схемой Gemini и вёрсткой: раздел без строки в ROW_SECTIONS молча пропал бы со страницы
+    from digest.llm import SECTIONS
+    from digest.render import ICONS, ROW_SECTIONS, SECTION_LABELS
+    rows = {section: anchor for section, anchor, _, _ in ROW_SECTIONS}
+    for section in SECTIONS:
+        assert section in SECTION_LABELS
+        if section != "paper":  # статьи идут отдельной колонкой
+            assert section in rows and rows[section] in ICONS
+
+
+def test_security_news_get_their_own_section():
+    leak = Item(source="bleepingcomputer", title="Bank leak", url="https://bleepingcomputer.com/x", category="security")
+    digest = Digest("День", "Лид", [sample().entries[0], Entry(leak, "security", 7, "Утечка в банке", "Факты.", "")])
+    page = render_page(digest, STATS, WHEN, failures=[])
+    assert 'id="security"' in page and "Безопасность" in page and "Утечка в банке" in page

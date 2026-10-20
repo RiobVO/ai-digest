@@ -18,11 +18,12 @@ MONTHS = ["января", "февраля", "марта", "апреля", "ма�
 MONTHS_SHORT = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"]
 WEEKDAYS = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
 SECTION_LABELS = {"product": "Компании и продукты", "model": "Модели и исследования", "business": "Деньги и законы",
-                  "dev": "Для тебя", "paper": "Статья", "voices": "Инженеры"}
+                  "dev": "Для тебя", "paper": "Статья", "voices": "Инженеры", "security": "Безопасность"}
 # (раздел, якорь, заголовок раздела, короткое имя для бокового меню)
 ROW_SECTIONS = [("product", "products", "Компании и продукты", "Компании"),
                 ("model", "models", "Модели и исследования", "Модели"),
-                ("business", "business", "Деньги, законы, люди", "Деньги и законы"), ("dev", "dev", "Для тебя", "Для тебя"),
+                ("business", "business", "Деньги, законы, люди", "Деньги и законы"), ("security", "security", "Безопасность", "Безопасность"),
+                ("dev", "dev", "Для тебя", "Для тебя"),
                 ("voices", "voices", "Что пишут инженеры", "Инженеры")]
 BRIEF_LABELS = {section: short for section, _, _, short in ROW_SECTIONS} | {"paper": "Статья"}
 ARCHIVE_IN_SIDEBAR = 7
@@ -40,7 +41,10 @@ SOURCE_LABELS = {
     "karpathy": "Andrej Karpathy", "armin_ronacher": "Armin Ronacher", "mitchell_hashimoto": "Mitchell Hashimoto",
     "thorsten_ball": "Thorsten Ball", "hamel_husain": "Hamel Husain", "sebastian_raschka": "Sebastian Raschka",
     "addy_osmani": "Addy Osmani", "ethan_mollick": "Ethan Mollick", "dwarkesh": "Dwarkesh Patel",
-    "pragmatic_engineer": "Pragmatic Engineer",
+    "pragmatic_engineer": "Pragmatic Engineer", "bleepingcomputer": "BleepingComputer", "krebs": "Krebs on Security",
+    "the_record": "The Record", "ars_security": "Ars Technica",
+    "the_guardian": "The Guardian", "the_register": "The Register", "scmp_tech": "SCMP", "technode": "TechNode",
+    "sifted": "Sifted", "bloomberg_tech": "Bloomberg", "ft_tech": "Financial Times", "wired_security": "Wired",
 }
 # Тред с парой баллов — не обсуждение, а чей-то репост; такой не показываем
 HN_MIN_SHOWN = 20
@@ -58,6 +62,7 @@ ICONS = {
     "noise": _SVG.format('<path d="M3 5h18l-7 8v6l-4 2v-8z"/>'),
     "archive": _SVG.format('<path d="M3 5h18v4H3zM5 9v10h14V9M10 13h4"/>'),
     "voices": _SVG.format('<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/>'),
+    "security": _SVG.format('<path d="M12 2l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5z"/>'),
     "up": _SVG.format('<path d="M7 10v11M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9z"/>'),
     "warn": _SVG.format('<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0zM12 9v4M12 17h.01"/>'),
     "terminal": _SVG.format('<path d="M4 17l6-6-6-6M12 19h8"/>'),
