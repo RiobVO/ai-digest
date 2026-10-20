@@ -83,6 +83,12 @@ archive) → cover → `render_page` → `out/message.json` → save state.
 - Worker: constant-time token compare, page endpoints accept only `PAGE_ORIGIN`, Telegram votes only from `OWNER_CHAT_ID`;
   KV records are duplicated into key metadata so `/votes` stays within the KV operation limit.
 
+## Git workflow
+
+- Commit and push right after a finished, verified change — don't ask first. Work directly on `main`; no feature
+  branch for routine changes.
+- `git pull --rebase` before every push: the CI bot pushes `state/`/`site/` commits to `origin/main` every hour.
+
 ## Conventions
 
 - Comments, docstrings and log messages are in Russian; comments explain *why*, often citing the incident that caused the code.
