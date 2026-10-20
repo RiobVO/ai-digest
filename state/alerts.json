@@ -8,17 +8,18 @@
     "github.com/deepseek-ai/DeepInfer",
     "title:deepseek just open sourced its inference engine"
    ]
+  },
+  {
+   "at": "2026-10-20T16:18:07.002527+00:00",
+   "day": "2026-10-20",
+   "title": "Mistral выпустила Voxtral 3 — SDK для голосовых агентов на 50+ языках",
+   "keys": [
+    "mistral.ai/news/voxtral-3",
+    "title:voxtral 3"
+   ]
   }
  ],
  "rejected": [
-  {
-   "at": "2026-10-19T15:18:07.006119+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/media-agentic-security-european-public-service-broadcasting-global-content-production",
-    "title:nvidia advances agentic security for media from european public service broadcasting to global content production"
-   ],
-   "strength": 1
-  },
   {
    "at": "2026-10-19T20:18:05.875160+00:00",
    "keys": [
@@ -44,6 +45,17 @@
     "news.google.com/rss/articles/CBMikgFBVV95cUxOR1dlajlycDFVTklkU3NhTHVvdmpTSUlhQ1pzX01yNGJrRUVJdjNlM3RzWFZWbC1UQmNUSUFjOTZWSXpaWUhyd1ZIZ3E5ZnVOaDNIclNPSmtmQXVJM3Q5RldXblpJdlNOczRiUGMwTXF5N1JkYnYzc2liY1RoTUFLOGhxZ2QtZjlqWlJISXRpVDFsQQ?oc=5",
     "news.google.com/rss/articles/CBMikwFBVV95cUxQdjJQZVJEemJvY19Hakl6YjBsY2RHVnd5UHVXaTZmRWZMOUhsS2JVNGZiSE9mWldVRXdORE5NODV2Y2dMaXJhbkRwd0tCMzBOZDZSOU9faFNNTGJ3NHFkZ0F6cjFlVExaWGpwVHE5VzVBeXNNeDBZOGo2cEw1bl9zdlpna1lDWEpoSVVtRHZMV29wSU0?oc=5",
     "title:lay s is releasing sweet and salty holiday chips"
+   ],
+   "strength": 4
+  },
+  {
+   "at": "2026-10-20T16:18:07.002527+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMikgFBVV95cUxNRjg3RFRuY0ZuZ203azdnaG53SWlBYmFkX0dRN05aSGtfRGM3RElsMHdHenByZW9ULUhFdVdfM0U1Q3RUN2FIS2Z0UmtyZGFjXzNST3lWaXpzQXV0ZmtEWHRqNGZJMUt4OFJ4Qy1GLVdNVEN5WWdweFJkOFhydWUxTDBfbGdKbHdtWnU1cTRZaTVOUQ?oc=5",
+    "news.google.com/rss/articles/CBMikgFBVV95cUxOUDN4VEZuYTVWQVJYd1Z0ZktXX2JGaElLcHJGbXVYckJNTVhBMVlSdkdmNzdUSHJpRWpTNEZNbjZPekt3Nmh4a3R0TTR1aG1uQXFlLWFlcWdydVZoXzQxNlk5RzVUUkNFWEZ6b2oyN1VsbzFWN04yaGNTb1hnX3E0UEV4TWlEQ29NLTc5b3dKajNZUQ?oc=5",
+    "news.google.com/rss/articles/CBMikgFBVV95cUxObFJNczhJZWtxMVNYOVJMdk51NUNDZmJ1dVlKX0k4U0l5UmU3TGhOYnFVNkxxWnFtcy1mZHlNaWxHUklERklWOUlIM29yMXcxdHZpTDhmUjdUVWV4LU5iZnNTQnlVWGxfN2RVSzhHdU9WWEhzaTNCbndDM0p3SndNeHV2ek1nOEFwb3p4YnRnUHRBdw?oc=5",
+    "news.google.com/rss/articles/CBMilAFBVV95cUxQc0xDTWlNcnRQOHk2Y21udzRMTDhVQ2F2QmxoLXA5NVI5TjFJTXlpQ1JwN0N6VXNKakZHZDZBZmZBRF83OWNkVnZKMy00N1ZHajlHVEdzTzgzczlDQVFuSThvQUdleXZFZy05ZGxWZnlWekNaRnN5NFRRQUhsaE1ISFZ0UWdnb21UMTZVQlBhMUF2SkJt?oc=5",
+    "title:ai scammers target sports fans with celebrity deepfakes"
    ],
    "strength": 4
   }
