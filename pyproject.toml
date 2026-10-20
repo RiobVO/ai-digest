@@ -7,11 +7,24 @@ requires-python = ">=3.12"
 dependencies = ["httpx>=0.28", "feedparser>=6.0"]
 
 [project.optional-dependencies]
-dev = ["pytest>=8"]
+dev = ["pytest>=8", "ruff>=0.8", "mypy>=1.13"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+
+[tool.mypy]
+python_version = "3.12"
+files = ["digest"]
+
+# У feedparser нет аннотаций типов и пакета stubs
+[[tool.mypy.overrides]]
+module = ["feedparser"]
+ignore_missing_imports = true
 
 [build-system]
 requires = ["setuptools>=69"]

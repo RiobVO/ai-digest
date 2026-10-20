@@ -14,8 +14,10 @@ log = logging.getLogger(__name__)
 TEMPLATES = Path(__file__).parent / "templates"
 TEMPLATE = Template((TEMPLATES / "cover.html").read_text(encoding="utf-8"))
 # Пейзаж берём из CSS героя страницы, а не копируем: сменится картинка на сайте — сменится и на обложке
-LANDSCAPE = re.search(r'url\("data:image/svg\+xml,[^"]+"\)',
-                      (TEMPLATES / "page.html").read_text(encoding="utf-8")).group(0)
+_landscape = re.search(r'url\("data:image/svg\+xml,[^"]+"\)', (TEMPLATES / "page.html").read_text(encoding="utf-8"))
+if _landscape is None:
+    raise RuntimeError("в page.html не найден SVG-пейзаж героя — обложке не из чего взять фон")
+LANDSCAPE = _landscape.group(0)
 WIDTH, HEIGHT = 1200, 630
 # Chrome снимает кадр по событию load, а Inter с Google Fonts к этому моменту может ещё не примениться:
 # виртуальное время даёт шрифту догрузиться

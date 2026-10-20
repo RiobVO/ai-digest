@@ -261,8 +261,8 @@ def _fetch_one(client: httpx.Client, src: dict, now: datetime) -> list[Item]:
     kind = src["type"]
     if kind == "hn":
         since = int((now - timedelta(hours=src.get("max_age_hours", DEFAULT_MAX_AGE_HOURS))).timestamp())
-        params = {"tags": "story", "hitsPerPage": 200,
-                  "numericFilters": f"points>={src.get('min_points', 0)},created_at_i>{since}"}
+        params: dict[str, str | int] = {"tags": "story", "hitsPerPage": 200,
+                                        "numericFilters": f"points>={src.get('min_points', 0)},created_at_i>{since}"}
         response = client.get(src["url"], params=params)
     else:
         response = client.get(src["url"])

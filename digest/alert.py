@@ -127,6 +127,8 @@ class AlertState:
             "undated": {u: at for u, at in self.undated.items() if u in self.on_page or fresh(at, UNDATED_DAYS)},
             "primed": True,
         }
+        if self.path is None:
+            raise ValueError("состояние срочных создано без пути к файлу — сохранять некуда")
         self.path.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
 
 

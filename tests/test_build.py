@@ -1,7 +1,7 @@
 """Сквозная сборка выпуска: сеть, Gemini и Chrome подменены, всё остальное — настоящий пайплайн build()."""
 import argparse
 import json
-from datetime import datetime, timezone
+from datetime import datetime
 
 import pytest
 

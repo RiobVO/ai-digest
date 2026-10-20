@@ -49,6 +49,9 @@ jobs:
       - name: Install
         run: pip install ".[dev]"
 
+      - name: Lint
+        run: ruff check digest tests && mypy
+
       - name: Test
         run: pytest -q
 

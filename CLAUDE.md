@@ -12,6 +12,7 @@ Python ≥ 3.12 (pyproject). CI installs with `pip install ".[dev]"`.
 ```bash
 pytest -q                                        # all Python tests (no network)
 pytest -q tests/test_llm.py::test_name           # single test
+ruff check digest tests && mypy                  # lint + types, CI runs it before tests
 node --test "worker/test/*.test.js"              # worker tests, no npm deps needed
 
 python -m digest build [--dry-run]               # daily issue → site/*.html + out/message.json

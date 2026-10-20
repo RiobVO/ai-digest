@@ -59,7 +59,10 @@ def test_undated_posts_seen_on_first_run_are_a_baseline_not_news():
 def test_undated_post_still_on_the_blog_is_never_forgotten(tmp_path):
     path = tmp_path / "alerts.json"
     state = AlertState({"primed": True}, path)
-    post = lambda: Item(source="anthropic", title="Claude 9", url="https://anthropic.com/news/c9", category="lab")
+
+    def post() -> Item:
+        return Item(source="anthropic", title="Claude 9", url="https://anthropic.com/news/c9", category="lab")
+
     split_undated([post()], state, NOW)
     later = NOW + timedelta(days=40)
     split_undated([post()], state, later)
@@ -70,7 +73,10 @@ def test_undated_post_still_on_the_blog_is_never_forgotten(tmp_path):
 
 def test_new_undated_post_stays_in_window_until_judged():
     state = AlertState({"primed": True})
-    post = lambda: Item(source="anthropic", title="New model", url="https://anthropic.com/news/new", category="lab")
+
+    def post() -> Item:
+        return Item(source="anthropic", title="New model", url="https://anthropic.com/news/new", category="lab")
+
     assert len(split_undated([post()], state, NOW)) == 1
     # Не уместился в пятёрку кандидатов или модель его ещё не решала — через час он снова в окне
     assert len(split_undated([post()], state, NOW + timedelta(hours=1))) == 1
