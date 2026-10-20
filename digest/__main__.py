@@ -7,6 +7,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from digest import alert as breaking
+from digest import evaluate
 from digest.cover import make_cover
 from digest.dedup import dedupe
 from digest.fetch import attach_discussions, fetch_all, fetch_articles, resolve_gnews
@@ -171,6 +172,57 @@ def alert(args: argparse.Namespace) -> None:
     state.save(now)
 
 
+SNAPSHOTS = Path("eval/snapshots")
+
+
+def snapshot(args: argparse.Namespace) -> None:
+    """Замораживает сегодняшние новости: на одном и том же срезе разные версии промпта можно сравнивать цифрами."""
+    now = datetime.now(timezone.utc)
+    config = tomllib.loads(args.config.read_text(encoding="utf-8"))
+    raw, failures = fetch_all(config["source"], now)
+    path = SNAPSHOTS / f"{now.astimezone(DISPLAY_TZ):%Y-%m-%d-%H}.json"
+    evaluate.save_snapshot(path, dedupe(raw), now)
+    log.info("срез %s: %d записей, сбоев %d", path, len(raw), len(failures))
+
+
+def run_eval(args: argparse.Namespace) -> None:
+    """Прогоняет текущие промпты отбора и разборов по срезам и печатает признаки слопа; в state ничего не пишет."""
+    settings = tomllib.loads(args.config.read_text(encoding="utf-8"))["digest"]
+    api_key = os.environ["GEMINI_API_KEY"]
+    paths = args.snapshots or sorted(SNAPSHOTS.glob("*.json"))
+    if not paths:
+        raise SystemExit(f"срезов нет — сначала python -m digest snapshot (папка {SNAPSHOTS})")
+    print("срез | прогон | событий | важность 8+ | слоп | выдуманные числа | why=пересказ")
+    for path in paths:
+        items, taken, texts = evaluate.load_snapshot(path)
+        for run in range(1, args.runs + 1):
+            digest = select(items, settings["audience"], settings["model"], api_key)
+            missing = [e.item.url for e in digest.entries if e.item.url not in texts]
+            if missing:
+                # Тексты статей докачиваем один раз и кладём в срез: следующие прогоны видят тот же вход
+                texts.update(fetch_articles(missing))
+                evaluate.save_snapshot(path, items, taken, texts)
+            try:
+                explain(digest.entries, texts, settings["audience"], settings["model"], api_key)
+            except LlmError as exc:
+                log.error("разборы в прогоне %d не сгенерированы: %s", run, exc)
+            result = evaluate.report(digest, texts)
+            print(f"{path.stem} | {run} | {result['entries']} | {result['high_importance']} | {result['slop']} | "
+                  f"{result['invented_numbers']} | {result['why_repeats']}")
+            for row in result["rows"]:
+                problems = [f"слоп: {', '.join(row['slop'])}" if row["slop"] else "",
+                            f"нет в источнике: {', '.join(row['invented'])}" if row["invented"] else "",
+                            "why повторяет пересказ" if row["why_repeats"] else ""]
+                if any(problems):
+                    print(f"    · {row['title']} — {'; '.join(p for p in problems if p)}")
+            out = OUT / "eval" / f"{path.stem}-run{run}.json"
+            out.parent.mkdir(parents=True, exist_ok=True)
+            out.write_text(json.dumps({"headline": digest.headline, "lead": digest.lead, "entries": [
+                {"title": e.title, "importance": e.importance, "summary": e.summary, "why": e.why,
+                 "details": e.details.__dict__ if e.details else None, "url": e.item.url} for e in digest.entries]},
+                ensure_ascii=False, indent=1), encoding="utf-8")
+
+
 def send_message(args: argparse.Namespace) -> None:
     message = json.loads((OUT / args.message).read_text(encoding="utf-8"))
     send(message["text"], message["url"], os.environ["TELEGRAM_BOT_TOKEN"], os.environ["TELEGRAM_CHAT_ID"],
@@ -198,6 +250,14 @@ def main() -> None:
         cmd.set_defaults(run=run)
         if name == "build":
             cmd.add_argument("--dry-run", action="store_true", help="не обновлять state")
+    snap_cmd = commands.add_parser("snapshot", help="заморозить сегодняшние новости для проверки промптов")
+    snap_cmd.add_argument("--config", type=Path, default=Path("sources.toml"))
+    snap_cmd.set_defaults(run=snapshot)
+    eval_cmd = commands.add_parser("eval", help="прогнать промпты по срезам и посчитать признаки слопа")
+    eval_cmd.add_argument("snapshots", nargs="*", type=Path, help="файлы срезов; по умолчанию все из eval/snapshots")
+    eval_cmd.add_argument("--runs", type=int, default=1, help="прогонов на срез: ответ модели от раза к разу плавает")
+    eval_cmd.add_argument("--config", type=Path, default=Path("sources.toml"))
+    eval_cmd.set_defaults(run=run_eval)
     send_cmd = commands.add_parser("send", help="отправить сообщение из out/ в Telegram")
     send_cmd.add_argument("--message", default="message.json")
     send_cmd.set_defaults(run=send_message)

@@ -19,6 +19,8 @@ python -m digest build [--dry-run]               # daily issue → site/*.html +
 python -m digest weekly                          # weekly summary → site/week-*.html + out/weekly.json
 python -m digest alert                           # hourly breaking-news check, sends to Telegram directly
 python -m digest send [--message weekly.json]    # send out/<message> to Telegram
+python -m digest snapshot                        # freeze today's news into eval/snapshots/ (committed baseline)
+python -m digest eval [--runs N] [snap.json]     # run current prompts on snapshots, print slop metrics
 
 cd worker && npx wrangler deploy                 # deploy feedback/scheduler worker; secrets via `wrangler secret put`
 ```
