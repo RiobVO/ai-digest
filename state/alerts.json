@@ -58,6 +58,48 @@
     "title:ai scammers target sports fans with celebrity deepfakes"
    ],
    "strength": 4
+  },
+  {
+   "at": "2026-10-20T19:18:10.910979+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMipAFBVV95cUxNZzREUjNtLXExanMyYnFHckVha0xndFFpaEVsMlJCaVNRRjNUX00tel9MbzBSR0FaOXRfUWFLOWNXZlY5bXVWejY3VHI1UVMyT2MwZms4VXgydXhZSU9DMnVuS295ZE81NzJPZEhCMzlDSU1SZnlSZHo0OUFxYWNuUzd6QUdsM3dfS0lrVlR3RFMtMTRjcHZmb0o5Z0h4NzVwQmVBQg?oc=5",
+    "news.google.com/rss/articles/CBMipAFBVV95cUxOTUl3SkZnMWJyRlBDb2xHX28tRkhSdi0wZ1l2dXRndVZqT2Q4YnBrZWwzRkxDeUx1WkZwUm5hUzdCMG1UVzdXLUdfU2hGYk1EZ3dDcnlud1QyUzNLQ0RpYUtKNU1OaGlsUGUtZDdLY094eFpjVUVwYW5IclNSWDg0ckZzTDVaaUJncWJTeGxJa0h1SnUwbm1Yc3FfME5mU3UzeUdBMA?oc=5",
+    "news.google.com/rss/articles/CBMiswFBVV95cUxOTDR6R29XUFoyOFZDSTY1TlllUW9TdU1VbWNTTUpRTkFTVUM2bDVUUHU4R282QXJwbG9LSGFRSy1OZG1aN2xSTDUtTmo4Q2RsRk92R0tPZTlLLXdwVlU5MTQzOF84QncxVnhDZmlZR1dxdU9SNWlFLUhtSEVKQWlFemZCd3BMTm44b1AyTlRWc2lZSTM3MUl2NzRDeGVlSzM1eFFNUjRmVS1Fd2RMM3pBS3VIWQ?oc=5",
+    "title:what happens when good ai goes bad researchers studying the tipping point"
+   ],
+   "strength": 3
+  },
+  {
+   "at": "2026-10-20T19:18:10.910979+00:00",
+   "keys": [
+    "anthropic.com/news/partnerships",
+    "title:partnerships"
+   ],
+   "strength": 3
+  },
+  {
+   "at": "2026-10-20T19:18:10.910979+00:00",
+   "keys": [
+    "anthropic.com/news/safeguards",
+    "title:safeguards"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-10-20T19:18:10.910979+00:00",
+   "keys": [
+    "anthropic.com/news/distillation-defenses",
+    "title:illicit distillation allows model developers to copy frontier ai capabilities without creating proportionally robust safeguards here we describe how we ve reduced the rate of distillation by more than 90"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-10-20T19:18:10.910979+00:00",
+   "keys": [
+    "anthropic.com/news/security",
+    "title:security"
+   ],
+   "strength": 7
   }
  ],
  "undated": {
