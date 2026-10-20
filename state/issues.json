@@ -1,5 +1,85 @@
 [
  {
+  "date": "2026-10-20",
+  "slot": "morning",
+  "headline": "Битва за триллион, кредитные риски и агенты против рекламы",
+  "page": "2026-10-20.html",
+  "entries": [
+   {
+    "id": "20261020-0",
+    "title": "OpenAI спешит закрыть раунд на $30 млрд при оценке $1,4 трлн до IPO Anthropic",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.reuters.com/world/openai-seeks-accelerate-fundraising-ahead-anthropic-ipo-sources-say-2026-10-19/",
+    "story": "s50"
+   },
+   {
+    "id": "20261020-1",
+    "title": "Anthropic обсуждает вторую сделку с Nscale на $45 млрд ради чипов Vera Rubin",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.bloomberg.com/news/articles/2026-10-19/nscale-anthropic-in-talks-for-45-billion-cloud-computing-deal?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb3VyY2UiOiJTdWJzY3JpYmVyR2lmdGVkQXJ0aWNsZSIsImlhdCI6MTc5MjQ0MTU0NywiZXhwIjoxNzkzMDQ2MzQ3LCJhcnRpY2xlSWQiOiJUTjYwVFlUOU5KTFMwMCIsImJjb25uZWN0SWQiOiIzNDM2Qjk5ODhDOEU0ODE2ODJFQzJBOTQ3NkVBOTdGRiJ9.7_22u597uUCQ4yRwudvXvPd3nzUHiVFsZxvhPS-i1Wg",
+    "story": "s9"
+   },
+   {
+    "id": "20261020-2",
+    "title": "Облигации CoreWeave ушли в зону риска, а S&P заявило о скрытом долге гиперскейлеров",
+    "section": "business",
+    "source": "verge",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/1014045/coreweave-stock-debt-sector-ai",
+    "story": "s18"
+   },
+   {
+    "id": "20261020-3",
+    "title": "Власти США полностью запретили модель DeepSeek в правительственных сетях",
+    "section": "business",
+    "source": "BBC",
+    "url": "https://www.bbc.com/news/articles/cjkgeq0k1wevo",
+    "story": "s51"
+   },
+   {
+    "id": "20261020-4",
+    "title": "Amazon открыла чипы Trainium для прямого запуска PyTorch без переписывания кода",
+    "section": "dev",
+    "source": "hf_blog",
+    "url": "https://huggingface.co/blog/hf-torchneuron",
+    "story": "s52"
+   },
+   {
+    "id": "20261020-5",
+    "title": "Хакеры взломали платформу OpenCode и украли рабочие API-ключи пользователей",
+    "section": "dev",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/10/19/hackers-hit-ai-coding-tool-opencode-running-up-charges-on-users-ai-accounts/",
+    "story": "s32"
+   },
+   {
+    "id": "20261020-6",
+    "title": "Cloudflare показала Clairic — компактную модель для быстрого извлечения данных",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://blog.cloudflare.com/clairic-extraction-model/",
+    "story": "s53"
+   },
+   {
+    "id": "20261020-7",
+    "title": "Энтузиасты натравили Claude Code на Smart TV для удаления рекламы и трекеров",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://techcrunch.com/2026/10/19/people-are-using-ai-to-make-their-smart-tvs-dumb-again/",
+    "story": "s54"
+   },
+   {
+    "id": "20261020-8",
+    "title": "Саймон Уиллисон: некролог по чистому ремеслу программирования",
+    "section": "voices",
+    "source": "simon_willison",
+    "url": "https://simonwillison.net/2026/Oct/19/my-obituary-for-programming/",
+    "story": "s55"
+   }
+  ]
+ },
+ {
   "date": "2026-10-19",
   "slot": "evening",
   "headline": "Автономные агенты выходят из-под контроля, а нео-облака идут ко дну",
