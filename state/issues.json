@@ -1,6 +1,94 @@
 [
  {
   "date": "2026-10-20",
+  "slot": "evening",
+  "headline": "Опенсорс от DeepSeek, чипы Nvidia на $35 млрд и зачистка в госсекторе США",
+  "page": "2026-10-20-evening.html",
+  "entries": [
+   {
+    "id": "20261020-9",
+    "title": "DeepSeek выложила в опенсорс свой движок инференса DeepInfer",
+    "section": "dev",
+    "source": "techmeme",
+    "url": "https://www.bloomberg.com/news/articles/2026-10-20/deepseek-unveils-open-source-tool-to-help-cut-ai-operating-costs",
+    "story": "s56"
+   },
+   {
+    "id": "20261020-10",
+    "title": "ByteDance, Alibaba и Tencent заказали чипы Nvidia RTX PRO 5500 на $35 млрд",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.reuters.com/business/retail-consumer/bytedance-alibaba-tencent-place-over-35-billion-worth-nvidia-chip-orders-2026-10-20/",
+    "story": "s57"
+   },
+   {
+    "id": "20261020-11",
+    "title": "Власти США приказали госагентствам удалить все решения на базе DeepSeek",
+    "section": "business",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/10/20/us-orders-federal-agencies-to-remove-chinas-deepseek-ai-from-their-systems/",
+    "story": "s51"
+   },
+   {
+    "id": "20261020-12",
+    "title": "Meta Muse случайно открыла доступ к личным и корпоративным секретам пользователей",
+    "section": "product",
+    "source": "ars_ai",
+    "url": "https://arstechnica.com/security/2026/10/meta-muse-exposes-users-personal-and-business-secrets-when-they-share-conversations/",
+    "story": "s58"
+   },
+   {
+    "id": "20261020-13",
+    "title": "Киберкомандование США разрабатывает самораспространяющихся боевых ИИ-агентов",
+    "section": "product",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/army-cyber-commands-echotribble-would-turn-ai-agents-into-self-spreading-cyberweapons/",
+    "story": "s59"
+   },
+   {
+    "id": "20261020-14",
+    "title": "Salesforce покупает маркетинговую ИИ-платформу Braze за $5,7 млрд",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.bloomberg.com/news/articles/2026-10-20/salesforce-to-buy-marketing-platform-braze-for-5-7-billion",
+    "story": "s60"
+   },
+   {
+    "id": "20261020-15",
+    "title": "Стартап Eka Robotics оценен в $1,45 млрд за модель физического манипулирования",
+    "section": "business",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/10/20/eka-is-worth-1-45-billion-thanks-to-a-physical-ai-model-that-has-experts-raving/",
+    "story": "s61"
+   },
+   {
+    "id": "20261020-16",
+    "title": "В справке WhatsApp нашли скрытые промпты с запретом советовать регуляторов",
+    "section": "product",
+    "source": "hn",
+    "url": "https://redact.dev/blog/whatsapp-help-pages-hidden-ai-instructions",
+    "story": "s62"
+   },
+   {
+    "id": "20261020-17",
+    "title": "Опрос Linux Foundation: ИИ сократил время кодинга вдвое, но породил вал slop-кода",
+    "section": "dev",
+    "source": "PR Newswire",
+    "url": "https://www.prnewswire.com/news-releases/new-lf-research-survey-shows-generative-ai-cuts-open-source-coding-time-in-half-but-25-of-incoming-pull-requests-are-considered-ai-slop-302913843.html",
+    "story": "s63"
+   },
+   {
+    "id": "20261020-18",
+    "title": "Хамель Хусейн: как перейти с дорогих LLM-судей на decision models для оценки качества",
+    "section": "voices",
+    "source": "hamel_husain",
+    "url": "https://hamel.dev/blog/posts/decision-model-evals/",
+    "story": "s64"
+   }
+  ]
+ },
+ {
+  "date": "2026-10-20",
   "slot": "morning",
   "headline": "Битва за триллион, кредитные риски и агенты против рекламы",
   "page": "2026-10-20.html",
