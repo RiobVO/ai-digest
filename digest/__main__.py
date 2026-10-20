@@ -158,7 +158,9 @@ def alert(args: argparse.Namespace) -> None:
              len(items), len(candidates), state.sent_today(now))
     if candidates and state.sent_today(now) < breaking.DAILY_CAP:
         attach_discussions(candidates)
-        raw = generate(breaking.build_prompt(candidates, state, settings["audience"]), breaking.ALERT_SCHEMA,
+        # Без текста статьи у модели только заголовок, и «что это меняет» она додумывает
+        texts = fetch_articles([c.url for c in candidates])
+        raw = generate(breaking.build_prompt(candidates, state, settings["audience"], texts), breaking.ALERT_SCHEMA,
                        settings["model"], os.environ["GEMINI_API_KEY"])
         picked, rejected = breaking.choose(raw, candidates)
         for item in rejected:
@@ -192,7 +194,7 @@ def run_eval(args: argparse.Namespace) -> None:
     paths = args.snapshots or sorted(SNAPSHOTS.glob("*.json"))
     if not paths:
         raise SystemExit(f"срезов нет — сначала python -m digest snapshot (папка {SNAPSHOTS})")
-    print("срез | прогон | событий | важность 8+ | слоп | выдуманные числа | why=пересказ")
+    print("срез | прогон | событий | важность 8+ | слоп | выдуманные числа | прогнозы | why=пересказ")
     for path in paths:
         items, taken, texts = evaluate.load_snapshot(path)
         for run in range(1, args.runs + 1):
@@ -208,10 +210,11 @@ def run_eval(args: argparse.Namespace) -> None:
                 log.error("разборы в прогоне %d не сгенерированы: %s", run, exc)
             result = evaluate.report(digest, texts)
             print(f"{path.stem} | {run} | {result['entries']} | {result['high_importance']} | {result['slop']} | "
-                  f"{result['invented_numbers']} | {result['why_repeats']}")
+                  f"{result['invented_numbers']} | {result['forecasts']} | {result['why_repeats']}")
             for row in result["rows"]:
                 problems = [f"слоп: {', '.join(row['slop'])}" if row["slop"] else "",
                             f"нет в источнике: {', '.join(row['invented'])}" if row["invented"] else "",
+                            f"прогноз: {', '.join(row['forecasts'])}" if row["forecasts"] else "",
                             "why повторяет пересказ" if row["why_repeats"] else ""]
                 if any(problems):
                     print(f"    · {row['title']} — {'; '.join(p for p in problems if p)}")

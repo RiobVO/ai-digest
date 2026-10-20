@@ -1,7 +1,7 @@
 """Итог недели: главные сюжетные линии за 7 дней. Хронологию строим из архива, модель только отбирает и пересказывает."""
 from datetime import date, timedelta
 
-from digest.llm import Details, Digest, Entry, entry_rank, generate
+from digest.llm import VOICE, Details, Digest, Entry, entry_rank, generate
 from digest.models import Item
 from digest.render import short_day
 
@@ -23,6 +23,8 @@ WEEK_PROMPT = """Ты редактор недельного итога ИИ-да
 - headline: тема недели до 70 символов. lead: 1–2 предложения о неделе.
 
 Используй только факты из событий ниже, ничего не добавляй.
+
+""" + VOICE + """
 
 Линии:
 {groups}"""

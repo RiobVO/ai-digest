@@ -47,6 +47,12 @@ def test_votes_resolve_to_titles_and_last_vote_wins(tmp_path):
     assert "Llama 5" in prompt.split("Не зашло")[0] and "Promo" in prompt.split("Не зашло")[1]
 
 
+def test_votes_are_a_hint_not_a_rule():
+    # Один 👎 статье не должен выключать целую тему или топить крупное событие
+    prompt = preferences_prompt([{"title": "Paper", "section": "paper", "source": "hf_papers", "v": "down", "at": "1"}])
+    assert "подсказка, а не правило" in prompt
+
+
 def test_empty_feedback_gives_empty_prompt():
     assert preferences_prompt([]) == ""
 

@@ -118,7 +118,7 @@ def test_second_run_does_not_show_seen_news_to_the_model(env, monkeypatch):
     monkeypatch.setattr(llm, "generate", recording)
     main.build(args)
     # Сюжет «Nvidia» законно остаётся в блоке активных сюжетов — проверяем только список записей
-    listed = prompts[0].rsplit("Записи:", 1)[1]
+    listed = prompts[0].split("### Записи", 1)[1].split("### Перед ответом", 1)[0]
     assert "Apple ships" in listed
     assert "OpenAI releases" not in listed and "Nvidia" not in listed
 
@@ -187,3 +187,24 @@ def test_dry_run_does_not_touch_state(env):
     main.build(args)
     assert (tmp / "out" / "message.json").exists()
     assert not args.state_dir.exists()
+
+
+def test_alert_fetches_article_texts_for_candidates(env, monkeypatch):
+    tmp, args = env
+    now = datetime.now().astimezone()
+    post = Item(source="openai", title="OpenAI ships GPT-6", url="https://openai.com/gpt-6", category="lab",
+                published=now)
+    monkeypatch.setattr(main, "fetch_all", lambda sources, now: ([post], []))
+    monkeypatch.setattr(main, "fetch_articles", lambda urls: {u: "GPT-6 is free for everyone today" for u in urls})
+    prompts = []
+
+    def judge(prompt, schema, model, api_key):
+        prompts.append(prompt)
+        return {"items": [{"index": 0, "urgent": False, "title": "", "text": ""}]}
+
+    monkeypatch.setattr(main, "generate", judge)
+    config = args.config.read_text(encoding="utf-8").replace('name = "x"', 'name = "x"\nalert = true')
+    args.config.write_text(config, encoding="utf-8")
+    args.state_dir.mkdir()
+    main.alert(args)
+    assert "GPT-6 is free for everyone today" in prompts[0]
