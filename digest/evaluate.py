@@ -114,7 +114,8 @@ def report(digest: Digest, texts: dict[str, str]) -> dict:
         "high_importance": sum(r["importance"] >= HIGH_IMPORTANCE for r in rows),
         "slop": sum(len(r["slop"]) for r in rows) + len(slop_hits(f"{digest.headline} {digest.lead}")),
         "invented_numbers": sum(len(r["invented"]) for r in rows),
-        "officialese": sum(len(r["officialese"]) for r in rows),
+        "officialese": sum(len(r["officialese"]) for r in rows)
+        + len(officialese_hits(f"{digest.headline} {digest.lead}")),
         "forecasts": sum(len(r["forecasts"]) for r in rows),
         "why_repeats": sum(r["why_repeats"] for r in rows),
         "rows": rows,

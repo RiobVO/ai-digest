@@ -55,8 +55,9 @@ def test_report_sums_problems_across_the_issue():
     bad = Entry(item, "business", 9, "Ключевая сделка", "Nvidia купила стартап за $5 млрд.",
                 "Nvidia купила стартап за $5 млрд.")
     bad.details = Details("Это является важным шагом.", ["рост 30%"], "", "")
-    result = report(Digest("День", "Лид", [good, bad]), {item.url: "The deal is worth $2B"})
+    result = report(Digest("День", "Лид является", [good, bad]), {item.url: "The deal is worth $2B"})
     assert result["entries"] == 2 and result["high_importance"] == 1
     assert result["invented_numbers"] == 2  # 5 в карточке, 30 в разборе
-    assert result["slop"] == 2 and result["officialese"] == 1  # «Ключевая», «важным шагом»; «является»
+    # «Ключевая», «важным шагом»; «является» в разборе и в лиде — заголовок и лид считаются, как у пустых оценок
+    assert result["slop"] == 2 and result["officialese"] == 2
     assert result["why_repeats"] == 1

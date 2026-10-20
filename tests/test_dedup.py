@@ -85,3 +85,13 @@ def test_aggregator_yields_primary_to_direct_link_of_the_same_story():
     assert len(out) == 1
     assert out[0].url == "https://www.theverge.com/ai/1012510"
     assert [s for s, _ in out[0].also] == ["The Verge"]
+
+
+def test_open_article_beats_a_paywalled_one_even_when_listed_later():
+    # Techmeme стоит в списке выше изданий и ведёт на оригинал — часто Bloomberg; основной должна стать открытая статья
+    paywalled = Item(source="techmeme", title="Nvidia agrees to buy Arm for $40 billion", url="https://www.bloomberg.com/a",
+                     category="news")
+    open_one = Item(source="the_guardian", title="Nvidia agrees to buy Arm for $40 billion", url="https://www.theguardian.com/a",
+                    category="news")
+    [merged] = dedupe([paywalled, open_one])
+    assert merged.url == "https://www.theguardian.com/a" and [s for s, _ in merged.also] == ["techmeme"]

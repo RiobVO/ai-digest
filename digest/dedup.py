@@ -9,6 +9,9 @@ TRACKING = re.compile(r"^(utm_.*|ref|ref_src|fbclid|gclid|source)$")
 TITLE_THRESHOLD = 0.88
 # Страницы-подборки, а не статьи: у Google News ссылка открывается только через JS, у Techmeme — чужие сюжеты вперемешку
 AGGREGATOR_HOSTS = {"news.google.com", "techmeme.com"}
+# Статьи за пейволом: читатель упирается в подписку, а разбор остаётся без текста. Techmeme и Google News ведут на них
+# часто, поэтому при склейке они уступают главную ссылку открытому изданию о том же событии
+PAYWALLED_HOSTS = {"bloomberg.com", "ft.com", "wsj.com", "nytimes.com", "theinformation.com", "economist.com"}
 
 
 def canonical_key(url: str) -> str:
@@ -28,6 +31,13 @@ def bare_host(url: str) -> str:
 
 def is_aggregator(url: str) -> bool:
     return bare_host(url) in AGGREGATOR_HOSTS
+
+
+def link_rank(url: str) -> int:
+    """Чем меньше, тем лучше ссылка подходит в основные: открытая статья, затем пейвол, затем страница-агрегатор."""
+    if is_aggregator(url):
+        return 2
+    return 1 if bare_host(url) in PAYWALLED_HOSTS else 0
 
 
 def norm_title(title: str) -> str:
@@ -52,7 +62,7 @@ def coverage(item: Item) -> int:
 
 def dedupe(items: list[Item]) -> list[Item]:
     """Склеивает дубли; первый встреченный элемент остаётся основным, порядок входа = приоритет.
-    Исключение — агрегатор: он уступает место прямой ссылке на ту же статью."""
+    Исключение — агрегатор и пейвол: они уступают место открытой статье о том же событии (link_rank)."""
     by_key: dict[str, Item] = {}
     for item in items:
         key = canonical_key(item.url)
@@ -69,9 +79,9 @@ def dedupe(items: list[Item]) -> list[Item]:
             if kept.source == item.source:
                 continue
             if SequenceMatcher(None, title, norm_title(kept.title)).ratio() >= TITLE_THRESHOLD:
-                # Google News стоит в списке выше изданий и индексирует их же статьи: иначе основной осталась бы
-                # ссылка, которая не открывается без JS, а прямая ушла бы в «также»
-                if is_aggregator(kept.url) and not is_aggregator(item.url):
+                # Google News и Techmeme стоят в списке выше изданий и ведут на те же статьи, часто за пейволом:
+                # иначе основной осталась бы ссылка без JS или без текста, а открытая ушла бы в «также»
+                if link_rank(item.url) < link_rank(kept.url):
                     absorb(item, kept)
                     result[n] = item
                 else:

@@ -121,6 +121,19 @@ def test_aggregator_link_never_becomes_the_primary_source():
     assert [s for s, _ in top.item.also] == ["Axios"]
 
 
+def test_paywalled_outlet_yields_the_primary_link_to_an_open_one():
+    # Модель по промпту ставит первым «самое авторитетное издание», а это часто Bloomberg или FT: без сортировки
+    # ссылка выпуска вела бы на пейвол, а разбор остался бы без текста статьи
+    pool = [Item(source="bloomberg_tech", title="Nvidia buys Arm", url="https://www.bloomberg.com/news/nv", category="news"),
+            Item(source="Axios", title="Nvidia deal", url="https://news.google.com/rss/articles/x", category="news"),
+            Item(source="the_guardian", title="Nvidia agrees Arm deal", url="https://www.theguardian.com/nv", category="news")]
+    raw = {"headline": "h", "lead": "l", "items": [
+        {"ids": [0, 1, 2], "section": "business", "importance": 8, "title": "Nvidia", "summary": "s", "why": ""}]}
+    top = parse_selection(raw, pool).entries[0]
+    assert top.item.url == "https://www.theguardian.com/nv"
+    assert [s for s, _ in top.item.also] == ["bloomberg_tech", "Axios"]
+
+
 def test_engineer_posts_get_their_own_section_and_never_lead_the_issue():
     pool = items() + [Item(source="armin_ronacher", title="Agents need taste", url="https://lucumr.pocoo.org/x",
                            category="engineer")]

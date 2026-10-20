@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 
 import httpx
 
-from digest.dedup import absorb, bare_host, coverage, is_aggregator
+from digest.dedup import absorb, bare_host, coverage, link_rank
 from digest.models import Item
 
 log = logging.getLogger(__name__)
@@ -142,7 +142,7 @@ score — голоса за статью на HF Papers.
 - Каждая цифра и название в title, summary и why есть в записи; смысл не расширен.
 - why говорит, что меняется и для кого, не пересказывает summary и не прогнозирует сверх записи.
 - Тон спокойный: нет фраз, подходящих к любой новости, газетных метафор и обобщений с одного случая.
-- Термины объяснены простыми словами.
+- Технический уровень не упрощён, но и слопа нет.
 Верни JSON строго по схеме."""
 
 SCHEMA = {
@@ -202,7 +202,7 @@ EXPLAIN_PROMPT = """Ты пишешь подробные разборы ново
 
 ### Перед ответом проверь
 - Каждая цифра, название и ссылка есть в карточке или тексте первоисточника; смысл не расширен.
-- what и points не повторяют карточку; термины объяснены простыми словами.
+- what и points не повторяют карточку и не упрощают технические детали.
 - Для каждого события вернул его id.
 Верни JSON строго по схеме."""
 
@@ -294,9 +294,9 @@ def parse_selection(raw: dict, items: list[Item]) -> Digest:
             log.warning("модель вернула событие без валидных ids: %s", row.get("title"))
             continue
         used.update(ids)
-        # Издание из Google News для модели тоже «первоисточник», но его ссылка не открывается без JS;
-        # сортировка устойчивая — среди прямых ссылок порядок модели сохраняется
-        ids.sort(key=lambda i: is_aggregator(items[i].url))
+        # Модель ставит первым «самое авторитетное издание», а это часто Bloomberg или FT за пейволом, а издание
+        # из Google News не открывается без JS. Сортировка устойчивая — среди равных ссылок порядок модели сохраняется
+        ids.sort(key=lambda i: link_rank(items[i].url))
         primary = items[ids[0]]
         for extra in ids[1:]:
             absorb(primary, items[extra])
