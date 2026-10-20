@@ -21,15 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-19T20:18:05.875160+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/germany-wants-to-lead-the-world-in-industrial-ai-how-nvidia-will-help",
-    "news.google.com/rss/articles/CBMiogFBVV95cUxPaHh0dS1IVTRGYkoyUVNoWmlMUEZncElQVFVYMU9MeV9iMF9IRzJ3NFV1Wk5oRDlsdVNlUzQ1U3p0MEVmZFBBSkx5VnBKQ0tDZGdVTkUtaFZoc3JLamV6Qms0MXEzbW5yM1J0cjdDRnI5SWhKejFMcmhMNlNXaUg1MVZVQTlZXzQyUXJaS2Q4TkJMR29XbnI1bjNVZHBfOWMyUUE?oc=5",
-    "title:germany wants to lead the world in industrial ai how nvidia will help"
-   ],
-   "strength": 2
-  },
-  {
    "at": "2026-10-20T05:18:08.023447+00:00",
    "keys": [
     "blogs.nvidia.com/blog/spain-startups-barcelona-supercomputing-center",
@@ -100,6 +91,46 @@
     "title:security"
    ],
    "strength": 7
+  },
+  {
+   "at": "2026-10-20T20:18:15.496115+00:00",
+   "keys": [
+    "anthropic.com/news/accenture-embedded-evaluation",
+    "title:we re partnering with accenture on independent evaluation of frontier ai part of our recent commitment to embed evaluators at anthropic both we and accenture expect to invest at least 1 billion to build capacity in this area over the next five years"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-10-20T20:18:15.496115+00:00",
+   "keys": [
+    "anthropic.com/news/life-sciences-verification-program",
+    "title:the life sciences verification program lsvp gives life science professionals access to claude mythos opus and sonnet models with a refined set of safeguards more permissive for biology related work"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-10-20T20:18:15.496115+00:00",
+   "keys": [
+    "anthropic.com/news/enterprise-frontier-safeguards",
+    "title:developing enterprise frontier safeguards with our customers"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-10-20T20:18:15.496115+00:00",
+   "keys": [
+    "anthropic.com/news/improving-alignment-security-efforts",
+    "title:on july 30 we reported three incidents in which claude models gained unauthorized access to real computer systems we are conducting an in depth analysis of both incidents and planning to work with metr for an independent review in the meantime we re sharing some of the changes we ve made over the past month"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-10-20T20:18:15.496115+00:00",
+   "keys": [
+    "anthropic.com/news/model-hardware-standard-research-preview",
+    "title:we re opening a research preview of the model hardware standard mhs a shared specification for ai agents to safely operate physical devices to a first group of scientific research labs and advanced manufacturers"
+   ],
+   "strength": 2
   }
  ],
  "undated": {
