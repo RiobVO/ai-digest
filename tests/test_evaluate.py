@@ -1,16 +1,18 @@
 from datetime import datetime, timezone
 
-from digest.evaluate import (forecast_hits, invented_numbers, load_snapshot, repeats, report, save_snapshot,
-                             slop_hits)
+from digest.evaluate import (forecast_hits, invented_numbers, load_snapshot, officialese_hits, repeats, report,
+                             save_snapshot, slop_hits)
 from digest.llm import Details, Digest, Entry
 from digest.models import Item
 
 NOW = datetime(2026, 10, 20, 3, tzinfo=timezone.utc)
 
 
-def test_slop_markers_are_found_in_any_word_form():
+def test_empty_evaluations_and_officialese_are_counted_apart():
+    # Пустая оценка ничего не сообщает о новости; канцелярит — только тяжёлый стиль при нормальном смысле
     text = "Это ключевая новость для индустрии: компания представила модель, которая является лидером."
-    assert set(slop_hits(text)) == {"ключевая", "для индустрии", "представила", "является"}
+    assert set(slop_hits(text)) == {"ключевая", "для индустрии"}
+    assert set(officialese_hits(text)) == {"представила", "является"}
     assert slop_hits("DeepSeek выложила DeepInfer под MIT") == []
 
 
@@ -56,4 +58,5 @@ def test_report_sums_problems_across_the_issue():
     result = report(Digest("День", "Лид", [good, bad]), {item.url: "The deal is worth $2B"})
     assert result["entries"] == 2 and result["high_importance"] == 1
     assert result["invented_numbers"] == 2  # 5 в карточке, 30 в разборе
-    assert result["slop"] == 3 and result["why_repeats"] == 1  # «Ключевая», «является», «важным шагом»
+    assert result["slop"] == 2 and result["officialese"] == 1  # «Ключевая», «важным шагом»; «является»
+    assert result["why_repeats"] == 1

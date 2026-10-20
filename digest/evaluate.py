@@ -12,12 +12,15 @@ from typing import Any
 from digest.llm import Digest, Entry
 from digest.models import Item
 
-# Оценки без содержания и канцелярит: такую фразу можно приклеить к любой новости, и она ничего не сообщит
+# Оценки без содержания: такую фразу можно приклеить к любой новости, и она ничего о ней не сообщит
 SLOP_PATTERNS = [
-    r"ключев\w*", r"являет\w*", r"представил\w*", r"позволя\w*", r"осуществл\w*",
-    r"данн(?:ый|ая|ое|ого|ой|ом|ому)", r"в рамках", r"оптимизирован\w* для", r"важн\w* шаг\w*", r"правила игры",
-    r"революци\w*", r"беспрецедентн\w*", r"новые возможности", r"для (?:всей )?индустрии", r"уникальн\w*",
-    r"инновацион\w*", r"станет (?:гораздо |намного |значительно )?(?:проще|дешевле|доступнее)",
+    r"ключев\w*", r"важн\w* шаг\w*", r"правила игры", r"революци\w*", r"беспрецедентн\w*", r"новые возможности",
+    r"для (?:всей )?индустрии", r"уникальн\w*", r"инновацион\w*",
+]
+# Канцелярит: смысл не портит, но текст звучит как пресс-релиз; считается отдельно, чтобы не смешивать с пустыми оценками
+OFFICIALESE_PATTERNS = [
+    r"являет\w*", r"представил\w*", r"позволя\w*", r"осуществл\w*", r"данн(?:ый|ая|ое|ого|ой|ом|ому)", r"в рамках",
+    r"оптимизирован\w* для",
 ]
 # Прогнозы без опоры на источник: модель достраивает последствия, которых в новости нет («придётся выключить»)
 FORECAST_PATTERNS = [
@@ -25,8 +28,13 @@ FORECAST_PATTERNS = [
     r"станет (?:заметно |гораздо |намного |значительно )?(?:проще|дешевле|доступнее|быстрее|труднее|сложнее)",
     r"станут (?:заметно |гораздо |намного |значительно )?(?:проще|дешевле|доступнее|быстрее)", r"всё чаще", r"все чаще",
 ]
-FORECAST_RE = re.compile(r"(?<!\w)(?:" + "|".join(FORECAST_PATTERNS) + r")(?!\w)", re.I)
-SLOP_RE = re.compile(r"(?<!\w)(?:" + "|".join(SLOP_PATTERNS) + r")(?!\w)", re.I)
+
+
+def _words(patterns: list[str]) -> re.Pattern[str]:
+    return re.compile(r"(?<!\w)(?:" + "|".join(patterns) + r")(?!\w)", re.I)
+
+
+SLOP_RE, OFFICIALESE_RE, FORECAST_RE = _words(SLOP_PATTERNS), _words(OFFICIALESE_PATTERNS), _words(FORECAST_PATTERNS)
 # Тысячи через пробел («250 000», в том числе неразрывный) — одно число, а не «250» и «000»
 NUMBER_RE = re.compile(r"\d{1,3}(?:[ \u00a0\u202f]\d{3})+(?:[.,]\d+)?|\d+(?:[.,]\d+)*")
 # Тысячи не начинаются с нуля: «0,015» — дробь
@@ -39,6 +47,10 @@ HIGH_IMPORTANCE = 8
 
 def slop_hits(text: str) -> list[str]:
     return [m.group(0).lower() for m in SLOP_RE.finditer(text)]
+
+
+def officialese_hits(text: str) -> list[str]:
+    return [m.group(0).lower() for m in OFFICIALESE_RE.finditer(text)]
 
 
 def forecast_hits(text: str) -> list[str]:
@@ -92,6 +104,7 @@ def report(digest: Digest, texts: dict[str, str]) -> dict:
             "title": entry.title,
             "importance": entry.importance,
             "slop": slop_hits(written),
+            "officialese": officialese_hits(written),
             "forecasts": forecast_hits(written),
             "invented": invented_numbers(written, _source_text(entry, texts)),
             "why_repeats": bool(entry.why) and repeats(entry.why, entry.summary),
@@ -101,6 +114,7 @@ def report(digest: Digest, texts: dict[str, str]) -> dict:
         "high_importance": sum(r["importance"] >= HIGH_IMPORTANCE for r in rows),
         "slop": sum(len(r["slop"]) for r in rows) + len(slop_hits(f"{digest.headline} {digest.lead}")),
         "invented_numbers": sum(len(r["invented"]) for r in rows),
+        "officialese": sum(len(r["officialese"]) for r in rows),
         "forecasts": sum(len(r["forecasts"]) for r in rows),
         "why_repeats": sum(r["why_repeats"] for r in rows),
         "rows": rows,

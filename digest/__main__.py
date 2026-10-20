@@ -195,7 +195,7 @@ def run_eval(args: argparse.Namespace) -> None:
     paths = args.snapshots or sorted(SNAPSHOTS.glob("*.json"))
     if not paths:
         raise SystemExit(f"срезов нет — сначала python -m digest snapshot (папка {SNAPSHOTS})")
-    print("срез | прогон | событий | важность 8+ | слоп | выдуманные числа | прогнозы | why=пересказ")
+    print("срез | прогон | событий | важность 8+ | пустые оценки | канцелярит | выдуманные числа | прогнозы | why=пересказ")
     for path in paths:
         items, taken, texts = evaluate.load_snapshot(path)
         for run in range(1, args.runs + 1):
@@ -213,6 +213,7 @@ def run_eval(args: argparse.Namespace) -> None:
                 log.error("разборы в прогоне %d не сгенерированы: %s", run, exc)
             result = evaluate.report(digest, texts)
             print(f"{path.stem} | {run} | {result['entries']} | {result['high_importance']} | {result['slop']} | "
+                  f"{result['officialese']} | "
                   f"{result['invented_numbers']} | {result['forecasts']} | {result['why_repeats']}")
             for row in result["rows"]:
                 problems = [f"слоп: {', '.join(row['slop'])}" if row["slop"] else "",
