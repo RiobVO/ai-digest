@@ -1,5 +1,7 @@
 from datetime import datetime, timezone
 
+import pytest
+
 from digest.fetch import parse_feed, parse_hf_papers, parse_hn, parse_html
 
 RELEASES_ATOM = b"""<?xml version="1.0"?><feed xmlns="http://www.w3.org/2005/Atom">
@@ -202,3 +204,19 @@ def test_google_news_link_stays_when_decoding_fails(monkeypatch):
         story = Item(source="Politico", title="t", url=link, category="news")
         fetch.resolve_gnews([story])
         assert story.url == link
+
+
+def test_html_page_without_matching_links_is_a_failure_not_a_quiet_day():
+    # Блог сменил вёрстку — шаблон ссылок больше не совпадает. На странице новостей ссылки есть всегда,
+    # поэтому ноль — поломка: без исключения источник молча пропал бы из выпусков навсегда
+    src = {"name": "anthropic", "category": "lab", "url": "https://www.anthropic.com/news",
+           "link_pattern": r"/blog/[a-z0-9-]+"}
+    with pytest.raises(ValueError, match="anthropic"):
+        parse_html(ANTHROPIC_HTML, src)
+
+
+def test_feed_without_entries_is_a_failure_not_a_quiet_day():
+    # Адрес ленты начал отдавать HTML-страницу или заглушку: feedparser не падает, а возвращает ноль записей
+    src = {"name": "verge", "category": "news", "url": "https://theverge.com/rss"}
+    with pytest.raises(ValueError, match="verge"):
+        parse_feed(b"<html><body>Moved</body></html>", src)

@@ -44,7 +44,12 @@ def _original_link(link: str, summary_html: str) -> str:
 def parse_feed(body: bytes, src: dict) -> list[Item]:
     items = []
     prefix = src.get("title_prefix")
-    for entry in feedparser.parse(body).entries:
+    entries = feedparser.parse(body).entries
+    if not entries:
+        # Лента хранит историю, пустой она не бывает: адрес отдаёт заглушку или HTML. feedparser на это не падает,
+        # и без исключения источник молча выпал бы из выпусков
+        raise ValueError(f"{src['name']}: в ленте ни одной записи")
+    for entry in entries:
         stamp = entry.get("published_parsed") or entry.get("updated_parsed")
         title = _text(entry.get("title", ""))
         source, summary = src["name"], _text(entry.get("summary", ""))[:600]
@@ -217,7 +222,11 @@ def parse_html(body: str, src: dict) -> list[Item]:
         title = _clean_title(_text(inner), src.get("strip_words", []))
         if len(title) > len(titles.get(url, "")):
             titles[url] = title
-    return [Item(source=src["name"], title=t, url=u, category=src["category"]) for u, t in titles.items() if t]
+    items = [Item(source=src["name"], title=t, url=u, category=src["category"]) for u, t in titles.items() if t]
+    if not items:
+        # На странице новостей ссылки есть всегда; ноль значит, что блог сменил вёрстку и link_pattern устарел
+        raise ValueError(f"{src['name']}: на странице нет ссылок по link_pattern")
+    return items
 
 
 NOISE_BLOCKS = re.compile(r"<(script|style|noscript|svg|nav|header|footer|aside|form)\b.*?</\1>", re.S | re.I)

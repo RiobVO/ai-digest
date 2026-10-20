@@ -55,11 +55,17 @@ def build(args: argparse.Namespace) -> None:
     feedback_url = os.environ.get("FEEDBACK_URL", "")
 
     raw, failures = fetch_all(config["source"], now)
+    if len(failures) == len(config["source"]):
+        # Скорее всего легла сеть раннера; пустой выпуск выглядел бы как тихий день, а падение придёт оповещением
+        raise SystemExit(f"ни один источник не собран: {failures}")
     store = SeenStore(args.state_dir / "seen.json")
     new = store.take_new(raw, now)
     merged = dedupe(new)
     stats = {"raw": len(raw), "new": len(new), "merged": len(merged)}
     log.info("собрано %d, новых %d, после склейки %d, сбоев %d", len(raw), len(new), len(merged), len(failures))
+    if not merged:
+        # Повтор уже вышедшего выпуска без новых записей затёр бы его страницу пустой
+        raise SystemExit("новых записей нет — выпуск не собран, вышедший не трогаю")
 
     archive = Archive(args.state_dir / "issues.json")
     stories = Stories(args.state_dir / "stories.json")
@@ -71,6 +77,8 @@ def build(args: argparse.Namespace) -> None:
     digest = select(merged, settings["audience"], settings["model"], api_key,
                     preferences=preferences_prompt(feedback), stories=stories.active(today))
     log.info("в выпуске %d событий, в шуме %d", len(digest.entries), len(digest.noise))
+    if not digest.entries:
+        raise SystemExit("модель не выбрала ни одного события — пустой выпуск не отправляю")
     # Сначала настоящий адрес статьи: по нему ищется обсуждение на HN и скачивается текст для разбора
     resolve_gnews([e.item for e in digest.entries])
     attach_discussions([e.item for e in digest.entries])

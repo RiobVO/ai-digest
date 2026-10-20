@@ -9,7 +9,22 @@ import digest.__main__ as main
 from digest import llm
 from digest.models import Item
 
-CONFIG = '[digest]\nmodel = "test-model"\naudience = "разработчик"\n\n[[source]]\nname = "x"\ntype = "rss"\ncategory = "news"\nurl = "https://x.io/feed"\n'
+CONFIG = """[digest]
+model = "test-model"
+audience = "разработчик"
+
+[[source]]
+name = "x"
+type = "rss"
+category = "news"
+url = "https://x.io/feed"
+
+[[source]]
+name = "dead"
+type = "rss"
+category = "news"
+url = "https://dead.io/feed"
+"""
 
 
 def raw_items(now: datetime) -> list[Item]:
@@ -91,17 +106,58 @@ def test_build_ships_page_message_and_state_that_agree(env):
 def test_second_run_does_not_show_seen_news_to_the_model(env, monkeypatch):
     tmp, args = env
     main.build(args)
+    fresh = Item(source="ars_ai", title="Apple ships an on-device model", url="https://arstechnica.com/apple",
+                 category="news", published=datetime.now().astimezone())
+    monkeypatch.setattr(main, "fetch_all", lambda sources, now: ([*raw_items(now), fresh], []))
     prompts = []
 
     def recording(prompt, schema, model, api_key):
         prompts.append(prompt)
-        return {"headline": "", "lead": "", "items": []}
+        return fake_generate()(prompt, schema, model, api_key)
 
     monkeypatch.setattr(llm, "generate", recording)
     main.build(args)
     # Сюжет «Nvidia» законно остаётся в блоке активных сюжетов — проверяем только список записей
     listed = prompts[0].rsplit("Записи:", 1)[1]
+    assert "Apple ships" in listed
     assert "OpenAI releases" not in listed and "Nvidia" not in listed
+
+
+def _forbid_model(monkeypatch):
+    def unexpected(prompt, schema, model, api_key):
+        raise AssertionError("модель не должна вызываться без записей")
+    monkeypatch.setattr(llm, "generate", unexpected)
+
+
+def test_all_sources_failed_aborts_before_the_model(env, monkeypatch):
+    tmp, args = env
+    # Сеть раннера легла: без проверки ушёл бы пустой выпуск, а провал увидели бы только по пустому сообщению
+    monkeypatch.setattr(main, "fetch_all", lambda sources, now: ([], ["x: ConnectError", "dead: ConnectError"]))
+    _forbid_model(monkeypatch)
+    with pytest.raises(SystemExit, match="ни один источник"):
+        main.build(args)
+    assert not args.state_dir.exists() and not (tmp / "out" / "message.json").exists()
+
+
+def test_rerun_with_nothing_new_keeps_the_published_issue(env, monkeypatch):
+    tmp, args = env
+    main.build(args)
+    message = json.loads((tmp / "out" / "message.json").read_text(encoding="utf-8"))
+    page = args.site / message["url"].rsplit("/", 1)[1]
+    published = page.read_text(encoding="utf-8")
+    _forbid_model(monkeypatch)
+    with pytest.raises(SystemExit, match="новых записей нет"):
+        main.build(args)
+    # Повтор того же выпуска не должен затирать вышедшую страницу пустой
+    assert page.read_text(encoding="utf-8") == published
+
+
+def test_model_choosing_nothing_aborts_instead_of_shipping_an_empty_issue(env, monkeypatch):
+    tmp, args = env
+    monkeypatch.setattr(llm, "generate", lambda prompt, schema, model, api_key: {"headline": "", "lead": "", "items": []})
+    with pytest.raises(SystemExit, match="ни одного события"):
+        main.build(args)
+    assert not args.state_dir.exists() and not (tmp / "out" / "message.json").exists()
 
 
 def test_failed_explain_still_ships_the_issue(env, monkeypatch):
