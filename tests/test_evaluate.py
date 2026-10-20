@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 
-from digest.evaluate import invented_numbers, load_snapshot, repeats, report, save_snapshot, slop_hits
+from digest.evaluate import (forecast_hits, invented_numbers, load_snapshot, repeats, report, save_snapshot,
+                             slop_hits)
 from digest.llm import Details, Digest, Entry
 from digest.models import Item
 
@@ -17,6 +18,17 @@ def test_numbers_absent_from_the_source_are_flagged_as_invented():
     source = "Anthropic Q3 revenue hits $16.8B, 2,000 employees, 3x growth"
     assert invented_numbers("Выручка $16,8 млрд, сотрудников 2000, рост в 3 раза", source) == []
     assert invented_numbers("Выручка 17 млрд, рост 40%", source) == ["17", "40"]
+    # Русская запись тысяч через пробел — то же число, что «250,000» в английском источнике
+    assert invented_numbers("штраф до 250 000 евро", "a fine of up to €250,000") == []
+    # «0,015» — русская дробь, а не английские тысячи
+    assert invented_numbers("0,015 доллара за кэш", "$0.015 cached input") == []
+
+
+def test_forecasts_are_counted_separately_from_facts():
+    # Прогноз в «почему важно» без опоры на источник — домысел, который меняет смысл новости
+    assert forecast_hits("Поисковикам придётся выключить ответы ИИ, и всё станет дешевле на годы вперёд") == [
+        "придётся", "станет дешевле", "на годы вперёд"]
+    assert forecast_hits("Суд обязал Google удалить три текста") == []
 
 
 def test_why_that_retells_the_summary_counts_as_a_repeat():

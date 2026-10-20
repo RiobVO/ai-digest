@@ -19,9 +19,18 @@ SLOP_PATTERNS = [
     r"революци\w*", r"беспрецедентн\w*", r"новые возможности", r"для (?:всей )?индустрии", r"уникальн\w*",
     r"инновацион\w*", r"станет (?:гораздо |намного |значительно )?(?:проще|дешевле|доступнее)",
 ]
+# Прогнозы без опоры на источник: модель достраивает последствия, которых в новости нет («придётся выключить»)
+FORECAST_PATTERNS = [
+    r"придётся", r"придется", r"будут вынуждены", r"будет вынужден\w*", r"на годы вперёд", r"на годы вперед",
+    r"станет (?:заметно |гораздо |намного |значительно )?(?:проще|дешевле|доступнее|быстрее|труднее|сложнее)",
+    r"станут (?:заметно |гораздо |намного |значительно )?(?:проще|дешевле|доступнее|быстрее)", r"всё чаще", r"все чаще",
+]
+FORECAST_RE = re.compile(r"(?<!\w)(?:" + "|".join(FORECAST_PATTERNS) + r")(?!\w)", re.I)
 SLOP_RE = re.compile(r"(?<!\w)(?:" + "|".join(SLOP_PATTERNS) + r")(?!\w)", re.I)
-NUMBER_RE = re.compile(r"\d+(?:[.,]\d+)*")
-THOUSANDS_RE = re.compile(r"\d{1,3}(?:,\d{3})+")
+# Тысячи через пробел («250 000», в том числе неразрывный) — одно число, а не «250» и «000»
+NUMBER_RE = re.compile(r"\d{1,3}(?:[ \u00a0\u202f]\d{3})+(?:[.,]\d+)?|\d+(?:[.,]\d+)*")
+# Тысячи не начинаются с нуля: «0,015» — дробь
+THOUSANDS_RE = re.compile(r"[1-9]\d{0,2}(?:,\d{3})+")
 # Доля основ «почему важно», уже встречавшихся в пересказе, после которой это повтор, а не новая мысль
 REPEAT_SHARE = 0.6
 STEM = 5
@@ -32,8 +41,13 @@ def slop_hits(text: str) -> list[str]:
     return [m.group(0).lower() for m in SLOP_RE.finditer(text)]
 
 
+def forecast_hits(text: str) -> list[str]:
+    return [m.group(0).lower() for m in FORECAST_RE.finditer(text)]
+
+
 def _number(token: str) -> str:
     # «2,000» в английском источнике — тысячи, «16,8» в русском тексте — дробь
+    token = re.sub(r"[ \u00a0\u202f]", "", token)
     token = token.replace(",", "") if THOUSANDS_RE.fullmatch(token) else token.replace(",", ".")
     return token.lstrip("0") or "0"
 
@@ -78,6 +92,7 @@ def report(digest: Digest, texts: dict[str, str]) -> dict:
             "title": entry.title,
             "importance": entry.importance,
             "slop": slop_hits(written),
+            "forecasts": forecast_hits(written),
             "invented": invented_numbers(written, _source_text(entry, texts)),
             "why_repeats": bool(entry.why) and repeats(entry.why, entry.summary),
         })
@@ -86,6 +101,7 @@ def report(digest: Digest, texts: dict[str, str]) -> dict:
         "high_importance": sum(r["importance"] >= HIGH_IMPORTANCE for r in rows),
         "slop": sum(len(r["slop"]) for r in rows) + len(slop_hits(f"{digest.headline} {digest.lead}")),
         "invented_numbers": sum(len(r["invented"]) for r in rows),
+        "forecasts": sum(len(r["forecasts"]) for r in rows),
         "why_repeats": sum(r["why_repeats"] for r in rows),
         "rows": rows,
     }
