@@ -208,3 +208,33 @@ def test_alert_fetches_article_texts_for_candidates(env, monkeypatch):
     args.state_dir.mkdir()
     main.alert(args)
     assert "GPT-6 is free for everyone today" in prompts[0]
+
+
+def test_eval_runs_see_the_same_input_and_never_rewrite_the_snapshot(tmp_path, monkeypatch):
+    # Отбор склеивает дубли прямо в объектах записей; без копии второй прогон видел уже склеенное,
+    # а сохранение текстов записывало склейку в замороженный срез
+    from digest import evaluate
+    now = datetime(2026, 10, 20, 3).astimezone()
+    snap = tmp_path / "snap.json"
+    evaluate.save_snapshot(snap, raw_items(now)[1:3], now)
+    pristine = snap.read_text(encoding="utf-8")
+    config = tmp_path / "sources.toml"
+    config.write_text(CONFIG, encoding="utf-8")
+    monkeypatch.setenv("GEMINI_API_KEY", "k")
+    monkeypatch.setattr(main, "OUT", tmp_path / "out")
+    monkeypatch.setattr(main, "fetch_articles", lambda urls: {u: "" for u in urls})
+    prompts = []
+
+    def grouping(prompt, schema, model, api_key):
+        prompts.append(prompt)
+        if schema is llm.SCHEMA:
+            return {"headline": "", "lead": "", "items": [{"ids": [0, 1], "section": "business", "importance": 7,
+                                                           "title": "Nvidia", "summary": "", "why": ""}]}
+        return {"items": []}
+
+    monkeypatch.setattr(llm, "generate", grouping)
+    main.run_eval(argparse.Namespace(config=config, snapshots=[snap], runs=2))
+    selection_prompts = [p for p in prompts if "### Записи" in p]
+    assert selection_prompts[0] == selection_prompts[1]
+    saved = json.loads(snap.read_text(encoding="utf-8"))
+    assert saved["items"] == json.loads(pristine)["items"]

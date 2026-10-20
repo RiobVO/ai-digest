@@ -5,7 +5,7 @@ from html import escape
 from pathlib import Path
 
 from digest.dedup import canonical_key, dedupe, norm_title
-from digest.llm import DATA_NOTE, VOICE
+from digest.llm import DATA_NOTE, VOICE, fence
 from digest.models import Item
 from digest.render import DISPLAY_TZ, _href, plural
 
@@ -38,7 +38,7 @@ ALERT_PROMPT = """Ты дежурный редактор срочных ново
 Примеры решения (это не новости, их факты не используй):
 - срочно: «OpenAI выпустила новую флагманскую модель и открыла её бесплатным пользователям ChatGPT»;
   «Суд запретил продажи чипов NVIDIA в крупной стране»; «ChatGPT не работает по всему миру уже несколько часов».
-- не срочно: «DeepSeek выложила в открытый доступ программу для запуска своих моделей» — инструмент для программистов;
+- не срочно: «Лаборатория выложила в открытый доступ программу для запуска своих моделей» — инструмент для программистов;
   «Стартап привлёк $50 млн»; «Вышла новая версия популярной библиотеки».
 
 ### Поля
@@ -196,7 +196,7 @@ def build_prompt(candidates: list[Item], state: AlertState, audience: str, texts
     lines = []
     for n, c in enumerate(candidates):
         text = (texts or {}).get(c.url, "")[:ALERT_TEXT_CHARS]
-        article = f'\n    Текст статьи:\n"""\n{text}\n"""' if text else "\n    Текст статьи: недоступен"
+        article = f"\n    Текст статьи:\n{fence(text)}" if text else "\n    Текст статьи: недоступен"
         lines.append(f"[{n}] ({c.source}, изданий={publishers(c)}, HN={c.hn_points}) {c.title}\n    {c.summary[:400]}{article}")
     return ALERT_PROMPT.format(audience=audience, sent="\n".join(f"- {t}" for t in state.recent_titles()) or "(ничего)",
                                candidates="\n".join(lines))

@@ -1,4 +1,5 @@
 import argparse
+import copy
 import json
 import logging
 import os
@@ -198,7 +199,9 @@ def run_eval(args: argparse.Namespace) -> None:
     for path in paths:
         items, taken, texts = evaluate.load_snapshot(path)
         for run in range(1, args.runs + 1):
-            digest = select(items, settings["audience"], settings["model"], api_key)
+            # Отбор склеивает дубли прямо в объектах записей: каждому прогону — своя копия, иначе следующий
+            # прогон и сохранённый срез видели бы уже склеенные записи
+            digest = select(copy.deepcopy(items), settings["audience"], settings["model"], api_key)
             missing = [e.item.url for e in digest.entries if e.item.url not in texts]
             if missing:
                 # Тексты статей докачиваем один раз и кладём в срез: следующие прогоны видят тот же вход
