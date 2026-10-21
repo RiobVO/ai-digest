@@ -708,33 +708,36 @@ TIPS_SCRIPT = """<script>
 (() => {
   const FB = %s;
   const boxes = [...document.querySelectorAll(".tried input")];
+  // Галочки, которые читатель уже трогал: снимок из воркера, пришедший позже клика, их не перезаписывает
+  const touched = new Set();
   const count = () => {
-    const done = boxes.filter(b => b.checked).length;
     const tile = document.querySelector("[data-tried-count]");
-    if (tile) tile.textContent = done;
+    if (tile) tile.textContent = boxes.filter(b => b.checked).length;
   };
   const set = (id, on) => boxes.filter(b => b.dataset.id === id).forEach(b => {
     b.checked = on; b.closest(".tip").classList.toggle("done", on);
   });
+  const remember = (id, on) => { try { localStorage.setItem("t:" + id, on ? "1" : "0"); } catch (e) {} };
   boxes.forEach(b => { try { if (localStorage.getItem("t:" + b.dataset.id) === "1") set(b.dataset.id, true); } catch (e) {} });
   count();
   fetch(FB + "/tried").then(r => r.ok ? r.json() : Promise.reject(r.status)).then(({ids}) => {
     const on = new Set(ids);
-    boxes.forEach(b => {
-      set(b.dataset.id, on.has(b.dataset.id));
-      try { localStorage.setItem("t:" + b.dataset.id, on.has(b.dataset.id) ? "1" : "0"); } catch (e) {}
-    });
+    boxes.filter(b => !touched.has(b.dataset.id)).forEach(b => { set(b.dataset.id, on.has(b.dataset.id)); remember(b.dataset.id, on.has(b.dataset.id)); });
     count();
   }).catch(() => {});
   boxes.forEach(b => b.addEventListener("change", () => {
     const id = b.dataset.id, on = b.checked;
     const label = b.closest(".tried");
+    touched.add(id);
     label.classList.remove("err");
     set(id, on);
     count();
+    // Пока запрос не вернулся, галочка заблокирована: два запроса подряд воркер мог бы применить в обратном порядке
+    b.disabled = true;
     fetch(FB + "/tried?e=" + encodeURIComponent(id) + "&v=" + (on ? 1 : 0), {method: "POST"})
-      .then(r => { if (!r.ok) throw new Error(r.status); try { localStorage.setItem("t:" + id, on ? "1" : "0"); } catch (e) {} })
-      .catch(() => { set(id, !on); count(); label.classList.add("err"); });
+      .then(r => { if (!r.ok) throw new Error(r.status); remember(id, on); })
+      .catch(() => { set(id, !on); count(); label.classList.add("err"); })
+      .finally(() => { b.disabled = false; });
   }));
 })();
 </script>"""
