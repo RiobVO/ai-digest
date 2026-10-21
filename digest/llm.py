@@ -1,7 +1,6 @@
 import json
 import logging
 import re
-import time
 from dataclasses import dataclass, field
 
 import httpx
@@ -12,16 +11,19 @@ from digest.models import Item
 log = logging.getLogger(__name__)
 
 API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-RETRY_STATUS = {429, 500, 503}
-RETRY_DELAYS = (15, 45)
-# product — компании и продукты, model — модели и исследования, business — деньги, законы, люди,
-# dev — инструменты под стек читателя, paper — научные статьи, voices — авторские посты сильных инженеров,
-# security — информационная безопасность, tips — лайфхаки: практические приёмы из текста источника
+# Очередь бесплатного тарифа к 3.8 Flash 21.10.2026 доходила до 80 с ещё до начала работы, а отбору нужна ещё
+# минута-полторы: при 180 с отбор трижды обрывался по таймауту, и каждый обрыв съедал запрос из 20 дневных
+TIMEOUT = 360
+# product — компании и продукты, model — модели и исследования, business — законы, суды, люди, цены для
+# пользователей, dev — инструменты под стек читателя, paper — научные статьи, voices — авторские посты сильных
+# инженеров, security — информационная безопасность, tips — фишки: практические приёмы из текста источника
 SECTIONS = ["product", "model", "business", "dev", "paper", "voices", "security", "tips"]
 FALLBACK_SECTION = "product"
-# Сверх событий дня: авторский пост и лайфхак — не новость, они идут после событий и не становятся «Главным»
+# Стадия события: анонс и доступный продукт читатель воспринимает по-разному, а пресс-релиз этого не различает
+STATUSES = ("announced", "available", "research", "in_use", "rumor")
+# Сверх событий дня: авторский пост и фишка — не новость, они идут после событий и не становятся «Главным»
 EXTRA_SECTIONS = ("voices", "tips")
-# Лайфхаки отбирает второй вызов (EXTRAS_PROMPT): в первом их нет даже среди разделов схемы
+# Фишки отбирает второй вызов (EXTRAS_PROMPT): в первом их нет даже среди разделов схемы
 SELECT_SECTIONS = [s for s in SECTIONS if s != "tips"]
 
 # Общий голос для всех текстов, которые видит читатель. Читатель — технарь, упрощать не нужно, бороться — со слопом:
@@ -121,10 +123,13 @@ score — голоса за статью на HF Papers.
 Исключение — событие уже есть в активных сюжетах ниже, а новых фактов в записи нет.
 
 ### Как отбирать
-Главный вопрос — «будут ли об этом говорить завтра». Важны крупные релизы и продукты, сделки и деньги, законы и суды,
+Главный вопрос — «будут ли об этом говорить завтра». Важны крупные релизы и продукты, законы и суды,
 громкие инциденты, сильные исследования, смена лидеров рынка. При прочих равных выше то, у чего больше резонанс:
 много изданий и живое обсуждение на HN. Одна-две позиции — для профиля читателя (его стек и инструменты),
 даже если резонанс у них меньше.
+Деньги — только те, что касаются читателя как пользователя: цены подписок и токенов API, бесплатные лимиты, смена
+тарифов сервисов. Корпоративные финансы — шум: раунды, оценки компаний, акции, выручка, прибыль и убыток, отчёты,
+крупные вложения и сделки, если для пользователей ничего не меняется.
 Разнообразие: выпуск — картина всего дня, а не одной компании. В items не больше двух событий про одну компанию;
 третье — только если день действительно про неё, остальное о ней уйдёт в «Ещё за день». Смотри шире OpenAI
 и Anthropic: Google, Meta, Microsoft, Apple, NVIDIA, китайские лаборатории, чипы, роботы, стартапы, наука, законы разных стран.
@@ -149,19 +154,22 @@ score — голоса за статью на HF Papers.
 ### Поля
 - ids: все номера записей события (см. «Одно событие — много записей»); первым ставь первоисточник
   (официальный блог компании или самое авторитетное издание).
-- section: product — компании и продукты; model — модели и исследования; business — деньги, законы, суды, люди;
+- section: product — компании и продукты; model — модели и исследования; business — законы, суды, люди, цены и тарифы для пользователей;
   dev — инструменты и релизы, которые касаются стека читателя; paper — научные статьи с HF Papers;
   voices — авторские посты (см. «Голоса»); security — информационная безопасность (см. «Безопасность»).
 - title: по-русски, до 90 символов: суть простыми словами, без кликбейта. Названия продуктов, компаний и моделей не переводи.
 - summary: 1–3 предложения: кто, что сделал, главная цифра или деталь — только из записи. Если описания нет,
   не додумывай — опиши по заголовку.
+- status: на какой стадии событие — только по записи: announced — объявили, доступа ещё нет; available — уже можно
+  попробовать или купить; research — результат в статье или лаборатории; in_use — уже работает у людей или компаний;
+  rumor — источник неофициальный: слух или утечка. Для голосов — available.
 - why: одно предложение — вывод из факта: что из этого следует и для кого. Строй его как вывод («значит, …»,
   «так что …») и меняй формулировку от карточки к карточке. Обращение «если ты …» — только когда событие правда
   касается стека читателя, и не больше чем в двух-трёх карточках выпуска. Только следствие, которое прямо вытекает
   из записи; прогноз — только если он есть в записи. Мотив («шаг направлен на…», «компания стремится…», «призван
   снизить давление», «пытается…») — только если он назван в записи. Фраза, которая подойдёт к любой новости того же
-  типа («случай показывает риски…», «в очередной раз доказывает…», «наглядно демонстрирует…»), — не вывод. Если
-  последствия неясны — скажи, кого это касается. Не повторяй summary. Пиши для каждого события.
+  типа («случай показывает риски…», «в очередной раз доказывает…», «наглядно демонстрирует…»), — не вывод. Не повторяй
+  summary. Если такого вывода нет — пустая строка: лучше без why, чем с общей фразой.
 - importance — число от 0 до 10 по последствиям события для мира ИИ и технологий, а не по шуму вокруг него.
   Ставь после того, как сформулировал why:
   9–10 — событие недели: меняет рынок или индустрию, о нём говорят все;
@@ -192,7 +200,7 @@ score — голоса за статью на HF Papers.
   третье — только если день действительно про неё. Шум не вернул.
 - Безопасность отобрана по масштабу: крупные компании, массовые продукты и цепочки поставок выше нишевого.
 - Каждая цифра, дата и название в title, summary и why есть в записи; смысл не расширен.
-- why — вывод: что меняется и для кого; без мотивов, которых нет в записи, без шаблонов «показывает», «демонстрирует»,
+- why — вывод: что меняется и для кого, а нет вывода — пустая строка; без мотивов, которых нет в записи, без шаблонов «показывает», «демонстрирует»,
   «в очередной раз»; не пересказывает summary, не прогнозирует сверх записи; «если ты» — не больше чем в двух-трёх
   why, и не все why начинаются одинаково.
 - Пишешь живо и на «ты», без газетных метафор; технический уровень не упрощён. Перечитай title, summary и why:
@@ -212,14 +220,16 @@ SCHEMA = {
                 "section": {"type": "STRING", "enum": SELECT_SECTIONS},
                 "title": {"type": "STRING"},
                 "summary": {"type": "STRING"},
+                "status": {"type": "STRING", "enum": list(STATUSES)},
                 "why": {"type": "STRING"},
                 "importance": {"type": "NUMBER"},
                 "story": {"type": "STRING"},
                 "story_name": {"type": "STRING"},
             },
             # Порядок по описанию Gemini соблюдает и сам, но явный propertyOrdering не зависит от версии модели
-            "propertyOrdering": ["ids", "section", "title", "summary", "why", "importance", "story", "story_name"],
-            "required": ["ids", "section", "title", "summary", "why", "importance", "story", "story_name"],
+            "propertyOrdering": ["ids", "section", "title", "summary", "status", "why", "importance", "story",
+                                 "story_name"],
+            "required": ["ids", "section", "title", "summary", "status", "why", "importance", "story", "story_name"],
         }},
         "lead": {"type": "STRING"},
     },
@@ -237,9 +247,10 @@ EXTRAS_PROMPT = """Ты редактор личного дайджеста но�
 Главные события выпуска уже выбраны — они ниже, целиком, вместе с записями, из которых собраны. Пройди по остальным
 записям от первой до последней и собери ещё две части выпуска:
 - more — «Ещё за день»: следующие по важности 10–15 событий одной строкой. Сюда идёт всё важное, что не вошло
-  в выпуск: деньги и отчёты компаний (прибыль, убыток, выручка), релизы моделей, атаки и утечки, массовые уязвимости
-  и атаки на цепочку поставок, решения властей и судов. В тихий день — меньше.
-- tips — 1–2 лайфхака, если есть подходящие записи.
+  в выпуск: релизы моделей и инструментов, цены подписок и токенов API, бесплатные лимиты, атаки и утечки, массовые
+  уязвимости и атаки на цепочку поставок, решения властей и судов. Корпоративные финансы — раунды, оценки компаний,
+  акции, выручка, прибыль и убыток, отчёты — шум, даже с крупной суммой. В тихий день — меньше.
+- tips — 2–4 фишки, если есть подходящие записи.
 Событие, которое уже есть в выпуске, не возвращай, даже если запись о нём пришла под другим заголовком.
 Событие из активных сюжетов ниже не возвращай, если новых фактов в записи нет: читатель его уже видел.
 Всё остальное — шум: реклама, конференции, мнения без новости, мелкие обновления и патч-релизы, маркетинговые кейсы.
@@ -249,22 +260,24 @@ EXTRAS_PROMPT = """Ты редактор личного дайджеста но�
 ### Что брать в «Ещё за день»
 Главный вопрос — «будут ли об этом говорить завтра». Важное стоит и в конце списка — ленты безопасности, азиатские
 и европейские издания, HN. Запись без описания (заголовок с HN или Reddit) — тоже событие, если в заголовке крупный
-факт: сумма, убыток, сделка, релиз заметной модели. Безопасность — по масштабу и реальному ущербу: атака или утечка
+факт: релиз заметной модели, новые цены или лимиты, атака. Безопасность — по масштабу и реальному ущербу: атака или утечка
 у крупной компании, уязвимость в массовом продукте, которой уже атакуют, атака на цепочку поставок разработчиков —
 выше нишевого продукта и теоретической дыры.
 
-### Лайфхаки
-1–2 записи с практическим приёмом, который читатель может повторить сам: настройка агентов и Claude Code, работа
-с ИИ-инструментами, полезные трюки в разработке и не только. Приём должен быть в самой записи — шаги, настройка,
-флаг, команда, конфиг, а не одно упоминание; из головы его не достраивай. Анонс без приёма — не лайфхак. Ищи их
-в релизах инструментов (новые флаги и настройки), блогах инженеров, на Reddit и HN. Нет таких записей — не добавляй.
+### Фишки
+2–4 записи с приёмом, который читатель может повторить сам: новая команда, флаг или настройка инструмента, готовый
+промпт, рабочий трюк с агентами, Claude Code и ИИ-инструментами, полезное в разработке и не только. Приём должен быть
+в самой записи — шаги, настройка, флаг, команда, промпт, конфиг, а не одно упоминание; из головы его не достраивай.
+Анонс без приёма — не фишка. Ищи их в релизах инструментов (новые команды и настройки), блогах инженеров, на Reddit
+и HN. Нет таких записей — не добавляй.
 
 ### Поля
 - more: ids — все записи события (первым — первоисточник); title — по-русски, до 110 символов: что случилось
   и главная цифра или деталь из записи, без оценок. По убыванию важности.
-- tips: ids — записи с приёмом; title — по-русски, до 90 символов: сам приём — что сделать и что это даст;
-  summary — 1–3 предложения: в чём приём, по записи; why — одно предложение: в какой работе и кому он пригодится,
-  только из записи; importance — от 0 до 10 по той же шкале, что у событий выпуска: практичный приём обычно 5–7.
+- tips: ids — записи с приёмом; title — по-русски, до 90 символов: что появилось или что сделать; why — одно
+  предложение: зачем это и в какой работе пригодится, только из записи; summary — как запустить: 1–3 шага по записи;
+  copy — команда, флаг или промпт ДОСЛОВНО из записи, без изменений и перевода; нет такого — пустая строка;
+  importance — от 0 до 10 по той же шкале, что у событий выпуска: практичная фишка обычно 5–7.
 
 """ + VOICE + """
 
@@ -281,8 +294,10 @@ EXTRAS_PROMPT = """Ты редактор личного дайджеста но�
 ### Перед ответом проверь
 - Прошёл весь список, до последней записи; записи об одном событии склеены, даже если заголовки разные.
 - Ни одно событие из выпуска не повторено ни в more, ни в tips; в more — 10–15 строк (в тихий день меньше), шум не взят.
+- В more нет ни одной строки про раунды, оценки компаний, акции, выручку, прибыль или убыток. Деньги — только
+  цены подписок и токенов API, бесплатные лимиты и тарифы.
 - Каждая цифра, дата и название есть в записи; смысл не расширен.
-- Лайфхак — приём, описанный в самой записи, а не додуманный.
+- Фишка — приём, описанный в самой записи, а не додуманный; copy скопирован из записи слово в слово.
 - Пишешь живо и на «ты», без оценок; «представила», «позволяет», «в рамках», «является» замени простыми словами.
 Верни JSON строго по схеме."""
 
@@ -299,12 +314,13 @@ EXTRAS_SCHEMA = {
             "properties": {
                 "ids": {"type": "ARRAY", "items": {"type": "INTEGER"}},
                 "title": {"type": "STRING"},
-                "summary": {"type": "STRING"},
                 "why": {"type": "STRING"},
+                "summary": {"type": "STRING"},
+                "copy": {"type": "STRING"},
                 "importance": {"type": "NUMBER"},
             },
-            "propertyOrdering": ["ids", "title", "summary", "why", "importance"],
-            "required": ["ids", "title", "summary", "why", "importance"],
+            "propertyOrdering": ["ids", "title", "why", "summary", "copy", "importance"],
+            "required": ["ids", "title", "why", "summary", "copy", "importance"],
         }},
     },
     # Порядок как в эксперименте out/handoff/exp_more.py, который поднял охват: сначала «Ещё за день», потом приёмы
@@ -394,6 +410,9 @@ class Entry:
     summary: str
     why: str
     details: Details | None = None
+    status: str = ""
+    # Команда или промпт фишки для кнопки «Скопировать» — только дословно из записи доверенной ленты
+    copy: str = ""
     # Заполняются памятью (digest.memory): id для оценок, сюжетная линия и её история
     id: str = ""
     story: str = ""
@@ -470,6 +489,7 @@ def parse_selection(raw: dict, items: list[Item]) -> Digest:
         section = row["section"] if row.get("section") in SECTIONS else FALLBACK_SECTION
         entry = Entry(primary, section, float(row.get("importance", 0)), row["title"], row["summary"], row.get("why", ""))
         entry.story, entry.story_name = row.get("story", ""), row.get("story_name", "")
+        entry.status = row["status"] if row.get("status") in STATUSES else ""
         entries.append(entry)
     entries.sort(key=entry_rank)
     noise = [item for n, item in enumerate(items) if n not in used]
@@ -511,9 +531,12 @@ def attach_extras(digest: Digest, raw: dict, items: list[Item]) -> None:
         return ids
 
     for row in raw.get("tips", []):
-        if ids := valid(row, "лайфхак"):
-            digest.entries.append(Entry(_merge(ids, items, used), "tips", float(row.get("importance", 0)), row["title"],
-                                        row.get("summary", ""), row.get("why", "")))
+        if ids := valid(row, "фишка"):
+            entry = Entry(_merge(ids, items, used), "tips", float(row.get("importance", 0)), row["title"],
+                          row.get("summary", ""), row.get("why", ""))
+            # Пока только предложение модели: на страницу попадёт после verify_copies, когда скачан первоисточник
+            entry.copy = row.get("copy", "").strip()
+            digest.entries.append(entry)
     for row in raw.get("more", []):
         if ids := valid(row, "строка «Ещё за день»"):
             digest.more.append(Mention(_merge(ids, items, used), row["title"]))
@@ -536,6 +559,20 @@ def _squash(text: str) -> str:
     return " ".join(text.split())
 
 
+def verify_copies(entries: list[Entry], texts: dict[str, str]) -> None:
+    """«Скопировать» у фишки — та же граница доверия, что у команд разборов: вставленный агенту чужой промпт
+    исполняется, как команда. Сверяем со скачанной страницей первоисточника, а не с описанием из ленты: склейка дублей
+    (dedup.absorb) дописывает пустое описание доверенной записи текстом недоверенного дубля, а склейка событий ставит
+    первым доверенный релиз рядом с постом с Reddit."""
+    for entry in entries:
+        if not entry.copy:
+            continue
+        item = entry.item
+        if not (_commands_trusted(item) and _squash(entry.copy) in _squash(texts.get(item.url, ""))):
+            log.warning("«Скопировать» не из текста доверенного первоисточника отброшено: %s", item.url)
+            entry.copy = ""
+
+
 def attach_explanations(entries: list[Entry], raw: dict, texts: dict[str, str]) -> None:
     for row in raw.get("items", []):
         n = row.get("id")
@@ -555,54 +592,63 @@ def attach_explanations(entries: list[Entry], raw: dict, texts: dict[str, str]) 
 
 
 def generate(prompt: str, schema: dict, model: str, api_key: str) -> dict:
+    """Одна попытка на одной модели. Повтор на той же модели — ещё один запрос из дневной квоты, поэтому при сбое
+    вызывающий переходит к следующей модели (generate_first), а не повторяет."""
     body = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {"responseMimeType": "application/json", "responseSchema": schema, "temperature": 0.3},
     }
-    url = API_URL.format(model=model)
-    for attempt, delay in enumerate((*RETRY_DELAYS, None), start=1):
-        try:
-            response = httpx.post(url, headers={"x-goog-api-key": api_key}, json=body, timeout=180)
-        except httpx.HTTPError as exc:
-            if delay is None:
-                raise LlmError(f"Gemini {model} недоступен: {type(exc).__name__}") from exc
-            log.warning("Gemini %s, попытка %d: %s, повтор через %d с", model, attempt, type(exc).__name__, delay)
-            time.sleep(delay)
-            continue
-        if response.status_code == 200:
-            break
-        if response.status_code not in RETRY_STATUS or delay is None:
-            raise LlmError(f"Gemini {model} ответил {response.status_code}: {response.text[:300]}", response.status_code)
-        log.warning("Gemini %s, попытка %d: HTTP %d, повтор через %d с", model, attempt, response.status_code, delay)
-        time.sleep(delay)
-    payload = response.json()
     try:
+        response = httpx.post(API_URL.format(model=model), headers={"x-goog-api-key": api_key}, json=body,
+                              timeout=TIMEOUT)
+    except httpx.HTTPError as exc:
+        raise LlmError(f"Gemini {model} недоступен: {type(exc).__name__}") from exc
+    if response.status_code != 200:
+        raise LlmError(f"Gemini {model} ответил {response.status_code}: {response.text[:300]}", response.status_code)
+    try:
+        payload = response.json()
         raw = json.loads(payload["candidates"][0]["content"]["parts"][0]["text"])
-    except (KeyError, IndexError, json.JSONDecodeError) as exc:
-        raise LlmError(f"не удалось разобрать ответ Gemini: {str(payload)[:300]}") from exc
+    except (KeyError, IndexError, TypeError, ValueError) as exc:
+        # ValueError — и битое тело ответа, и битый JSON внутри: оба должны вести к следующей модели цепочки
+        raise LlmError(f"не удалось разобрать ответ Gemini {model}: {response.text[:300]}") from exc
     log.info("Gemini %s: токенов %s", payload.get("modelVersion"), payload.get("usageMetadata", {}).get("totalTokenCount"))
     return raw
 
 
-def select(items: list[Item], audience: str, model: str, api_key: str,
+def generate_first(prompt: str, schema: dict, models: list[str], api_key: str) -> dict:
+    """Ответ первой модели цепочки, которая справилась. Квоты у моделей раздельные: исчерпанный лимит, перегрузка
+    или отключённая модель (404) одной не мешают следующей."""
+    error = LlmError("цепочка моделей пуста")
+    # Одна и та же модель дважды (model = extras_model в настройках) — это повтор, а он съедает запрос квоты
+    for model in dict.fromkeys(models):
+        try:
+            return generate(prompt, schema, model, api_key)
+        except LlmError as exc:
+            log.warning("%s — перехожу к следующей модели", exc)
+            error = exc
+    raise error
+
+
+def select(items: list[Item], audience: str, models: list[str], api_key: str,
            preferences: str = "", stories: list[dict] | None = None) -> Digest:
     prompt = build_prompt(items, audience, preferences, stories)
-    return parse_selection(generate(prompt, SCHEMA, model, api_key), items)
+    return parse_selection(generate_first(prompt, SCHEMA, models, api_key), items)
 
 
-def extras(digest: Digest, items: list[Item], audience: str, model: str, api_key: str,
+def extras(digest: Digest, items: list[Item], audience: str, models: list[str], api_key: str,
            stories: list[dict] | None = None) -> None:
-    """Второй вызов: «Ещё за день» и лайфхаки по записям, которые не вошли в события выпуска."""
-    raw = generate(build_extras_prompt(digest, items, audience, stories), EXTRAS_SCHEMA, model, api_key)
+    """Второй вызов: «Ещё за день» и фишки по записям, которые не вошли в события выпуска."""
+    raw = generate_first(build_extras_prompt(digest, items, audience, stories), EXTRAS_SCHEMA, models, api_key)
     attach_extras(digest, raw, items)
 
 
-def explain(entries: list[Entry], texts: dict[str, str], audience: str, model: str, api_key: str) -> None:
+def explain(entries: list[Entry], texts: dict[str, str], audience: str, models: list[str], api_key: str) -> None:
     events = []
     for n, entry in enumerate(entries):
         source = texts.get(entry.item.url, "") or "(текст недоступен)"
         # Текст статьи в кавычках-ограничителях: граница данных видна, даже если статья сама содержит заголовки
         events.append(f"--- событие id={n} ---\nКарточка: {entry.title}. {entry.summary}\n"
                       f"Описание из ленты: {entry.item.summary[:600]}\nТекст первоисточника:\n{fence(source)}")
-    raw = generate(EXPLAIN_PROMPT.format(audience=audience, events="\n\n".join(events)), EXPLAIN_SCHEMA, model, api_key)
+    raw = generate_first(EXPLAIN_PROMPT.format(audience=audience, events="\n\n".join(events)), EXPLAIN_SCHEMA, models,
+                         api_key)
     attach_explanations(entries, raw, texts)

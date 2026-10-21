@@ -341,7 +341,7 @@ def test_lifehack_never_becomes_the_lead_story():
     digest = Digest("h", "l", [Entry(tip, "tips", 9, "Какой effort ставить в Claude Code", "Приём.", "")])
     page = render_page(digest, STATS, WHEN, failures=[])
     assert 'id="main-story"' not in page
-    assert "Лайфхаки" in page and "Какой effort ставить в Claude Code" in page[page.index('id="tips"'):]
+    assert "Фишки" in page and "Какой effort ставить в Claude Code" in page[page.index('id="tips"'):]
 
 
 def test_telegram_lists_also_today_and_a_lifehack_after_the_main_items():
@@ -352,7 +352,7 @@ def test_telegram_lists_also_today_and_a_lifehack_after_the_main_items():
     for n, entry in enumerate(digest.entries):
         entry.id = f"20261016-{n}"
     text = build_message(digest, "https://x.io/p.html", WHEN)
-    tip = '<b>Лайфхак:</b> <a href="https://x.io/p.html#e-20261016-6">Какой effort ставить в Claude Code</a>'
+    tip = '<b>Фишка:</b> <a href="https://x.io/p.html#e-20261016-6">Какой effort ставить в Claude Code</a>'
     assert tip in text
     assert '• <a href="https://www.theregister.com/shop">Сеть &lt;магазинов&gt; легла после атаки</a>' in text
     # Ссылку не из веба Telegram не примет — строка остаётся, но без ссылки
@@ -372,3 +372,23 @@ def test_telegram_trims_also_today_first_and_counts_only_visible_text():
     assert len(unescape(re.sub(r"<[^>]+>", "", text))) <= TG_LIMIT < len(text)
     assert "<b>1.</b>" in text and "Новость номер 30 " in text and "Разбор целиком" in text
     assert "Новость номер 39 " not in text
+
+
+def test_cards_show_the_event_status_but_not_the_internal_score():
+    digest = sample()
+    digest.entries[0].status = "available"
+    digest.entries[1].status = "rumor"
+    page = render_page(digest, STATS, WHEN, failures=[])
+    # Оценка нужна отбору, а читателю цифра «8.6 / 10» ничего не говорит
+    assert "/ 10" not in page and "важность" not in page.lower()
+    assert ">доступно<" in page and ">слух<" in page
+
+
+def test_trick_card_has_a_copy_block_with_the_verbatim_command():
+    tip = Item(source="gh_claude_code", title="v2", url="https://github.com/anthropics/claude-code/releases/v2",
+               category="release")
+    entry = Entry(tip, "tips", 6, "Автонастройка auto mode", "Запусти команду.", "Подстроит режим под проект.")
+    entry.copy = "/auto-mode-setup <proj>"
+    page = render_page(Digest("h", "l", [entry]), STATS, WHEN, failures=[])
+    block = page[page.index('id="tips"'):]
+    assert "/auto-mode-setup &lt;proj&gt;" in block and "Скопировать" in block

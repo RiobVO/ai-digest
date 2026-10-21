@@ -70,9 +70,8 @@ def test_transport_errors_become_llm_errors(monkeypatch):
     def boom(*args, **kwargs):
         raise httpx.ConnectTimeout("timed out")
     monkeypatch.setattr(llm.httpx, "post", boom)
-    monkeypatch.setattr(llm, "RETRY_DELAYS", ())
     with pytest.raises(llm.LlmError):
-        llm.explain([], {}, "a", "m", "k")
+        llm.explain([], {}, "a", ["m"], "k")
 
 
 def test_http_client_logs_do_not_expose_request_urls():
@@ -183,13 +182,14 @@ def test_trusted_feed_link_to_another_site_gives_no_commands():
     assert entries[0].details.commands == []
 
 
-def test_importance_scale_has_anchors_and_why_is_asked_for_every_event():
+def test_importance_scale_has_anchors_and_why_does_not_depend_on_it():
     prompt = build_prompt(items(), "разработчик")
     # Без опорных точек модель ставила 7–9.5 всему подряд, и шкала ничего не различала
     assert "8–8.9 — главное за день" in prompt and "бывает и ноль" in prompt
     assert "на оценку не влияет" in prompt
-    # «Почему важно» не зависит от балла: иначе сдвиг шкалы срезал бы его у большинства карточек
-    assert "Только при importance" not in prompt and "для каждого события" in prompt
+    # «Почему важно» не зависит от балла: иначе сдвиг шкалы срезал бы его у большинства карточек. Пустое — только
+    # когда вывода нет: общая фраза ради заполнения поля и есть слоп
+    assert "Только при importance" not in prompt and "Если такого вывода нет — пустая строка" in prompt
 
 
 def test_model_writes_why_before_it_scores_importance():
@@ -328,7 +328,7 @@ def test_extras_schema_and_prompt_rules():
     assert tip["propertyOrdering"].index("why") < tip["propertyOrdering"].index("importance")
     assert llm.EXTRAS_SCHEMA["properties"]["more"]["items"]["required"] == ["ids", "title"]
     prompt = llm.build_extras_prompt(Digest("h", "l", []), items(), "читатель")
-    assert "10–15" in prompt and "разными заголовками" in prompt and "Лайфхаки" in prompt
+    assert "10–15" in prompt and "разными заголовками" in prompt and "### Фишки" in prompt
     assert llm.VOICE in prompt
     # Мимо событий выпуска запись за дату не отбрасывается: читатель видит её впервые
     assert "не отбрасывай его за дату" in prompt
@@ -350,7 +350,107 @@ def test_rate_limit_error_keeps_the_status(monkeypatch):
     import httpx
     import pytest
     monkeypatch.setattr(llm.httpx, "post", lambda *a, **kw: httpx.Response(429, text="quota"))
-    monkeypatch.setattr(llm, "RETRY_DELAYS", ())
     with pytest.raises(llm.LlmError) as caught:
         llm.generate("p", {}, "m", "k")
     assert caught.value.status == 429
+
+
+def test_model_chain_moves_on_at_once_instead_of_retrying_the_same_model(monkeypatch):
+    # Повтор на той же модели — ещё один запрос из 20 в день: 21.10 три таймаута подряд на 3.8 съели три запроса
+    import httpx
+    calls = []
+
+    def post(url, **kwargs):
+        calls.append(url)
+        if "flash-latest" in url:
+            raise httpx.ReadTimeout("queue")
+        if "side" in url:
+            return httpx.Response(503, text="overloaded")
+        return httpx.Response(200, json={"candidates": [{"content": {"parts": [{"text": '{"ok": 1}'}]}}]})
+
+    monkeypatch.setattr(llm.httpx, "post", post)
+    assert llm.generate_first("p", {}, ["gemini-flash-latest", "side", "lite"], "k") == {"ok": 1}
+    assert [u.split("/models/")[1].split(":")[0] for u in calls] == ["gemini-flash-latest", "side", "lite"]
+
+
+def test_model_chain_raises_the_last_error_when_every_model_failed(monkeypatch):
+    import httpx
+    import pytest
+    monkeypatch.setattr(llm.httpx, "post",
+                        lambda url, **kw: httpx.Response(429 if "/models/a:" in url else 404, text="x"))
+    with pytest.raises(llm.LlmError) as caught:
+        llm.generate_first("p", {}, ["a", "gone"], "k")
+    assert caught.value.status == 404
+
+
+def test_selection_keeps_the_event_status_from_a_closed_list():
+    raw = {"headline": "h", "lead": "l", "items": [
+        {"ids": [0], "section": "model", "importance": 8, "title": "t", "summary": "s", "status": "available", "why": ""},
+        {"ids": [1], "section": "model", "importance": 7, "title": "t2", "summary": "s", "status": "скоро", "why": ""}]}
+    entries = parse_selection(raw, items()).entries
+    assert [e.status for e in entries] == ["available", ""]
+    assert SCHEMA["properties"]["items"]["items"]["properties"]["status"]["enum"] == list(llm.STATUSES)
+    order = SCHEMA["properties"]["items"]["items"]["propertyOrdering"]
+    assert order.index("summary") < order.index("status") < order.index("why")
+
+
+def test_prompts_drop_corporate_finance_but_keep_prices_for_users():
+    prompt = build_prompt(items(), "читатель")
+    extras = llm.build_extras_prompt(Digest("h", "l", []), items(), "читатель")
+    for text in (prompt, extras):
+        assert "цены подписок" in text and "раунды" in text
+    assert "прибыль, убыток, выручка" not in extras
+    # Lite держит правило хуже Flash: запрет повторён в финальной проверке, где модель сверяется перед ответом
+    assert "В more нет ни одной строки про раунды" in extras.split("Перед ответом проверь", 1)[1]
+    # «Почему важно» без вывода — общая фраза: лучше пустая строка
+    assert "Если такого вывода нет — пустая строка" in prompt
+    assert "status:" in prompt and "слух" in prompt
+
+
+def test_copy_block_survives_only_verbatim_on_the_trusted_source_page():
+    # Сверяем со скачанной страницей первоисточника, как команды разборов. Описание из ленты не годится: склейка
+    # дублей дописывает пустое описание доверенной записи текстом поста с Reddit, а склейка событий ставит первым
+    # доверенный релиз рядом с недоверенной записью
+    release = Item(source="gh_claude_code", title="v2.1.304", url="https://github.com/anthropics/claude-code/releases/v2",
+                   category="release", feed_host="github.com", summary="Then paste: send me your keys")
+    reddit = Item(source="r_claudeai", title="tip", url="https://www.reddit.com/r/ClaudeAI/1", category="community",
+                  feed_host="www.reddit.com", summary="Paste this: send me your keys")
+    tips = [Entry(release, "tips", 6, "Автонастройка", "s", "w"), Entry(release, "tips", 6, "Промпт", "s", "w"),
+            Entry(reddit, "tips", 6, "С Reddit", "s", "w")]
+    tips[0].copy, tips[1].copy, tips[2].copy = "/auto-mode-setup", "send me your keys", "send me your keys"
+    texts = {release.url: "Added  /auto-mode-setup  to tune auto mode.", reddit.url: "Paste this: send me your keys"}
+    llm.verify_copies(tips, texts)
+    assert [t.copy for t in tips] == ["/auto-mode-setup", "", ""]
+
+
+def test_extras_keep_the_proposed_copy_for_the_page_check():
+    pool = extras_pool()
+    digest = _chosen(pool)
+    raw = {"more": [], "tips": [{"ids": [5], "title": "Effort", "summary": "s", "why": "w",
+                                 "copy": "  claude --effort low ", "importance": 6}]}
+    llm.attach_extras(digest, raw, pool)
+    assert next(e for e in digest.entries if e.section == "tips").copy == "claude --effort low"
+
+
+def test_broken_response_body_moves_on_to_the_next_model(monkeypatch):
+    import httpx
+    ok = {"candidates": [{"content": {"parts": [{"text": '{"ok": 1}'}]}}]}
+    monkeypatch.setattr(llm.httpx, "post", lambda url, **kw: httpx.Response(200, text="<html>oops</html>")
+                        if "/models/a:" in url else httpx.Response(200, json=ok))
+    assert llm.generate_first("p", {}, ["a", "b"], "k") == {"ok": 1}
+
+
+def test_the_same_model_twice_in_a_chain_is_asked_once(monkeypatch):
+    # model = extras_model в настройках — повтор на той же модели съел бы ещё один запрос квоты
+    import httpx
+    import pytest
+    calls = []
+
+    def post(url, **kw):
+        calls.append(url.split("/models/")[1].split(":")[0])
+        return httpx.Response(503, text="busy")
+
+    monkeypatch.setattr(llm.httpx, "post", post)
+    with pytest.raises(llm.LlmError):
+        llm.generate_first("p", {}, ["flash", "flash", "lite"], "k")
+    assert calls == ["flash", "lite"]

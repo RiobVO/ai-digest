@@ -12,7 +12,7 @@ from digest import evaluate
 from digest.cover import make_cover
 from digest.dedup import dedupe
 from digest.fetch import attach_discussions, fetch_all, fetch_articles, resolve_gnews
-from digest.llm import LlmError, explain, extras, generate, select
+from digest.llm import LlmError, explain, extras, generate_first, select, verify_copies
 from digest.memory import (Archive, Stories, fetch_feedback, issue_slot, missed_in_morning, preferences_prompt,
                            record_issue, resolve_votes)
 from digest.render import DISPLAY_TZ, MONTHS, human_date, issue_summary, render_archive, render_page
@@ -22,6 +22,14 @@ from digest.weekly import WEEK_DAYS, summarize_week
 
 log = logging.getLogger("digest")
 OUT = Path("out")
+
+
+def model_chains(settings: dict) -> tuple[list[str], list[str]]:
+    """Цепочки моделей бесплатного ключа: квоты раздельные, и при сбое вызов сразу идёт к следующей модели.
+    Главная — отбор и разборы: сначала 3.8 Flash (20 запросов в день). Побочная — «Ещё за день» и фишки: 3.6 Flash,
+    чтобы не тратить квоту 3.8. Последней везде стоит Lite (500 в день): выпуск похуже лучше, чем никакого."""
+    return ([settings["model"], settings["extras_model"], settings["lite_model"]],
+            [settings["extras_model"], settings["lite_model"]])
 
 
 def load_env(path: Path) -> None:
@@ -76,34 +84,25 @@ def build(args: argparse.Namespace) -> None:
     feedback = resolve_votes(votes, archive)
     log.info("оценок читателя: %d, прочитано записей: %d", len(feedback), len(reads))
 
-    model = settings["model"]
-    try:
-        digest = select(merged, settings["audience"], model, api_key,
-                        preferences=preferences_prompt(feedback), stories=stories.active(today))
-    except LlmError as exc:
-        if exc.status != 429:
-            raise
-        # Лимит Flash исчерпан: выпуск похуже лучше, чем никакого. Остальные вызовы этого выпуска — тоже на Lite,
-        # у Flash квоты уже нет. Прочие сбои (5xx, таймаут) смена модели не лечит — они валят выпуск, как раньше
-        log.error("лимит %s исчерпан, отбор на %s: %s", model, settings["lite_model"], exc)
-        model = settings["lite_model"]
-        digest = select(merged, settings["audience"], model, api_key,
-                        preferences=preferences_prompt(feedback), stories=stories.active(today))
+    main_models, side_models = model_chains(settings)
+    digest = select(merged, settings["audience"], main_models, api_key,
+                    preferences=preferences_prompt(feedback), stories=stories.active(today))
     if not digest.entries:
         raise SystemExit("модель не выбрала ни одного события — пустой выпуск не отправляю")
     try:
-        extras(digest, merged, settings["audience"], model, api_key, stories=stories.active(today))
+        extras(digest, merged, settings["audience"], side_models, api_key, stories=stories.active(today))
     except LlmError as exc:
-        # «Ещё за день» и лайфхаки — надстройка: без них выпуск всё равно выходит
-        log.error("«Ещё за день» и лайфхаки не собраны: %s", exc)
+        # «Ещё за день» и фишки — надстройка: без них выпуск всё равно выходит
+        log.error("«Ещё за день» и фишки не собраны: %s", exc)
     log.info("в выпуске %d событий, ещё за день %d, в шуме %d", len(digest.entries), len(digest.more), len(digest.noise))
     # Сначала настоящий адрес статьи: по нему ищется обсуждение на HN и скачивается текст для разбора.
     # Строкам «Ещё за день» он нужен как ссылка: Google News без JS не открывается
     resolve_gnews([e.item for e in digest.entries] + [m.item for m in digest.more])
     attach_discussions([e.item for e in digest.entries])
     texts = fetch_articles([e.item.url for e in digest.entries])
+    verify_copies(digest.entries, texts)
     try:
-        explain(digest.entries, texts, settings["audience"], model, api_key)
+        explain(digest.entries, texts, settings["audience"], main_models, api_key)
     except LlmError as exc:
         # Подробные разборы — надстройка: без них выпуск всё равно выходит, с кнопкой на первоисточник
         log.error("подробные разборы не сгенерированы: %s", exc)
@@ -145,8 +144,8 @@ def weekly(args: argparse.Namespace) -> None:
     settings = tomllib.loads(args.config.read_text(encoding="utf-8"))["digest"]
     archive = Archive(args.state_dir / "issues.json")
     stories = Stories(args.state_dir / "stories.json")
-    digest, stats = summarize_week(archive.issues, stories.stories, today, settings["audience"], settings["model"],
-                                   os.environ["GEMINI_API_KEY"])
+    digest, stats = summarize_week(archive.issues, stories.stories, today, settings["audience"],
+                                   model_chains(settings)[0], os.environ["GEMINI_API_KEY"])
     start = today - timedelta(days=WEEK_DAYS - 1)
     period = (f"{start.day}–{today.day} {MONTHS[today.month - 1]}" if start.month == today.month
               else f"{start.day} {MONTHS[start.month - 1]} – {today.day} {MONTHS[today.month - 1]}")
@@ -179,13 +178,14 @@ def alert(args: argparse.Namespace) -> None:
         # Без текста статьи у модели только заголовок, и «что это меняет» она додумывает
         texts = fetch_articles([c.url for c in candidates])
         api_key = os.environ["GEMINI_API_KEY"]
-        raw = generate(breaking.build_triage_prompt(candidates, state, settings["audience"], texts),
-                       breaking.TRIAGE_SCHEMA, settings["lite_model"], api_key)
+        # Отсев — на Lite, его квоты хватает на каждый час; 3.6 — запас, если Lite недоступен
+        raw = generate_first(breaking.build_triage_prompt(candidates, state, settings["audience"], texts),
+                             breaking.TRIAGE_SCHEMA, [settings["lite_model"], settings["extras_model"]], api_key)
         urgent, rejected = breaking.triage(raw, candidates)
         picked = None
         if urgent:
-            raw = generate(breaking.build_prompt(urgent, state, settings["audience"], texts), breaking.ALERT_SCHEMA,
-                           settings["model"], api_key)
+            raw = generate_first(breaking.build_prompt(urgent, state, settings["audience"], texts),
+                                 breaking.ALERT_SCHEMA, [settings["model"], settings["extras_model"]], api_key)
             picked, refused = breaking.choose(raw, urgent)
             rejected += refused
         for item in rejected:
@@ -219,7 +219,7 @@ def run_eval(args: argparse.Namespace) -> None:
     paths = args.snapshots or sorted(SNAPSHOTS.glob("*.json"))
     if not paths:
         raise SystemExit(f"срезов нет — сначала python -m digest snapshot (папка {SNAPSHOTS})")
-    print("срез | прогон | событий | ещё за день | лайфхаки | важность 8+ | пустые оценки | канцелярит | "
+    print("срез | прогон | событий | ещё за день | фишки | важность 8+ | пустые оценки | канцелярит | "
           "выдуманные числа | прогнозы | why=пересказ | шаблоны why")
     for path in paths:
         items, taken, texts = evaluate.load_snapshot(path)
@@ -227,9 +227,10 @@ def run_eval(args: argparse.Namespace) -> None:
             # Отбор склеивает дубли прямо в объектах записей: каждому прогону — своя копия, иначе следующий
             # прогон и сохранённый срез видели бы уже склеенные записи
             pool = copy.deepcopy(items)
-            digest = select(pool, settings["audience"], settings["model"], api_key)
+            main_models, side_models = model_chains(settings)
+            digest = select(pool, settings["audience"], main_models, api_key)
             try:
-                extras(digest, pool, settings["audience"], settings["model"], api_key)
+                extras(digest, pool, settings["audience"], side_models, api_key)
             except LlmError as exc:
                 log.error("«Ещё за день» в прогоне %d не собраны: %s", run, exc)
             missing = [e.item.url for e in digest.entries if e.item.url not in texts]
@@ -238,7 +239,7 @@ def run_eval(args: argparse.Namespace) -> None:
                 texts.update(fetch_articles(missing))
                 evaluate.save_snapshot(path, items, taken, texts)
             try:
-                explain(digest.entries, texts, settings["audience"], settings["model"], api_key)
+                explain(digest.entries, texts, settings["audience"], main_models, api_key)
             except LlmError as exc:
                 log.error("разборы в прогоне %d не сгенерированы: %s", run, exc)
             result = evaluate.report(digest, texts)

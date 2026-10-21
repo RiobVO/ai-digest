@@ -17,15 +17,18 @@ MONTHS = ["января", "февраля", "марта", "апреля", "ма�
           "августа", "сентября", "октября", "ноября", "декабря"]
 MONTHS_SHORT = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"]
 WEEKDAYS = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
-SECTION_LABELS = {"product": "Компании и продукты", "model": "Модели и исследования", "business": "Деньги и законы",
+SECTION_LABELS = {"product": "Компании и продукты", "model": "Модели и исследования", "business": "Законы и цены",
                   "dev": "Для тебя", "paper": "Статья", "voices": "Инженеры", "security": "Безопасность",
-                  "tips": "Лайфхак"}
+                  "tips": "Фишка"}
+# Стадия события из отбора (llm.STATUSES): анонс и доступный продукт — разные новости для читателя
+STATUS_LABELS = {"announced": "анонс", "available": "доступно", "research": "исследование", "in_use": "применяют",
+                 "rumor": "слух"}
 # (раздел, якорь, заголовок раздела, короткое имя для бокового меню)
 ROW_SECTIONS = [("product", "products", "Компании и продукты", "Компании"),
                 ("model", "models", "Модели и исследования", "Модели"),
-                ("business", "business", "Деньги, законы, люди", "Деньги и законы"), ("security", "security", "Безопасность", "Безопасность"),
+                ("business", "business", "Законы, цены, люди", "Законы и цены"), ("security", "security", "Безопасность", "Безопасность"),
                 ("dev", "dev", "Для тебя", "Для тебя"),
-                ("tips", "tips", "Лайфхаки", "Лайфхаки"),
+                ("tips", "tips", "Фишки", "Фишки"),
                 ("voices", "voices", "Что пишут инженеры", "Инженеры")]
 BRIEF_LABELS = {section: short for section, _, _, short in ROW_SECTIONS} | {"paper": "Статья"}
 ARCHIVE_IN_SIDEBAR = 7
@@ -272,8 +275,13 @@ def _story(entry: Entry) -> str:
             f'{f"<ul>{prev}</ul>" if prev else ""}</div>')
 
 
-def _term(commands: list[str]) -> str:
-    return (f'<div class="term"><div class="term-bar">{ICONS["terminal"]}<span>Терминал</span>'
+def _status(entry: Entry) -> str:
+    label = STATUS_LABELS.get(entry.status)
+    return f'<span class="tag status">{label}</span>' if label else ""
+
+
+def _term(commands: list[str], label: str = "Терминал") -> str:
+    return (f'<div class="term"><div class="term-bar">{ICONS["terminal"]}<span>{label}</span>'
             f'<button type="button" class="copy">Скопировать</button></div>'
             f'<pre><code>{escape(chr(10).join(commands))}</code></pre></div>')
 
@@ -340,7 +348,6 @@ def _nav(anchor: str, label: str, count: int | None = None, active: bool = False
 
 
 def _hero(entry: Entry, votes: bool, chip: str) -> str:
-    share = round(entry.importance * 10)
     also = f'<span class="also">{_also(entry)}</span>' if entry.item.also else ""
     return (
         f'        <section class="card hero" id="main-story"{_entry_attr(entry)}>\n'
@@ -348,9 +355,8 @@ def _hero(entry: Entry, votes: bool, chip: str) -> str:
         f'<a class="btn" href="{_href(entry.item.url)}">Первоисточник {ARROW}</a></div>\n'
         f'          <h2{_anchor(entry)}>{escape(entry.title)}</h2>\n          {_story(entry)}\n          <p>{escape(entry.summary)}</p>\n'
         f'          {_why(entry)}\n'
-        f'          <div class="meter"><div class="meter-row">Важность<span>{entry.importance:g} / 10</span></div>'
-        f'<div class="bar"><i style="width:{share}%"></i></div></div>\n'
-        f'          <div class="legend"><span>{SECTION_LABELS.get(entry.section, "Событие")}</span>{_source(entry.item.url)}'
+        f'          <div class="legend"><span>{SECTION_LABELS.get(entry.section, "Событие")}</span>{_status(entry)}'
+        f'{_source(entry.item.url)}'
         f'{_buzz(entry.item)}{also}</div>\n'
         f'          {_actions(entry, votes)}\n'
         f'        </section>')
@@ -359,19 +365,20 @@ def _hero(entry: Entry, votes: bool, chip: str) -> str:
 def _item(n: int, entry: Entry, votes: bool) -> str:
     hot = " hot" if entry.importance >= 8 else ""
     also = f'<span class="also">{_also(entry)}</span>' if entry.item.also else ""
-    importance_css = "tag imp green" if entry.importance >= 8 else "tag imp"
+    # Оценка важности нужна только отбору: читателю «8.6» ничего не говорит, главное видно по месту в выпуске
+    copy = _term([entry.copy], "Команда или промпт") if entry.copy else ""
     return (f'<div class="item"{_entry_attr(entry)}><span class="num{hot}">{n}</span>'
-            f'<div><div class="meta"><span class="{importance_css}">важность {entry.importance:g}</span>'
+            f'<div><div class="meta">{_status(entry)}'
             f'{_source(entry.item.url)}{_buzz(entry.item)}{also}</div>'
             f'<h4{_anchor(entry)}>{escape(entry.title)}</h4>{_story(entry)}<p>{escape(entry.summary)}</p>{_why(entry)}'
-            f'{_actions(entry, votes)}</div></div>')
+            f'{copy}{_actions(entry, votes)}</div></div>')
 
 
 def _paper(entry: Entry, votes: bool) -> str:
     match = ARXIV_ID.search(entry.item.url)
     ident = f"arXiv:{match.group(1)}" if match else _host(entry.item.url)
     score = f'<span class="tag green">{entry.item.score} ▲</span>' if entry.item.score else ""
-    return (f'<div class="paper"{_entry_attr(entry)}><div class="paper-foot">{score}'
+    return (f'<div class="paper"{_entry_attr(entry)}><div class="paper-foot">{score}{_status(entry)}'
             f'<a class="key" href="{_href(entry.item.url)}">{escape(ident)} {ARROW}</a></div>'
             f'<h4{_anchor(entry)}>{escape(entry.title)}</h4>{_story(entry)}<p>{escape(entry.summary)}</p>'
             f'{_actions(entry, votes, details=entry.details is not None)}</div>')
@@ -448,7 +455,7 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
                 page_name: str = "", slot: str = "morning", missed: list[dict] | None = None,
                 morning_page: str = "", og_image: str = "") -> str:
     votes = bool(feedback_url)
-    # Героем идёт событие: если модель вернула одни авторские посты и лайфхаки, «Главного» нет, они остаются в разделах
+    # Героем идёт событие: если модель вернула одни авторские посты и фишки, «Главного» нет, они остаются в разделах
     top = next((e for e in digest.entries if e.section not in EXTRA_SECTIONS), None)
     rest = [e for e in digest.entries if e is not top]
     main = [_missed(missed, morning_page)] if missed else []
@@ -456,7 +463,7 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
     nav = [_nav("main-story", "Главное", active=True)] if top else []
 
     _add_rows(main, nav, [row for row in ROW_SECTIONS if row[0] not in EXTRA_SECTIONS], rest, votes)
-    # «Ещё за день» — продолжение новостей дня: после разделов событий, до лайфхаков и авторских постов
+    # «Ещё за день» — продолжение новостей дня: после разделов событий, до фишек и авторских постов
     if digest.more:
         main.append(_also_today(digest.more))
         nav.append(_nav("also-today", "Ещё за день", len(digest.more)))

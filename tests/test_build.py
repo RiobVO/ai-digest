@@ -11,6 +11,7 @@ from digest.models import Item
 
 CONFIG = """[digest]
 model = "test-model"
+extras_model = "side-model"
 lite_model = "lite-model"
 audience = "разработчик"
 
@@ -221,13 +222,13 @@ def test_issue_is_three_calls_and_extras_skip_chosen_records(env, monkeypatch):
     assert "Ransomware takes a grocery chain" in listed and "Nvidia" not in listed
 
 
-def test_rate_limited_selection_falls_back_to_the_lite_model(env, monkeypatch):
-    # Дневной лимит Flash кончился: выпуск похуже лучше, чем никакого
+def test_each_call_walks_its_model_chain_when_flash_is_out(env, monkeypatch):
+    # Лимит Flash кончился: каждый вызов сам переходит к следующей модели, выпуск выходит
     tmp, args = env
     models = []
 
     def limited(prompt, schema, model, api_key):
-        models.append(model)
+        models.append((schema, model))
         if model == "test-model":
             raise llm.LlmError("Gemini test-model ответил 429", status=429)
         return fake_generate()(prompt, schema, model, api_key)
@@ -235,8 +236,9 @@ def test_rate_limited_selection_falls_back_to_the_lite_model(env, monkeypatch):
     monkeypatch.setattr(llm, "generate", limited)
     main.build(args)
     assert (tmp / "out" / "message.json").exists()
-    # Квота Flash уже исчерпана — второй вызов и разборы этого выпуска тоже идут на Lite
-    assert models == ["test-model", "lite-model", "lite-model", "lite-model"]
+    assert models == [(llm.SCHEMA, "test-model"), (llm.SCHEMA, "side-model"),
+                      (llm.EXTRAS_SCHEMA, "side-model"),
+                      (llm.EXPLAIN_SCHEMA, "test-model"), (llm.EXPLAIN_SCHEMA, "side-model")]
 
 
 def test_failed_selection_aborts_and_keeps_news_unseen(env, monkeypatch):
@@ -286,7 +288,7 @@ def test_alert_lite_triage_rejects_without_spending_flash(env, monkeypatch):
         calls.append((model, prompt))
         return {"items": [{"index": 0, "urgent": False}, {"index": 1, "urgent": False}]}
 
-    monkeypatch.setattr(main, "generate", judge)
+    monkeypatch.setattr(llm, "generate", judge)
     main.alert(args)
     # Без текста статьи у модели только заголовок, и «что это меняет» она додумывает
     assert [model for model, _ in calls] == ["lite-model"] and "article https://openai.com/gpt-6" in calls[0][1]
@@ -305,7 +307,7 @@ def test_alert_flash_rechecks_only_what_lite_flagged_and_may_refuse(env, monkeyp
             return {"items": [{"index": 0, "urgent": True}, {"index": 1, "urgent": False}]}
         return {"items": [{"index": 0, "urgent": False, "title": "", "text": ""}]}
 
-    monkeypatch.setattr(main, "generate", judge)
+    monkeypatch.setattr(llm, "generate", judge)
     monkeypatch.setattr(main, "send", lambda *a, **kw: sent.append(a))
     main.alert(args)
     assert [model for model, _ in calls] == ["lite-model", "test-model"]
@@ -326,7 +328,7 @@ def test_alert_sends_what_flash_confirmed(env, monkeypatch):
             return {"items": [{"index": 0, "urgent": True}, {"index": 1, "urgent": True}]}
         return {"items": [{"index": 1, "urgent": True, "title": "Блог обновили", "text": "Текст."}]}
 
-    monkeypatch.setattr(main, "generate", judge)
+    monkeypatch.setattr(llm, "generate", judge)
     monkeypatch.setattr(main, "send", lambda text, url, *a, **kw: sent.append(url))
     main.alert(args)
     assert sent == ["https://openai.com/blog-update"]
@@ -361,3 +363,18 @@ def test_eval_runs_see_the_same_input_and_never_rewrite_the_snapshot(tmp_path, m
         assert len(runs) == 2 and runs[0] == runs[1]
     saved = json.loads(snap.read_text(encoding="utf-8"))
     assert saved["items"] == json.loads(pristine)["items"]
+
+
+def test_unverified_copy_text_never_reaches_the_page(env, monkeypatch):
+    # Предложенный моделью текст «Скопировать» сверяется со скачанной страницей доверенного первоисточника
+    tmp, args = env
+    tip = {"more": [], "tips": [{"ids": [4], "title": "Фишка", "summary": "s", "why": "w",
+                                 "copy": "pip install totally-evil", "importance": 6}]}
+
+    def with_tip(prompt, schema, model, api_key):
+        return tip if schema is llm.EXTRAS_SCHEMA else fake_generate()(prompt, schema, model, api_key)
+
+    monkeypatch.setattr(llm, "generate", with_tip)
+    main.build(args)
+    pages = "".join(p.read_text(encoding="utf-8") for p in args.site.glob("*.html"))
+    assert "Фишка" in pages and "totally-evil" not in pages

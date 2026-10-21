@@ -94,11 +94,6 @@ h1{font-size:clamp(1.6rem,2.6vw,2.15rem);font-weight:500;letter-spacing:-.02em;m
 .hero p{margin:0;font-size:1.04rem;line-height:1.65;color:var(--ink-2);max-width:62ch}
 .why{background:var(--inner);border:1px solid var(--border-2);border-radius:10px;padding:11px 14px;font-size:.95rem;line-height:1.55;color:var(--ink-2);max-width:62ch}
 .why b{color:var(--green-ink);font-weight:600}
-.meter{display:grid;gap:8px;margin-top:6px;max-width:62ch}
-.meter-row{display:flex;justify-content:space-between;align-items:end;font-size:.74rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
-.meter-row span{font-size:.98rem;font-weight:500;letter-spacing:0;text-transform:none;border-bottom:1px dashed var(--border-3);font-variant-numeric:tabular-nums}
-.bar{height:7px;border-radius:999px;background:rgba(60,58,57,.1);overflow:hidden}
-.bar i{display:block;height:100%;background:var(--green);border-radius:inherit}
 .legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.86rem;color:var(--ink-2)}
 .legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--green);margin-right:7px}
 .legend .src::before,.legend .buzz::before{display:none}
@@ -300,9 +295,8 @@ details a:hover{text-decoration:underline}
   .item .num{display:none}
   .item>div{display:flex;flex-direction:column}
   .item h4{order:-1;margin:0 0 6px}
-  /* Служебная строка в одну тихую линию: оценки важности почти все 7.5–8.5 и ничего не различают,
-     а список «также» дублирует плашку охвата */
-  .meta .imp,.meta .also,.legend .also{display:none}
+  /* Служебная строка в одну тихую линию: список «также» дублирует плашку охвата */
+  .meta .also,.legend .also{display:none}
   .item .meta .buzz{background:none;padding:0;gap:0;color:var(--muted);font-size:.8rem;font-weight:500}
   .item .meta a.buzz{color:var(--blue-ink)}
   /* Разделитель только между элементами: у ссылки не по http домена (.src) нет, и строка не должна начинаться с «·» */

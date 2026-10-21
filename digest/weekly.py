@@ -1,7 +1,7 @@
 """Итог недели: главные сюжетные линии за 7 дней. Хронологию строим из архива, модель только отбирает и пересказывает."""
 from datetime import date, timedelta
 
-from digest.llm import VOICE, Details, Digest, Entry, entry_rank, generate
+from digest.llm import VOICE, Details, Digest, Entry, entry_rank, generate_first
 from digest.models import Item
 from digest.render import short_day
 
@@ -102,10 +102,10 @@ def parse_week(raw: dict, groups: list[dict]) -> Digest:
     return Digest(raw.get("headline", ""), raw.get("lead", ""), entries)
 
 
-def summarize_week(issues: list[dict], stories: dict[str, dict], today: date, audience: str, model: str,
+def summarize_week(issues: list[dict], stories: dict[str, dict], today: date, audience: str, models: list[str],
                    api_key: str) -> tuple[Digest, dict]:
     groups = collect_week(issues, stories, today)
-    raw = generate(build_week_prompt(groups, audience), WEEK_SCHEMA, model, api_key)
+    raw = generate_first(build_week_prompt(groups, audience), WEEK_SCHEMA, models, api_key)
     week_issues = [i for i in issues if i["date"] >= (today - timedelta(days=WEEK_DAYS - 1)).isoformat()]
     stats = {"issues": len(week_issues), "events": sum(len(i["entries"]) for i in week_issues)}
     return parse_week(raw, groups), stats
