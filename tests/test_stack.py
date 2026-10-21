@@ -22,6 +22,13 @@ NOW = datetime(2026, 10, 21, 12, tzinfo=timezone.utc)
     ("v1.2.6", "Non-breaking bug fixes.", None),
     ("v1.2.7", "Fixes without breaking the API.", None),
     ("v1.2.8", "No breaking changes in the CLI.\n\nBREAKING: removed the v1 endpoint.", "breaking"),
+    # Ревью: отрицание не должно съедать настоящий заголовок, разметка и артикль — не делать патч ломающим
+    ("v1.2.9", "Backward compatible: No\n\nBreaking changes:\n- Removed the v1 endpoint.", "breaking"),
+    ("v1.2.10", "No **breaking changes**.", None),
+    ("v1.2.11", "This is not a breaking change.", None),
+    ("v1.2.12", "### ⚠ BREAKING CHANGES\n* drop Node 18", "breaking"),
+    ("v1.2.13", "**Breaking:** the config moved to TOML.", "breaking"),
+    ("v1.2.14", "Breaking changes: none", None),
     ("n8n@2.44.5", "", None),
     # Пре-релизы и ночные сборки — никогда, даже минорные
     ("v1.2.3-rc1", "", None),

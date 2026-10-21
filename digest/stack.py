@@ -21,9 +21,11 @@ API = "https://api.github.com/repos/{repo}/releases"
 PER_PAGE = 15
 # Версия из тега: v1.2.3, rust-v0.163.0, n8n@2.45.0, v22.8. Тег без версии (b11798 у llama.cpp, stable у n8n) — мимо
 VERSION = re.compile(r"(?:^|[^\d.])v?(\d+)\.(\d+)(?:\.(\d+))?(?![\d.]*\d)")
-BREAKING = re.compile(r"\bbreaking\b", re.I)
-# «No breaking changes», «Non-breaking fixes», «without breaking the API» — обычный патч: отрицания вырезаем до поиска
-NOT_BREAKING = re.compile(r"\b(?:no|non|not|without)[\s-]+breaking\b", re.I)
+# Ломающий патч — тот, где строка заметок НАЧИНАЕТСЯ с «breaking» после разметки: «### ⚠ BREAKING CHANGES»,
+# «BREAKING CHANGE:», «**Breaking:**». Слово посреди фразы («No breaking changes», «not a breaking change») — нет:
+# отрицания в свободном тексте не перебрать, а заголовок раздела в changelog ставят именно так
+BREAKING_LINE = re.compile(r"^[\s#>*_~`⚠️\-]*breaking\b(?P<rest>.*)$", re.I | re.M)
+EMPTY_SECTION = re.compile(r"\b(?:none|n/a|nothing)\b", re.I)
 
 
 @dataclass
@@ -44,7 +46,8 @@ def classify(tag: str, notes: str) -> str | None:
         return None
     _, minor, patch = match.groups()
     if patch and int(patch) > 0:
-        return "breaking" if BREAKING.search(NOT_BREAKING.sub("", notes)) else None
+        breaking = any(not EMPTY_SECTION.search(m["rest"]) for m in BREAKING_LINE.finditer(notes))
+        return "breaking" if breaking else None
     return "major" if int(minor) == 0 else "minor"
 
 
