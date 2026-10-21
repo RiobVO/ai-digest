@@ -1,5 +1,93 @@
 [
  {
+  "date": "2026-10-21",
+  "slot": "morning",
+  "headline": "Сбои контроля в OpenAI, слияние Tesla и SpaceX, стек Voxtral 3",
+  "page": "2026-10-21.html",
+  "entries": [
+   {
+    "id": "20261021-0",
+    "title": "ИИ-агенты OpenAI отключали систему внутреннего мониторинга безопасности",
+    "section": "product",
+    "source": "bloomberg_tech",
+    "url": "https://www.bloomberg.com/news/articles/2026-10-21/openai-says-its-agents-weakened-system-that-flags-ai-misbehavior",
+    "story": "s65"
+   },
+   {
+    "id": "20261021-1",
+    "title": "Советы директоров Tesla и SpaceX обсуждают слияние компаний",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.theverge.com/science/1014984/spacex-tesla-merger-elon-musk-special-committees",
+    "story": "s66"
+   },
+   {
+    "id": "20261021-2",
+    "title": "Скомпрометированы 8 промежуточных сертификатов eMudhra с ключами от 3 бит",
+    "section": "security",
+    "source": "hn_top",
+    "url": "https://emudhra.we-have-a-problem.com/",
+    "story": "s67"
+   },
+   {
+    "id": "20261021-3",
+    "title": "Mistral запустила Voxtral 3 — стек речевых моделей и SDK для голосовых агентов",
+    "section": "model",
+    "source": "mistral",
+    "url": "https://mistral.ai/news/voxtral-3/",
+    "story": "s68"
+   },
+   {
+    "id": "20261021-4",
+    "title": "Anthropic отдаст 5% акций на благо общества и раскрыла $9 млрд затрат на GPU",
+    "section": "business",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/technology/2026/oct/19/ai-firm-anthropic-to-commit-shares-to-fund-for-public-good",
+    "story": "s9"
+   },
+   {
+    "id": "20261021-5",
+    "title": "Разработчики PHP выпускают экстренные патчи для двух RCE-дыр с рейтингом 9.2",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://www.bleepingcomputer.com/news/security/php-warns-admins-of-two-critical-flaws-emergency-patches-coming-tomorrow/",
+    "story": "s69"
+   },
+   {
+    "id": "20261021-6",
+    "title": "Авария питания в дата-центре Google Cloud в Лондоне отключила банки и суды",
+    "section": "product",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/business/2026/oct/20/revolut-down-app-cards-service-disruption",
+    "story": "s70"
+   },
+   {
+    "id": "20261021-7",
+    "title": "Google и Hugging Face запустили TorchTPU для нативного PyTorch на TPU",
+    "section": "dev",
+    "source": "hf_blog",
+    "url": "https://huggingface.co/blog/hf-torchtpu",
+    "story": "s71"
+   },
+   {
+    "id": "20261021-8",
+    "title": "Meta отключила шаринг чатов в Muse после обнаружения 6800 ссылок в DNS",
+    "section": "product",
+    "source": "verge",
+    "url": "https://www.theverge.com/tech/1014627/meta-muse-ai-sharing-ai-chats",
+    "story": "s58"
+   },
+   {
+    "id": "20261021-9",
+    "title": "Саймон Уиллисон: вайбкодинг стратегии Battle Drones и мультиплеер по звуку",
+    "section": "voices",
+    "source": "simon_willison",
+    "url": "https://simonwillison.net/2026/Oct/20/battledrones/",
+    "story": "s72"
+   }
+  ]
+ },
+ {
   "date": "2026-10-20",
   "slot": "evening",
   "headline": "Опенсорс от DeepSeek, чипы Nvidia на $35 млрд и зачистка в госсекторе США",
