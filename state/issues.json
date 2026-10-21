@@ -1,6 +1,118 @@
 [
  {
   "date": "2026-10-21",
+  "slot": "evening",
+  "headline": "OpenAI в Google Cloud, Nvidia OpenShell и фреймворк DeepInfer",
+  "page": "2026-10-21-evening.html",
+  "entries": [
+   {
+    "id": "20261021-10",
+    "title": "OpenAI: агенты отключали мониторинг безопасности",
+    "section": "security",
+    "source": "CNBC",
+    "url": "https://www.cnbc.com/2026/10/21/openai-ai-models-safety-monitoring.html",
+    "story": "s65"
+   },
+   {
+    "id": "20261021-11",
+    "title": "В Европе отключают сайты из-за уязвимостей в PHP",
+    "section": "security",
+    "source": "bloomberg_tech",
+    "url": "https://www.bloomberg.com/news/articles/2026-10-21/governments-take-websites-offline-after-php-security-warnings",
+    "story": "s69"
+   },
+   {
+    "id": "20261021-12",
+    "title": "OpenAI выкатывает модели в Google Cloud Model Garden",
+    "section": "product",
+    "source": "openai",
+    "url": "https://openai.com/index/openai-models-google-cloud",
+    "story": "s73"
+   },
+   {
+    "id": "20261021-13",
+    "title": "DeepSeek открыла движок DeepInfer для инференса",
+    "section": "dev",
+    "source": "scmp_tech",
+    "url": "https://www.scmp.com/tech/big-tech/article/3371592/deepseek-open-sources-new-tool-slash-ai-costs-fight-against-closed-source-rivals",
+    "story": "s56"
+   },
+   {
+    "id": "20261021-14",
+    "title": "Советы директоров Tesla и SpaceX обсуждают слияние",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.ft.com/content/e598bbc7-8211-436f-a57e-46c3ae21ac0f",
+    "story": "s66"
+   },
+   {
+    "id": "20261021-15",
+    "title": "Nvidia выкатила OpenShell для контроля ИИ-агентов",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://www.theregister.com/ai-and-ml/2026/10/21/nvidia-picks-openshell-to-tame-ai-gents/5304319",
+    "story": "s74"
+   },
+   {
+    "id": "20261021-16",
+    "title": "Samsung распродала всю память HBM на 2027 год",
+    "section": "business",
+    "source": "r_localllama",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xbfhxp/be_prepared_gpu_price_increase_incoming_samsung/",
+    "story": "s75"
+   },
+   {
+    "id": "20261021-17",
+    "title": "Meta закрыла общие ссылки на чаты в Muse из-за утечки",
+    "section": "security",
+    "source": "wired_ai",
+    "url": "https://www.wired.com/story/a-design-flaw-in-share-links-exposes-users-personal-conversations-with-meta-muse/",
+    "story": "s58"
+   },
+   {
+    "id": "20261021-18",
+    "title": "KRAFTON выкатила открытую 30B модель Raon-1 mini",
+    "section": "model",
+    "source": "r_localllama",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xbh0ev/kraftonraon1minipreview_hugging_face/",
+    "story": "s76"
+   },
+   {
+    "id": "20261021-19",
+    "title": "Еврокомиссия начала расследование против Booking.com",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.reuters.com/business/media-telecom/bookingcom-targeted-eu-investigation-into-phishing-scams-fraudulent-listings-2026-10-21/",
+    "story": "s77"
+   },
+   {
+    "id": "20261021-20",
+    "title": "Саймон Уиллисон о концепте Claude Mods и Attention Interface",
+    "section": "voices",
+    "source": "latent_space",
+    "url": "https://www.latent.space/p/claude-mods",
+    "story": "s78"
+   },
+   {
+    "id": "20261021-21",
+    "title": "Быстрое применение LoRA в llama.cpp без перезагрузки модели",
+    "section": "tips",
+    "source": "r_localllama",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xbekzx/fast_lora_in_llamacpp/",
+    "story": "s79"
+   },
+   {
+    "id": "20261021-22",
+    "title": "Включение пользовательских пространств имен для песочницы в Claude Code на Linux",
+    "section": "tips",
+    "source": "gh_claude_code",
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.305",
+    "story": "s80"
+   }
+  ]
+ },
+ {
+  "date": "2026-10-21",
   "slot": "morning",
   "headline": "Сбои контроля в OpenAI, слияние Tesla и SpaceX, стек Voxtral 3",
   "page": "2026-10-21.html",
