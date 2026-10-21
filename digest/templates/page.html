@@ -309,6 +309,13 @@ a.story-tag:hover{text-decoration:underline}
 .timeline a:hover{text-decoration:underline}
 .timeline .meta{margin-top:6px}
 
+/* «Твой стек»: инструмент, версия-ссылка и метка заметности в одну строку */
+.stack-card ul{margin:0;padding:0 20px 18px;list-style:none;display:grid;gap:10px;font-size:.93rem}
+.stack-card li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+.stack-card a{font:500 .86rem var(--f-mono);color:var(--blue-ink);text-decoration:none}
+.stack-card a:hover{text-decoration:underline}
+.stack-card small{font-size:.8rem;color:var(--muted)}
+
 @media (max-width:1180px){
   .grid{grid-template-columns:minmax(0,1fr);max-width:900px}
   /* В одну колонку оглавление должно стоять над лентой, а не под ней: карточки правой колонки становятся ячейками сетки */

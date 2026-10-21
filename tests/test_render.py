@@ -477,3 +477,32 @@ def test_nameless_story_page_is_titled_by_its_first_event():
     stories = {"s39": {"name": "", "events": []}}
     page = render_story_pages(STORY_ISSUES, stories, WHEN)["story-s39.html"]
     assert "<h1>Disney забирает &lt;команду&gt; Character.AI</h1>" in page
+
+
+def test_stack_block_shows_notable_releases_and_hides_on_a_quiet_day():
+    from digest.stack import Release
+    releases = [Release("Claude API", "v2.0.0", "major", "https://github.com/anthropics/anthropic-sdk-python/releases/tag/v2.0.0",
+                        WHEN),
+                Release("wazuh <SIEM>", "v4.14.10", "breaking", "https://github.com/wazuh/wazuh/releases/tag/v4.14.10", WHEN)]
+    page = render_page(sample(), STATS, WHEN, failures=[], stack=releases)
+    block = page[page.index('id="stack"'):]
+    block = block[:block.index("</section>")]
+    assert "Твой стек" in block and "v2.0.0" in block and "мажор" in block
+    assert "wazuh &lt;SIEM&gt;" in block and "ломающие изменения" in block
+    assert 'href="https://github.com/anthropics/anthropic-sdk-python/releases/tag/v2.0.0"' in block
+    assert 'id="stack"' not in render_page(sample(), STATS, WHEN, failures=[])
+
+
+def test_stack_block_shows_one_row_per_tool_with_its_newest_release():
+    from datetime import timedelta
+
+    from digest.stack import Release
+    url = "https://github.com/anthropics/anthropic-sdk-python/releases/tag/"
+    releases = [Release("Claude API", "v2.0.0", "major", url + "v2.0.0", WHEN),
+                Release("Gemini CLI", "v0.65.0", "minor", "https://github.com/g/c/releases/tag/v0.65.0", WHEN),
+                Release("Claude API", "v1.17.0", "minor", url + "v1.17.0", WHEN - timedelta(hours=5)),
+                Release("Claude API", "v1.16.0", "minor", url + "v1.16.0", WHEN - timedelta(hours=9))]
+    block = render_page(sample(), STATS, WHEN, failures=[], stack=releases)
+    block = block[block.index('id="stack"'):block.index("</section>", block.index('id="stack"'))]
+    assert block.count("<li>") == 2 and "v2.0.0" in block and "v1.17.0" not in block
+    assert "ещё 2" in block and "2 инструмента" in block

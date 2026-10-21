@@ -17,6 +17,7 @@ from digest.memory import (Archive, Stories, fetch_feedback, issue_slot, missed_
                            record_issue, resolve_votes)
 from digest.render import (DISPLAY_TZ, MONTHS, human_date, issue_summary, render_archive, render_health, render_page,
                            render_story_pages, render_tips)
+from digest.stack import fetch_stack
 from digest.state import SeenStore
 from digest.telegram import build_keyboard, build_message, send
 from digest.weekly import WEEK_DAYS, summarize_week
@@ -123,8 +124,10 @@ def build(args: argparse.Namespace) -> None:
 
     date_label = f"{human_date(now)}{' · вечер' if slot == 'evening' else ''}"
     og_image = _cover(args.site, page_name, digest.headline, date_label, issue_summary(digest.entries))
+    # «Твой стек» — без модели, прямо с GitHub; недоступный репозиторий только пишет в лог
+    releases = fetch_stack(config.get("stack", []), now)
     page = render_page(digest, stats, now, failures, feedback_url=feedback_url, issues=archive.issues, page_name=page_name,
-                       slot=slot, missed=missed, morning_page=morning_page, og_image=og_image)
+                       slot=slot, missed=missed, morning_page=morning_page, og_image=og_image, stack=releases)
     args.site.mkdir(parents=True, exist_ok=True)
     for name in (page_name, "index.html"):
         (args.site / name).write_text(page, encoding="utf-8")
