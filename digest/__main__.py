@@ -15,6 +15,7 @@ from digest.fetch import attach_discussions, fetch_all, fetch_articles, resolve_
 from digest.llm import LlmError, explain, extras, generate_first, select, verify_copies
 from digest.memory import (Archive, Stories, fetch_feedback, issue_slot, missed_in_morning, preferences_prompt,
                            record_issue, resolve_votes)
+from digest.mood import mood
 from digest.render import (DISPLAY_TZ, MONTHS, human_date, issue_summary, render_archive, render_health, render_page,
                            render_story_pages, render_tips)
 from digest.stack import fetch_stack
@@ -50,10 +51,10 @@ def _write_message(name: str, text: str, url: str, keyboard: dict | None) -> Non
                             encoding="utf-8")
 
 
-def _cover(site: Path, page_name: str, headline: str, date_label: str, sub: str) -> str:
+def _cover(site: Path, page_name: str, headline: str, date_label: str, sub: str, day_mood: str = "calm") -> str:
     """Снимает обложку выпуска в site/og/ и возвращает её адрес для og:image; без обложки — пустая строка."""
     cover = site / "og" / f"{Path(page_name).stem}.png"
-    if not make_cover(headline, date_label, sub, cover):
+    if not make_cover(headline, date_label, sub, cover, day_mood):
         return ""
     return f"{os.environ['SITE_URL'].rstrip('/')}/og/{cover.name}"
 
@@ -123,7 +124,8 @@ def build(args: argparse.Namespace) -> None:
     health.record_events([e.item.source for e in digest.entries])
 
     date_label = f"{human_date(now)}{' · вечер' if slot == 'evening' else ''}"
-    og_image = _cover(args.site, page_name, digest.headline, date_label, issue_summary(digest.entries))
+    og_image = _cover(args.site, page_name, digest.headline, date_label, issue_summary(digest.entries),
+                      mood([e.section for e in digest.entries]))
     # «Твой стек» — без модели, прямо с GitHub; недоступный репозиторий только пишет в лог
     releases = fetch_stack(config.get("stack", []), now)
     page = render_page(digest, stats, now, failures, feedback_url=feedback_url, issues=archive.issues, page_name=page_name,

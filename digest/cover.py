@@ -9,6 +9,8 @@ from html import escape
 from pathlib import Path
 from string import Template
 
+from digest.mood import MOODS
+
 log = logging.getLogger(__name__)
 
 TEMPLATES = Path(__file__).parent / "templates"
@@ -27,15 +29,16 @@ CHROME_TIMEOUT_S = 60
 CHROME_NAMES = ("google-chrome", "google-chrome-stable", "chromium", "chromium-browser")
 
 
-def cover_html(headline: str, date_label: str, sub: str) -> str:
-    return TEMPLATE.substitute(landscape=LANDSCAPE, headline=escape(headline), date=escape(date_label), sub=escape(sub))
+def cover_html(headline: str, date_label: str, sub: str, mood: str = "calm") -> str:
+    return TEMPLATE.substitute(landscape=LANDSCAPE, sky=MOODS[mood].sky, headline=escape(headline), date=escape(date_label),
+                               sub=escape(sub))
 
 
 def find_chrome() -> str | None:
     return os.environ.get("CHROME_PATH") or next(filter(None, map(shutil.which, CHROME_NAMES)), None)
 
 
-def make_cover(headline: str, date_label: str, sub: str, out: Path) -> bool:
+def make_cover(headline: str, date_label: str, sub: str, out: Path, mood: str = "calm") -> bool:
     """Снимает обложку в out. Обложка — украшение: без неё выпуск выходит как раньше, поэтому сбой не роняет сборку."""
     chrome = find_chrome()
     if not chrome:
@@ -48,7 +51,7 @@ def make_cover(headline: str, date_label: str, sub: str, out: Path) -> bool:
         out.unlink(missing_ok=True)
         with tempfile.TemporaryDirectory() as tmp:
             page = Path(tmp) / "cover.html"
-            page.write_text(cover_html(headline, date_label, sub), encoding="utf-8")
+            page.write_text(cover_html(headline, date_label, sub, mood), encoding="utf-8")
             # --no-sandbox: на ubuntu 24.04 AppArmor запрещает песочнице Chrome user namespaces; страница своя,
             # чужой в ней только заголовок, и он экранирован
             command = [chrome, "--headless=new", "--no-sandbox", "--disable-gpu", "--hide-scrollbars",

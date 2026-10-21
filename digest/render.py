@@ -11,6 +11,7 @@ from digest import health
 from digest.dedup import ARXIV_ID, coverage
 from digest.llm import EXTRA_SECTIONS, Digest, Entry, Mention
 from digest.models import Item
+from digest.mood import MOODS, mood
 from digest.stack import Release
 
 TEMPLATE = Template((Path(__file__).parent / "templates" / "page.html").read_text(encoding="utf-8"))
@@ -355,10 +356,11 @@ def _nav(anchor: str, label: str, count: int | None = None, active: bool = False
     return f'<a{css} href="#{anchor}">{ICONS[anchor]}{label}{badge}</a>'
 
 
-def _hero(entry: Entry, votes: bool, chip: str) -> str:
+def _hero(entry: Entry, votes: bool, chip: str, day_mood: str = "calm") -> str:
     also = f'<span class="also">{_also(entry)}</span>' if entry.item.also else ""
     return (
-        f'        <section class="card hero" id="main-story"{_entry_attr(entry)}>\n'
+        f'        <section class="card hero" id="main-story"{_entry_attr(entry)} data-mood="{day_mood}"'
+        f' style="--sky:{MOODS[day_mood].sky}">\n'
         f'          <div class="hero-top"><span class="chip">{chip}</span>'
         f'<a class="btn" href="{_href(entry.item.url)}">Первоисточник {ARROW}</a></div>\n'
         f'          <h2{_anchor(entry)}>{escape(entry.title)}</h2>\n          {_story(entry)}\n          <p>{escape(entry.summary)}</p>\n'
@@ -485,7 +487,8 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
     top = next((e for e in digest.entries if e.section not in EXTRA_SECTIONS), None)
     rest = [e for e in digest.entries if e is not top]
     main = [_missed(missed, morning_page)] if missed else []
-    main += [_hero(top, votes, "Главное" if kind == "day" else "Сюжет недели №1")] if top else []
+    day_mood = mood([e.section for e in digest.entries])
+    main += [_hero(top, votes, "Главное" if kind == "day" else "Сюжет недели №1", day_mood)] if top else []
     nav = [_nav("main-story", "Главное", active=True)] if top else []
 
     _add_rows(main, nav, [row for row in ROW_SECTIONS if row[0] not in EXTRA_SECTIONS], rest, votes)
@@ -540,7 +543,8 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
     description = f"{len(digest.entries)} событий. {digest.lead}"
     return TEMPLATE.substitute(
         headline=escape(digest.headline), description=escape(description[:300]), crumbs=crumbs, lead=lead,
-        og_image=_og_image(og_image), sub=issue_summary(digest.entries, kind),
+        og_image=_og_image(og_image),
+        sub=issue_summary(digest.entries, kind) + (f" · {MOODS[day_mood].label}" if MOODS[day_mood].label else ""),
         short_date=f"{local:%d.%m}", weekday=WEEKDAYS[local.weekday()] if kind == "day" else "Неделя",
         nav="".join(nav), archive=_archive_sidebar(issues, page_name),
         main="\n".join(main), summary=summary, aside="\n".join(aside), footer="".join(footer),
