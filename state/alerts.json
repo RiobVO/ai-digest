@@ -21,17 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-20T16:18:07.002527+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMikgFBVV95cUxNRjg3RFRuY0ZuZ203azdnaG53SWlBYmFkX0dRN05aSGtfRGM3RElsMHdHenByZW9ULUhFdVdfM0U1Q3RUN2FIS2Z0UmtyZGFjXzNST3lWaXpzQXV0ZmtEWHRqNGZJMUt4OFJ4Qy1GLVdNVEN5WWdweFJkOFhydWUxTDBfbGdKbHdtWnU1cTRZaTVOUQ?oc=5",
-    "news.google.com/rss/articles/CBMikgFBVV95cUxOUDN4VEZuYTVWQVJYd1Z0ZktXX2JGaElLcHJGbXVYckJNTVhBMVlSdkdmNzdUSHJpRWpTNEZNbjZPekt3Nmh4a3R0TTR1aG1uQXFlLWFlcWdydVZoXzQxNlk5RzVUUkNFWEZ6b2oyN1VsbzFWN04yaGNTb1hnX3E0UEV4TWlEQ29NLTc5b3dKajNZUQ?oc=5",
-    "news.google.com/rss/articles/CBMikgFBVV95cUxObFJNczhJZWtxMVNYOVJMdk51NUNDZmJ1dVlKX0k4U0l5UmU3TGhOYnFVNkxxWnFtcy1mZHlNaWxHUklERklWOUlIM29yMXcxdHZpTDhmUjdUVWV4LU5iZnNTQnlVWGxfN2RVSzhHdU9WWEhzaTNCbndDM0p3SndNeHV2ek1nOEFwb3p4YnRnUHRBdw?oc=5",
-    "news.google.com/rss/articles/CBMilAFBVV95cUxQc0xDTWlNcnRQOHk2Y21udzRMTDhVQ2F2QmxoLXA5NVI5TjFJTXlpQ1JwN0N6VXNKakZHZDZBZmZBRF83OWNkVnZKMy00N1ZHajlHVEdzTzgzczlDQVFuSThvQUdleXZFZy05ZGxWZnlWekNaRnN5NFRRQUhsaE1ISFZ0UWdnb21UMTZVQlBhMUF2SkJt?oc=5",
-    "title:ai scammers target sports fans with celebrity deepfakes"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-10-20T19:18:10.910979+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMipAFBVV95cUxNZzREUjNtLXExanMyYnFHckVha0xndFFpaEVsMlJCaVNRRjNUX00tel9MbzBSR0FaOXRfUWFLOWNXZlY5bXVWejY3VHI1UVMyT2MwZms4VXgydXhZSU9DMnVuS295ZE81NzJPZEhCMzlDSU1SZnlSZHo0OUFxYWNuUzd6QUdsM3dfS0lrVlR3RFMtMTRjcHZmb0o5Z0h4NzVwQmVBQg?oc=5",
@@ -267,6 +256,46 @@
     "title:chatgpt ads expands to 26 new countries as over 100 000 advertisers have used the platform"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-10-21T18:18:06.410033+00:00",
+   "keys": [
+    "github.com/php/php-src/releases/tag/php-8.2.35",
+    "title:php 8 2 35"
+   ],
+   "strength": 7
+  },
+  {
+   "at": "2026-10-21T18:18:06.410033+00:00",
+   "keys": [
+    "techdirt.com/2026/10/20/accident-or-not-the-no-kings-takedown-is-why-you-shouldnt-rent-your-megaphone-from-zuck",
+    "title:the no kings takedown is why you shouldn t rent your megaphone from zuck"
+   ],
+   "strength": 4
+  },
+  {
+   "at": "2026-10-21T18:18:06.410033+00:00",
+   "keys": [
+    "openai.com/index/att-legal",
+    "title:how at t is rethinking in house legal work with openai"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-10-21T18:18:06.410033+00:00",
+   "keys": [
+    "anthropic.com/news/christopher-stubbs-joins-long-term-benefit-trust",
+    "title:dr christopher stubbs an experimental physicist and former dean of science at harvard university has joined anthropic s long term benefit trust he brings to the trust decades of scientific expertise across observational cosmology and precision measurement"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-10-21T18:18:06.410033+00:00",
+   "keys": [
+    "title:php2shell ai uncovers critical rce in php",
+    "wiz.io/blog/php2shell-php-rce"
+   ],
+   "strength": 3
   }
  ],
  "undated": {
@@ -303,7 +332,8 @@
   "https://www.anthropic.com/news/expanding-support-for-scientists": "2026-10-20T17:18:08.547990+00:00",
   "https://www.anthropic.com/news/wellbeing-research-grants": "2026-10-20T17:18:08.547990+00:00",
   "https://www.anthropic.com/news/claude-text-watermark": "2026-10-20T17:18:08.547990+00:00",
-  "https://www.anthropic.com/news/features": "2026-10-21T02:18:11.473261+00:00"
+  "https://www.anthropic.com/news/features": "2026-10-21T02:18:11.473261+00:00",
+  "https://www.anthropic.com/news/christopher-stubbs-joins-long-term-benefit-trust": "2026-10-21T18:18:06.410033+00:00"
  },
  "primed": true
 }

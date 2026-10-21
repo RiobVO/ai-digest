@@ -1,0 +1,3 @@
+[
+{"at": "2026-10-21T18:18:25Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [{"at": "2026-10-21T18:18:19Z", "call": "triage", "asked": "gemini-3.5-flash-lite", "served": "gemini-3.5-flash-lite", "status": 200, "seconds": 4.1, "thinking": 0, "error": ""}, {"at": "2026-10-21T18:18:23Z", "call": "alert", "asked": "gemini-flash-latest", "served": "", "status": 503, "seconds": 0.9, "thinking": 0, "error": ""}, {"at": "2026-10-21T18:18:24Z", "call": "alert", "asked": "gemini-3.5-flash", "served": "", "status": 503, "seconds": 0.5, "thinking": 0, "error": ""}], "failed": {}, "sources": {}, "events": {}}
+]
