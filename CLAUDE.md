@@ -39,8 +39,8 @@ Local runs read `.env` (`load_env` in `digest/__main__.py`; never overrides real
   (`gemini-3.5-flash-lite`, `gemini-3.1-flash-lite`): 15 RPM, 500/day. Quotas are per model.
 - Model chains (`__main__.model_chains`, sources.toml): select and explain go `model` (3.8 Flash) → `extras_model`
   (3.6 Flash, own 20/day) → `lite_model`; `extras` («Ещё за день» + tricks) goes `extras_model` → `lite_model`;
-  `alert` triages on `lite_model` → `extras_model` and re-checks on `extras_model` → `model` only what Lite marked
-  urgent (3.8 quota is kept for builds). `build` = 2 calls on 3.8 + 1 on 3.6, `weekly` = 1 → ≈5 calls/day on 3.8.
+  `alert` triages on `lite_model` → `extras_model` and re-checks on `model` → `extras_model` only what Lite marked
+  urgent (an alert can wake the reader at night — the best model writes it). `build` = 2 calls on 3.8 + 1 on 3.6, `weekly` = 1 → ≈5 calls/day on 3.8.
 - **503 counts against RPD** (verified 2026-10-21: AI Studio counters matched exactly, 3.6 = 6, 3.8 = 17, incl.
   every 503). Free-tier 3.8/3.6 shed load with an instant 503 «high demand» (1–2 s) that clears within minutes.
 - `llm.generate` makes ONE attempt; `llm.generate_first` moves to the next model on any failure (429, 5xx, timeout,

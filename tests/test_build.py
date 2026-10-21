@@ -310,8 +310,8 @@ def test_alert_flash_rechecks_only_what_lite_flagged_and_may_refuse(env, monkeyp
     monkeypatch.setattr(llm, "generate", judge)
     monkeypatch.setattr(main, "send", lambda *a, **kw: sent.append(a))
     main.alert(args)
-    # 3.8 бережём для выпусков: перепроверку срочного пишет 3.6, у которой своя квота
-    assert [model for model, _ in calls] == ["lite-model", "side-model"]
+    # Срочное может разбудить ночью: перепроверку и текст пишет лучшая модель, 3.6 — только запас
+    assert [model for model, _ in calls] == ["lite-model", "test-model"]
     assert "OpenAI ships GPT-6" in calls[1][1] and "OpenAI updates its blog" not in calls[1][1]
     assert sent == []
     state = json.loads((args.state_dir / "alerts.json").read_text(encoding="utf-8"))
