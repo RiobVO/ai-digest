@@ -17,6 +17,11 @@ NOW = datetime(2026, 10, 21, 12, tzinfo=timezone.utc)
     # Патч-релизы шумят: показываем только с ломающими изменениями
     ("v1.2.3", "Fixed a crash.", None),
     ("v1.2.4", "## BREAKING CHANGES\nRenamed the config key.", "breaking"),
+    # Отрицания — обычный патч: «No breaking changes» в заметках не делает его ломающим
+    ("v1.2.5", "No breaking changes.", None),
+    ("v1.2.6", "Non-breaking bug fixes.", None),
+    ("v1.2.7", "Fixes without breaking the API.", None),
+    ("v1.2.8", "No breaking changes in the CLI.\n\nBREAKING: removed the v1 endpoint.", "breaking"),
     ("n8n@2.44.5", "", None),
     # Пре-релизы и ночные сборки — никогда, даже минорные
     ("v1.2.3-rc1", "", None),

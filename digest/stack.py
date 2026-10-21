@@ -22,6 +22,8 @@ PER_PAGE = 15
 # Версия из тега: v1.2.3, rust-v0.163.0, n8n@2.45.0, v22.8. Тег без версии (b11798 у llama.cpp, stable у n8n) — мимо
 VERSION = re.compile(r"(?:^|[^\d.])v?(\d+)\.(\d+)(?:\.(\d+))?(?![\d.]*\d)")
 BREAKING = re.compile(r"\bbreaking\b", re.I)
+# «No breaking changes», «Non-breaking fixes», «without breaking the API» — обычный патч: отрицания вырезаем до поиска
+NOT_BREAKING = re.compile(r"\b(?:no|non|not|without)[\s-]+breaking\b", re.I)
 
 
 @dataclass
@@ -42,7 +44,7 @@ def classify(tag: str, notes: str) -> str | None:
         return None
     _, minor, patch = match.groups()
     if patch and int(patch) > 0:
-        return "breaking" if BREAKING.search(notes) else None
+        return "breaking" if BREAKING.search(NOT_BREAKING.sub("", notes)) else None
     return "major" if int(minor) == 0 else "minor"
 
 
