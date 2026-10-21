@@ -7,7 +7,7 @@ from textwrap import shorten
 
 import httpx
 
-from digest.llm import Entry
+from digest.llm import EXTRA_SECTIONS, Entry
 from digest.render import DISPLAY_TZ
 
 log = logging.getLogger(__name__)
@@ -124,12 +124,17 @@ class Stories:
             else:
                 del self.stories[sid]
         for e in entries:
+            if e.section in EXTRA_SECTIONS:
+                # Фишка или авторский пост — не событие, линии у них нет: 21.10 они заводили однодневные сюжеты
+                e.story = ""
+                continue
             if e.story not in self.stories:
                 # Пустой или выдуманный моделью id — значит, сюжет новый
                 e.story = f"s{self.next}"
                 self.next += 1
-                # Без имени от модели сюжет называется заголовком новости — режем по слову, а не посреди «млн»
-                name = shorten(e.story_name or e.title, STORY_NAME_MAX, placeholder="…")
+                # Без имени от модели сюжет остаётся безымянным: обрезанный заголовок новости (так было у 14 из 72
+                # сюжетов 21.10) только повторял хронологию. Длинное имя режем по слову, а не посреди «млн»
+                name = shorten(e.story_name, STORY_NAME_MAX, placeholder="…") if e.story_name else ""
                 self.stories[e.story] = {"name": name, "events": []}
             story = self.stories[e.story]
             e.story_name = story["name"]

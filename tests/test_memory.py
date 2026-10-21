@@ -75,9 +75,25 @@ def test_stories_continue_and_count_days(tmp_path):
 
 def test_long_story_name_is_cut_on_a_word_boundary(tmp_path):
     stories = Stories(tmp_path / "stories.json")
-    e = entry("Disney забирает более 60 сотрудников Character.AI за $180 млн")
+    e = entry("t", story_name="Disney забирает более 60 сотрудников Character.AI за $180 млн")
     stories.apply([e], date(2026, 10, 18), "2026-10-18.html")
     assert e.story_name == "Disney забирает более 60 сотрудников Character.AI за $180…"
+
+
+def test_story_without_a_name_from_the_model_stays_nameless_instead_of_a_headline(tmp_path):
+    # 21.10: у 14 сюжетов из 72 «имя» было обрезанным заголовком первой новости
+    stories = Stories(tmp_path / "stories.json")
+    e = entry("Disney забирает более 60 сотрудников Character.AI за $180 млн")
+    stories.apply([e], date(2026, 10, 18), "2026-10-18.html")
+    assert e.story and e.story_name == "" and stories.stories[e.story]["name"] == ""
+
+
+def test_tricks_and_engineer_posts_do_not_start_stories(tmp_path):
+    stories = Stories(tmp_path / "stories.json")
+    tip, voice, event = entry("Флаг", section="tips"), entry("Пост", section="voices"), entry("Релиз", story_name="R")
+    stories.apply([tip, voice, event], date(2026, 10, 21), "2026-10-21.html")
+    assert tip.story == "" and voice.story == "" and event.story
+    assert list(stories.stories) == [event.story]
 
 
 def test_unknown_story_id_from_model_starts_a_new_story(tmp_path):

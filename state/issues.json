@@ -91,7 +91,7 @@
     "section": "voices",
     "source": "latent_space",
     "url": "https://www.latent.space/p/claude-mods",
-    "story": "s78"
+    "story": ""
    },
    {
     "id": "20261021-21",
@@ -99,7 +99,7 @@
     "section": "tips",
     "source": "r_localllama",
     "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xbekzx/fast_lora_in_llamacpp/",
-    "story": "s79",
+    "story": "",
     "summary": "Подключи LoRA-адаптер прямо в llama.cpp и настрой его масштаб для нужного баланса.",
     "why": "Позволяет быстро переключать поведение или цензуру модели на лету, не скачивая веса заново.",
     "copy": "",
@@ -111,7 +111,7 @@
     "section": "tips",
     "source": "gh_claude_code",
     "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.305",
-    "story": "s80",
+    "story": "",
     "summary": "Добавь этот параметр в конфигурацию или окружение Claude Code.",
     "why": "Полезно, если нужно обойти ограничения песочницы для запуска инструментов вроде Chromium или rootless podman в Linux.",
     "copy": "sandbox.allowNestedUserNamespaces",
@@ -203,7 +203,7 @@
     "section": "voices",
     "source": "simon_willison",
     "url": "https://simonwillison.net/2026/Oct/20/battledrones/",
-    "story": "s72"
+    "story": ""
    }
   ]
  },
@@ -291,7 +291,7 @@
     "section": "voices",
     "source": "hamel_husain",
     "url": "https://hamel.dev/blog/posts/decision-model-evals/",
-    "story": "s64"
+    "story": ""
    }
   ]
  },
@@ -371,7 +371,7 @@
     "section": "voices",
     "source": "simon_willison",
     "url": "https://simonwillison.net/2026/Oct/19/my-obituary-for-programming/",
-    "story": "s55"
+    "story": ""
    }
   ]
  },
@@ -683,7 +683,7 @@
     "section": "voices",
     "source": "interconnects",
     "url": "https://www.interconnects.ai/p/meta-shakes-up-the-frontiers-open",
-    "story": "s36"
+    "story": ""
    }
   ]
  },
@@ -835,7 +835,7 @@
     "section": "voices",
     "source": "simon_willison",
     "url": "https://simonwillison.net/2026/Oct/16/code-review/",
-    "story": "s25"
+    "story": ""
    }
   ]
  },

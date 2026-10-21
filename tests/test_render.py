@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 
 from digest.llm import Digest, Entry
 from digest.models import Item
-from digest.render import render_archive, render_page, render_tips
+from digest.render import render_archive, render_page, render_story_pages, render_tips
 from digest.telegram import TG_LIMIT, build_message
 
 WHEN = datetime(2026, 10, 16, 3, tzinfo=timezone.utc)
@@ -114,10 +114,10 @@ def test_continuing_story_shows_day_and_previous_events():
 def test_headline_long_story_name_is_left_out_of_the_tag():
     digest = sample()
     top = digest.entries[0]
-    top.story_name, top.story_day = "Disney забирает более 60 сотрудников Character.AI за $180…", 2
+    top.story, top.story_name, top.story_day = "s1", "Disney забирает более 60 сотрудников Character.AI за $180…", 2
     top.story_prev = [("2026-10-18", "Disney забирает более 60 сотрудников Character.AI за $180 млн")]
     page = render_page(digest, STATS, WHEN, failures=[])
-    assert '<span class="tag story-tag">Сюжет · <span class="story-day">2-й день</span></span>' in page
+    assert '<a class="tag story-tag" href="story-s1.html">Сюжет · <span class="story-day">2-й день</span></a>' in page
 
 
 def test_sidebar_lists_recent_issues_and_archive_page_lists_all():
@@ -440,3 +440,40 @@ def test_arsenal_checkbox_needs_the_worker_and_empty_archive_is_honest():
     assert page.count('class="tried"') == 3 and '"https://fb.dev"' in page
     empty = render_tips([], WHEN)
     assert "Новые фишки появятся с выпусками" in empty and "data-tip" not in empty
+
+
+STORY_ISSUES = [
+    {"date": "2026-10-19", "slot": "evening", "headline": "h3", "page": "2026-10-19-evening.html", "entries": [
+        {"id": "20261019-14", "title": "Character.AI передаёт команду Disney", "section": "business", "source": "verge",
+         "url": "https://v/3", "story": "s39"}]},
+    {"date": "2026-10-18", "slot": "evening", "headline": "h2", "page": "2026-10-18-evening.html", "entries": [
+        {"id": "20261018-12", "title": "Character.AI подал на банкротство", "section": "business", "source": "techcrunch",
+         "url": "https://t/2", "story": "s39"},
+        {"id": "20261018-13", "title": "Однодневка", "section": "product", "source": "verge", "url": "https://v/x",
+         "story": "s40"}]},
+    {"date": "2026-10-18", "slot": "morning", "headline": "h1", "page": "2026-10-18.html", "entries": [
+        {"id": "20261018-2", "title": "Disney забирает <команду> Character.AI", "section": "business",
+         "source": "the_decoder", "url": "https://d/1", "story": "s39"}]},
+]
+STORIES = {"s39": {"name": "Банкротство Character.AI", "events": []}, "s40": {"name": "Однодневка", "events": []}}
+
+
+def test_story_page_chronology_matches_the_archive():
+    pages = render_story_pages(STORY_ISSUES, STORIES, WHEN)
+    # Однодневный сюжет страницы не получает: хронологии из одного события нет
+    assert list(pages) == ["story-s39.html"]
+    page = pages["story-s39.html"]
+    assert "Банкротство Character.AI" in page
+    order = [page.index(t) for t in ("Disney забирает &lt;команду&gt; Character.AI", "Character.AI подал на банкротство",
+                                     "Character.AI передаёт команду Disney")]
+    assert order == sorted(order)
+    for issue, entry_id in (("2026-10-18.html", "20261018-2"), ("2026-10-18-evening.html", "20261018-12"),
+                            ("2026-10-19-evening.html", "20261019-14")):
+        assert f'href="{issue}#e-{entry_id}"' in page
+    assert "Однодневка" not in page
+
+
+def test_nameless_story_page_is_titled_by_its_first_event():
+    stories = {"s39": {"name": "", "events": []}}
+    page = render_story_pages(STORY_ISSUES, stories, WHEN)["story-s39.html"]
+    assert "<h1>Disney забирает &lt;команду&gt; Character.AI</h1>" in page

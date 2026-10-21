@@ -275,7 +275,10 @@ def _story(entry: Entry) -> str:
     # Модель нередко называет сюжет целым заголовком вместо короткого имени: такое имя лишь повторяет
     # хронологию под меткой и растягивает её на две строки
     name = f"{escape(entry.story_name)} · " if 0 < len(entry.story_name) <= STORY_TAG_NAME_MAX else ""
-    return (f'<div class="story"><span class="tag story-tag">Сюжет · {name}<span class="story-day">{entry.story_day}-й день</span></span>'
+    # Со второго дня у сюжета есть своя страница с хронологией (render_story_pages); в итоге недели id нет
+    tag = (f'a class="tag story-tag" href="{story_page(entry.story)}"' if entry.story else 'span class="tag story-tag"')
+    return (f'<div class="story"><{tag}>Сюжет · {name}<span class="story-day">{entry.story_day}-й день</span>'
+            f'</{tag.split()[0]}>'
             f'{f"<ul>{prev}</ul>" if prev else ""}</div>')
 
 
@@ -797,3 +800,48 @@ def render_tips(issues: list[dict], when: datetime, feedback_url: str = "") -> s
         footer=f"<span>Обновлено {local:%d.%m} в {local:%H:%M}</span>",
         script=(TIPS_SCRIPT % json.dumps(feedback_url) if tried else "") + PAGE_SCRIPT,
     )
+
+
+def story_page(story_id: str) -> str:
+    # Плоское имя, а не папка story/: относительные ссылки шаблона (иконки, манифест, архив) должны работать
+    return f"story-{story_id}.html"
+
+
+def _slot_order(issue: dict) -> tuple[str, bool]:
+    return issue["date"], issue.get("slot") == "evening"
+
+
+def render_story_pages(issues: list[dict], stories: dict[str, dict], when: datetime) -> dict[str, str]:
+    """Страница на каждый сюжет со второго дня: хронология из архива — тех же записей, что вышли в выпусках."""
+    events: dict[str, list[tuple[dict, dict]]] = {}
+    for issue in sorted(issues, key=_slot_order):
+        for e in issue["entries"]:
+            if e.get("story"):
+                events.setdefault(e["story"], []).append((issue, e))
+    pages = {}
+    local = when.astimezone(DISPLAY_TZ)
+    for sid, rows in events.items():
+        days = sorted({issue["date"] for issue, _ in rows})
+        if len(days) < 2:
+            continue
+        name = stories.get(sid, {}).get("name", "")
+        title = name or rows[0][1]["title"]
+        items = "".join(
+            f'<li><time>{short_day(issue["date"])}{" · вечер" if issue.get("slot") == "evening" else ""}</time>'
+            f'<a href="{escape(issue["page"])}#e-{escape(e["id"])}">{escape(e["title"])}</a>'
+            f'<div class="meta"><span class="tag">{SECTION_LABELS.get(e["section"], "Событие")}</span>'
+            f'<span>{escape(source_label(e["source"]))}</span></div></li>'
+            for issue, e in rows)
+        main = (f'        <section class="card" id="main-story">\n          <div class="card-head"><h3>Хронология</h3>'
+                f'<small>{short_day(days[0])} — {short_day(days[-1])}</small></div>\n'
+                f'          <ol class="timeline">{items}</ol>\n        </section>')
+        pages[story_page(sid)] = TEMPLATE.substitute(
+            headline=escape(title), description=escape(f"Сюжет: {title}"), og_image="",
+            crumbs="Дайджест<span>/</span>Сюжет", lead="",
+            sub=f"{plural(len(days), 'день', 'дня', 'дней')} · {plural(len(rows), 'событие', 'события', 'событий')}",
+            short_date=f"{local:%d.%m}", weekday="Сюжет",
+            nav=f'<a class="on" href="#main-story">{ICONS["archive"]}Хронология</a>', archive=_archive_sidebar(issues),
+            main=main, summary=_summary("Сюжет", "", "", [(len(days), "дней"), (len(rows), "событий")]),
+            aside="", footer=f"<span>Обновлено {local:%d.%m} в {local:%H:%M}</span>", script=PAGE_SCRIPT,
+        )
+    return pages
