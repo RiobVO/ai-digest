@@ -173,6 +173,14 @@
     "title:spacex s ai business is beating expectations"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-10-21T02:18:11.473261+00:00",
+   "keys": [
+    "anthropic.com/news/features",
+    "title:features"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
@@ -208,7 +216,8 @@
   "https://www.anthropic.com/news/model-hardware-standard-research-preview": "2026-10-20T17:18:08.547990+00:00",
   "https://www.anthropic.com/news/expanding-support-for-scientists": "2026-10-20T17:18:08.547990+00:00",
   "https://www.anthropic.com/news/wellbeing-research-grants": "2026-10-20T17:18:08.547990+00:00",
-  "https://www.anthropic.com/news/claude-text-watermark": "2026-10-20T17:18:08.547990+00:00"
+  "https://www.anthropic.com/news/claude-text-watermark": "2026-10-20T17:18:08.547990+00:00",
+  "https://www.anthropic.com/news/features": "2026-10-21T02:18:11.473261+00:00"
  },
  "primed": true
 }
