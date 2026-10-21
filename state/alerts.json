@@ -21,17 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-20T12:18:07.872787+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMiigFBVV95cUxOTXBTWS1CeUtmdDlsQVFZZzA1Z2JaMlFtbWJjbTNoRloxVnpWMlVZUUU0a3A4Q29adktsb01Gb0dnVVdveWdtOFlLdjU3aVp6Q3YzZENyMWZmRG1nem15VzNiYWxJQ3RnaVMycUJTMFdwaGpEMHF6SDdPTE96SFhBaDkzUmliSHJ5cWc?oc=5",
-    "news.google.com/rss/articles/CBMijAFBVV95cUxQdmp0SDF0OFQxdFk0OXdxcUdwdEhyeG5tTmVYY1BtanplY0RXVGU1OXdBc0xKXzBvVW5MUzdlMVBDYmRvci1MdmxveVVKbXVvWncyeFJvbmw2d0pJRTE1VTE4c1RSZ1Z2d0NfbWFQV3c0dzZwNHgwOXpSVTFhLVcyVktCU3pYamYzMVVJRA?oc=5",
-    "news.google.com/rss/articles/CBMikgFBVV95cUxOR1dlajlycDFVTklkU3NhTHVvdmpTSUlhQ1pzX01yNGJrRUVJdjNlM3RzWFZWbC1UQmNUSUFjOTZWSXpaWUhyd1ZIZ3E5ZnVOaDNIclNPSmtmQXVJM3Q5RldXblpJdlNOczRiUGMwTXF5N1JkYnYzc2liY1RoTUFLOGhxZ2QtZjlqWlJISXRpVDFsQQ?oc=5",
-    "news.google.com/rss/articles/CBMikwFBVV95cUxQdjJQZVJEemJvY19Hakl6YjBsY2RHVnd5UHVXaTZmRWZMOUhsS2JVNGZiSE9mWldVRXdORE5NODV2Y2dMaXJhbkRwd0tCMzBOZDZSOU9faFNNTGJ3NHFkZ0F6cjFlVExaWGpwVHE5VzVBeXNNeDBZOGo2cEw1bl9zdlpna1lDWEpoSVVtRHZMV29wSU0?oc=5",
-    "title:lay s is releasing sweet and salty holiday chips"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-10-20T16:18:07.002527+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMikgFBVV95cUxNRjg3RFRuY0ZuZ203azdnaG53SWlBYmFkX0dRN05aSGtfRGM3RElsMHdHenByZW9ULUhFdVdfM0U1Q3RUN2FIS2Z0UmtyZGFjXzNST3lWaXpzQXV0ZmtEWHRqNGZJMUt4OFJ4Qy1GLVdNVEN5WWdweFJkOFhydWUxTDBfbGdKbHdtWnU1cTRZaTVOUQ?oc=5",
@@ -244,6 +233,22 @@
    "keys": [
     "blogs.nvidia.com/blog/cudss-generally-available-engineering-scientific-simulation",
     "title:nvidia cudss now generally available to accelerate engineering and scientific simulations"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-10-21T12:18:10.094636+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/confidential-computing-model-builders-infrastructure",
+    "title:nvidia confidential computing expands enabling frontier model builders to securely scale across global infrastructure"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-10-21T12:18:10.094636+00:00",
+   "keys": [
+    "mistral.ai/news/mistral-nvidia-ai-for-industrial-engineering",
+    "title:mistral advances ai for engineering with nvidia"
    ],
    "strength": 1
   }
