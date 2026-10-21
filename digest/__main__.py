@@ -62,14 +62,14 @@ def _cover(site: Path, page_name: str, headline: str, date_label: str, sub: str,
 def build(args: argparse.Namespace) -> None:
     now = datetime.now(timezone.utc)
     today = now.astimezone(DISPLAY_TZ).date()
+    # Слот — первым делом: панель здоровья подписывает им и сбой до любой работы (нет ключа, битый конфиг),
+    # иначе упавший вечерний выпуск выглядел бы утренним
+    slot = issue_slot(now, os.environ.get("ISSUE_SLOT", ""))
+    health.RUN.slot = slot
     config = tomllib.loads(args.config.read_text(encoding="utf-8"))
     settings = config["digest"]
     api_key = os.environ["GEMINI_API_KEY"]
     feedback_url = os.environ.get("FEEDBACK_URL", "")
-
-    # Слот нужен панели здоровья и до отбора: упавший вечерний выпуск не должен выглядеть утренним
-    slot = issue_slot(now, os.environ.get("ISSUE_SLOT", ""))
-    health.RUN.slot = slot
 
     raw, failures = fetch_all(config["source"], now)
     if len(failures) == len(config["source"]):

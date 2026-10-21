@@ -409,3 +409,14 @@ def test_dry_run_leaves_health_untouched(env):
     args.run, args.dry_run = main.build, True
     main.run_with_health(args)
     assert not (args.state_dir / "health").exists()
+
+
+def test_build_failing_before_any_work_still_records_its_slot(env, monkeypatch):
+    tmp, args = env
+    args.run = main.build
+    monkeypatch.setenv("ISSUE_SLOT", "evening")
+    monkeypatch.delenv("GEMINI_API_KEY")
+    with pytest.raises(KeyError):
+        main.run_with_health(args)
+    run = json.loads((args.state_dir / "health" / "build.json").read_text(encoding="utf-8"))[-1]
+    assert run["slot"] == "evening" and run["outcome"] == "KeyError"
