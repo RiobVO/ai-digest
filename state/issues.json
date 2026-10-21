@@ -99,7 +99,11 @@
     "section": "tips",
     "source": "r_localllama",
     "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xbekzx/fast_lora_in_llamacpp/",
-    "story": "s79"
+    "story": "s79",
+    "summary": "Подключи LoRA-адаптер прямо в llama.cpp и настрой его масштаб для нужного баланса.",
+    "why": "Позволяет быстро переключать поведение или цензуру модели на лету, не скачивая веса заново.",
+    "copy": "",
+    "topic": "local"
    },
    {
     "id": "20261021-22",
@@ -107,7 +111,11 @@
     "section": "tips",
     "source": "gh_claude_code",
     "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.305",
-    "story": "s80"
+    "story": "s80",
+    "summary": "Добавь этот параметр в конфигурацию или окружение Claude Code.",
+    "why": "Полезно, если нужно обойти ограничения песочницы для запуска инструментов вроде Chromium или rootless podman в Linux.",
+    "copy": "sandbox.allowNestedUserNamespaces",
+    "topic": "claude_code"
    }
   ]
  },

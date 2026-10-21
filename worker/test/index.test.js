@@ -13,6 +13,7 @@ function memoryKV({ pageSize = 1000, emptyFirst = false } = {}) {
     calls,
     async put(key, value, options = {}) { store.set(key, { value, ...options }); },
     async get(key) { calls.get += 1; return store.get(key)?.value ?? null; },
+    async delete(key) { store.delete(key); },
     async list({ prefix, cursor }) {
       calls.list.push({ prefix, cursor });
       if (emptyFirst && cursor === undefined) return { keys: [], list_complete: false, cursor: "0" };
@@ -33,6 +34,11 @@ const votesOf = async (env) =>
 const pageVote = (id, v) =>
   new Request(`https://w.dev/vote?e=${id}&v=${v}`, { method: "POST", headers: { Origin: "https://riobvo.github.io" } });
 const pageRead = (id) => new Request(`https://w.dev/read?e=${id}`, { method: "POST", headers: { Origin: "https://riobvo.github.io" } });
+
+const tried = (id, v, origin = "https://riobvo.github.io") =>
+  new Request(`https://w.dev/tried?e=${id}&v=${v}`, { method: "POST", headers: { Origin: origin } });
+const triedList = async (origin = "https://riobvo.github.io") =>
+  worker.fetch(new Request("https://w.dev/tried", { headers: { Origin: origin } }), env);
 
 let env;
 let telegramCalls;
@@ -232,4 +238,27 @@ test("повторный голос заменяет и значение, и met
   const body = await votesOf(env);
   assert.deepEqual(body.votes.map((v) => [v.id, v.v]), [["20261017-1", "down"]]);
   assert.equal(env.VOTES.store.get("vote:20261017-1").metadata.v, "down");
+});
+
+test("галочка «попробовал» сохраняется, читается страницей и снимается", async () => {
+  assert.equal((await worker.fetch(tried("20261021-22", 1), env)).status, 200);
+  assert.equal((await worker.fetch(tried("20261021-21", 1), env)).status, 200);
+  const res = await triedList();
+  assert.equal(res.status, 200);
+  assert.equal(res.headers.get("Access-Control-Allow-Origin"), "https://riobvo.github.io");
+  assert.deepEqual((await res.json()).ids.sort(), ["20261021-21", "20261021-22"]);
+  assert.equal((await worker.fetch(tried("20261021-22", 0), env)).status, 200);
+  assert.deepEqual((await (await triedList()).json()).ids, ["20261021-21"]);
+});
+
+test("галочка с чужого сайта не принимается и не отдаётся", async () => {
+  assert.equal((await worker.fetch(tried("20261021-22", 1, "https://evil.example"), env)).status, 403);
+  assert.equal(env.VOTES.store.size, 0);
+  assert.equal((await triedList("https://evil.example")).status, 403);
+});
+
+test("галочка с мусорным id или значением отклоняется", async () => {
+  assert.equal((await worker.fetch(tried("../votes", 1), env)).status, 400);
+  assert.equal((await worker.fetch(tried("20261021-22", "yes"), env)).status, 400);
+  assert.equal(env.VOTES.store.size, 0);
 });

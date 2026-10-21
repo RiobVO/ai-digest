@@ -547,3 +547,17 @@ def test_money_filter_keeps_lines_that_only_look_like_finance():
             "Раунд финансирования Mistral оценил компанию в $14 млрд"]
     assert [t for t in keep if llm.CORPORATE_MONEY.search(t)] == []
     assert [t for t in drop if not llm.CORPORATE_MONEY.search(t)] == []
+
+
+def test_tips_get_a_topic_from_a_closed_list():
+    tip = llm.EXTRAS_SCHEMA["properties"]["tips"]["items"]
+    assert tip["properties"]["topic"]["enum"] == list(llm.TIP_TOPICS) and "topic" in tip["required"]
+    assert tip["propertyOrdering"] == list(tip["properties"])
+    pool = extras_pool()
+    digest = _chosen(pool)
+    raw = {"more": [], "tips": [
+        {"ids": [5], "title": "Effort", "summary": "s", "why": "w", "copy": "", "topic": "claude_code", "importance": 6},
+        # Тема вне списка (схема это запрещает, но Lite-модели ошибаются) — фишка остаётся, тема пустая
+        {"ids": [2], "title": "Другое", "summary": "s", "why": "w", "copy": "", "topic": "магия", "importance": 5}]}
+    llm.attach_extras(digest, raw, pool)
+    assert [(e.title, e.topic) for e in digest.entries if e.section == "tips"] == [("Effort", "claude_code"), ("Другое", "")]

@@ -110,6 +110,8 @@ def test_build_ships_page_message_and_state_that_agree(env):
     seen = json.loads((args.state_dir / "seen.json").read_text(encoding="utf-8"))
     assert any("openai.com/news/model" in key for key in seen["seen"])
     assert (args.state_dir / "stories.json").exists()
+    # Арсенал пересобирается вместе с выпуском: новая фишка появляется в нём сразу
+    assert "Арсенал фишек" in (args.site / "tips.html").read_text(encoding="utf-8")
 
 
 def test_also_today_gets_decoded_links_and_reaches_page_and_message(env, monkeypatch):

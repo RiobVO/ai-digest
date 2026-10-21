@@ -285,6 +285,17 @@ details a:hover{text-decoration:underline}
 .sources .run-note{margin-top:6px}
 .run-note.quiet{margin:0;padding:12px 18px;color:var(--muted)}
 
+/* Арсенал фишек: галочка «попробовал» слева, ссылки справа; отмеченная фишка не тускнеет — её ещё ищут по теме */
+.tip{grid-template-columns:minmax(0,1fr)}
+.tip .term{margin-top:10px}
+.tip-note{margin:10px 0 0;font-size:.86rem;color:var(--muted)}
+.tip-foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+.tried{display:inline-flex;align-items:center;gap:8px;margin-right:auto;font-size:.88rem;font-weight:500;color:var(--ink-2);cursor:pointer;user-select:none}
+.tried input{width:18px;height:18px;margin:0;accent-color:var(--green-ink);cursor:pointer}
+.tried input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.tip.done .tried{color:var(--green-ink)}
+.tried.err{color:var(--danger)}
+
 @media (max-width:1180px){
   .grid{grid-template-columns:minmax(0,1fr);max-width:900px}
   /* В одну колонку оглавление должно стоять над лентой, а не под ней: карточки правой колонки становятся ячейками сетки */
@@ -340,6 +351,8 @@ details a:hover{text-decoration:underline}
   .quota-row .fail{grid-column:2/-1;justify-self:start}
   .chain{grid-template-columns:minmax(0,1fr)}
   .run-note.quiet{padding:12px 14px}
+  /* Галочка — своей строкой, ссылки парой под ней: иначе «Первоисточник» повисал один */
+  .tried{flex-basis:100%}
 }
 /* Пальцевые цели не меньше 44px (Apple HIG, WCAG 2.5.5). Мелким значкам — копированию и плашке HN — зона нажатия
    расширена невидимым слоем, чтобы не раздувать строку */
@@ -357,6 +370,7 @@ details a:hover{text-decoration:underline}
   /* Высота зоны — ровно 44px от центра значка, какого бы размера ни был сам текст */
   .copy::after,a.buzz::after{content:"";position:absolute;left:-4px;right:-4px;top:50%;height:44px;translate:0 -50%}
   .missed a{display:block;padding-block:4px}
+  .tried{min-height:44px}
   .also-today li{padding-block:4px}
 }
 </style>

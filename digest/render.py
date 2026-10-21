@@ -421,7 +421,7 @@ def _archive_sidebar(issues: list[dict] | None, current: str = "") -> str:
             f'<a class="arch-all" href="archive.html">Все выпуски {ARROW}</a></div>')
 
 
-def _summary(title: str, sub: str, lead: str, cards: list[tuple[int, str]]) -> str:
+def _summary(title: str, sub: str, lead: str, cards: list[tuple[int | str, str]]) -> str:
     tiles = "".join(f'<div class="stat"><b>{value}</b><span>{label}</span></div>' for value, label in cards)
     lead_html = f'<p class="lead">{escape(lead)}</p>' if lead else ""
     return (f'        <section class="card">\n          <div class="card-head"><h3>{title}</h3><small>{sub}</small></div>\n'
@@ -511,7 +511,7 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
         funnel = [f'<span>Просмотрено {stats["raw"]}, новых {stats["merged"]}, в выпуске {len(digest.entries)}</span>']
 
     footer = [*funnel, f"<span>Собрано {local:%d.%m} в {local:%H:%M}</span>", "<span>Стоимость 0 ₽</span>",
-              '<a href="health.html">Здоровье</a>']
+              '<a href="tips.html">Арсенал фишек</a>', '<a href="health.html">Здоровье</a>']
     if failures:
         footer.append(f'<span class="fail">Не собрались: {escape(", ".join(f.split(":")[0] for f in failures))}</span>')
 
@@ -695,4 +695,101 @@ def render_health(runs: list[dict], settings: dict, now: datetime) -> str:
         main="\n".join(main),
         summary=_summary("30 дней", "", "", [(len(runs), "запусков"), (len(calls), "вызовов"), (refused, "отказов")]),
         aside=aside, footer=f"<span>Обновлено {local:%d.%m} в {local:%H:%M}</span>", script=PAGE_SCRIPT,
+    )
+
+
+# Темы фишек — в том же порядке, что в llm.TIP_TOPICS; «Разное» — для фишек без темы (архив до арсенала, ошибка модели)
+TIP_TOPIC_LABELS = {"claude_code": "Claude Code", "agents": "Агенты и IDE", "local": "Локальные модели",
+                    "prompts": "Промпты", "api": "API и SDK", "workflow": "Рабочий процесс", "other": "Разное"}
+
+# Галочка «попробовал»: состояние живёт в воркере (страница статичная и пересобирается дважды в день), браузер помнит
+# последний выбор на случай, если воркер не ответил. Снять галочку можно повторным нажатием
+TIPS_SCRIPT = """<script>
+(() => {
+  const FB = %s;
+  const boxes = [...document.querySelectorAll(".tried input")];
+  const count = () => {
+    const done = boxes.filter(b => b.checked).length;
+    const tile = document.querySelector("[data-tried-count]");
+    if (tile) tile.textContent = done;
+  };
+  const set = (id, on) => boxes.filter(b => b.dataset.id === id).forEach(b => {
+    b.checked = on; b.closest(".tip").classList.toggle("done", on);
+  });
+  boxes.forEach(b => { try { if (localStorage.getItem("t:" + b.dataset.id) === "1") set(b.dataset.id, true); } catch (e) {} });
+  count();
+  fetch(FB + "/tried").then(r => r.ok ? r.json() : Promise.reject(r.status)).then(({ids}) => {
+    const on = new Set(ids);
+    boxes.forEach(b => {
+      set(b.dataset.id, on.has(b.dataset.id));
+      try { localStorage.setItem("t:" + b.dataset.id, on.has(b.dataset.id) ? "1" : "0"); } catch (e) {}
+    });
+    count();
+  }).catch(() => {});
+  boxes.forEach(b => b.addEventListener("change", () => {
+    const id = b.dataset.id, on = b.checked;
+    const label = b.closest(".tried");
+    label.classList.remove("err");
+    set(id, on);
+    count();
+    fetch(FB + "/tried?e=" + encodeURIComponent(id) + "&v=" + (on ? 1 : 0), {method: "POST"})
+      .then(r => { if (!r.ok) throw new Error(r.status); try { localStorage.setItem("t:" + id, on ? "1" : "0"); } catch (e) {} })
+      .catch(() => { set(id, !on); count(); label.classList.add("err"); });
+  }));
+})();
+</script>"""
+
+
+def _tip(tip: dict, page: str, tried: bool) -> str:
+    copy = (_term([tip["copy"]], "Команда или промпт") if tip.get("copy")
+            else '<p class="tip-note">Команда не подтверждена источником — шаги в первоисточнике</p>')
+    why = f'<div class="why"><b>Зачем:</b> {escape(tip["why"])}</div>' if tip.get("why") else ""
+    summary = f'<p>{escape(tip["summary"])}</p>' if tip.get("summary") else ""
+    check = (f'<label class="tried"><input type="checkbox" data-id="{escape(tip["id"])}">попробовал</label>'
+             if tried else "")
+    return (f'<div class="item tip" data-tip="{escape(tip["id"])}"><div>'
+            f'<div class="meta"><span class="tag">{short_day(tip["date"])}</span>'
+            f'<span>{escape(source_label(tip["source"]))}</span></div>'
+            f'<h4>{escape(tip["title"])}</h4>{summary}{why}{copy}'
+            f'<div class="tip-foot">{check}<a class="pill" href="{escape(page)}#e-{escape(tip["id"])}">В выпуске</a>'
+            f'<a class="pill" href="{_href(tip["url"])}">Первоисточник {ARROW}</a></div></div></div>')
+
+
+def render_tips(issues: list[dict], when: datetime, feedback_url: str = "") -> str:
+    """Арсенал: все фишки архива по темам, новые сверху. Тему ставит модель в том же вызове extras."""
+    tried = bool(feedback_url)
+    groups: dict[str, list[tuple[dict, str]]] = {topic: [] for topic in TIP_TOPIC_LABELS}
+    for issue in issues:
+        for e in issue["entries"]:
+            if e["section"] == "tips":
+                topic = e.get("topic") if e.get("topic") in TIP_TOPIC_LABELS else "other"
+                groups[topic].append(({**e, "date": issue["date"]}, issue["page"]))
+    total = sum(map(len, groups.values()))
+    main: list[str] = []
+    nav: list[str] = []
+    for topic, tips in groups.items():
+        if not tips:
+            continue
+        cards = "".join(_tip(tip, page, tried) for tip, page in tips)
+        main.append(f'        <section class="card" id="t-{topic}">\n          <div class="card-head"><h3>{TIP_TOPIC_LABELS[topic]}</h3>'
+                    f'<small>{len(tips)}</small></div>\n          <div class="card-body">{cards}</div>\n        </section>')
+        nav.append(f'<a{" class=\"on\"" if not nav else ""} href="#t-{topic}">{ICONS["tips"]}{TIP_TOPIC_LABELS[topic]}'
+                   f'<span class="count">{len(tips)}</span></a>')
+    main.append('        <section class="card noise"><h3>Новые фишки появятся с выпусками</h3>'
+                '<p>Каждый выпуск добавляет 2–4 приёма из релизов, блогов инженеров, Reddit и HN.</p></section>')
+    with_copy = sum(1 for tips in groups.values() for tip, _ in tips if tip.get("copy"))
+    tiles: list[tuple[int | str, str]] = [(total, "фишек"), (with_copy, "с командой")]
+    if tried:
+        # Сколько попробовано, знает только воркер: число подставит скрипт страницы
+        tiles.append(('<output data-tried-count>0</output>', "попробовано"))
+    summary = _summary("Арсенал", "", "", tiles)
+    local = when.astimezone(DISPLAY_TZ)
+    return TEMPLATE.substitute(
+        headline="Арсенал фишек", description=f"{plural(total, 'фишка', 'фишки', 'фишек')} из выпусков ИИ-дайджеста",
+        og_image="", crumbs="Дайджест<span>/</span>Арсенал", lead="",
+        sub=f"{plural(total, 'фишка', 'фишки', 'фишек')} из архива",
+        short_date=f"{local:%d.%m}", weekday="Арсенал", nav="".join(nav), archive=_archive_sidebar(issues),
+        main="\n".join(main), summary=summary, aside="",
+        footer=f"<span>Обновлено {local:%d.%m} в {local:%H:%M}</span>",
+        script=(TIPS_SCRIPT % json.dumps(feedback_url) if tried else "") + PAGE_SCRIPT,
     )

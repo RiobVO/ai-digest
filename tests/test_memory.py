@@ -212,3 +212,15 @@ def test_missed_is_empty_when_read_marks_are_unknown(tmp_path):
     record_issue(archive, stories, day, "Утро", "2026-10-17.html", [entry(t) for t in "ABC"])
     # Воркер недоступен: нельзя объявлять пропущенным то, что могли прочитать
     assert missed_in_morning(archive, day, opened=None) == []
+
+
+def test_archive_keeps_tip_text_topic_and_verified_copy_for_the_arsenal(tmp_path):
+    archive = Archive(tmp_path / "issues.json")
+    tip = entry("Флаг песочницы", section="tips", source="gh_claude_code")
+    tip.why, tip.copy, tip.topic = "Chromium в песочнице.", "sandbox.allowNestedUserNamespaces", "claude_code"
+    record_issue(archive, Stories(tmp_path / "s.json"), date(2026, 10, 21), "h", "p.html", [entry("A"), tip])
+    event, saved = archive.issues[0]["entries"]
+    assert {k: saved[k] for k in ("summary", "why", "copy", "topic")} == {
+        "summary": "s", "why": "Chromium в песочнице.", "copy": "sandbox.allowNestedUserNamespaces", "topic": "claude_code"}
+    # События в архиве остаются короткими: текст карточки нужен только арсеналу фишек
+    assert "summary" not in event and "copy" not in event

@@ -1,8 +1,9 @@
+import re
 from datetime import datetime, timezone
 
 from digest.llm import Digest, Entry
 from digest.models import Item
-from digest.render import render_archive, render_page
+from digest.render import render_archive, render_page, render_tips
 from digest.telegram import TG_LIMIT, build_message
 
 WHEN = datetime(2026, 10, 16, 3, tzinfo=timezone.utc)
@@ -392,3 +393,50 @@ def test_trick_card_has_a_copy_block_with_the_verbatim_command():
     page = render_page(Digest("h", "l", [entry]), STATS, WHEN, failures=[])
     block = page[page.index('id="tips"'):]
     assert "/auto-mode-setup &lt;proj&gt;" in block and "Скопировать" in block
+
+
+TIP_ISSUES = [
+    {"date": "2026-10-21", "slot": "evening", "headline": "h", "page": "2026-10-21-evening.html", "entries": [
+        {"id": "20261021-3", "title": "Событие дня", "section": "model", "source": "openai", "url": "https://openai.com/x",
+         "story": "s1"},
+        {"id": "20261021-21", "title": "LoRA <на лету>", "section": "tips", "source": "r_localllama",
+         "url": "https://www.reddit.com/r/LocalLLaMA/x", "story": "s79", "summary": "Подключи адаптер.",
+         "why": "Быстро.", "copy": "", "topic": "local"},
+        {"id": "20261021-22", "title": "Песочница", "section": "tips", "source": "gh_claude_code",
+         "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.305", "story": "s80",
+         "summary": "Добавь параметр.", "why": "Chromium в песочнице.", "copy": "sandbox.allowNestedUserNamespaces",
+         "topic": "claude_code"}]},
+    # Фишка из архива до появления арсенала: ни темы, ни текста — всё равно должна найтись
+    {"date": "2026-10-20", "slot": "morning", "headline": "h2", "page": "2026-10-20.html", "entries": [
+        {"id": "20261020-9", "title": "Старая фишка", "section": "tips", "source": "hn", "url": "https://x.io/t",
+         "story": ""}]},
+]
+
+
+def _topic_section(page: str, topic: str) -> str:
+    start = page.index(f'id="t-{topic}"')
+    return page[start:page.index("</section>", start)]
+
+
+def test_arsenal_groups_every_archived_tip_by_topic():
+    page = render_tips(TIP_ISSUES, WHEN, feedback_url="https://fb.dev")
+    for tip_id, topic in (("20261021-21", "local"), ("20261021-22", "claude_code"), ("20261020-9", "other")):
+        assert f'data-tip="{tip_id}"' in _topic_section(page, topic)
+    assert "Событие дня" not in page and "LoRA &lt;на лету&gt;" in page
+    # Карточка ведёт в свой выпуск
+    assert 'href="2026-10-21-evening.html#e-20261021-22"' in page
+
+
+def test_arsenal_copy_button_carries_exactly_the_verified_text():
+    page = render_tips(TIP_ISSUES, WHEN, feedback_url="https://fb.dev")
+    assert re.findall(r"<code>(.*?)</code>", page) == ["sandbox.allowNestedUserNamespaces"]
+    assert page.count('class="copy"') == 1
+    assert "Команда не подтверждена источником" in _topic_section(page, "local")
+
+
+def test_arsenal_checkbox_needs_the_worker_and_empty_archive_is_honest():
+    assert 'class="tried"' not in render_tips(TIP_ISSUES, WHEN)
+    page = render_tips(TIP_ISSUES, WHEN, feedback_url="https://fb.dev")
+    assert page.count('class="tried"') == 3 and '"https://fb.dev"' in page
+    empty = render_tips([], WHEN)
+    assert "Новые фишки появятся с выпусками" in empty and "data-tip" not in empty

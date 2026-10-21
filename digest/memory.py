@@ -48,6 +48,16 @@ def _dump(path: Path, data) -> None:
     path.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
+def _archived(e: Entry) -> dict:
+    row = {"id": e.id, "title": e.title, "section": e.section, "source": e.item.source, "url": e.item.url,
+           "story": e.story}
+    if e.section == "tips":
+        # Арсенал фишек собирается из архива: ему нужен текст карточки, тема и уже проверенная команда
+        # (verify_copies отработал до записи). Событиям это не нужно — архив не раздувается
+        row |= {"summary": e.summary, "why": e.why, "copy": e.copy, "topic": e.topic}
+    return row
+
+
 class Archive:
     """Список выпусков (новые сверху); через него оценки по id превращаются обратно в заголовки."""
 
@@ -66,8 +76,7 @@ class Archive:
         # Выпуск определяется страницей, а не датой: в один день их два — утренний и вечерний
         previous = next((i for i in self.issues if i["page"] == page), None)
         issue = {"date": day.isoformat(), "slot": slot, "headline": headline, "page": page,
-                 "entries": [{"id": e.id, "title": e.title, "section": e.section, "source": e.item.source,
-                              "url": e.item.url, "story": e.story} for e in entries]}
+                 "entries": [_archived(e) for e in entries]}
         if previous:
             # Пересборка заменяет выпуск, но записи прежней версии остаются для разбора старых голосов
             issue["replaced"] = previous.get("replaced", []) + previous["entries"]

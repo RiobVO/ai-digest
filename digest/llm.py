@@ -39,6 +39,8 @@ FALLBACK_SECTION = "product"
 STATUSES = ("announced", "available", "research", "in_use", "rumor")
 # Сверх событий дня: авторский пост и фишка — не новость, они идут после событий и не становятся «Главным»
 EXTRA_SECTIONS = ("voices", "tips")
+# Темы фишек для арсенала (site/tips.html) — enum схемы extras: модель ставит тему в том же вызове
+TIP_TOPICS = ("claude_code", "agents", "local", "prompts", "api", "workflow")
 # Фишки отбирает второй вызов (EXTRAS_PROMPT): в первом их нет даже среди разделов схемы
 SELECT_SECTIONS = [s for s in SECTIONS if s != "tips"]
 
@@ -293,6 +295,9 @@ EXTRAS_PROMPT = """Ты редактор личного дайджеста но�
 - tips: ids — записи с приёмом; title — по-русски, до 90 символов: что появилось или что сделать; why — одно
   предложение: зачем это и в какой работе пригодится, только из записи; summary — как запустить: 1–3 шага по записи;
   copy — команда, флаг или промпт ДОСЛОВНО из записи, без изменений и перевода; нет такого — пустая строка;
+  topic — тема: claude_code — Claude Code; agents — другие агенты и IDE (Codex, Cursor, Gemini CLI); local —
+  локальные модели и инференс; prompts — промпты и приёмы работы с моделью; api — API и SDK; workflow — остальное
+  про инструменты и процесс разработки;
   importance — от 0 до 10 по той же шкале, что у событий выпуска: практичная фишка обычно 5–7.
 
 """ + VOICE + """
@@ -333,10 +338,11 @@ EXTRAS_SCHEMA = {
                 "why": {"type": "STRING"},
                 "summary": {"type": "STRING"},
                 "copy": {"type": "STRING"},
+                "topic": {"type": "STRING", "enum": list(TIP_TOPICS)},
                 "importance": {"type": "NUMBER"},
             },
-            "propertyOrdering": ["ids", "title", "why", "summary", "copy", "importance"],
-            "required": ["ids", "title", "why", "summary", "copy", "importance"],
+            "propertyOrdering": ["ids", "title", "why", "summary", "copy", "topic", "importance"],
+            "required": ["ids", "title", "why", "summary", "copy", "topic", "importance"],
         }},
     },
     # Порядок как в эксперименте out/handoff/exp_more.py, который поднял охват: сначала «Ещё за день», потом приёмы
@@ -554,6 +560,7 @@ def attach_extras(digest: Digest, raw: dict, items: list[Item]) -> None:
                           row.get("summary", ""), row.get("why", ""))
             # Пока только предложение модели: на страницу попадёт после verify_copies, когда скачан первоисточник
             entry.copy = row.get("copy", "").strip()
+            entry.topic = row["topic"] if row.get("topic") in TIP_TOPICS else ""
             digest.entries.append(entry)
     for row in raw.get("more", []):
         if CORPORATE_MONEY.search(row.get("title", "")):

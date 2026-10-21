@@ -4,6 +4,8 @@
 const ID_RE = /^\d{8}-\d{1,3}$/;
 const VOTE_PREFIX = "vote:";
 const READ_PREFIX = "read:";
+// Отметка «попробовал» у фишки в арсенале: бессрочно, снимается повторным нажатием
+const TRIED_PREFIX = "tried:";
 const ANSWERS = { up: "👍 Учту — больше такого", down: "👎 Понял — меньше такого" };
 // «Прочитано» нужно только вечернему выпуску того же дня — неделя с запасом, дальше ключ удаляет сам KV.
 // Оценки без срока: промпт берёт последние 20, как бы редко читатель ни голосовал
@@ -84,7 +86,7 @@ async function telegram(request, env) {
 }
 
 function cors(env) {
-  return { "Access-Control-Allow-Origin": env.PAGE_ORIGIN, "Access-Control-Allow-Methods": "POST", Vary: "Origin" };
+  return { "Access-Control-Allow-Origin": env.PAGE_ORIGIN, "Access-Control-Allow-Methods": "GET, POST", Vary: "Origin" };
 }
 
 async function pageVote(request, url, env) {
@@ -106,6 +108,24 @@ async function pageRead(request, url, env) {
   const id = url.searchParams.get("e") ?? "";
   if (!ID_RE.test(id)) return new Response("bad request", { status: 400, headers: cors(env) });
   await putRecord(env, READ_PREFIX + id, { id, at: new Date().toISOString() }, { expirationTtl: READ_TTL_SECONDS });
+  return Response.json({ ok: true }, { headers: cors(env) });
+}
+
+// Арсенал фишек: POST ставит или снимает галочку (v=1/0), GET отдаёт отмеченные — страница статичная и узнаёт
+// свои галочки только отсюда. Оба только с нашего сайта, как /vote и /read
+async function pageTried(request, url, env) {
+  if (request.headers.get("Origin") !== env.PAGE_ORIGIN) return new Response("forbidden", { status: 403 });
+  if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors(env) });
+  if (request.method === "GET") {
+    const ids = (await listPrefix(env, TRIED_PREFIX)).map((r) => r.id);
+    return Response.json({ ids }, { headers: cors(env) });
+  }
+  if (request.method !== "POST") return new Response("method not allowed", { status: 405, headers: cors(env) });
+  const id = url.searchParams.get("e") ?? "";
+  const v = url.searchParams.get("v");
+  if (!ID_RE.test(id) || (v !== "1" && v !== "0")) return new Response("bad request", { status: 400, headers: cors(env) });
+  if (v === "1") await putRecord(env, TRIED_PREFIX + id, { id, at: new Date().toISOString() });
+  else await env.VOTES.delete(TRIED_PREFIX + id);
   return Response.json({ ok: true }, { headers: cors(env) });
 }
 
@@ -189,6 +209,7 @@ export default {
     if (url.pathname === "/telegram" && request.method === "POST") return telegram(request, env);
     if (url.pathname === "/vote") return pageVote(request, url, env);
     if (url.pathname === "/read") return pageRead(request, url, env);
+    if (url.pathname === "/tried") return pageTried(request, url, env);
     if (url.pathname === "/votes" && request.method === "GET") return listVotes(request, env);
     return new Response("not found", { status: 404 });
   },

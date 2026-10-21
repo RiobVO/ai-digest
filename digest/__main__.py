@@ -15,7 +15,8 @@ from digest.fetch import attach_discussions, fetch_all, fetch_articles, resolve_
 from digest.llm import LlmError, explain, extras, generate_first, select, verify_copies
 from digest.memory import (Archive, Stories, fetch_feedback, issue_slot, missed_in_morning, preferences_prompt,
                            record_issue, resolve_votes)
-from digest.render import DISPLAY_TZ, MONTHS, human_date, issue_summary, render_archive, render_health, render_page
+from digest.render import (DISPLAY_TZ, MONTHS, human_date, issue_summary, render_archive, render_health, render_page,
+                           render_tips)
 from digest.state import SeenStore
 from digest.telegram import build_keyboard, build_message, send
 from digest.weekly import WEEK_DAYS, summarize_week
@@ -128,6 +129,7 @@ def build(args: argparse.Namespace) -> None:
     for name in (page_name, "index.html"):
         (args.site / name).write_text(page, encoding="utf-8")
     (args.site / "archive.html").write_text(render_archive(archive.issues, now), encoding="utf-8")
+    (args.site / "tips.html").write_text(render_tips(archive.issues, now, feedback_url), encoding="utf-8")
 
     page_url = f"{os.environ['SITE_URL'].rstrip('/')}/{page_name}"
     label = "Утренний дайджест" if slot == "morning" else "Вечерний дайджест"
