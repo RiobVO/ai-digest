@@ -3,8 +3,9 @@
   "name": "ai-digest-feedback",
   "main": "src/index.js",
   "compatibility_date": "2026-10-01",
-  // KV создаётся автоматически при первом деплое (id не указан)
-  "kv_namespaces": [{ "binding": "VOTES" }],
+  // KV с оценками и отметками читателя. id закреплён: без него деплой полагается на автопривязку, и пустое
+  // новое хранилище молча потеряло бы все голоса. id — не секрет, без учётных данных Cloudflare он бесполезен
+  "kv_namespaces": [{ "binding": "VOTES", "id": "80fa5aa4ea8348e3b20708a08b931ef9" }],
   "vars": {
     // Только с этого сайта страница может присылать оценки (CORS + проверка Origin)
     "PAGE_ORIGIN": "https://riobvo.github.io",
