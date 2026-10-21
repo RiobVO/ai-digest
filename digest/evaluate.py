@@ -29,12 +29,21 @@ FORECAST_PATTERNS = [
     r"станут (?:заметно |гораздо |намного |значительно )?(?:проще|дешевле|доступнее|быстрее)", r"всё чаще", r"все чаще",
 ]
 
+# «Почему важно» по шаблону и догадки о мотивах: фраза подходит к любой новости своего типа («случай показывает
+# риски…») или приписывает компании цель, которой нет в записи («шаг направлен на защиту от критики»)
+TEMPLATE_PATTERNS = [
+    r"показыва\w*", r"(?:про)?демонстрир\w*", r"наглядн\w*", r"подч[её]ркива\w*", r"свидетельству\w*",
+    r"иллюстрир\w*", r"направлен\w* на", r"стремит\w*", r"стремлени\w*", r"в попытке", r"призван\w*",
+    r"пытает\w*", r"очередн\w*", r"доказыва\w*",
+]
+
 
 def _words(patterns: list[str]) -> re.Pattern[str]:
     return re.compile(r"(?<!\w)(?:" + "|".join(patterns) + r")(?!\w)", re.I)
 
 
 SLOP_RE, OFFICIALESE_RE, FORECAST_RE = _words(SLOP_PATTERNS), _words(OFFICIALESE_PATTERNS), _words(FORECAST_PATTERNS)
+TEMPLATE_RE = _words(TEMPLATE_PATTERNS)
 # Тысячи через пробел («250 000», в том числе неразрывный) — одно число, а не «250» и «000»
 NUMBER_RE = re.compile(r"\d{1,3}(?:[ \u00a0\u202f]\d{3})+(?:[.,]\d+)?|\d+(?:[.,]\d+)*")
 # Тысячи не начинаются с нуля: «0,015» — дробь
@@ -55,6 +64,10 @@ def officialese_hits(text: str) -> list[str]:
 
 def forecast_hits(text: str) -> list[str]:
     return [m.group(0).lower() for m in FORECAST_RE.finditer(text)]
+
+
+def template_hits(text: str) -> list[str]:
+    return [m.group(0).lower() for m in TEMPLATE_RE.finditer(text)]
 
 
 def _number(token: str) -> str:
@@ -108,9 +121,26 @@ def report(digest: Digest, texts: dict[str, str]) -> dict:
             "forecasts": forecast_hits(written),
             "invented": invented_numbers(written, _source_text(entry, texts)),
             "why_repeats": bool(entry.why) and repeats(entry.why, entry.summary),
+            "templates": template_hits(entry.why),
+        })
+    # Строка «Ещё за день» — тоже текст для читателя: без проверки сбой второго вызова выглядел бы в eval чистым.
+    # Важности и «почему» у неё нет — в те метрики она не входит
+    for mention in digest.more:
+        item = mention.item
+        rows.append({
+            "title": mention.title,
+            "importance": 0,
+            "slop": slop_hits(mention.title),
+            "officialese": officialese_hits(mention.title),
+            "forecasts": forecast_hits(mention.title),
+            "invented": invented_numbers(mention.title, " ".join([item.title, item.summary, texts.get(item.url, "")])),
+            "why_repeats": False,
+            "templates": [],
         })
     return {
-        "entries": len(rows),
+        "entries": len(digest.entries),
+        "more": len(digest.more),
+        "tips": sum(e.section == "tips" for e in digest.entries),
         "high_importance": sum(r["importance"] >= HIGH_IMPORTANCE for r in rows),
         "slop": sum(len(r["slop"]) for r in rows) + len(slop_hits(f"{digest.headline} {digest.lead}")),
         "invented_numbers": sum(len(r["invented"]) for r in rows),
@@ -118,6 +148,7 @@ def report(digest: Digest, texts: dict[str, str]) -> dict:
         + len(officialese_hits(f"{digest.headline} {digest.lead}")),
         "forecasts": sum(len(r["forecasts"]) for r in rows),
         "why_repeats": sum(r["why_repeats"] for r in rows),
+        "why_templates": sum(len(r["templates"]) for r in rows),
         "rows": rows,
     }
 

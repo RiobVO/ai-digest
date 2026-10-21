@@ -12,7 +12,7 @@ from digest import evaluate
 from digest.cover import make_cover
 from digest.dedup import dedupe
 from digest.fetch import attach_discussions, fetch_all, fetch_articles, resolve_gnews
-from digest.llm import LlmError, explain, generate, select
+from digest.llm import LlmError, explain, extras, generate, select
 from digest.memory import (Archive, Stories, fetch_feedback, issue_slot, missed_in_morning, preferences_prompt,
                            record_issue, resolve_votes)
 from digest.render import DISPLAY_TZ, MONTHS, human_date, issue_summary, render_archive, render_page
@@ -76,17 +76,34 @@ def build(args: argparse.Namespace) -> None:
     feedback = resolve_votes(votes, archive)
     log.info("оценок читателя: %d, прочитано записей: %d", len(feedback), len(reads))
 
-    digest = select(merged, settings["audience"], settings["model"], api_key,
-                    preferences=preferences_prompt(feedback), stories=stories.active(today))
-    log.info("в выпуске %d событий, в шуме %d", len(digest.entries), len(digest.noise))
+    model = settings["model"]
+    try:
+        digest = select(merged, settings["audience"], model, api_key,
+                        preferences=preferences_prompt(feedback), stories=stories.active(today))
+    except LlmError as exc:
+        if exc.status != 429:
+            raise
+        # Лимит Flash исчерпан: выпуск похуже лучше, чем никакого. Остальные вызовы этого выпуска — тоже на Lite,
+        # у Flash квоты уже нет. Прочие сбои (5xx, таймаут) смена модели не лечит — они валят выпуск, как раньше
+        log.error("лимит %s исчерпан, отбор на %s: %s", model, settings["lite_model"], exc)
+        model = settings["lite_model"]
+        digest = select(merged, settings["audience"], model, api_key,
+                        preferences=preferences_prompt(feedback), stories=stories.active(today))
     if not digest.entries:
         raise SystemExit("модель не выбрала ни одного события — пустой выпуск не отправляю")
-    # Сначала настоящий адрес статьи: по нему ищется обсуждение на HN и скачивается текст для разбора
-    resolve_gnews([e.item for e in digest.entries])
+    try:
+        extras(digest, merged, settings["audience"], model, api_key, stories=stories.active(today))
+    except LlmError as exc:
+        # «Ещё за день» и лайфхаки — надстройка: без них выпуск всё равно выходит
+        log.error("«Ещё за день» и лайфхаки не собраны: %s", exc)
+    log.info("в выпуске %d событий, ещё за день %d, в шуме %d", len(digest.entries), len(digest.more), len(digest.noise))
+    # Сначала настоящий адрес статьи: по нему ищется обсуждение на HN и скачивается текст для разбора.
+    # Строкам «Ещё за день» он нужен как ссылка: Google News без JS не открывается
+    resolve_gnews([e.item for e in digest.entries] + [m.item for m in digest.more])
     attach_discussions([e.item for e in digest.entries])
     texts = fetch_articles([e.item.url for e in digest.entries])
     try:
-        explain(digest.entries, texts, settings["audience"], settings["model"], api_key)
+        explain(digest.entries, texts, settings["audience"], model, api_key)
     except LlmError as exc:
         # Подробные разборы — надстройка: без них выпуск всё равно выходит, с кнопкой на первоисточник
         log.error("подробные разборы не сгенерированы: %s", exc)
@@ -161,9 +178,16 @@ def alert(args: argparse.Namespace) -> None:
         attach_discussions(candidates)
         # Без текста статьи у модели только заголовок, и «что это меняет» она додумывает
         texts = fetch_articles([c.url for c in candidates])
-        raw = generate(breaking.build_prompt(candidates, state, settings["audience"], texts), breaking.ALERT_SCHEMA,
-                       settings["model"], os.environ["GEMINI_API_KEY"])
-        picked, rejected = breaking.choose(raw, candidates)
+        api_key = os.environ["GEMINI_API_KEY"]
+        raw = generate(breaking.build_triage_prompt(candidates, state, settings["audience"], texts),
+                       breaking.TRIAGE_SCHEMA, settings["lite_model"], api_key)
+        urgent, rejected = breaking.triage(raw, candidates)
+        picked = None
+        if urgent:
+            raw = generate(breaking.build_prompt(urgent, state, settings["audience"], texts), breaking.ALERT_SCHEMA,
+                           settings["model"], api_key)
+            picked, refused = breaking.choose(raw, urgent)
+            rejected += refused
         for item in rejected:
             state.mark_rejected(item, now)
         if picked:
@@ -195,13 +219,19 @@ def run_eval(args: argparse.Namespace) -> None:
     paths = args.snapshots or sorted(SNAPSHOTS.glob("*.json"))
     if not paths:
         raise SystemExit(f"срезов нет — сначала python -m digest snapshot (папка {SNAPSHOTS})")
-    print("срез | прогон | событий | важность 8+ | пустые оценки | канцелярит | выдуманные числа | прогнозы | why=пересказ")
+    print("срез | прогон | событий | ещё за день | лайфхаки | важность 8+ | пустые оценки | канцелярит | "
+          "выдуманные числа | прогнозы | why=пересказ | шаблоны why")
     for path in paths:
         items, taken, texts = evaluate.load_snapshot(path)
         for run in range(1, args.runs + 1):
             # Отбор склеивает дубли прямо в объектах записей: каждому прогону — своя копия, иначе следующий
             # прогон и сохранённый срез видели бы уже склеенные записи
-            digest = select(copy.deepcopy(items), settings["audience"], settings["model"], api_key)
+            pool = copy.deepcopy(items)
+            digest = select(pool, settings["audience"], settings["model"], api_key)
+            try:
+                extras(digest, pool, settings["audience"], settings["model"], api_key)
+            except LlmError as exc:
+                log.error("«Ещё за день» в прогоне %d не собраны: %s", run, exc)
             missing = [e.item.url for e in digest.entries if e.item.url not in texts]
             if missing:
                 # Тексты статей докачиваем один раз и кладём в срез: следующие прогоны видят тот же вход
@@ -212,21 +242,26 @@ def run_eval(args: argparse.Namespace) -> None:
             except LlmError as exc:
                 log.error("разборы в прогоне %d не сгенерированы: %s", run, exc)
             result = evaluate.report(digest, texts)
-            print(f"{path.stem} | {run} | {result['entries']} | {result['high_importance']} | {result['slop']} | "
-                  f"{result['officialese']} | "
-                  f"{result['invented_numbers']} | {result['forecasts']} | {result['why_repeats']}")
+            print(f"{path.stem} | {run} | {result['entries']} | {result['more']} | {result['tips']} | "
+                  f"{result['high_importance']} | {result['slop']} | {result['officialese']} | "
+                  f"{result['invented_numbers']} | {result['forecasts']} | {result['why_repeats']} | "
+                  f"{result['why_templates']}")
             for row in result["rows"]:
                 problems = [f"слоп: {', '.join(row['slop'])}" if row["slop"] else "",
                             f"нет в источнике: {', '.join(row['invented'])}" if row["invented"] else "",
                             f"прогноз: {', '.join(row['forecasts'])}" if row["forecasts"] else "",
-                            "why повторяет пересказ" if row["why_repeats"] else ""]
+                            "why повторяет пересказ" if row["why_repeats"] else "",
+                            f"шаблон why: {', '.join(row['templates'])}" if row["templates"] else ""]
                 if any(problems):
                     print(f"    · {row['title']} — {'; '.join(p for p in problems if p)}")
             out = OUT / "eval" / f"{path.stem}-run{run}.json"
             out.parent.mkdir(parents=True, exist_ok=True)
             out.write_text(json.dumps({"headline": digest.headline, "lead": digest.lead, "entries": [
-                {"title": e.title, "importance": e.importance, "summary": e.summary, "why": e.why,
-                 "details": e.details.__dict__ if e.details else None, "url": e.item.url} for e in digest.entries]},
+                {"section": e.section, "title": e.title, "importance": e.importance, "summary": e.summary, "why": e.why,
+                 "details": e.details.__dict__ if e.details else None, "url": e.item.url,
+                 "also": [url for _, url in e.item.also]} for e in digest.entries],
+                "more": [{"title": m.title, "url": m.item.url, "also": [url for _, url in m.item.also]}
+                         for m in digest.more]},
                 ensure_ascii=False, indent=1), encoding="utf-8")
 
 

@@ -1,6 +1,8 @@
 [digest]
 # Алиас сам переезжает на новые flash-версии; закрепить версию — указать, например, "gemini-3.5-flash"
 model = "gemini-flash-latest"
+# Своя дневная квота (500 запросов против 20 у Flash): отсев срочных и запасной отбор выпуска, когда лимит Flash исчерпан
+lite_model = "gemini-3.5-flash-lite"
 audience = "Человек из Ташкента с образованием по ИИ, шарит в программировании: Python, Telegram-боты, Cloudflare Workers, Claude Code, ИИ-ассистенты для малого бизнеса. Хочет первым знать всё главное в мире ИИ и технологий: крупные релизы, компании, деньги, законы, исследования."
 
 # Порядок важен: при склейке дублей основным остаётся источник, который выше в списке.
@@ -81,6 +83,22 @@ type = "rss"
 category = "lab"
 url = "https://huggingface.co/blog/feed.xml"
 
+# --- Практика: источники лайфхаков — настройка агентов и Claude Code из первых рук, с приёмами в самом тексте ---
+# Инженерный блог Anthropic: дат на странице нет, посты лежат по адресам /research/…
+[[source]]
+name = "anthropic_eng"
+type = "html"
+category = "lab"
+url = "https://www.anthropic.com/engineering"
+link_pattern = "/research/[A-Za-z0-9-]+"
+
+# Блог команды Claude Code (claude.dev): как они сами настраивают и гоняют агентов
+[[source]]
+name = "claude_dev"
+type = "rss"
+category = "lab"
+url = "https://claude.dev/rss.xml"
+
 # --- Общая повестка: что сегодня обсуждает вся индустрия ---
 [[source]]
 name = "techmeme"
@@ -145,6 +163,15 @@ url = "https://github.com/huggingface/transformers/releases.atom"
 title_prefix = "transformers"
 max_age_hours = 30
 latest_only = true
+
+# Без latest_only: пре-релизов здесь нет, а за сутки бывает два релиза — новые флаги и настройки есть в обоих
+[[source]]
+name = "gh_claude_code"
+type = "rss"
+category = "release"
+url = "https://github.com/anthropics/claude-code/releases.atom"
+title_prefix = "Claude Code"
+max_age_hours = 30
 
 # --- Сообщество ---
 [[source]]
@@ -400,3 +427,10 @@ name = "pragmatic_engineer"
 type = "rss"
 category = "engineer"
 url = "https://newsletter.pragmaticengineer.com/feed"
+
+# Короткие заметки Уиллисона «как я это сделал»: практические трюки, не только про ИИ; выходят реже основного блога
+[[source]]
+name = "simon_til"
+type = "rss"
+category = "engineer"
+url = "https://til.simonwillison.net/tils/feed.atom"

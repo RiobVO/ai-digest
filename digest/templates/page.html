@@ -207,6 +207,12 @@ details a:hover{text-decoration:underline}
 .missed ul{margin:0;padding:0 20px 18px 38px;display:grid;gap:8px;font-size:.95rem;line-height:1.45}
 .missed a{color:var(--ink);font-weight:500;text-decoration:none}
 .missed a:hover{text-decoration:underline}
+/* «Ещё за день» читается как лента заголовков: ссылка во всю силу, издание и охват — мелко за ней */
+.also-today ol{margin:0;padding:0 20px 18px 38px;display:grid;gap:9px;font-size:.95rem;line-height:1.45}
+.also-today li>a:first-child{color:var(--ink);font-weight:500;text-decoration:none}
+.also-today li>a:first-child:hover{text-decoration:underline}
+.also-today .src-name{margin:0 8px;font-size:.8rem;color:var(--muted);white-space:nowrap}
+.also-today .buzz{font-size:.74rem;padding:1px 6px;vertical-align:1px}
 .keys{display:block;margin-top:6px}
 .keys kbd{font:500 .75rem var(--f-mono);border:1px solid var(--border-2);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--inner);color:var(--ink-2)}
 @media (prefers-reduced-motion:reduce){.vote button{transition:none}}
@@ -322,6 +328,7 @@ details a:hover{text-decoration:underline}
   /* Высота зоны — ровно 44px от центра значка, какого бы размера ни был сам текст */
   .copy::after,a.buzz::after{content:"";position:absolute;left:-4px;right:-4px;top:50%;height:44px;translate:0 -50%}
   .missed a{display:block;padding-block:4px}
+  .also-today li{padding-block:4px}
 }
 </style>
 </head>

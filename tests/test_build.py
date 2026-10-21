@@ -11,6 +11,7 @@ from digest.models import Item
 
 CONFIG = """[digest]
 model = "test-model"
+lite_model = "lite-model"
 audience = "разработчик"
 
 [[source]]
@@ -37,6 +38,8 @@ def raw_items(now: datetime) -> list[Item]:
              category="news", published=now),
         Item(source="techcrunch", title="Save 50% on conference tickets today", url="https://techcrunch.com/ad",
              category="news", published=now),
+        Item(source="Reuters", title="Ransomware takes a grocery chain offline", url="https://news.google.com/rss/articles/g",
+             category="news", published=now),
     ]
 
 
@@ -46,12 +49,17 @@ SELECTION = {"headline": "День <чипов>", "lead": "Главное.", "it
     {"ids": [1, 2], "section": "business", "importance": 7, "title": "Nvidia купила стартап", "summary": "Сделка.",
      "why": "Консолидация.", "story": "", "story_name": ""},
 ]}
+EXTRAS = {"more": [{"ids": [4], "title": "Сеть магазинов легла после атаки"}], "tips": []}
 
 
-def fake_generate(explain_fails: bool = False):
+def fake_generate(explain_fails: bool = False, extras_fail: bool = False):
     def generate(prompt, schema, model, api_key):
         if schema is llm.SCHEMA:
             return SELECTION
+        if schema is llm.EXTRAS_SCHEMA:
+            if extras_fail:
+                raise llm.LlmError("Gemini 503")
+            return EXTRAS
         if explain_fails:
             raise llm.LlmError("Gemini 503")
         return {"items": [{"id": 0, "what": "Контекст.", "points": ["п1"], "try_it": "", "caveats": "", "commands": []}]}
@@ -101,6 +109,27 @@ def test_build_ships_page_message_and_state_that_agree(env):
     seen = json.loads((args.state_dir / "seen.json").read_text(encoding="utf-8"))
     assert any("openai.com/news/model" in key for key in seen["seen"])
     assert (args.state_dir / "stories.json").exists()
+
+
+def test_also_today_gets_decoded_links_and_reaches_page_and_message(env, monkeypatch):
+    tmp, args = env
+    decoded = []
+
+    def resolve(items):
+        # Google News без JS не открывается: строка «Ещё за день» должна вести на саму статью
+        for item in items:
+            if "news.google.com" in item.url:
+                item.url = "https://www.reuters.com/grocery"
+                decoded.append(item.title)
+
+    monkeypatch.setattr(main, "resolve_gnews", resolve)
+    main.build(args)
+    assert decoded == ["Ransomware takes a grocery chain offline"]
+    page = (args.site / "index.html").read_text(encoding="utf-8")
+    message = json.loads((tmp / "out" / "message.json").read_text(encoding="utf-8"))
+    for text in (page, message["text"]):
+        assert "Сеть магазинов легла после атаки" in text and "https://www.reuters.com/grocery" in text
+    assert "Ransomware takes a grocery chain" not in page[page.index('id="noise"'):]
 
 
 def test_second_run_does_not_show_seen_news_to_the_model(env, monkeypatch):
@@ -168,6 +197,48 @@ def test_failed_explain_still_ships_the_issue(env, monkeypatch):
     assert (args.state_dir / "seen.json").exists()
 
 
+def test_failed_extras_still_ship_the_issue(env, monkeypatch):
+    tmp, args = env
+    monkeypatch.setattr(llm, "generate", fake_generate(extras_fail=True))
+    main.build(args)
+    message = json.loads((tmp / "out" / "message.json").read_text(encoding="utf-8"))
+    assert "Nvidia купила стартап" in message["text"] and "Сеть магазинов" not in message["text"]
+    assert (args.state_dir / "seen.json").exists()
+
+
+def test_issue_is_three_calls_and_extras_skip_chosen_records(env, monkeypatch):
+    tmp, args = env
+    calls = []
+
+    def recording(prompt, schema, model, api_key):
+        calls.append((schema, prompt))
+        return fake_generate()(prompt, schema, model, api_key)
+
+    monkeypatch.setattr(llm, "generate", recording)
+    main.build(args)
+    assert [schema for schema, _ in calls] == [llm.SCHEMA, llm.EXTRAS_SCHEMA, llm.EXPLAIN_SCHEMA]
+    listed = calls[1][1].split("### Записи", 1)[1]
+    assert "Ransomware takes a grocery chain" in listed and "Nvidia" not in listed
+
+
+def test_rate_limited_selection_falls_back_to_the_lite_model(env, monkeypatch):
+    # Дневной лимит Flash кончился: выпуск похуже лучше, чем никакого
+    tmp, args = env
+    models = []
+
+    def limited(prompt, schema, model, api_key):
+        models.append(model)
+        if model == "test-model":
+            raise llm.LlmError("Gemini test-model ответил 429", status=429)
+        return fake_generate()(prompt, schema, model, api_key)
+
+    monkeypatch.setattr(llm, "generate", limited)
+    main.build(args)
+    assert (tmp / "out" / "message.json").exists()
+    # Квота Flash уже исчерпана — второй вызов и разборы этого выпуска тоже идут на Lite
+    assert models == ["test-model", "lite-model", "lite-model", "lite-model"]
+
+
 def test_failed_selection_aborts_and_keeps_news_unseen(env, monkeypatch):
     tmp, args = env
 
@@ -189,25 +260,76 @@ def test_dry_run_does_not_touch_state(env):
     assert not args.state_dir.exists()
 
 
-def test_alert_fetches_article_texts_for_candidates(env, monkeypatch):
+def _alert_env(env, monkeypatch, posts):
     tmp, args = env
-    now = datetime.now().astimezone()
-    post = Item(source="openai", title="OpenAI ships GPT-6", url="https://openai.com/gpt-6", category="lab",
-                published=now)
-    monkeypatch.setattr(main, "fetch_all", lambda sources, now: ([post], []))
-    monkeypatch.setattr(main, "fetch_articles", lambda urls: {u: "GPT-6 is free for everyone today" for u in urls})
-    prompts = []
-
-    def judge(prompt, schema, model, api_key):
-        prompts.append(prompt)
-        return {"items": [{"index": 0, "urgent": False, "title": "", "text": ""}]}
-
-    monkeypatch.setattr(main, "generate", judge)
+    monkeypatch.setattr(main, "fetch_all", lambda sources, now: (posts, []))
+    monkeypatch.setattr(main, "fetch_articles", lambda urls: {u: f"article {u}" for u in urls})
     config = args.config.read_text(encoding="utf-8").replace('name = "x"', 'name = "x"\nalert = true')
     args.config.write_text(config, encoding="utf-8")
     args.state_dir.mkdir()
+    return args
+
+
+def _posts():
+    now = datetime.now().astimezone()
+    return [Item(source="openai", title="OpenAI ships GPT-6", url="https://openai.com/gpt-6", category="lab",
+                 published=now),
+            Item(source="openai", title="OpenAI updates its blog", url="https://openai.com/blog-update", category="lab",
+                 published=now)]
+
+
+def test_alert_lite_triage_rejects_without_spending_flash(env, monkeypatch):
+    args = _alert_env(env, monkeypatch, _posts())
+    calls = []
+
+    def judge(prompt, schema, model, api_key):
+        calls.append((model, prompt))
+        return {"items": [{"index": 0, "urgent": False}, {"index": 1, "urgent": False}]}
+
+    monkeypatch.setattr(main, "generate", judge)
     main.alert(args)
-    assert "GPT-6 is free for everyone today" in prompts[0]
+    # Без текста статьи у модели только заголовок, и «что это меняет» она додумывает
+    assert [model for model, _ in calls] == ["lite-model"] and "article https://openai.com/gpt-6" in calls[0][1]
+    state = json.loads((args.state_dir / "alerts.json").read_text(encoding="utf-8"))
+    assert len(state["rejected"]) == 2
+
+
+def test_alert_flash_rechecks_only_what_lite_flagged_and_may_refuse(env, monkeypatch):
+    args = _alert_env(env, monkeypatch, _posts())
+    calls = []
+    sent = []
+
+    def judge(prompt, schema, model, api_key):
+        calls.append((model, prompt))
+        if model == "lite-model":
+            return {"items": [{"index": 0, "urgent": True}, {"index": 1, "urgent": False}]}
+        return {"items": [{"index": 0, "urgent": False, "title": "", "text": ""}]}
+
+    monkeypatch.setattr(main, "generate", judge)
+    monkeypatch.setattr(main, "send", lambda *a, **kw: sent.append(a))
+    main.alert(args)
+    assert [model for model, _ in calls] == ["lite-model", "test-model"]
+    assert "OpenAI ships GPT-6" in calls[1][1] and "OpenAI updates its blog" not in calls[1][1]
+    assert sent == []
+    state = json.loads((args.state_dir / "alerts.json").read_text(encoding="utf-8"))
+    assert len(state["rejected"]) == 2 and state["sent"] == []
+
+
+def test_alert_sends_what_flash_confirmed(env, monkeypatch):
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "t")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "1")
+    args = _alert_env(env, monkeypatch, _posts())
+    sent = []
+
+    def judge(prompt, schema, model, api_key):
+        if model == "lite-model":
+            return {"items": [{"index": 0, "urgent": True}, {"index": 1, "urgent": True}]}
+        return {"items": [{"index": 1, "urgent": True, "title": "Блог обновили", "text": "Текст."}]}
+
+    monkeypatch.setattr(main, "generate", judge)
+    monkeypatch.setattr(main, "send", lambda text, url, *a, **kw: sent.append(url))
+    main.alert(args)
+    assert sent == ["https://openai.com/blog-update"]
 
 
 def test_eval_runs_see_the_same_input_and_never_rewrite_the_snapshot(tmp_path, monkeypatch):
@@ -226,7 +348,7 @@ def test_eval_runs_see_the_same_input_and_never_rewrite_the_snapshot(tmp_path, m
     prompts = []
 
     def grouping(prompt, schema, model, api_key):
-        prompts.append(prompt)
+        prompts.append((schema, prompt))
         if schema is llm.SCHEMA:
             return {"headline": "", "lead": "", "items": [{"ids": [0, 1], "section": "business", "importance": 7,
                                                            "title": "Nvidia", "summary": "", "why": ""}]}
@@ -234,7 +356,8 @@ def test_eval_runs_see_the_same_input_and_never_rewrite_the_snapshot(tmp_path, m
 
     monkeypatch.setattr(llm, "generate", grouping)
     main.run_eval(argparse.Namespace(config=config, snapshots=[snap], runs=2))
-    selection_prompts = [p for p in prompts if "### Записи" in p]
-    assert selection_prompts[0] == selection_prompts[1]
+    for schema in (llm.SCHEMA, llm.EXTRAS_SCHEMA):
+        runs = [p for s, p in prompts if s is schema]
+        assert len(runs) == 2 and runs[0] == runs[1]
     saved = json.loads(snap.read_text(encoding="utf-8"))
     assert saved["items"] == json.loads(pristine)["items"]

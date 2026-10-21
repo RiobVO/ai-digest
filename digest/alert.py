@@ -26,10 +26,8 @@ AGGREGATORS = {"techmeme", "hn", "hn_top", "gnews_ai"}
 
 # Срочное приходит читателю сразу, иногда ночью: ложная тревога обходится дороже пропуска — событие всё равно
 # попадёт в ближайший выпуск. Примеры задают планку: по одному правилу модель считала срочным релиз инструмента
-# для программистов (движок DeepSeek с 398 баллами на HN)
-ALERT_PROMPT = """Ты дежурный редактор срочных новостей об ИИ и технологиях для одного читателя. Читатель: {audience}
-
-Срочное сообщение приходит читателю сразу, иногда ночью. Срочно — только то, о чём завтра будут говорить все
+# для программистов (движок DeepSeek с 398 баллами на HN). Планка общая для отсева на Lite и перепроверки на Flash
+ALERT_RULES = """Срочное сообщение приходит читателю сразу, иногда ночью. Срочно — только то, о чём завтра будут говорить все
 в ИИ и технологиях: крупный релиз от ведущей лаборатории или компании, большая сделка или поглощение, решение
 регулятора или суда, громкий инцидент, резкая смена цен или доступа к популярному сервису, уязвимость в массовом
 продукте (iPhone, Android, Chrome, WhatsApp, Telegram, Windows), которой уже атакуют, — особенно если вышло обновление.
@@ -45,7 +43,11 @@ ALERT_PROMPT = """Ты дежурный редактор срочных ново
 - срочно: «OpenAI выпустила новую флагманскую модель и открыла её бесплатным пользователям ChatGPT»;
   «Суд запретил продажи чипов NVIDIA в крупной стране»; «ChatGPT не работает по всему миру уже несколько часов».
 - не срочно: «Лаборатория выложила в открытый доступ программу для запуска своих моделей» — инструмент для программистов;
-  «Стартап привлёк $50 млн»; «Вышла новая версия популярной библиотеки».
+  «Стартап привлёк $50 млн»; «Вышла новая версия популярной библиотеки»."""
+
+ALERT_PROMPT = """Ты дежурный редактор срочных новостей об ИИ и технологиях для одного читателя. Читатель: {audience}
+
+""" + ALERT_RULES + """
 
 ### Поля
 Для каждого кандидата верни index и urgent. Для срочного напиши:
@@ -69,6 +71,42 @@ ALERT_PROMPT = """Ты дежурный редактор срочных ново
 - Каждая цифра и название в title и text есть в описании или тексте статьи; смысл не расширен.
 - Нет фраз, которые подошли бы к любой новости.
 Верни JSON строго по схеме."""
+
+# Дневной лимит Flash — 20 запросов, а кандидаты бывают почти каждый час, и почти всех модель отклоняет. Отсев
+# делает Lite (500 в день), Flash перепроверяет только тех, кого Lite счёл срочными, и пишет текст. Lite не пишет
+# текст, поэтому голос ему не нужен
+TRIAGE_PROMPT = """Ты первым просматриваешь кандидатов в срочные новости об ИИ и технологиях для одного читателя.
+Читатель: {audience}
+
+""" + ALERT_RULES + """
+
+Ты только решаешь, срочно ли. Кого отметишь срочным, перепроверит старший редактор и сам напишет текст; кого
+не отметишь, читатель увидит в ближайшем выпуске.
+
+### Поля
+Для каждого кандидата верни index и urgent.
+
+### Уже отправлено за последние дни
+{sent}
+
+### Кандидаты
+""" + DATA_NOTE + """
+{candidates}
+
+### Перед ответом проверь
+- Срочное — только с тремя признаками сразу: масштаб, событие уже произошло, оно новое и ещё не отправлено.
+- Инструменты для программистов, обычные посты блогов, мелкие обновления и мнения — не срочно.
+Верни JSON строго по схеме."""
+
+TRIAGE_SCHEMA = {
+    "type": "OBJECT",
+    "properties": {"items": {"type": "ARRAY", "items": {
+        "type": "OBJECT",
+        "properties": {"index": {"type": "INTEGER"}, "urgent": {"type": "BOOLEAN"}},
+        "required": ["index", "urgent"],
+    }}},
+    "required": ["items"],
+}
 
 ALERT_SCHEMA = {
     "type": "OBJECT",
@@ -198,14 +236,35 @@ def find_candidates(items: list[Item], state: AlertState, now: datetime) -> list
 ALERT_TEXT_CHARS = 3000
 
 
-def build_prompt(candidates: list[Item], state: AlertState, audience: str, texts: dict[str, str] | None = None) -> str:
+def _fill(template: str, candidates: list[Item], state: AlertState, audience: str, texts: dict[str, str] | None) -> str:
     lines = []
     for n, c in enumerate(candidates):
         text = (texts or {}).get(c.url, "")[:ALERT_TEXT_CHARS]
         article = f"\n    Текст статьи:\n{fence(text)}" if text else "\n    Текст статьи: недоступен"
         lines.append(f"[{n}] ({c.source}, изданий={publishers(c)}, HN={c.hn_points}) {c.title}\n    {c.summary[:400]}{article}")
-    return ALERT_PROMPT.format(audience=audience, sent="\n".join(f"- {t}" for t in state.recent_titles()) or "(ничего)",
-                               candidates="\n".join(lines))
+    return template.format(audience=audience, sent="\n".join(f"- {t}" for t in state.recent_titles()) or "(ничего)",
+                           candidates="\n".join(lines))
+
+
+def build_prompt(candidates: list[Item], state: AlertState, audience: str, texts: dict[str, str] | None = None) -> str:
+    return _fill(ALERT_PROMPT, candidates, state, audience, texts)
+
+
+def build_triage_prompt(candidates: list[Item], state: AlertState, audience: str,
+                        texts: dict[str, str] | None = None) -> str:
+    return _fill(TRIAGE_PROMPT, candidates, state, audience, texts)
+
+
+def triage(raw: dict, candidates: list[Item]) -> tuple[list[Item], list[Item]]:
+    """Отмеченные срочными — на перепроверку, явно несрочные — в отказ. Кого модель не оценила, ждут следующего часа."""
+    urgent: list[Item] = []
+    rejected: list[Item] = []
+    for row in raw.get("items", []):
+        n = row.get("index")
+        if not isinstance(n, int) or not 0 <= n < len(candidates):
+            continue
+        (urgent if row.get("urgent") else rejected).append(candidates[n])
+    return urgent, rejected
 
 
 def choose(raw: dict, candidates: list[Item]) -> tuple[tuple[Item, str, str] | None, list[Item]]:

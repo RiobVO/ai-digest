@@ -309,3 +309,66 @@ def test_security_news_get_their_own_section():
     digest = Digest("День", "Лид", [sample().entries[0], Entry(leak, "security", 7, "Утечка в банке", "Факты.", "")])
     page = render_page(digest, STATS, WHEN, failures=[])
     assert 'id="security"' in page and "Безопасность" in page and "Утечка в банке" in page
+
+
+def _with_extras() -> Digest:
+    from digest.llm import Mention
+    digest = sample()
+    tip = Item(source="claude_dev", title="Effort", url="https://claude.dev/blog/effort", category="lab")
+    digest.entries.append(Entry(tip, "tips", 7, "Какой effort ставить в Claude Code", "Приём.", ""))
+    shop = Item(source="the_register", title="Shop", url="https://www.theregister.com/shop", category="news",
+                also=[("bleepingcomputer", "https://www.bleepingcomputer.com/shop")])
+    digest.more = [Mention(shop, "Сеть <магазинов> легла после атаки"),
+                   Mention(Item(source="hn", title="x", url="javascript:alert(1)", category="community"), "Без ссылки")]
+    return digest
+
+
+def test_also_today_lists_one_liners_between_events_and_extras():
+    page = render_page(_with_extras(), STATS, WHEN, failures=[])
+    block = page[page.index('id="also-today"'):]
+    block = block[:block.index("</section>")]
+    assert "Сеть &lt;магазинов&gt; легла после атаки" in block and 'href="https://www.theregister.com/shop"' in block
+    assert "The Register" in block and "2 источника" in block
+    assert "Без ссылки" in block and "javascript:" not in page
+    assert 'href="#also-today"' in page
+    # Следующий ярус новостей идёт после событий дня, но до лайфхаков и авторских постов
+    assert page.index('id="main-story"') < page.index('id="also-today"') < page.index('id="tips"')
+    assert 'id="also-today"' not in render_page(sample(), STATS, WHEN, failures=[])
+
+
+def test_lifehack_never_becomes_the_lead_story():
+    tip = Item(source="claude_dev", title="Effort", url="https://claude.dev/blog/effort", category="lab")
+    digest = Digest("h", "l", [Entry(tip, "tips", 9, "Какой effort ставить в Claude Code", "Приём.", "")])
+    page = render_page(digest, STATS, WHEN, failures=[])
+    assert 'id="main-story"' not in page
+    assert "Лайфхаки" in page and "Какой effort ставить в Claude Code" in page[page.index('id="tips"'):]
+
+
+def test_telegram_lists_also_today_and_a_lifehack_after_the_main_items():
+    digest = _with_extras()
+    events = [Entry(Item(source="verge", title=f"e{n}", url=f"https://v/{n}", category="news"), "product", 7,
+                    f"Событие {n}", "s", "") for n in range(4)]
+    digest.entries[1:1] = events
+    for n, entry in enumerate(digest.entries):
+        entry.id = f"20261016-{n}"
+    text = build_message(digest, "https://x.io/p.html", WHEN)
+    tip = '<b>Лайфхак:</b> <a href="https://x.io/p.html#e-20261016-6">Какой effort ставить в Claude Code</a>'
+    assert tip in text
+    assert '• <a href="https://www.theregister.com/shop">Сеть &lt;магазинов&gt; легла после атаки</a>' in text
+    # Ссылку не из веба Telegram не примет — строка остаётся, но без ссылки
+    assert "• Без ссылки" in text and "javascript:" not in text
+    assert text.index("<b>5.</b>") < text.index(tip) < text.index("Ещё за день") < text.index("Разбор целиком")
+
+
+def test_telegram_trims_also_today_first_and_counts_only_visible_text():
+    import re
+    from html import unescape
+    from digest.llm import Mention
+    digest = sample()
+    digest.more = [Mention(Item(source="verge", title="x", url=f"https://example.com/{'a' * 150}/{n}", category="news"),
+                           f"Новость номер {n} " + "ж" * 80) for n in range(40)]
+    text = build_message(digest, "https://x.io/p.html", WHEN)
+    # Лимит Telegram — 4096 знаков после разбора разметки: адреса ссылок и теги в него не входят
+    assert len(unescape(re.sub(r"<[^>]+>", "", text))) <= TG_LIMIT < len(text)
+    assert "<b>1.</b>" in text and "Новость номер 30 " in text and "Разбор целиком" in text
+    assert "Новость номер 39 " not in text

@@ -1,8 +1,8 @@
 from datetime import datetime, timezone
 
 from digest.evaluate import (forecast_hits, invented_numbers, load_snapshot, officialese_hits, repeats, report,
-                             save_snapshot, slop_hits)
-from digest.llm import Details, Digest, Entry
+                             save_snapshot, slop_hits, template_hits)
+from digest.llm import Details, Digest, Entry, Mention
 from digest.models import Item
 
 NOW = datetime(2026, 10, 20, 3, tzinfo=timezone.utc)
@@ -61,3 +61,30 @@ def test_report_sums_problems_across_the_issue():
     # «Ключевая», «важным шагом»; «является» в разборе и в лиде — заголовок и лид считаются, как у пустых оценок
     assert result["slop"] == 2 and result["officialese"] == 2
     assert result["why_repeats"] == 1
+
+
+def test_why_templates_and_guessed_motives_are_counted():
+    # «Почему важно» по шаблону подходит к любой новости своего типа, а мотив без опоры на запись — догадка
+    why = "Случай наглядно показывает риски, а шаг направлен на защиту от критики; авария продемонстрировала слабость"
+    assert template_hits(why) == ["наглядно", "показывает", "направлен на", "продемонстрировала"]
+    assert template_hits("Инцидент в очередной раз доказывает, что шаг призван снизить давление") == [
+        "очередной", "доказывает", "призван"]
+    assert template_hits("Значит, с 1 марта платежи через v1 не пройдут — переезжай на v2") == []
+
+
+def test_report_counts_also_today_lifehacks_and_why_templates():
+    item = Item(source="verge", title="t", url="https://verge.com/n", category="news")
+    event = Entry(item, "security", 7, "Атака", "Сеть магазинов легла.", "Случай показывает риски.")
+    tip = Entry(item, "tips", 6, "Приём", "Как сделать.", "Значит, можно быстрее.")
+    result = report(Digest("День", "Лид", [event, tip], more=[Mention(item, "Ещё одна новость")]), {})
+    assert result["more"] == 1 and result["tips"] == 1 and result["why_templates"] == 1
+
+
+def test_also_today_lines_are_checked_for_slop_and_invented_numbers():
+    # Строка «Ещё за день» — тоже текст для читателя: без проверки сбой второго вызова выглядел бы в eval чистым
+    item = Item(source="verge", title="Startup raises $40M", url="https://verge.com/n", category="news")
+    line = Mention(item, "Уникальная революционная модель получила 999999999 баллов, что является рекордом")
+    result = report(Digest("День", "Лид", [], more=[line]), {})
+    assert result["entries"] == 0 and result["more"] == 1
+    assert result["slop"] >= 1 and result["officialese"] == 1 and result["invented_numbers"] == 1
+    assert report(Digest("День", "Лид", [], more=[Mention(item, "Стартап привлёк $40 млн")]), {})["invented_numbers"] == 0

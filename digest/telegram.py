@@ -1,9 +1,11 @@
+import re
 from datetime import datetime
-from html import escape
+from html import escape, unescape
+from urllib.parse import urlsplit
 
 import httpx
 
-from digest.llm import Digest, Entry
+from digest.llm import Digest, Entry, Mention
 from digest.dedup import coverage
 from digest.render import human_date, plural
 
@@ -11,6 +13,7 @@ TG_LIMIT = 4096
 SHOWN = 5
 # С какого охвата помечать пункт: одно-два издания — обычная новость, три и больше — её обсуждают
 LOUD_COVERAGE = 3
+TAG = re.compile(r"<[^>]+>")
 
 
 class TelegramError(RuntimeError):
@@ -26,6 +29,20 @@ def _line(n: int, entry: Entry) -> str:
     reach = coverage(entry.item)
     loud = f" <i>· {plural(reach, 'издание', 'издания', 'изданий')}</i>" if reach >= LOUD_COVERAGE else ""
     return f"<b>{n}.</b> {escape(_clip(entry.title, 300))}{loud}{story}"
+
+
+def _mention(mention: Mention) -> str:
+    title = escape(_clip(mention.title, 200))
+    # Ссылки «Ещё за день» пришли из чужих лент; не веб-адрес Telegram не примет — строка остаётся без ссылки
+    if urlsplit(mention.item.url).scheme not in ("http", "https"):
+        return f"• {title}"
+    return f'• <a href="{escape(mention.item.url)}">{title}</a>'
+
+
+def _visible(text: str) -> int:
+    """Лимит Telegram — 4096 знаков после разбора разметки: теги и адреса ссылок в него не входят. Считать по HTML —
+    значит срезать строки «Ещё за день» с длинными адресами, хотя в сообщение они влезают."""
+    return len(unescape(TAG.sub("", text)))
 
 
 def build_message(digest: Digest, page_url: str, when: datetime, label: str = "ИИ-дайджест",
@@ -47,9 +64,15 @@ def build_message(digest: Digest, page_url: str, when: datetime, label: str = "�
         hidden = len(digest.entries) - len(shown)
         if hidden > 0:
             body.append(f"…и ещё {hidden} в разборе")
+    # Лайфхак идёт после событий и в пятёрку обычно не попадает — без своей строки его в сообщении не видно
+    for tip in (e for e in digest.entries[SHOWN:] if e.section == "tips"):
+        anchor = f"#e-{escape(tip.id)}" if tip.id else ""
+        body.append(f'<b>Лайфхак:</b> <a href="{escape(page_url)}{anchor}">{escape(_clip(tip.title, 200))}</a>')
+    if digest.more:
+        body += ["", "<b>Ещё за день:</b>", *(_mention(m) for m in digest.more)]
     tail = ["", f'<a href="{escape(page_url)}">Разбор целиком</a>']
-    # Длинные заголовки могут не влезть в лимит Telegram — срезаем пункты списка с конца
-    while body and len("\n".join(head + body + tail)) > TG_LIMIT:
+    # Длинные заголовки могут не влезть в лимит Telegram — срезаем с конца: сначала «Ещё за день», потом пункты списка
+    while body and _visible("\n".join(head + body + tail)) > TG_LIMIT:
         body.pop()
     return "\n".join(head + body + tail)
 

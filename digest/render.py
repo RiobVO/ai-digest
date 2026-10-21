@@ -7,7 +7,7 @@ from string import Template
 from urllib.parse import urlsplit
 
 from digest.dedup import ARXIV_ID, coverage
-from digest.llm import Digest, Entry
+from digest.llm import EXTRA_SECTIONS, Digest, Entry, Mention
 from digest.models import Item
 
 TEMPLATE = Template((Path(__file__).parent / "templates" / "page.html").read_text(encoding="utf-8"))
@@ -18,12 +18,14 @@ MONTHS = ["января", "февраля", "марта", "апреля", "ма�
 MONTHS_SHORT = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"]
 WEEKDAYS = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
 SECTION_LABELS = {"product": "Компании и продукты", "model": "Модели и исследования", "business": "Деньги и законы",
-                  "dev": "Для тебя", "paper": "Статья", "voices": "Инженеры", "security": "Безопасность"}
+                  "dev": "Для тебя", "paper": "Статья", "voices": "Инженеры", "security": "Безопасность",
+                  "tips": "Лайфхак"}
 # (раздел, якорь, заголовок раздела, короткое имя для бокового меню)
 ROW_SECTIONS = [("product", "products", "Компании и продукты", "Компании"),
                 ("model", "models", "Модели и исследования", "Модели"),
                 ("business", "business", "Деньги, законы, люди", "Деньги и законы"), ("security", "security", "Безопасность", "Безопасность"),
                 ("dev", "dev", "Для тебя", "Для тебя"),
+                ("tips", "tips", "Лайфхаки", "Лайфхаки"),
                 ("voices", "voices", "Что пишут инженеры", "Инженеры")]
 BRIEF_LABELS = {section: short for section, _, _, short in ROW_SECTIONS} | {"paper": "Статья"}
 ARCHIVE_IN_SIDEBAR = 7
@@ -45,6 +47,8 @@ SOURCE_LABELS = {
     "the_record": "The Record", "ars_security": "Ars Technica",
     "the_guardian": "The Guardian", "the_register": "The Register", "scmp_tech": "SCMP", "technode": "TechNode",
     "sifted": "Sifted", "bloomberg_tech": "Bloomberg", "ft_tech": "Financial Times", "wired_security": "Wired",
+    "anthropic_eng": "Anthropic Engineering", "claude_dev": "Claude Code Blog", "gh_claude_code": "GitHub · Claude Code",
+    "simon_til": "Simon Willison · TIL",
 }
 # Тред с парой баллов — не обсуждение, а чей-то репост; такой не показываем
 HN_MIN_SHOWN = 20
@@ -63,6 +67,8 @@ ICONS = {
     "archive": _SVG.format('<path d="M3 5h18v4H3zM5 9v10h14V9M10 13h4"/>'),
     "voices": _SVG.format('<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/>'),
     "security": _SVG.format('<path d="M12 2l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5z"/>'),
+    "tips": _SVG.format('<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/>'),
+    "also-today": _SVG.format('<path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/>'),
     "up": _SVG.format('<path d="M7 10v11M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9z"/>'),
     "warn": _SVG.format('<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0zM12 9v4M12 17h.01"/>'),
     "terminal": _SVG.format('<path d="M4 17l6-6-6-6M12 19h8"/>'),
@@ -371,6 +377,16 @@ def _paper(entry: Entry, votes: bool) -> str:
             f'{_actions(entry, votes, details=entry.details is not None)}</div>')
 
 
+def _also_today(more: list[Mention]) -> str:
+    """«Ещё за день»: важное, что не вошло в разборы, — одной строкой со ссылкой на источник."""
+    rows = "".join(f'<li><a href="{_href(m.item.url)}">{escape(m.title)}</a>'
+                   f'<span class="src-name">{escape(source_label(m.item.source))}</span>{_buzz(m.item)}</li>'
+                   for m in more)
+    return (f'        <section class="card also-today" id="also-today">\n          <div class="card-head"><h3>Ещё за день</h3>'
+            f'<small>{plural(len(more), "новость", "новости", "новостей")} одной строкой</small></div>\n'
+            f'          <ol>{rows}</ol>\n        </section>')
+
+
 def _issue_day(issue: dict) -> str:
     return short_day(issue["date"]) + (" веч." if issue.get("slot") == "evening" else "")
 
@@ -414,20 +430,10 @@ def _og_image(url: str) -> str:
             '\n<meta property="og:image:height" content="630">\n<meta name="twitter:card" content="summary_large_image">')
 
 
-def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str], *,
-                feedback_url: str = "", issues: list[dict] | None = None, kind: str = "day", period: str = "",
-                page_name: str = "", slot: str = "morning", missed: list[dict] | None = None,
-                morning_page: str = "", og_image: str = "") -> str:
-    votes = bool(feedback_url)
-    # Героем идёт событие: если модель вернула одни авторские посты, «Главного» нет, они остаются в своём разделе
-    top = next((e for e in digest.entries if e.section != "voices"), None)
-    rest = [e for e in digest.entries if e is not top]
-    main = [_missed(missed, morning_page)] if missed else []
-    main += [_hero(top, votes, "Главное" if kind == "day" else "Сюжет недели №1")] if top else []
-    nav = [_nav("main-story", "Главное", active=True)] if top else []
-
-    for section, anchor, label, short in ROW_SECTIONS:
-        group = [e for e in rest if e.section == section]
+def _add_rows(main: list[str], nav: list[str], rows: list[tuple[str, str, str, str]], entries: list[Entry],
+              votes: bool) -> None:
+    for section, anchor, label, short in rows:
+        group = [e for e in entries if e.section == section]
         if not group:
             continue
         items = "".join(_item(n, e, votes) for n, e in enumerate(group, start=1))
@@ -435,6 +441,26 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
                     f'          <div class="card-head"><h3>{label}</h3><small>{len(group)}</small></div>\n'
                     f'          <div class="card-body">{items}</div>\n        </section>')
         nav.append(_nav(anchor, short, len(group)))
+
+
+def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str], *,
+                feedback_url: str = "", issues: list[dict] | None = None, kind: str = "day", period: str = "",
+                page_name: str = "", slot: str = "morning", missed: list[dict] | None = None,
+                morning_page: str = "", og_image: str = "") -> str:
+    votes = bool(feedback_url)
+    # Героем идёт событие: если модель вернула одни авторские посты и лайфхаки, «Главного» нет, они остаются в разделах
+    top = next((e for e in digest.entries if e.section not in EXTRA_SECTIONS), None)
+    rest = [e for e in digest.entries if e is not top]
+    main = [_missed(missed, morning_page)] if missed else []
+    main += [_hero(top, votes, "Главное" if kind == "day" else "Сюжет недели №1")] if top else []
+    nav = [_nav("main-story", "Главное", active=True)] if top else []
+
+    _add_rows(main, nav, [row for row in ROW_SECTIONS if row[0] not in EXTRA_SECTIONS], rest, votes)
+    # «Ещё за день» — продолжение новостей дня: после разделов событий, до лайфхаков и авторских постов
+    if digest.more:
+        main.append(_also_today(digest.more))
+        nav.append(_nav("also-today", "Ещё за день", len(digest.more)))
+    _add_rows(main, nav, [row for row in ROW_SECTIONS if row[0] in EXTRA_SECTIONS], rest, votes)
 
     aside = []
     papers = [e for e in rest if e.section == "paper"]

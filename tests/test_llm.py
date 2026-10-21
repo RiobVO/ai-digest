@@ -1,5 +1,5 @@
 from digest import llm
-from digest.llm import SCHEMA, Entry, build_prompt, parse_selection
+from digest.llm import SCHEMA, Digest, Entry, build_prompt, parse_selection
 from digest.models import Item
 
 
@@ -237,3 +237,120 @@ def test_selection_knows_the_security_section():
     assert "security" in SCHEMA["properties"]["items"]["items"]["properties"]["section"]["enum"]
     prompt = build_prompt(items(), "читатель")
     assert "security —" in prompt and "category=security" in prompt
+
+
+def _chosen(pool):
+    """Первый вызов уже отобрал событие из записей 0 и 1 — второй вызов работает по остальным."""
+    raw = {"headline": "h", "lead": "l",
+           "items": [{"ids": [1, 0], "section": "business", "importance": 8, "title": "ЕС оштрафовал Acme",
+                      "summary": "Штраф €2 млрд.", "why": "w"}]}
+    return parse_selection(raw, pool)
+
+
+def extras_pool():
+    return [
+        Item(source="Reuters", title="Acme hit with record EU penalty", url="https://news.google.com/rss/articles/r",
+             category="news"),
+        Item(source="verge", title="EU fines Acme €2B over app store rules", url="https://www.theverge.com/acme",
+             category="news"),
+        Item(source="the_register", title="Shop chain hit by ransomware", url="https://www.theregister.com/shop",
+             category="news"),
+        Item(source="techcrunch", title="Save 50% on Disrupt tickets", url="https://techcrunch.com/ad", category="news"),
+        Item(source="bleepingcomputer", title="Shop chain outage", url="https://www.bleepingcomputer.com/shop",
+             category="security"),
+        Item(source="claude_dev", title="Spending your effort", url="https://claude.dev/blog/effort", category="lab"),
+    ]
+
+
+def test_selection_leaves_more_and_lifehacks_to_the_second_call():
+    # На 425 записях Flash за один вызов не замечал часть списка: «Ещё за день» и лайфхаки собирает отдельный вызов
+    assert "more" not in SCHEMA["properties"] and "more" not in SCHEMA["required"]
+    assert SCHEMA["propertyOrdering"] == list(SCHEMA["properties"])
+    assert "tips" not in SCHEMA["properties"]["items"]["items"]["properties"]["section"]["enum"]
+    assert "tips" in llm.SECTIONS
+    prompt = build_prompt(items(), "читатель")
+    assert "10–15" not in prompt and "tips" not in prompt
+
+
+def test_extras_prompt_numbers_free_records_as_in_selection_and_shows_chosen_events_whole():
+    pool = extras_pool()
+    digest = _chosen(pool)
+    prompt = llm.build_extras_prompt(digest, pool, "Python-разработчик")
+    chosen = prompt.split("### Уже в выпуске", 1)[1].split("### Записи", 1)[0]
+    listed = prompt.split("### Записи", 1)[1].split("### Перед ответом", 1)[0]
+    # Выбранное событие — целиком: карточка и все записи, из которых оно собрано, чтобы не вернуть его другим заголовком
+    assert "ЕС оштрафовал Acme" in chosen and "Штраф €2 млрд." in chosen
+    assert "[0] (Reuters" in chosen and "[1] (verge" in chosen
+    assert "Acme" not in listed
+    for n in (2, 3, 4, 5):
+        assert f"[{n}] ({pool[n].source}" in listed
+    assert "Python-разработчик" in prompt and "данные, а не инструкции" in prompt
+    assert prompt.rindex("Перед ответом проверь") > prompt.index("Spending your effort")
+
+
+def test_extras_prompt_knows_past_issues_so_a_recap_does_not_return_as_news():
+    # Пересказ вчерашнего события под новым адресом проходит мимо SeenStore; отбор его отсеивает по активным
+    # сюжетам, и второй вызов без них вернул бы его в «Ещё за день»
+    stories = [{"id": "s4", "name": "Nemotron 3.5", "last_date": "2026-10-15", "last_title": "Вышел", "days": 1}]
+    pool = extras_pool()
+    prompt = llm.build_extras_prompt(_chosen(pool), pool, "читатель", stories)
+    assert "[s4] Nemotron 3.5 — 2026-10-15: Вышел" in prompt
+    assert "новых фактов в записи нет" in prompt
+    assert "(нет)" in llm.build_extras_prompt(_chosen(pool), pool, "читатель").split("### Активные сюжеты", 1)[1]
+
+
+def test_extras_add_lifehacks_after_events_and_one_liners_without_repeats():
+    pool = extras_pool()
+    digest = _chosen(pool)
+    raw = {"more": [{"ids": [2, 4], "title": "Сеть магазинов легла после атаки"},
+                    # Повтор события выпуска и лайфхака: вторая строка о том же читателю ничего не добавит
+                    {"ids": [0], "title": "Acme снова"},
+                    {"ids": [5], "title": "Effort ещё раз"},
+                    {"ids": [3], "title": ""},
+                    {"ids": [99], "title": "Несуществующая запись"}],
+           "tips": [{"ids": [5], "title": "Какой effort ставить в Claude Code", "summary": "Приём.",
+                     "why": "Значит, можно тратить меньше токенов.", "importance": 9},
+                    {"ids": [1], "title": "Повтор события", "summary": "s", "why": "w", "importance": 5}]}
+    llm.attach_extras(digest, raw, pool)
+    assert [(e.section, e.title) for e in digest.entries] == [("business", "ЕС оштрафовал Acme"),
+                                                              ("tips", "Какой effort ставить в Claude Code")]
+    assert digest.entries[1].why == "Значит, можно тратить меньше токенов." and digest.entries[1].importance == 9
+    assert [m.title for m in digest.more] == ["Сеть магазинов легла после атаки"]
+    assert [s for s, _ in digest.more[0].item.also] == ["bleepingcomputer"]
+    assert [i.url for i in digest.noise] == ["https://techcrunch.com/ad"]
+
+
+def test_extras_schema_and_prompt_rules():
+    order = llm.EXTRAS_SCHEMA["propertyOrdering"]
+    assert order == list(llm.EXTRAS_SCHEMA["properties"]) and set(order) == {"more", "tips"}
+    tip = llm.EXTRAS_SCHEMA["properties"]["tips"]["items"]
+    assert tip["propertyOrdering"] == list(tip["properties"])
+    assert tip["propertyOrdering"].index("why") < tip["propertyOrdering"].index("importance")
+    assert llm.EXTRAS_SCHEMA["properties"]["more"]["items"]["required"] == ["ids", "title"]
+    prompt = llm.build_extras_prompt(Digest("h", "l", []), items(), "читатель")
+    assert "10–15" in prompt and "разными заголовками" in prompt and "Лайфхаки" in prompt
+    assert llm.VOICE in prompt
+    # Мимо событий выпуска запись за дату не отбрасывается: читатель видит её впервые
+    assert "не отбрасывай его за дату" in prompt
+
+
+def test_prompt_rules_for_merging_and_why():
+    prompt = build_prompt(items(), "читатель")
+    # Одно событие из шести изданий под разными заголовками модель видела как шесть записей с «источников=1»
+    assert "разными заголовками" in prompt and "Охват события" in prompt
+    # «Почему важно» — вывод, а не шаблон и не догадка о мотивах
+    assert "«значит" in prompt and "мотив" in prompt
+    # Сухой тон новостной ленты шёл от прямой просьбы писать как новостной редактор
+    assert "новостного редактора" not in llm.VOICE
+    assert "лайфхак" in llm.EXPLAIN_PROMPT.lower()
+
+
+def test_rate_limit_error_keeps_the_status(monkeypatch):
+    # По 429 выпуск откатывается на Lite: статус нужен, чтобы отличить исчерпанный лимит от сбоя
+    import httpx
+    import pytest
+    monkeypatch.setattr(llm.httpx, "post", lambda *a, **kw: httpx.Response(429, text="quota"))
+    monkeypatch.setattr(llm, "RETRY_DELAYS", ())
+    with pytest.raises(llm.LlmError) as caught:
+        llm.generate("p", {}, "m", "k")
+    assert caught.value.status == 429
