@@ -487,7 +487,8 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
     top = next((e for e in digest.entries if e.section not in EXTRA_SECTIONS), None)
     rest = [e for e in digest.entries if e is not top]
     main = [_missed(missed, morning_page)] if missed else []
-    day_mood = mood([e.section for e in digest.entries])
+    # Настроение — у дня; у недельной сводки его нет: пять сюжетов про бизнес — это не «тихий день»
+    day_mood = mood([e.section for e in digest.entries]) if kind == "day" else "calm"
     main += [_hero(top, votes, "Главное" if kind == "day" else "Сюжет недели №1", day_mood)] if top else []
     nav = [_nav("main-story", "Главное", active=True)] if top else []
 

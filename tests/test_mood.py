@@ -51,3 +51,18 @@ def test_calm_mood_keeps_the_landscape_untouched_and_cover_still_finds_it():
     assert MOODS["calm"].sky == "transparent"
     # cover.py вырезает пейзаж из page.html регуляркой: тон настроения — отдельный слой, а не правка SVG
     assert cover.LANDSCAPE in cover.cover_html("H", "d", "s", "alarm")
+
+
+def test_weekly_summary_has_no_daily_mood():
+    from datetime import datetime, timezone
+
+    from digest.llm import Digest, Entry
+    from digest.models import Item
+    from digest.render import render_page
+
+    # Пять бизнес-сюжетов недели — не «тихий день»: у сводки за 140 событий настроения дня нет
+    entries = [Entry(Item(source="x", title=f"t{n}", url=f"https://x.io/{n}", category="news"), "business", 7, f"t{n}",
+                     "s", "") for n in range(5)]
+    page = render_page(Digest("h", "l", entries), {"issues": 14, "events": 140}, datetime(2026, 10, 25, 3, tzinfo=timezone.utc),
+                       failures=[], kind="week", period="19–25 октября")
+    assert 'data-mood="calm"' in page and "тихий день" not in page
