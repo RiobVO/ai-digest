@@ -200,11 +200,19 @@ def alert(args: argparse.Namespace) -> None:
         if urgent:
             # Срочное может разбудить читателя ночью — перепроверку и текст пишет лучшая модель, 3.6 только запас.
             # До Flash доходит редко: почти все прогоны заканчиваются на отсеве Lite
-            raw = generate_first(breaking.build_prompt(urgent, state, settings["audience"], texts),
-                                 breaking.ALERT_SCHEMA, [settings["model"], settings["extras_model"]], api_key,
-                                 call="alert")
-            picked, refused = breaking.choose(raw, urgent)
-            rejected += refused
+            try:
+                raw = generate_first(breaking.build_prompt(urgent, state, settings["audience"], texts),
+                                     breaking.ALERT_SCHEMA, [settings["model"], settings["extras_model"]], api_key,
+                                     call="alert")
+            except LlmError as exc:
+                # 21.10: 3.8 и 3.6 отвечали 503, проверка падала, не сохранив состояние, и каждый час тратила квоту
+                # 3.8 и 3.6 — квоту утреннего выпуска — на ту же новость. Откладываем её как отклонённую: охлаждение
+                # то же, станет громче — вернётся; выпуск её всё равно подхватит, а сбой виден на панели здоровья
+                log.error("срочное не перепроверено, откладываю %d: %s", len(urgent), exc)
+                rejected += urgent
+            else:
+                picked, refused = breaking.choose(raw, urgent)
+                rejected += refused
         for item in rejected:
             state.mark_rejected(item, now)
         if picked:

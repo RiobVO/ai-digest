@@ -420,3 +420,25 @@ def test_build_failing_before_any_work_still_records_its_slot(env, monkeypatch):
         main.run_with_health(args)
     run = json.loads((args.state_dir / "health" / "build.json").read_text(encoding="utf-8"))[-1]
     assert run["slot"] == "evening" and run["outcome"] == "KeyError"
+
+
+def test_alert_recheck_failing_on_every_model_shelves_the_news_instead_of_retrying_hourly(env, monkeypatch):
+    # 21.10: 3.8 и 3.6 отвечали 503, проверка падала, не сохранив состояние, и каждый час снова тратила на ту же
+    # новость квоту 3.8 и 3.6 — ту, что нужна утреннему выпуску
+    args = _alert_env(env, monkeypatch, _posts())
+    calls = []
+
+    def judge(prompt, schema, model, api_key):
+        calls.append(model)
+        if model == "lite-model":
+            return {"items": [{"index": 0, "urgent": True}, {"index": 1, "urgent": False}]}
+        raise llm.LlmError(f"Gemini {model} ответил 503", 503)
+
+    monkeypatch.setattr(llm, "generate", judge)
+    main.alert(args)
+    state = json.loads((args.state_dir / "alerts.json").read_text(encoding="utf-8"))
+    assert len(state["rejected"]) == 2 and state["sent"] == []
+    calls.clear()
+    main.alert(args)
+    # Через час та же новость на охлаждении: ни Lite, ни тем более 3.8 на неё не тратятся
+    assert calls == []
