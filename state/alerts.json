@@ -17,6 +17,15 @@
     "mistral.ai/news/voxtral-3",
     "title:voxtral 3"
    ]
+  },
+  {
+   "at": "2026-10-21T22:18:09.028840+00:00",
+   "day": "2026-10-22",
+   "title": "Mistral запустила превью флагманской модели Mistral Large 4 на 1 трлн параметров",
+   "keys": [
+    "mistral.ai/news/mistral-large-4",
+    "title:mistral large 4"
+   ]
   }
  ],
  "rejected": [
@@ -198,6 +207,22 @@
     "title:the php foundation details how it found and fixed the two flaws and says it had to release patches a day early after the two cve ids began circulating online the php foundation"
    ],
    "strength": 4
+  },
+  {
+   "at": "2026-10-21T22:18:09.028840+00:00",
+   "keys": [
+    "theverge.com/games/1015647/ea-is-shutting-down-bioware",
+    "title:ea is shutting down bioware"
+   ],
+   "strength": 4
+  },
+  {
+   "at": "2026-10-21T22:18:09.028840+00:00",
+   "keys": [
+    "openai.com/index/broad-access-through-consistent-standards",
+    "title:broad access through consistent standards"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
