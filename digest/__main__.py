@@ -15,6 +15,7 @@ from digest.fetch import attach_discussions, fetch_all, fetch_articles, resolve_
 from digest.llm import LlmError, explain, extras, generate_first, select, verify_copies
 from digest.memory import (Archive, Stories, fetch_feedback, issue_slot, missed_in_morning, preferences_prompt,
                            record_issue, resolve_votes)
+from digest.models import Item
 from digest.mood import mood
 from digest.render import (DISPLAY_TZ, MONTHS, human_date, issue_summary, render_archive, render_health, render_page,
                            render_story_pages, render_tips)
@@ -192,11 +193,19 @@ def alert(args: argparse.Namespace) -> None:
         texts = fetch_articles([c.url for c in candidates])
         api_key = os.environ["GEMINI_API_KEY"]
         # Отсев — на Lite, его квоты хватает на каждый час; 3.6 — запас, если Lite недоступен
-        raw = generate_first(breaking.build_triage_prompt(candidates, state, settings["audience"], texts),
-                             breaking.TRIAGE_SCHEMA, [settings["lite_model"], settings["extras_model"]], api_key,
-                             call="triage")
-        urgent, rejected = breaking.triage(raw, candidates)
         picked = None
+        try:
+            raw = generate_first(breaking.build_triage_prompt(candidates, state, settings["audience"], texts),
+                                 breaking.TRIAGE_SCHEMA, [settings["lite_model"], settings["extras_model"]], api_key,
+                                 call="triage")
+        except LlmError as exc:
+            # Как и с перепроверкой ниже: упавшая проверка не сохраняла состояние и через час тратила на тех же
+            # кандидатов запасную 3.6. Откладываем их; выпуск их всё равно увидит
+            log.error("срочные не отсеяны, откладываю %d: %s", len(candidates), exc)
+            urgent: list[Item] = []
+            rejected = list(candidates)
+        else:
+            urgent, rejected = breaking.triage(raw, candidates)
         if urgent:
             # Срочное может разбудить читателя ночью — перепроверку и текст пишет лучшая модель, 3.6 только запас.
             # До Flash доходит редко: почти все прогоны заканчиваются на отсеве Lite

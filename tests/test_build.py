@@ -442,3 +442,21 @@ def test_alert_recheck_failing_on_every_model_shelves_the_news_instead_of_retryi
     main.alert(args)
     # Через час та же новость на охлаждении: ни Lite, ни тем более 3.8 на неё не тратятся
     assert calls == []
+
+
+def test_alert_triage_failing_on_every_model_shelves_the_candidates(env, monkeypatch):
+    # Если отсев упал и на Lite, и на запасной 3.6, тот же кандидат через час снова стоил бы запроса 3.6
+    args = _alert_env(env, monkeypatch, _posts())
+    calls = []
+
+    def down(prompt, schema, model, api_key):
+        calls.append(model)
+        raise llm.LlmError(f"Gemini {model} ответил 503", 503)
+
+    monkeypatch.setattr(llm, "generate", down)
+    main.alert(args)
+    state = json.loads((args.state_dir / "alerts.json").read_text(encoding="utf-8"))
+    assert len(state["rejected"]) == 2
+    calls.clear()
+    main.alert(args)
+    assert calls == []
