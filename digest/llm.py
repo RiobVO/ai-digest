@@ -1,6 +1,7 @@
 import json
 import logging
 import re
+import time
 from dataclasses import dataclass, field
 
 import httpx
@@ -14,6 +15,19 @@ API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:gener
 # Очередь бесплатного тарифа к 3.8 Flash 21.10.2026 доходила до 80 с ещё до начала работы, а отбору нужна ещё
 # минута-полторы: при 180 с отбор трижды обрывался по таймауту, и каждый обрыв съедал запрос из 20 дневных
 TIMEOUT = 360
+# 503 «high demand» — сброс нагрузки: 21.10.2026 3.8 отказала отбору за 1,4 с и через 2 минуты ответила разборам.
+# Каждый 503 засчитывается в дневной лимит (сверено по счётчику AI Studio), поэтому повтор один и только у отбора
+OVERLOAD_WAIT = 60
+# Корпоративные финансы в «Ещё за день»: Lite правило промпта держит плохо — 21.10 половина строк была про раунды.
+# Финансовые слова — только в финансовом контексте: «оценка 9.2» у уязвимости, «подняла лимит», «убытки от атаки»
+# и «раунды TLS» остаются
+CORPORATE_MONEY = re.compile(
+    r"(привлек|подня|собрал)\w*\s+(более |около |свыше |почти )?"
+    r"([$€£¥]|\d[\d.,]*\s?(млн|млрд|трлн|million|billion|[mb]\b)|(десятк|сотн)\w* (миллион|миллиард))"
+    r"|\b(в|возглавил\w*|закрыл\w*|провел\w*) раунд|\bраунд\w* (финансирован|инвестиц|серии)"
+    r"|\bсери[июея] [A-F]\b|посевн\w+ (раунд|инвестиц)|оценк\w* (в|более|около|свыше) [$€\d]|оценил\w* компани"
+    r"|\bакци[ия]\b[^.]*\b(рухнул|подскочил|вырос|упал)|выручк|\bприбыл(ь|ью|и за)\b"
+    r"|(чист|операционн|квартальн|годов)\w* убыт|убыт\w* за (квартал|год)|\bIPO\b", re.I)
 # product — компании и продукты, model — модели и исследования, business — законы, суды, люди, цены для
 # пользователей, dev — инструменты под стек читателя, paper — научные статьи, voices — авторские посты сильных
 # инженеров, security — информационная безопасность, tips — фишки: практические приёмы из текста источника
@@ -538,6 +552,9 @@ def attach_extras(digest: Digest, raw: dict, items: list[Item]) -> None:
             entry.copy = row.get("copy", "").strip()
             digest.entries.append(entry)
     for row in raw.get("more", []):
+        if CORPORATE_MONEY.search(row.get("title", "")):
+            log.info("строка про корпоративные деньги отброшена: %s", row["title"])
+            continue
         if ids := valid(row, "строка «Ещё за день»"):
             digest.more.append(Mention(_merge(ids, items, used), row["title"]))
     digest.entries.sort(key=entry_rank)
@@ -598,41 +615,55 @@ def generate(prompt: str, schema: dict, model: str, api_key: str) -> dict:
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {"responseMimeType": "application/json", "responseSchema": schema, "temperature": 0.3},
     }
+    start = time.monotonic()
     try:
         response = httpx.post(API_URL.format(model=model), headers={"x-goog-api-key": api_key}, json=body,
                               timeout=TIMEOUT)
     except httpx.HTTPError as exc:
-        raise LlmError(f"Gemini {model} недоступен: {type(exc).__name__}") from exc
+        raise LlmError(f"Gemini {model} недоступен через {time.monotonic() - start:.0f} с: {type(exc).__name__}") from exc
+    # Время ответа отличает сброс нагрузки (503 за секунду) от очереди бесплатного тарифа (минуты)
+    elapsed = time.monotonic() - start
     if response.status_code != 200:
-        raise LlmError(f"Gemini {model} ответил {response.status_code}: {response.text[:300]}", response.status_code)
+        raise LlmError(f"Gemini {model} ответил {response.status_code} через {elapsed:.0f} с: {response.text[:300]}",
+                       response.status_code)
     try:
         payload = response.json()
         raw = json.loads(payload["candidates"][0]["content"]["parts"][0]["text"])
     except (KeyError, IndexError, TypeError, ValueError) as exc:
         # ValueError — и битое тело ответа, и битый JSON внутри: оба должны вести к следующей модели цепочки
         raise LlmError(f"не удалось разобрать ответ Gemini {model}: {response.text[:300]}") from exc
-    log.info("Gemini %s: токенов %s", payload.get("modelVersion"), payload.get("usageMetadata", {}).get("totalTokenCount"))
+    usage = payload.get("usageMetadata", {})
+    log.info("Gemini %s: токенов %s, размышления %s, %.0f с", payload.get("modelVersion", model),
+             usage.get("totalTokenCount"), usage.get("thoughtsTokenCount", 0), elapsed)
     return raw
 
 
-def generate_first(prompt: str, schema: dict, models: list[str], api_key: str) -> dict:
+def generate_first(prompt: str, schema: dict, models: list[str], api_key: str, overload_wait: float = 0) -> dict:
     """Ответ первой модели цепочки, которая справилась. Квоты у моделей раздельные: исчерпанный лимит, перегрузка
-    или отключённая модель (404) одной не мешают следующей."""
+    или отключённая модель (404) одной не мешают следующей. overload_wait > 0 — один повтор первой модели после 503."""
     error = LlmError("цепочка моделей пуста")
     # Одна и та же модель дважды (model = extras_model в настройках) — это повтор, а он съедает запрос квоты
-    for model in dict.fromkeys(models):
+    for n, model in enumerate(dict.fromkeys(models)):
         try:
             return generate(prompt, schema, model, api_key)
         except LlmError as exc:
-            log.warning("%s — перехожу к следующей модели", exc)
             error = exc
+        if n == 0 and overload_wait and error.status == 503:
+            log.warning("%s — повтор через %.0f с", error, overload_wait)
+            time.sleep(overload_wait)
+            try:
+                return generate(prompt, schema, model, api_key)
+            except LlmError as exc:
+                error = exc
+        log.warning("%s — перехожу к следующей модели", error)
     raise error
 
 
 def select(items: list[Item], audience: str, models: list[str], api_key: str,
            preferences: str = "", stories: list[dict] | None = None) -> Digest:
     prompt = build_prompt(items, audience, preferences, stories)
-    return parse_selection(generate_first(prompt, SCHEMA, models, api_key), items)
+    # Отбор решает качество выпуска: один повтор лучшей модели после перегрузки стоит запроса квоты
+    return parse_selection(generate_first(prompt, SCHEMA, models, api_key, overload_wait=OVERLOAD_WAIT), items)
 
 
 def extras(digest: Digest, items: list[Item], audience: str, models: list[str], api_key: str,

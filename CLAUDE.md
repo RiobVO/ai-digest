@@ -39,10 +39,13 @@ Local runs read `.env` (`load_env` in `digest/__main__.py`; never overrides real
   (`gemini-3.5-flash-lite`, `gemini-3.1-flash-lite`): 15 RPM, 500/day. Quotas are per model.
 - Model chains (`__main__.model_chains`, sources.toml): select and explain go `model` (3.8 Flash) → `extras_model`
   (3.6 Flash, own 20/day) → `lite_model`; `extras` («Ещё за день» + tricks) goes `extras_model` → `lite_model`;
-  `alert` triages on `lite_model` → `extras_model` and re-checks on `model` → `extras_model` only what Lite marked
-  urgent. `build` = 2 calls on 3.8 + 1 on 3.6, `weekly` = 1 → ≈5 Flash calls/day.
+  `alert` triages on `lite_model` → `extras_model` and re-checks on `extras_model` → `model` only what Lite marked
+  urgent (3.8 quota is kept for builds). `build` = 2 calls on 3.8 + 1 on 3.6, `weekly` = 1 → ≈5 calls/day on 3.8.
+- **503 counts against RPD** (verified 2026-10-21: AI Studio counters matched exactly, 3.6 = 6, 3.8 = 17, incl.
+  every 503). Free-tier 3.8/3.6 shed load with an instant 503 «high demand» (1–2 s) that clears within minutes.
 - `llm.generate` makes ONE attempt; `llm.generate_first` moves to the next model on any failure (429, 5xx, timeout,
-  404 of a retired model). Never retry on the same model: on free tier every retry and timeout counts as a request.
+  404 of a retired model). The only same-model retry: `select` waits `llm.OVERLOAD_WAIT` (60 s) once after a 503.
+  Don't add more retries: every retry, timeout and 503 costs a request. Logs show latency and thinking tokens.
   Only `select` failing on every model aborts the build; a failing `extras` or `explain` only logs.
 - Free-tier queue to 3.8 Flash reached 80 s before any work (2026-10-21), select needs another 1–2 min (≈44K tokens):
   timeout is `llm.TIMEOUT` = 360 s.
@@ -69,7 +72,8 @@ All human-facing time is Tashkent, UTC+5 (`DISPLAY_TZ` in `render.py`); evening 
 `fetch_all` (sources.toml) → `SeenStore.take_new` (cross-run dedup, `state/seen.json`) → `dedupe` (within run) →
 `fetch_feedback` (votes/read marks from worker) → `llm.select` (Gemini picks 8–12 events + voices) → `llm.extras`
 (second call over the records `select` left in noise, original numbering kept: 10–15 «Ещё за день» one-liners in
-`Digest.more` + 2–4 tricks in section `tips`, rest is noise) → `resolve_gnews` (events and one-liners) →
+`Digest.more` + 2–4 tricks in section `tips`, rest is noise; `llm.CORPORATE_MONEY` drops funding/revenue lines
+the model let through) → `resolve_gnews` (events and one-liners) →
 `attach_discussions` (HN) → `fetch_articles` → `llm.explain` (detailed breakdowns) → `record_issue` (ids → stories →
 archive) → cover → `render_page` → `out/message.json` → save state.
 

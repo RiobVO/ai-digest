@@ -454,3 +454,96 @@ def test_the_same_model_twice_in_a_chain_is_asked_once(monkeypatch):
     with pytest.raises(llm.LlmError):
         llm.generate_first("p", {}, ["flash", "flash", "lite"], "k")
     assert calls == ["flash", "lite"]
+
+
+def _ok():
+    import httpx
+    return httpx.Response(200, json={"candidates": [{"content": {"parts": [{"text": '{"ok": 1}'}]}}],
+                                     "usageMetadata": {"totalTokenCount": 9, "thoughtsTokenCount": 4}})
+
+
+def test_selection_waits_once_on_overload_and_asks_the_same_model_again(monkeypatch):
+    # 21.10 3.8 отказала отбору «high demand» за 1,4 с и через 2 минуты ответила разборам. Каждый 503 съедает
+    # запрос квоты, поэтому повтор один и только у отбора
+    import httpx
+    calls, slept = [], []
+    answers = iter([httpx.Response(503, text="high demand"), _ok()])
+    monkeypatch.setattr(llm.httpx, "post", lambda url, **kw: calls.append(url.split("/models/")[1].split(":")[0])
+                        or next(answers))
+    monkeypatch.setattr(llm.time, "sleep", slept.append)
+    assert llm.generate_first("p", {}, ["flash", "side"], "k", overload_wait=60) == {"ok": 1}
+    assert calls == ["flash", "flash"] and slept == [60]
+
+
+def test_overload_retry_happens_once_and_never_for_other_errors(monkeypatch):
+    import httpx
+    import pytest
+    calls, slept = [], []
+
+    def post(url, **kw):
+        model = url.split("/models/")[1].split(":")[0]
+        calls.append(model)
+        return httpx.Response(429 if model == "limited" else 503, text="x")
+
+    monkeypatch.setattr(llm.httpx, "post", post)
+    monkeypatch.setattr(llm.time, "sleep", slept.append)
+    with pytest.raises(llm.LlmError):
+        llm.generate_first("p", {}, ["flash", "side"], "k", overload_wait=60)
+    assert calls == ["flash", "flash", "side"] and slept == [60]
+    calls.clear()
+    with pytest.raises(llm.LlmError):
+        llm.generate_first("p", {}, ["limited", "side"], "k", overload_wait=60)
+    # Без overload_wait (второй вызов, разборы) — сразу к следующей модели
+    with pytest.raises(llm.LlmError):
+        llm.generate_first("p", {}, ["flash"], "k")
+    assert calls == ["limited", "side", "flash"] and slept == [60]
+
+
+def test_log_shows_latency_and_thinking_tokens(monkeypatch, caplog):
+    import logging
+    import httpx
+    monkeypatch.setattr(llm.httpx, "post", lambda url, **kw: _ok())
+    with caplog.at_level(logging.INFO, logger="digest.llm"):
+        llm.generate("p", {}, "flash", "k")
+    assert "размышления 4" in caplog.text and " с" in caplog.text
+    monkeypatch.setattr(llm.httpx, "post", lambda url, **kw: httpx.Response(503, text="busy"))
+    import pytest
+    with pytest.raises(llm.LlmError, match=r"503 через \d+ с"):
+        llm.generate("p", {}, "flash", "k")
+
+
+def test_also_today_drops_corporate_finance_lines_the_model_let_through():
+    # Lite правило про деньги держит плохо: 21.10 половина строк «Ещё за день» была про раунды
+    pool = extras_pool() + [Item(source=f"s{n}", title=f"t{n}", url=f"https://n.io/{n}", category="news")
+                            for n in range(9)]
+    digest = _chosen(pool)
+    titles = ["Blacksmith подняла $66M серии C от Sequoia, получив оценку в $1B",
+              "Coherence Neuro привлекла $45M посевных инвестиций от OpenAI Startup Fund",
+              "Шанхайский стартап поднял десятки миллионов юаней на роботов",
+              "Tether возглавила раунд на $15 млн в платформу Mural",
+              "Акции NextDC рухнули на 44% после снижения прогноза",
+              "PHP выпустит экстренные патчи для двух уязвимостей с оценкой 9.2",
+              "OpenAI подняла цены на подписку Plus до $25",
+              "Google открыла бесплатный лимит API для Gemma",
+              "Samsung распродала HBM на 2027 год, цены вырастут на 200%"]
+    raw = {"tips": [], "more": [{"ids": [6 + n], "title": t} for n, t in enumerate(titles)]}
+    llm.attach_extras(digest, raw, pool)
+    assert [m.title for m in digest.more] == titles[5:]
+
+
+def test_money_filter_keeps_lines_that_only_look_like_finance():
+    keep = ["Репозиторий DeepInfer собрал 50 тыс. звёзд на GitHub за сутки",
+            "Первые роботы Figure прибыли на завод BMW",
+            "OpenAI подняла лимит запросов для бесплатных пользователей до 100",
+            "PHP выпустит экстренные патчи для двух уязвимостей с оценкой 9.2",
+            # Ущерб от атаки — новость о безопасности, а раунды TLS — протокол, не инвестиции
+            "Атака на Ahold Delhaize принесла убытки в $100 млн",
+            "Cloudflare сократила число раундов обмена при установке TLS-соединения",
+            "Anthropic подняла 5-часовой лимит Claude Code вдвое"]
+    drop = ["Mistral привлекла 600 млн евро", "YITA привлек более 100 млн юаней",
+            "Чистая прибыль TSMC выросла на 40%", "SpaceX раскрыла прибыль за квартал",
+            "Стартап собрал $20M на агентов", "Tether возглавила раунд на $15 млн",
+            "YITA привлекла средства в раундах семя и семя-плюс", "Intel показала чистый убыток за квартал",
+            "Раунд финансирования Mistral оценил компанию в $14 млрд"]
+    assert [t for t in keep if llm.CORPORATE_MONEY.search(t)] == []
+    assert [t for t in drop if not llm.CORPORATE_MONEY.search(t)] == []

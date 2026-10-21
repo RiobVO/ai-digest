@@ -184,8 +184,10 @@ def alert(args: argparse.Namespace) -> None:
         urgent, rejected = breaking.triage(raw, candidates)
         picked = None
         if urgent:
+            # Перепроверку пишет 3.6: квоту 3.8 (20 в день) бережём для выпусков. 21.10 при перегрузке каждый такой
+            # час съедал по запросу у обеих моделей — 503 тоже засчитывается в лимит
             raw = generate_first(breaking.build_prompt(urgent, state, settings["audience"], texts),
-                                 breaking.ALERT_SCHEMA, [settings["model"], settings["extras_model"]], api_key)
+                                 breaking.ALERT_SCHEMA, [settings["extras_model"], settings["model"]], api_key)
             picked, refused = breaking.choose(raw, urgent)
             rejected += refused
         for item in rejected:
