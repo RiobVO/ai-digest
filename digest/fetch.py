@@ -18,7 +18,9 @@ USER_AGENT = "Mozilla/5.0 (compatible; ai-digest/0.1)"
 DEFAULT_MAX_AGE_HOURS = 48
 DATE_TOKEN = r"(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.? \d{1,2}, \d{4}"
 TAG = re.compile(r"<[^>]+>")
-PRERELEASE = re.compile(r"[-.]?(rc|alpha|beta|dev|pre)\d*\b", re.I)
+# Метка пре-релиза — суффикс сразу за цифрой версии (v1.2.3-rc1, 0.164.0-alpha.9, v0.67.0-nightly.…), а не слово
+# в заголовке: стабильный «v0.66.0 — preview features» не должен выпасть
+PRERELEASE = re.compile(r"\d[-.]?(rc|alpha|beta|dev|pre|preview|nightly)\d*\b", re.I)
 HREF = re.compile(r'href="(https?://[^"]+)"', re.I)
 
 
@@ -270,7 +272,7 @@ def _fetch_one(client: httpx.Client, src: dict, now: datetime) -> list[Item]:
     kind = src["type"]
     if kind == "hn":
         since = int((now - timedelta(hours=src.get("max_age_hours", DEFAULT_MAX_AGE_HOURS))).timestamp())
-        params: dict[str, str | int] = {"tags": "story", "hitsPerPage": 200,
+        params: dict[str, str | int] = {"tags": src.get("tags", "story"), "hitsPerPage": 200,
                                         "numericFilters": f"points>={src.get('min_points', 0)},created_at_i>{since}"}
         response = client.get(src["url"], params=params)
     else:

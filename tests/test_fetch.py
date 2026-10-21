@@ -16,6 +16,28 @@ def test_latest_only_keeps_newest_stable_release():
     items = parse_feed(RELEASES_ATOM, src)
     assert [i.title for i in items] == ["Ollama v0.40.5"]
 
+def test_latest_only_skips_nightly_and_preview_builds():
+    # Gemini CLI каждую ночь выпускает nightly и раз в неделю preview; в дайджест идёт стабильный релиз
+    atom = b"""<?xml version="1.0"?><feed xmlns="http://www.w3.org/2005/Atom">
+<entry><title>Release v0.67.0-nightly.20261021.gd00859d6b</title><link href="https://github.com/g/c/releases/tag/a"/><updated>2026-10-21T05:00:00Z</updated></entry>
+<entry><title>Release v0.66.0-preview.0</title><link href="https://github.com/g/c/releases/tag/b"/><updated>2026-10-20T23:00:00Z</updated></entry>
+<entry><title>Release v0.65.0</title><link href="https://github.com/g/c/releases/tag/c"/><updated>2026-10-20T21:00:00Z</updated></entry>
+</feed>"""
+    items = parse_feed(atom, {"name": "gh_gemini_cli", "category": "release", "title_prefix": "Gemini CLI",
+                              "latest_only": True})
+    assert [i.title for i in items] == ["Gemini CLI Release v0.65.0"]
+
+
+def test_prerelease_is_a_version_suffix_not_a_word_in_the_title():
+    # Стабильный релиз «v0.66.0 — preview features» — не пре-релиз: иначе источник промолчал бы до следующего релиза
+    atom = b"""<?xml version="1.0"?><feed xmlns="http://www.w3.org/2005/Atom">
+<entry><title>v0.66.0 \xe2\x80\x94 preview features, dev tools</title><link href="https://github.com/g/c/releases/tag/a"/><updated>2026-10-21T05:00:00Z</updated></entry>
+<entry><title>v0.65.0rc2</title><link href="https://github.com/g/c/releases/tag/b"/><updated>2026-10-20T23:00:00Z</updated></entry>
+</feed>"""
+    items = parse_feed(atom, {"name": "gh_x", "category": "release", "latest_only": True})
+    assert [i.title for i in items] == ["v0.66.0 \u2014 preview features, dev tools"]
+
+
 HF_PAYLOAD = [
     {"paper": {"id": "2610.22362", "title": "CoDA: Co-Evolution", "upvotes": 41,
                "ai_summary": "Short AI summary.", "summary": "Long abstract.",
@@ -220,3 +242,21 @@ def test_feed_without_entries_is_a_failure_not_a_quiet_day():
     src = {"name": "verge", "category": "news", "url": "https://theverge.com/rss"}
     with pytest.raises(ValueError, match="verge"):
         parse_feed(b"<html><body>Moved</body></html>", src)
+
+
+def test_hn_source_can_ask_for_show_hn_instead_of_all_stories(monkeypatch):
+    import httpx
+    from digest import fetch
+    asked = []
+
+    def handler(request):
+        asked.append(request.url.params["tags"])
+        return httpx.Response(200, json={"hits": []})
+    real_client = httpx.Client
+    monkeypatch.setattr(fetch.httpx, "Client",
+                        lambda **kw: real_client(transport=httpx.MockTransport(handler), **kw))
+    sources = [{"name": "hn", "type": "hn", "category": "community", "url": "https://hn.algolia.com/api/v1/search_by_date"},
+               {"name": "hn_show", "type": "hn", "category": "community", "tags": "show_hn",
+                "url": "https://hn.algolia.com/api/v1/search_by_date"}]
+    fetch.fetch_all(sources, datetime(2026, 10, 21, tzinfo=timezone.utc))
+    assert asked == ["story", "show_hn"]

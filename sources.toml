@@ -176,6 +176,35 @@ url = "https://github.com/anthropics/claude-code/releases.atom"
 title_prefix = "Claude Code"
 max_age_hours = 30
 
+# Альфы выходят по 2–3 в день, стабильный релиз — раз в неделю; latest_only оставляет стабильный
+[[source]]
+name = "gh_codex"
+type = "rss"
+category = "release"
+url = "https://github.com/openai/codex/releases.atom"
+title_prefix = "Codex CLI"
+max_age_hours = 30
+latest_only = true
+
+# Каждую ночь nightly, раз в неделю preview и стабильный релиз
+[[source]]
+name = "gh_gemini_cli"
+type = "rss"
+category = "release"
+url = "https://github.com/google-gemini/gemini-cli/releases.atom"
+title_prefix = "Gemini CLI"
+max_age_hours = 30
+latest_only = true
+
+# Список изменений Cursor: пост раз в несколько дней, дата — полночь по Гринвичу
+[[source]]
+name = "cursor"
+type = "rss"
+category = "release"
+url = "https://cursor.com/changelog/rss.xml"
+title_prefix = "Cursor:"
+max_age_hours = 170
+
 # --- Сообщество ---
 [[source]]
 name = "hn"
@@ -199,12 +228,26 @@ url = "https://hn.algolia.com/api/v1/search_by_date"
 min_points = 400
 max_age_hours = 30
 
+# Show HN — запуски инструментов от авторов. Порог ниже, чем у hn: такие посты набирают меньше очков
 [[source]]
-name = "r_localllama"
+name = "hn_show"
+type = "hn"
+category = "community"
+url = "https://hn.algolia.com/api/v1/search_by_date"
+tags = "show_hn"
+min_points = 50
+max_age_hours = 30
+keywords = ["AI", "LLM", "LLMs", "GPT", "Claude", "Gemini", "Codex", "Cursor", "MCP", "agent", "agents", "model",
+            "models", "prompt", "prompts", "coding", "inference", "RAG"]
+
+# Без авторизации Reddit отдаёт одну ленту, следующая получает 429 и выбивает эту. Поэтому все сабреддиты — одним
+# мультиреддитом: топ дня по очкам, большие сабы вытесняют малые (21.10: LocalLLaMA 26, ClaudeAI 23, cursor 1 из 50).
+# Категория community: «Скопировать» для Reddit закрыто — чужой промпт, вставленный агенту, исполняется как команда
+[[source]]
+name = "reddit"
 type = "rss"
 category = "community"
-url = "https://www.reddit.com/r/LocalLLaMA/top/.rss?t=day"
-# Второй сабреддит не добавлять: без авторизации Reddit отдаёт одну ленту, следующая получает 429 и выбивает эту
+url = "https://www.reddit.com/r/LocalLLaMA+ClaudeAI+ChatGPTCoding+cursor/top/.rss?t=day&limit=50"
 
 # --- Медиа и рассылки ---
 [[source]]
