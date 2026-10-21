@@ -255,6 +255,36 @@ details a:hover{text-decoration:underline}
 .brief a:hover{text-decoration:underline}
 .brief li span{margin-top:2px;font-size:.76rem;color:var(--muted)}
 
+/* Панель здоровья: расход квоты полосой и цепочка попыток — какую модель просили и на какой закончилось */
+.quota{display:grid;gap:12px;padding:0 20px 14px}
+.quota-row{display:grid;grid-template-columns:112px minmax(80px,1fr) 52px auto;gap:12px;align-items:center;font-size:.92rem}
+.quota-row b{font-weight:600}
+.quota-row small{display:block;margin-top:1px;font-size:.78rem;font-weight:500;color:var(--muted)}
+.quota-num{text-align:right;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.meter{height:8px;border-radius:999px;background:var(--chip);overflow:hidden}
+.meter i{display:block;height:100%;border-radius:inherit;background:var(--green)}
+.meter.warn i{background:#b7791f}
+.meter.full i{background:var(--danger)}
+.run{grid-template-columns:minmax(0,1fr)}
+.run .meta b{color:var(--ink);font-variant-numeric:tabular-nums}
+.chains{display:grid;gap:8px;margin-top:10px}
+.chain{display:grid;grid-template-columns:124px minmax(0,1fr);gap:4px 12px;align-items:baseline;font-size:.9rem}
+.chain b{font-weight:600;color:var(--ink-2)}
+.atts{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.atts i{font-style:normal;color:var(--muted)}
+.att{border-radius:5px;padding:2px 8px;font-size:.8rem;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.att.ok{background:var(--green-soft);color:var(--green-ink)}
+.att.bad{background:var(--danger-soft);color:var(--danger)}
+.run-note{margin:8px 0 0;font-size:.86rem;line-height:1.5;color:var(--ink-2)}
+.run-note .fail{margin-right:6px}
+/* Счётчики источников — справка, а не действие: тихая ссылка вместо тёмной кнопки общих details */
+.sources{margin-top:8px}
+.sources summary{background:none;color:var(--blue-ink);padding:0;border-radius:0;font-weight:500;font-size:.86rem}
+.sources summary::after{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg);margin-left:4px}
+.sources[open] summary::after{transform:translateY(1px) rotate(-135deg)}
+.sources .run-note{margin-top:6px}
+.run-note.quiet{margin:0;padding:12px 18px;color:var(--muted)}
+
 @media (max-width:1180px){
   .grid{grid-template-columns:minmax(0,1fr);max-width:900px}
   /* В одну колонку оглавление должно стоять над лентой, а не под ней: карточки правой колонки становятся ячейками сетки */
@@ -305,6 +335,11 @@ details a:hover{text-decoration:underline}
   .brief li span{display:none}
   .brief li::before{grid-row:auto}
   .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .quota{padding:0 14px 14px}
+  .quota-row{grid-template-columns:112px minmax(0,1fr) 44px;gap:10px}
+  .quota-row .fail{grid-column:2/-1;justify-self:start}
+  .chain{grid-template-columns:minmax(0,1fr)}
+  .run-note.quiet{padding:12px 14px}
 }
 /* Пальцевые цели не меньше 44px (Apple HIG, WCAG 2.5.5). Мелким значкам — копированию и плашке HN — зона нажатия
    расширена невидимым слоем, чтобы не раздувать строку */

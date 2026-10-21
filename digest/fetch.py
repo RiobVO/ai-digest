@@ -9,6 +9,7 @@ from urllib.parse import urlencode, urljoin, urlsplit
 import feedparser
 import httpx
 
+from digest import health
 from digest.dedup import bare_host, is_aggregator
 from digest.models import Item
 
@@ -301,11 +302,13 @@ def fetch_all(sources: list[dict], now: datetime) -> tuple[list[Item], list[str]
             except (httpx.HTTPError, ValueError, KeyError) as exc:
                 log.error("источник %s не собран: %s", src["name"], exc)
                 failures.append(f"{src['name']}: {type(exc).__name__}")
+                health.record_source(src["name"], 0, type(exc).__name__)
                 continue
             cutoff = now - timedelta(hours=src.get("max_age_hours", DEFAULT_MAX_AGE_HOURS))
             fresh = [i for i in fetched if i.url and (i.published is None or i.published >= cutoff)]
             for item in fresh:
                 item.feed_host = bare_host(src["url"])
             log.info("%s: %d из %d свежих", src["name"], len(fresh), len(fetched))
+            health.record_source(src["name"], len(fresh))
             items.extend(fresh)
     return items, failures

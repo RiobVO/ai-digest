@@ -379,3 +379,30 @@ def test_unverified_copy_text_never_reaches_the_page(env, monkeypatch):
     main.build(args)
     pages = "".join(p.read_text(encoding="utf-8") for p in args.site.glob("*.html"))
     assert "Фишка" in pages and "totally-evil" not in pages
+
+
+def test_health_is_saved_and_shown_even_when_the_build_fails(env, monkeypatch):
+    tmp, args = env
+    args.run = main.build
+    main.run_with_health(args)
+    run = json.loads((args.state_dir / "health" / "build.json").read_text(encoding="utf-8"))[-1]
+    assert run["outcome"] == "ok" and run["slot"] == "morning"
+    assert run["failed"] == {} and run["events"] == {"openai": 1, "verge": 1}
+    assert "Здоровье дайджеста" in (args.site / "health.html").read_text(encoding="utf-8")
+
+    monkeypatch.setattr(main, "fetch_all", lambda sources, now: ([], ["x: ConnectError", "dead: ConnectError"]))
+    monkeypatch.setenv("ISSUE_SLOT", "evening")
+    with pytest.raises(SystemExit):
+        main.run_with_health(args)
+    # Упавший выпуск state не сохраняет, но запись о сбое — именно то, ради чего панель нужна
+    runs = json.loads((args.state_dir / "health" / "build.json").read_text(encoding="utf-8"))
+    assert len(runs) == 2 and "ни один источник" in runs[-1]["outcome"]
+    # Слот известен до отбора: упавший вечерний выпуск не должен выглядеть утренним
+    assert runs[-1]["slot"] == "evening"
+
+
+def test_dry_run_leaves_health_untouched(env):
+    tmp, args = env
+    args.run, args.dry_run = main.build, True
+    main.run_with_health(args)
+    assert not (args.state_dir / "health").exists()

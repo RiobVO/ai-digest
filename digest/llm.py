@@ -3,9 +3,11 @@ import logging
 import re
 import time
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 
 import httpx
 
+from digest import health
 from digest.dedup import absorb, bare_host, coverage, link_rank
 from digest.models import Item
 
@@ -427,6 +429,8 @@ class Entry:
     status: str = ""
     # Команда или промпт фишки для кнопки «Скопировать» — только дословно из записи доверенной ленты
     copy: str = ""
+    # Тема фишки для арсенала (llm.TIP_TOPICS); у событий пустая
+    topic: str = ""
     # Заполняются памятью (digest.memory): id для оценок, сюжетная линия и её история
     id: str = ""
     story: str = ""
@@ -616,14 +620,17 @@ def generate(prompt: str, schema: dict, model: str, api_key: str) -> dict:
         "generationConfig": {"responseMimeType": "application/json", "responseSchema": schema, "temperature": 0.3},
     }
     start = time.monotonic()
+    started = datetime.now(timezone.utc)
     try:
         response = httpx.post(API_URL.format(model=model), headers={"x-goog-api-key": api_key}, json=body,
                               timeout=TIMEOUT)
     except httpx.HTTPError as exc:
+        health.record_call(model, "", 0, time.monotonic() - start, 0, type(exc).__name__, started)
         raise LlmError(f"Gemini {model} недоступен через {time.monotonic() - start:.0f} с: {type(exc).__name__}") from exc
     # Время ответа отличает сброс нагрузки (503 за секунду) от очереди бесплатного тарифа (минуты)
     elapsed = time.monotonic() - start
     if response.status_code != 200:
+        health.record_call(model, "", response.status_code, elapsed, 0, started=started)
         raise LlmError(f"Gemini {model} ответил {response.status_code} через {elapsed:.0f} с: {response.text[:300]}",
                        response.status_code)
     try:
@@ -631,16 +638,29 @@ def generate(prompt: str, schema: dict, model: str, api_key: str) -> dict:
         raw = json.loads(payload["candidates"][0]["content"]["parts"][0]["text"])
     except (KeyError, IndexError, TypeError, ValueError) as exc:
         # ValueError — и битое тело ответа, и битый JSON внутри: оба должны вести к следующей модели цепочки
+        health.record_call(model, "", response.status_code, elapsed, 0, health.BROKEN_ANSWER, started)
         raise LlmError(f"не удалось разобрать ответ Gemini {model}: {response.text[:300]}") from exc
     usage = payload.get("usageMetadata", {})
+    health.record_call(model, payload.get("modelVersion", model), 200, elapsed, usage.get("thoughtsTokenCount", 0),
+                       started=started)
     log.info("Gemini %s: токенов %s, размышления %s, %.0f с", payload.get("modelVersion", model),
              usage.get("totalTokenCount"), usage.get("thoughtsTokenCount", 0), elapsed)
     return raw
 
 
-def generate_first(prompt: str, schema: dict, models: list[str], api_key: str, overload_wait: float = 0) -> dict:
+def generate_first(prompt: str, schema: dict, models: list[str], api_key: str, overload_wait: float = 0,
+                   call: str = "") -> dict:
     """Ответ первой модели цепочки, которая справилась. Квоты у моделей раздельные: исчерпанный лимит, перегрузка
-    или отключённая модель (404) одной не мешают следующей. overload_wait > 0 — один повтор первой модели после 503."""
+    или отключённая модель (404) одной не мешают следующей. overload_wait > 0 — один повтор первой модели после 503.
+    call — имя вызова для панели здоровья (select, extras…)."""
+    since = len(health.RUN.calls)
+    try:
+        return _first(prompt, schema, models, api_key, overload_wait)
+    finally:
+        health.label_calls(since, call)
+
+
+def _first(prompt: str, schema: dict, models: list[str], api_key: str, overload_wait: float) -> dict:
     error = LlmError("цепочка моделей пуста")
     # Одна и та же модель дважды (model = extras_model в настройках) — это повтор, а он съедает запрос квоты
     for n, model in enumerate(dict.fromkeys(models)):
@@ -663,13 +683,14 @@ def select(items: list[Item], audience: str, models: list[str], api_key: str,
            preferences: str = "", stories: list[dict] | None = None) -> Digest:
     prompt = build_prompt(items, audience, preferences, stories)
     # Отбор решает качество выпуска: один повтор лучшей модели после перегрузки стоит запроса квоты
-    return parse_selection(generate_first(prompt, SCHEMA, models, api_key, overload_wait=OVERLOAD_WAIT), items)
+    return parse_selection(generate_first(prompt, SCHEMA, models, api_key, overload_wait=OVERLOAD_WAIT, call="select"), items)
 
 
 def extras(digest: Digest, items: list[Item], audience: str, models: list[str], api_key: str,
            stories: list[dict] | None = None) -> None:
     """Второй вызов: «Ещё за день» и фишки по записям, которые не вошли в события выпуска."""
-    raw = generate_first(build_extras_prompt(digest, items, audience, stories), EXTRAS_SCHEMA, models, api_key)
+    raw = generate_first(build_extras_prompt(digest, items, audience, stories), EXTRAS_SCHEMA, models, api_key,
+                         call="extras")
     attach_extras(digest, raw, items)
 
 
@@ -681,5 +702,5 @@ def explain(entries: list[Entry], texts: dict[str, str], audience: str, models: 
         events.append(f"--- событие id={n} ---\nКарточка: {entry.title}. {entry.summary}\n"
                       f"Описание из ленты: {entry.item.summary[:600]}\nТекст первоисточника:\n{fence(source)}")
     raw = generate_first(EXPLAIN_PROMPT.format(audience=audience, events="\n\n".join(events)), EXPLAIN_SCHEMA, models,
-                         api_key)
+                         api_key, call="explain")
     attach_explanations(entries, raw, texts)

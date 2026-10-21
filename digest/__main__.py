@@ -8,14 +8,14 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from digest import alert as breaking
-from digest import evaluate
+from digest import evaluate, health
 from digest.cover import make_cover
 from digest.dedup import dedupe
 from digest.fetch import attach_discussions, fetch_all, fetch_articles, resolve_gnews
 from digest.llm import LlmError, explain, extras, generate_first, select, verify_copies
 from digest.memory import (Archive, Stories, fetch_feedback, issue_slot, missed_in_morning, preferences_prompt,
                            record_issue, resolve_votes)
-from digest.render import DISPLAY_TZ, MONTHS, human_date, issue_summary, render_archive, render_page
+from digest.render import DISPLAY_TZ, MONTHS, human_date, issue_summary, render_archive, render_health, render_page
 from digest.state import SeenStore
 from digest.telegram import build_keyboard, build_message, send
 from digest.weekly import WEEK_DAYS, summarize_week
@@ -64,6 +64,10 @@ def build(args: argparse.Namespace) -> None:
     api_key = os.environ["GEMINI_API_KEY"]
     feedback_url = os.environ.get("FEEDBACK_URL", "")
 
+    # Слот нужен панели здоровья и до отбора: упавший вечерний выпуск не должен выглядеть утренним
+    slot = issue_slot(now, os.environ.get("ISSUE_SLOT", ""))
+    health.RUN.slot = slot
+
     raw, failures = fetch_all(config["source"], now)
     if len(failures) == len(config["source"]):
         # Скорее всего легла сеть раннера; пустой выпуск выглядел бы как тихий день, а падение придёт оповещением
@@ -108,13 +112,13 @@ def build(args: argparse.Namespace) -> None:
         log.error("подробные разборы не сгенерированы: %s", exc)
 
     # Утренний выпуск сохраняет прежнее имя страницы, вечерний — свою: ссылки на старые выпуски не ломаются
-    slot = issue_slot(now, os.environ.get("ISSUE_SLOT", ""))
     page_name = f"{today:%Y-%m-%d}.html" if slot == "morning" else f"{today:%Y-%m-%d}-evening.html"
     morning_page = f"{today:%Y-%m-%d}.html"
     # Оценённая запись тоже считается увиденной: чтобы поставить 👍/👎, её прочитали
     opened = reads | {v["id"] for v in votes} if received is not None else None
     missed = missed_in_morning(archive, today, opened) if slot == "evening" else []
     record_issue(archive, stories, today, digest.headline, page_name, digest.entries, slot)
+    health.record_events([e.item.source for e in digest.entries])
 
     date_label = f"{human_date(now)}{' · вечер' if slot == 'evening' else ''}"
     og_image = _cover(args.site, page_name, digest.headline, date_label, issue_summary(digest.entries))
@@ -180,14 +184,16 @@ def alert(args: argparse.Namespace) -> None:
         api_key = os.environ["GEMINI_API_KEY"]
         # Отсев — на Lite, его квоты хватает на каждый час; 3.6 — запас, если Lite недоступен
         raw = generate_first(breaking.build_triage_prompt(candidates, state, settings["audience"], texts),
-                             breaking.TRIAGE_SCHEMA, [settings["lite_model"], settings["extras_model"]], api_key)
+                             breaking.TRIAGE_SCHEMA, [settings["lite_model"], settings["extras_model"]], api_key,
+                             call="triage")
         urgent, rejected = breaking.triage(raw, candidates)
         picked = None
         if urgent:
             # Срочное может разбудить читателя ночью — перепроверку и текст пишет лучшая модель, 3.6 только запас.
             # До Flash доходит редко: почти все прогоны заканчиваются на отсеве Lite
             raw = generate_first(breaking.build_prompt(urgent, state, settings["audience"], texts),
-                                 breaking.ALERT_SCHEMA, [settings["model"], settings["extras_model"]], api_key)
+                                 breaking.ALERT_SCHEMA, [settings["model"], settings["extras_model"]], api_key,
+                                 call="alert")
             picked, refused = breaking.choose(raw, urgent)
             rejected += refused
         for item in rejected:
@@ -275,6 +281,44 @@ def send_message(args: argparse.Namespace) -> None:
     log.info("отправлено в Telegram: %s", message["url"])
 
 
+def run_with_health(args: argparse.Namespace) -> None:
+    """Запуск команды с записью здоровья: вызовы Gemini и сбои источников сохраняются и при падении выпуска —
+    панель нужна именно в такие дни. eval и --dry-run здоровье не пишут: их квоту видно в AI Studio."""
+    kind = args.run.__name__
+    if kind not in ("build", "weekly", "alert") or getattr(args, "dry_run", False):
+        args.run(args)
+        return
+    health.reset()
+    outcome = "ok"
+    try:
+        args.run(args)
+    except SystemExit as exc:
+        # Свои сообщения об остановке («новых записей нет») безопасны и объясняют сбой лучше имени исключения
+        outcome = str(exc.code) if exc.code not in (None, 0) else "ok"
+        raise
+    except Exception as exc:
+        outcome = type(exc).__name__
+        raise
+    finally:
+        _save_health(args, kind, outcome)
+
+
+def _save_health(args: argparse.Namespace, kind: str, outcome: str) -> None:
+    now = datetime.now(timezone.utc)
+    folder = args.state_dir / "health"
+    try:
+        health.save(folder / f"{kind}.json", kind, now, outcome, keep_sources=kind != "alert")
+        if kind == "alert":
+            # Страницу публикует только digest.yml: срочные попадут на неё со следующим выпуском
+            return
+        settings = tomllib.loads(args.config.read_text(encoding="utf-8"))["digest"]
+        args.site.mkdir(parents=True, exist_ok=True)
+        (args.site / "health.html").write_text(render_health(health.load_all(folder, now), settings, now), encoding="utf-8")
+    except (OSError, ValueError, KeyError) as exc:
+        # Панель — надстройка: её сбой не должен ронять выпуск или подменять исходную ошибку
+        log.error("здоровье запуска не сохранено: %s", exc)
+
+
 def configure_logging() -> None:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
     # httpx на INFO пишет полный URL запроса, а в URL Telegram Bot API лежит токен; лог Actions публичный
@@ -310,7 +354,7 @@ def main() -> None:
     args = parser.parse_args()
     configure_logging()
     load_env(Path(".env"))
-    args.run(args)
+    run_with_health(args)
 
 
 if __name__ == "__main__":

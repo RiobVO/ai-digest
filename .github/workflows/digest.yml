@@ -67,6 +67,7 @@ jobs:
           echo "weekly=$weekly" >> "$GITHUB_OUTPUT"
 
       - name: Build digest
+        id: build
         if: steps.plan.outputs.daily == 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -76,6 +77,7 @@ jobs:
         run: python -m digest build
 
       - name: Build weekly
+        id: weekly
         if: steps.plan.outputs.weekly == 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -119,6 +121,46 @@ jobs:
             sleep $((attempt * 5))
           done
           exit 1
+
+      # Упавший выпуск state не коммитит — новости должны остаться непрочитанными. Здоровье коммитим отдельно:
+      # панель нужна как раз чтобы увидеть, на какой модели и почему он упал
+      - name: Commit health after failure
+        if: failure()
+        run: |
+          [ -d state/health ] || exit 0
+          git config user.name "digest-bot"
+          git config user.email "digest-bot@users.noreply.github.com"
+          git add state/health
+          git diff --cached --quiet && exit 0
+          git commit -m "chore(digest): health after failed run $(date -u +%F)"
+          for attempt in 1 2 3; do
+            git pull --rebase --autostash && git push && exit 0
+            sleep $((attempt * 5))
+          done
+          exit 1
+
+      # Сборка упала до публикации — выкладываем панель здоровья, чтобы сбой был виден на сайте. Публикуется сайт
+      # из последнего коммита, свежая в нём только health.html: недособранный выпуск на сайт не попадёт. Если упало
+      # то, что идёт после публикации (отправка, коммит), не трогаем: выпуск уже на сайте, ссылка могла уйти в Telegram
+      - name: Keep only the health page
+        id: health_only
+        if: failure() && (steps.build.outcome == 'failure' || steps.weekly.outcome == 'failure')
+        run: |
+          [ -f site/health.html ] || exit 1
+          mkdir -p "$RUNNER_TEMP/pub"
+          git archive HEAD site | tar -x -C "$RUNNER_TEMP/pub"
+          cp site/health.html "$RUNNER_TEMP/pub/site/health.html"
+
+      - uses: actions/configure-pages@v5
+        if: failure() && steps.health_only.outcome == 'success'
+
+      - uses: actions/upload-pages-artifact@v3
+        if: failure() && steps.health_only.outcome == 'success'
+        with:
+          path: ${{ runner.temp }}/pub/site
+
+      - uses: actions/deploy-pages@v4
+        if: failure() && steps.health_only.outcome == 'success'
 
       - name: Alert on failure
         if: failure()

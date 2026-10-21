@@ -1,4 +1,5 @@
 import json
+import re
 from collections import Counter
 from datetime import date, datetime, timedelta, timezone
 from html import escape
@@ -6,6 +7,7 @@ from pathlib import Path
 from string import Template
 from urllib.parse import urlsplit
 
+from digest import health
 from digest.dedup import ARXIV_ID, coverage
 from digest.llm import EXTRA_SECTIONS, Digest, Entry, Mention
 from digest.models import Item
@@ -71,6 +73,7 @@ ICONS = {
     "archive": _SVG.format('<path d="M3 5h18v4H3zM5 9v10h14V9M10 13h4"/>'),
     "voices": _SVG.format('<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/>'),
     "security": _SVG.format('<path d="M12 2l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5z"/>'),
+    "health": _SVG.format('<path d="M3 12h4l3-8 4 16 3-8h4"/>'),
     "tips": _SVG.format('<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/>'),
     "also-today": _SVG.format('<path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/>'),
     "up": _SVG.format('<path d="M7 10v11M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9z"/>'),
@@ -507,7 +510,8 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
         lead = f'<p class="lead-top">{escape(digest.lead)}</p>' if digest.lead else ""
         funnel = [f'<span>Просмотрено {stats["raw"]}, новых {stats["merged"]}, в выпуске {len(digest.entries)}</span>']
 
-    footer = [*funnel, f"<span>Собрано {local:%d.%m} в {local:%H:%M}</span>", "<span>Стоимость 0 ₽</span>"]
+    footer = [*funnel, f"<span>Собрано {local:%d.%m} в {local:%H:%M}</span>", "<span>Стоимость 0 ₽</span>",
+              '<a href="health.html">Здоровье</a>']
     if failures:
         footer.append(f'<span class="fail">Не собрались: {escape(", ".join(f.split(":")[0] for f in failures))}</span>')
 
@@ -539,4 +543,156 @@ def render_archive(issues: list[dict], when: datetime) -> str:
         archive=_archive_sidebar(issues), main=main,
         summary=_summary("Архив", "", "", [(len(issues), "выпусков"), (sum(len(i["entries"]) for i in issues), "событий")]),
         aside="", footer="<span>Стоимость 0 ₽</span>", script="",
+    )
+
+
+MODEL_NAME = re.compile(r"gemini-(\d+(?:\.\d+)*)-(flash|pro)(-lite)?")
+CALL_LABELS = {"select": "Отбор", "extras": "Ещё за день и фишки", "explain": "Разборы", "weekly": "Итог недели",
+               "triage": "Отсев срочных", "alert": "Текст срочной"}
+# Квота израсходована на эту долю — полоса желтеет: до вечернего выпуска может не хватить
+QUOTA_WARN = 0.75
+
+
+def model_label(name: str) -> str:
+    """gemini-3.5-flash-lite → «3.5 Flash-Lite»: в цепочке попыток полные имена не помещаются в строку телефона."""
+    match = MODEL_NAME.search(name)
+    if not match:
+        # Алиас gemini-flash-latest → «Flash latest»: какая модель за ним, знает только успешный ответ
+        return name.removeprefix("models/").removeprefix("gemini-").replace("-", " ").capitalize()
+    return f"{match.group(1)} {match.group(2).capitalize()}{'-Lite' if match.group(3) else ''}"
+
+
+def _run_title(run: dict) -> str:
+    if run["kind"] == "build":
+        return "Вечерний выпуск" if run.get("slot") == "evening" else "Утренний выпуск"
+    return {"weekly": "Итог недели", "alert": "Срочные"}.get(run["kind"], run["kind"])
+
+
+def _attempt(call: dict) -> str:
+    ok = call["status"] == 200 and not call["error"]
+    # Модель, ответившую на алиас, называет только успешный ответ; у отказа — то, что просили, без догадок
+    name = escape(model_label(call["served"] or call["asked"]))
+    seconds = f'{call["seconds"]:.0f} с'
+    if ok:
+        thinking = f' · размышл. {call["thinking"]}' if call["thinking"] else ""
+        return f'<span class="att ok">{name} · {seconds}{thinking}</span>'
+    reason = escape(call["error"] or str(call["status"]))
+    return f'<span class="att bad">{name} · {reason} · {seconds}</span>'
+
+
+def _chains(calls: list[dict]) -> str:
+    by_call: dict[str, list[dict]] = {}
+    for call in calls:
+        by_call.setdefault(call["call"], []).append(call)
+    rows = "".join(f'<div class="chain"><b>{escape(CALL_LABELS.get(name, name or "вызов"))}</b>'
+                   f'<span class="atts">{f" <i>{ARROW}</i> ".join(map(_attempt, attempts))}</span></div>'
+                   for name, attempts in by_call.items())
+    return f'<div class="chains">{rows}</div>' if rows else ""
+
+
+def _run(run: dict) -> str:
+    local = datetime.fromisoformat(run["at"].replace("Z", "+00:00")).astimezone(DISPLAY_TZ)
+    # «Вышел» — только у выпуска; у часовой проверки срочных успех — норма, отмечаем лишь сбой
+    if run["outcome"] != "ok":
+        outcome = f'<span class="fail">сбой: {escape(run["outcome"][:120])}</span>'
+    else:
+        outcome = '<span class="tag green">вышел</span>' if run["kind"] != "alert" else ""
+    parts = [_chains(run.get("calls", []))]
+    if run.get("failed"):
+        failed = ", ".join(f"{escape(source_label(s))} ({escape(e)})" for s, e in run["failed"].items())
+        parts.append(f'<p class="run-note"><span class="fail">Не собрались</span> {failed}</p>')
+    if run.get("events"):
+        given = " · ".join(f"{escape(source_label(s))} {n}" for s, n in run["events"].items())
+        parts.append(f'<p class="run-note">Дали событий: {given}</p>')
+    if run.get("sources"):
+        # Сколько свежих записей принёс каждый источник — видно и тогда, когда отбор упал и событий нет
+        counts = " · ".join(f"{escape(source_label(s))} {n}" for s, n in
+                            sorted(run["sources"].items(), key=lambda kv: -kv[1]))
+        total = sum(run["sources"].values())
+        parts.append(f'<details class="sources"><summary>Записей из источников: {total}</summary>'
+                     f'<p class="run-note">{counts}</p></details>')
+    return (f'<div class="item run"><div><div class="meta"><b>{local:%H:%M}</b>'
+            f'<span>{_run_title(run)}</span>{outcome}</div>{"".join(parts)}</div></div>')
+
+
+def _quota(runs: list[dict], settings: dict, now: datetime, aliases: dict[str, str]) -> str:
+    usage = health.quota_usage(runs, health.quota_day_start(now))
+    end = health.quota_day_end(now)
+    reset_at = end.astimezone(DISPLAY_TZ)
+    left = end - now
+    hours, minutes = divmod(int(left.total_seconds()) // 60, 60)
+    rows = []
+    for role, limit in health.DAILY_LIMITS.items():
+        name = settings[role]
+        row = usage.get(name, {"used": 0, "failed": 0, "served": ""})
+        share = min(1.0, row["used"] / limit)
+        level = " full" if share >= 1 else " warn" if share >= QUOTA_WARN else ""
+        failed = f'<span class="fail">отказов {row["failed"]}</span>' if row["failed"] else ""
+        # У алиаса подписываем, какая модель отвечала на него последней: квота считается по ней
+        now_serving = aliases.get(name, name)
+        label = escape(model_label(name)) + (f'<small>сейчас {escape(model_label(now_serving))}</small>'
+                                             if model_label(now_serving) != model_label(name) else "")
+        rows.append(f'<div class="quota-row"><b>{label}</b>'
+                    f'<span class="meter{level}" role="img" aria-label="{row["used"]} из {limit}">'
+                    f'<i style="width:{share * 100:.0f}%"></i></span>'
+                    f'<span class="quota-num">{row["used"]}/{limit}</span>{failed}</div>')
+    return (f'        <section class="card" id="quota">\n          <div class="card-head"><h3>Квота Gemini</h3>'
+            f'<small>сброс в {reset_at:%H:%M}, через {f"{hours} ч" if hours else f"{minutes} мин"}</small></div>\n'
+            f'          <div class="quota">{"".join(rows)}</div>\n'
+            f'          <p class="lead">Каждая попытка списывает запрос, даже 503 и таймаут. Локальные прогоны eval '
+            f'здесь не видны.</p>\n        </section>')
+
+
+def _health_day(day: str, runs: list[dict]) -> str:
+    calls = [c for r in runs for c in r.get("calls", [])]
+    refused = sum(1 for c in calls if c["status"] != 200 or c["error"])
+    # Срочные проверяются каждый час, и почти все проверки проходят без модели и без сбоев — их только считаем
+    quiet = [r for r in runs if r["kind"] == "alert" and not r.get("calls") and not r.get("failed")
+             and r["outcome"] == "ok"]
+    shown = [r for r in reversed(runs) if r not in quiet]
+    summary = [plural(len(calls), "вызов", "вызова", "вызовов")]
+    if refused:
+        summary.append(f"отказов {refused}")
+    body = "".join(map(_run, shown))
+    if quiet:
+        body += f'<p class="run-note quiet">{plural(len(quiet), "проверка", "проверки", "проверок")} срочных без вызовов модели</p>'
+    d = date.fromisoformat(day)
+    return (f'        <section class="card" id="d-{day}">\n          <div class="card-head"><h3>{d.day} {MONTHS[d.month - 1]}</h3>'
+            f'<small>{" · ".join(summary)}</small></div>\n          <div class="card-body">{body}</div>\n        </section>')
+
+
+def render_health(runs: list[dict], settings: dict, now: datetime) -> str:
+    """Панель здоровья: квота текущих квотных суток, затем дни — какие модели просили, какие ответили, что упало."""
+    days: dict[str, list[dict]] = {}
+    for run in runs:
+        local = datetime.fromisoformat(run["at"].replace("Z", "+00:00")).astimezone(DISPLAY_TZ)
+        days.setdefault(local.date().isoformat(), []).append(run)
+    # Какая модель отвечала на алиас последней — только для подписи квоты, не для отдельных попыток
+    aliases = {c["asked"]: c["served"] for r in runs for c in r.get("calls", []) if c["served"]}
+    main = [_quota(runs, settings, now, aliases)]
+    nav = [f'<a class="on" href="#quota">{ICONS["health"]}Квота</a>']
+    for day in sorted(days, reverse=True):
+        main.append(_health_day(day, days[day]))
+        nav.append(f'<a href="#d-{day}">{ICONS["archive"]}{short_day(day)}</a>')
+    if not runs:
+        main.append('        <section class="card noise"><h3>Запусков пока нет</h3>'
+                    '<p>Панель заполнится после первого выпуска или проверки срочных.</p></section>')
+    calls = [c for r in runs for c in r.get("calls", [])]
+    refused = sum(1 for c in calls if c["status"] != 200 or c["error"])
+    failed_sources = Counter(s for r in runs for s in r.get("failed", {}))
+    aside = ""
+    if failed_sources:
+        rows = "".join(f'<li>{escape(source_label(s))}<span class="src-name">{plural(n, "раз", "раза", "раз")}</span></li>'
+                       for s, n in failed_sources.most_common(8))
+        aside = (f'        <section class="card also-today">\n          <div class="card-head"><h3>Падали чаще всего</h3>'
+                 f'<small>за {health.RETENTION_DAYS} дней</small></div>\n          <ol>{rows}</ol>\n        </section>')
+    local = now.astimezone(DISPLAY_TZ)
+    return TEMPLATE.substitute(
+        headline="Здоровье дайджеста", description="Вызовы Gemini, квота и источники за 30 дней", og_image="",
+        crumbs="Дайджест<span>/</span>Здоровье", lead="",
+        sub=f"{plural(len(runs), 'запуск', 'запуска', 'запусков')} за {health.RETENTION_DAYS} дней",
+        short_date=f"{local:%d.%m}", weekday="Здоровье", nav="".join(nav), archive="",
+        main="\n".join(main),
+        summary=_summary("30 дней", "", "", [(len(runs), "запусков"), (len(calls), "вызовов"), (refused, "отказов")]),
+        aside=aside, footer=f"<span>Обновлено {local:%d.%m} в {local:%H:%M}</span>", script=PAGE_SCRIPT,
     )
