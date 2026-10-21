@@ -736,7 +736,8 @@ TIPS_SCRIPT = """<script>
     b.disabled = true;
     fetch(FB + "/tried?e=" + encodeURIComponent(id) + "&v=" + (on ? 1 : 0), {method: "POST"})
       .then(r => { if (!r.ok) throw new Error(r.status); remember(id, on); })
-      .catch(() => { set(id, !on); count(); label.classList.add("err"); })
+      // Изменение не сохранилось — значит, верен снимок воркера: снова разрешаем ему обновить эту галочку
+      .catch(() => { touched.delete(id); set(id, !on); count(); label.classList.add("err"); })
       .finally(() => { b.disabled = false; });
   }));
 })();
