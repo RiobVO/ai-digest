@@ -104,6 +104,9 @@ Site pages besides issues (all built with the `page.html` shell, rebuilt by ever
   today's issues gets its own random hour (morning tips 10–18, evening 19–23 Tashkent, evenly spread, seeded by date
   and slot), and each run sends at most one due tip, with sound, logging it in `state/tip.json`. No Gemini call.
   Tips are therefore not listed in the issue's Telegram message.
+- **`body_from_feed = true`** (Reddit sources): Reddit pages answer 403 to CI runners, so `Item.body` keeps the full
+  post from the feed and `fetch.fill_from_feed` uses it where the article fetch failed. Tip steps (`details.points`)
+  are archived as `steps` and shown in the tip message.
 - **Source order in `sources.toml` is dedup priority** (first seen stays primary), except aggregators
   (`news.google.com`, `techmeme.com`) always yield to a direct link. `alert = true` marks sources checked hourly.
 
