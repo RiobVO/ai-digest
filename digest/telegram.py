@@ -64,10 +64,6 @@ def build_message(digest: Digest, page_url: str, when: datetime, label: str = "�
         hidden = len(digest.entries) - len(shown)
         if hidden > 0:
             body.append(f"…и ещё {hidden} в разборе")
-    # Фишка идёт после событий и в пятёрку обычно не попадает — без своей строки его в сообщении не видно
-    for tip in (e for e in digest.entries[SHOWN:] if e.section == "tips"):
-        anchor = f"#e-{escape(tip.id)}" if tip.id else ""
-        body.append(f'<b>Фишка:</b> <a href="{escape(page_url)}{anchor}">{escape(_clip(tip.title, 200))}</a>')
     if digest.more:
         body += ["", "<b>Ещё за день:</b>", *(_mention(m) for m in digest.more)]
     tail = ["", f'<a href="{escape(page_url)}">Разбор целиком</a>']

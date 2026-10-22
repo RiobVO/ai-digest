@@ -1,5 +1,6 @@
 """Срочные новости между утренними выпусками: громкое событие уходит в Telegram сразу, а не на следующее утро."""
 import json
+import re
 from datetime import datetime, timedelta
 from html import escape
 from pathlib import Path
@@ -31,13 +32,19 @@ ALERT_RULES = """Срочное сообщение приходит читате
 в ИИ и технологиях: крупный релиз от ведущей лаборатории или компании, большая сделка или поглощение, решение
 регулятора или суда, громкий инцидент, резкая смена цен или доступа к популярному сервису, уязвимость в массовом
 продукте (iPhone, Android, Chrome, WhatsApp, Telegram, Windows), которой уже атакуют, — особенно если вышло обновление.
+Из информационной безопасности срочно ещё: уязвимость, которой уже атакуют, в том, что стоит почти в каждой компании
+(VPN и сетевые экраны, почтовые серверы, Active Directory, удалённый доступ, управление рабочими местами), и громкая
+атака на крупную компанию или госструктуру с последствиями — системы встали, данные украдены.
+Рабочий стек читателя: {stack}. Атакуемая уязвимость, срочный патч, взлом или крупный сбой в этих продуктах —
+срочно, даже если о них пишет одно издание: это его рабочая инфраструктура. Такие кандидаты помечены «стек на работе».
 Чтобы не гадать, проверь признаки — для срочного нужны все три:
-- масштаб: затронуты миллионы пользователей, крупная страна или рынок, а не узкий круг специалистов;
+- масштаб: затронуты миллионы пользователей, крупная страна или рынок, а не узкий круг специалистов
+  (для рабочего стека масштаб не нужен);
 - событие уже произошло или решение принято, а не слух, план или «тестирует»;
 - это новое: само событие случилось в последние часы, а не свежая статья о давней новости, и это не повтор
   отправленного без существенно новых фактов.
 Не срочно — подождёт ближайшего выпуска: обычные посты блогов, мелкие обновления, инструменты для программистов,
-мнения, кейсы, новости, которые касаются только специалистов. Событие, которое уже отправлено (список ниже), — не срочно.
+мнения, кейсы, новости, которые касаются только специалистов (кроме безопасности выше). Событие, которое уже отправлено (список ниже), — не срочно.
 
 Примеры решения (это не новости, их факты не используй):
 - срочно: «OpenAI выпустила новую флагманскую модель и открыла её бесплатным пользователям ChatGPT»;
@@ -67,7 +74,7 @@ ALERT_PROMPT = """Ты дежурный редактор срочных ново
 {candidates}
 
 ### Перед ответом проверь
-- Срочное — только то, о чём завтра будут говорить все; сомневаешься — не срочно.
+- Срочное — только то, о чём завтра будут говорить все, или атака на рабочий стек; сомневаешься — не срочно.
 - Каждая цифра и название в title и text есть в описании или тексте статьи; смысл не расширен.
 - Нет фраз, которые подошли бы к любой новости.
 Верни JSON строго по схеме."""
@@ -94,7 +101,8 @@ TRIAGE_PROMPT = """Ты первым просматриваешь кандида
 {candidates}
 
 ### Перед ответом проверь
-- Срочное — только с тремя признаками сразу: масштаб, событие уже произошло, оно новое и ещё не отправлено.
+- Срочное — только с тремя признаками сразу: масштаб (для рабочего стека не нужен), событие уже произошло,
+  оно новое и ещё не отправлено.
 - Инструменты для программистов, обычные посты блогов, мелкие обновления и мнения — не срочно.
 Верни JSON строго по схеме."""
 
@@ -219,16 +227,27 @@ def split_undated(items: list[Item], state: AlertState, now: datetime) -> list[I
     return fresh
 
 
-def find_candidates(items: list[Item], state: AlertState, now: datetime) -> list[Item]:
+def stack_hits(item: Item, stack: list[dict]) -> list[str]:
+    """Продукты рабочего стека (секция [[work_stack]] в sources.toml), которые упомянуты в заголовке или описании.
+    Целыми словами: «Entra» не должна совпасть с «Entrance»."""
+    text = f"{item.title} {item.summary}"
+    return [tool["name"] for tool in stack
+            if any(re.search(rf"(?<!\w){re.escape(word)}(?!\w)", text, re.I) for word in tool["match"])]
+
+
+def find_candidates(items: list[Item], state: AlertState, now: datetime, stack: list[dict] | None = None) -> list[Item]:
     found = []
     for item in dedupe(items):
         keys = item_keys(item)
         official = item.category == "lab"
         loud = publishers(item) >= MIN_PUBLISHERS or item.hn_points >= MIN_HN_POINTS
-        if not (official or loud) or state.is_sent(keys) or state.is_rejected(keys, strength(item), now):
+        # Дыру в рабочем стеке обычно пишет одно издание: порог громкости её бы отсёк, не показав модели
+        ours = bool(stack_hits(item, stack or []))
+        if not (official or loud or ours) or state.is_sent(keys) or state.is_rejected(keys, strength(item), now):
             continue
         found.append(item)
-    found.sort(key=strength, reverse=True)
+    # Стек — первым: иначе пять громких кандидатов вытеснили бы его из лимита
+    found.sort(key=lambda i: (bool(stack_hits(i, stack or [])), strength(i)), reverse=True)
     return found[:MAX_CANDIDATES]
 
 
@@ -236,23 +255,29 @@ def find_candidates(items: list[Item], state: AlertState, now: datetime) -> list
 ALERT_TEXT_CHARS = 3000
 
 
-def _fill(template: str, candidates: list[Item], state: AlertState, audience: str, texts: dict[str, str] | None) -> str:
+def _fill(template: str, candidates: list[Item], state: AlertState, audience: str, texts: dict[str, str] | None,
+          stack: list[dict] | None) -> str:
     lines = []
     for n, c in enumerate(candidates):
         text = (texts or {}).get(c.url, "")[:ALERT_TEXT_CHARS]
         article = f"\n    Текст статьи:\n{fence(text)}" if text else "\n    Текст статьи: недоступен"
-        lines.append(f"[{n}] ({c.source}, изданий={publishers(c)}, HN={c.hn_points}) {c.title}\n    {c.summary[:400]}{article}")
+        hits = stack_hits(c, stack or [])
+        ours = f", стек на работе: {', '.join(hits)}" if hits else ""
+        lines.append(f"[{n}] ({c.source}, изданий={publishers(c)}, HN={c.hn_points}{ours}) {c.title}\n"
+                     f"    {c.summary[:400]}{article}")
     return template.format(audience=audience, sent="\n".join(f"- {t}" for t in state.recent_titles()) or "(ничего)",
-                           candidates="\n".join(lines))
+                           candidates="\n".join(lines),
+                           stack=", ".join(tool["name"] for tool in stack or []) or "(не указан)")
 
 
-def build_prompt(candidates: list[Item], state: AlertState, audience: str, texts: dict[str, str] | None = None) -> str:
-    return _fill(ALERT_PROMPT, candidates, state, audience, texts)
+def build_prompt(candidates: list[Item], state: AlertState, audience: str, texts: dict[str, str] | None = None,
+                 stack: list[dict] | None = None) -> str:
+    return _fill(ALERT_PROMPT, candidates, state, audience, texts, stack)
 
 
 def build_triage_prompt(candidates: list[Item], state: AlertState, audience: str,
-                        texts: dict[str, str] | None = None) -> str:
-    return _fill(TRIAGE_PROMPT, candidates, state, audience, texts)
+                        texts: dict[str, str] | None = None, stack: list[dict] | None = None) -> str:
+    return _fill(TRIAGE_PROMPT, candidates, state, audience, texts, stack)
 
 
 def triage(raw: dict, candidates: list[Item]) -> tuple[list[Item], list[Item]]:

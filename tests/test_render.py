@@ -345,7 +345,7 @@ def test_lifehack_never_becomes_the_lead_story():
     assert "Фишки" in page and "Какой effort ставить в Claude Code" in page[page.index('id="tips"'):]
 
 
-def test_telegram_lists_also_today_and_a_lifehack_after_the_main_items():
+def test_telegram_lists_also_today_but_leaves_tips_to_the_tip_of_the_day():
     digest = _with_extras()
     events = [Entry(Item(source="verge", title=f"e{n}", url=f"https://v/{n}", category="news"), "product", 7,
                     f"Событие {n}", "s", "") for n in range(4)]
@@ -353,12 +353,12 @@ def test_telegram_lists_also_today_and_a_lifehack_after_the_main_items():
     for n, entry in enumerate(digest.entries):
         entry.id = f"20261016-{n}"
     text = build_message(digest, "https://x.io/p.html", WHEN)
-    tip = '<b>Фишка:</b> <a href="https://x.io/p.html#e-20261016-6">Какой effort ставить в Claude Code</a>'
-    assert tip in text
+    # Фишка приходит отдельным сообщением «Фишка дня»: строка в выпуске повторяла бы её
+    assert "Фишка" not in text and "Какой effort ставить в Claude Code" not in text
     assert '• <a href="https://www.theregister.com/shop">Сеть &lt;магазинов&gt; легла после атаки</a>' in text
     # Ссылку не из веба Telegram не примет — строка остаётся, но без ссылки
     assert "• Без ссылки" in text and "javascript:" not in text
-    assert text.index("<b>5.</b>") < text.index(tip) < text.index("Ещё за день") < text.index("Разбор целиком")
+    assert text.index("<b>5.</b>") < text.index("Ещё за день") < text.index("Разбор целиком")
 
 
 def test_telegram_trims_also_today_first_and_counts_only_visible_text():

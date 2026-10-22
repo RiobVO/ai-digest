@@ -97,6 +97,12 @@ Site pages besides issues (all built with the `page.html` shell, rebuilt by ever
   leaves news unseen so the rerun picks them up; it commits only `state/health` and, if build/weekly itself failed,
   publishes HEAD's site plus the fresh `health.html` (`git archive`). `alert.yml` commits `state/alerts.json` and
   `state/health/alert.json` (always), in its own concurrency group; both push with `pull --rebase` retries. Expect many `chore(digest): …` bot commits on `origin/main`.
+- **Work stack** (`[[work_stack]]` in sources.toml: Entra, ManageEngine, CrowdStrike, NetBird) is the reader's job
+  infrastructure: a story matching it (`alert.stack_hits`, whole words) becomes an alert candidate without the
+  «3 publishers» bar and goes first; the alert rules drop the scale criterion for it.
+- **Tip of the day** (`digest/tip.py`, `python -m digest tip`) rides the hourly `alert.yml` run: at a random hour per
+  day (seeded by the date, 10–21 Tashkent) it sends the first tip of today's issues from the archive, with sound, and
+  writes `state/tip.json`. No Gemini call. Tips are therefore not listed in the issue's Telegram message.
 - **Source order in `sources.toml` is dedup priority** (first seen stays primary), except aggregators
   (`news.google.com`, `techmeme.com`) always yield to a direct link. `alert = true` marks sources checked hourly.
 

@@ -9,6 +9,7 @@ from pathlib import Path
 
 from digest import alert as breaking
 from digest import evaluate, health
+from digest import tip as tip_of_day
 from digest.cover import make_cover
 from digest.dedup import dedupe
 from digest.fetch import attach_discussions, fetch_all, fetch_articles, resolve_gnews
@@ -181,7 +182,8 @@ def alert(args: argparse.Namespace) -> None:
         # Молча выходить нельзя: срочные новости перестали бы приходить, и никто бы этого не заметил
         raise SystemExit(f"ни один источник срочных новостей не собран: {failures}")
     state = breaking.AlertState.load(args.state_dir / "alerts.json")
-    candidates = breaking.find_candidates(breaking.split_undated(items, state, now), state, now)
+    stack = config.get("work_stack", [])
+    candidates = breaking.find_candidates(breaking.split_undated(items, state, now), state, now, stack)
     log.info("свежих записей %d, кандидатов в срочные %d, отправлено сегодня %d",
              len(items), len(candidates), state.sent_today(now))
     if candidates and state.sent_today(now) < breaking.DAILY_CAP:
@@ -192,7 +194,7 @@ def alert(args: argparse.Namespace) -> None:
         # Отсев — на Lite, его квоты хватает на каждый час; 3.6 — запас, если Lite недоступен
         picked = None
         try:
-            raw = generate_first(breaking.build_triage_prompt(candidates, state, settings["audience"], texts),
+            raw = generate_first(breaking.build_triage_prompt(candidates, state, settings["audience"], texts, stack),
                                  breaking.TRIAGE_SCHEMA, [settings["lite_model"], settings["extras_model"]], api_key,
                                  call="triage")
         except LlmError as exc:
@@ -207,7 +209,7 @@ def alert(args: argparse.Namespace) -> None:
             # Срочное может разбудить читателя ночью — перепроверку и текст пишет лучшая модель, 3.6 только запас.
             # До Flash доходит редко: почти все прогоны заканчиваются на отсеве Lite
             try:
-                raw = generate_first(breaking.build_prompt(urgent, state, settings["audience"], texts),
+                raw = generate_first(breaking.build_prompt(urgent, state, settings["audience"], texts, stack),
                                      breaking.ALERT_SCHEMA, [settings["model"], settings["extras_model"]], api_key,
                                      call="alert")
             except LlmError as exc:
@@ -228,6 +230,13 @@ def alert(args: argparse.Namespace) -> None:
             state.mark_sent(item, title, now)
             log.info("срочная новость отправлена: %s", title)
     state.save(now)
+
+
+def tip(args: argparse.Namespace) -> None:
+    """Фишка дня — запускается каждый час вместе со срочными и сама решает, пора ли. Gemini не нужен."""
+    token, chat = os.environ["TELEGRAM_BOT_TOKEN"], os.environ["TELEGRAM_CHAT_ID"]
+    tip_of_day.run(args.state_dir, datetime.now(timezone.utc), os.environ["SITE_URL"],
+                   lambda text, url: send(text, url, token, chat))
 
 
 SNAPSHOTS = Path("eval/snapshots")
@@ -362,6 +371,9 @@ def main() -> None:
         cmd.set_defaults(run=run)
         if name == "build":
             cmd.add_argument("--dry-run", action="store_true", help="не обновлять state")
+    tip_cmd = commands.add_parser("tip", help="отправить фишку дня, если настал её час")
+    tip_cmd.add_argument("--state-dir", type=Path, default=Path("state"))
+    tip_cmd.set_defaults(run=tip)
     snap_cmd = commands.add_parser("snapshot", help="заморозить сегодняшние новости для проверки промптов")
     snap_cmd.add_argument("--config", type=Path, default=Path("sources.toml"))
     snap_cmd.set_defaults(run=snapshot)

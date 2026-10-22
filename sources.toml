@@ -450,12 +450,14 @@ url = "https://www.wired.com/feed/category/security/latest/rss"
 
 [[source]]
 name = "thehackernews"
+alert = true
 type = "rss"
 category = "security"
 url = "https://feeds.feedburner.com/TheHackersNews"
 
 [[source]]
 name = "securityweek"
+alert = true
 type = "rss"
 category = "security"
 url = "https://www.securityweek.com/feed/"
@@ -557,3 +559,21 @@ name = "simon_til"
 type = "rss"
 category = "engineer"
 url = "https://til.simonwillison.net/tils/feed.atom"
+
+# --- Рабочий стек читателя: о дыре, атаке или сбое в этих продуктах — срочно, даже если пишет одно издание ---
+# match — слова для поиска в заголовке и описании записи (целиком, без учёта регистра); старые названия тоже
+[[work_stack]]
+name = "Microsoft Entra ID"
+match = ["Entra", "Azure AD", "Azure Active Directory"]
+
+[[work_stack]]
+name = "ManageEngine Endpoint Central"
+match = ["ManageEngine", "Endpoint Central", "Desktop Central"]
+
+[[work_stack]]
+name = "CrowdStrike Falcon"
+match = ["CrowdStrike"]
+
+[[work_stack]]
+name = "NetBird"
+match = ["NetBird"]
