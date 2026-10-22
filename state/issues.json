@@ -1,6 +1,94 @@
 [
  {
   "date": "2026-10-22",
+  "slot": "evening",
+  "headline": "Массовые атаки через PHP2Shell, взлом 2250 тенантов ИИ-агентом ARTEX",
+  "page": "2026-10-22-evening.html",
+  "entries": [
+   {
+    "id": "20261022-14",
+    "title": "PHP2Shell начали атаковать за четыре дня до патчей, Cloudflare видит миллионы попыток",
+    "section": "security",
+    "source": "the_register",
+    "url": "https://www.theregister.com/cyber-crime/2026/10/22/hackers-pile-on-php2shell-as-aws-reveals-attacks-began-before-disclosure/5304749",
+    "story": "s69"
+   },
+   {
+    "id": "20261022-15",
+    "title": "Хакеры взломали 2250 облачных тенантов ConnectWise с помощью ИИ-агентов ARTEX",
+    "section": "security",
+    "source": "the_register",
+    "url": "https://www.theregister.com/security/2026/10/22/microsoft-says-connectwise-breach-let-chinese-spies-loose-on-2250-cloud-tenants/5304687",
+    "story": "s89"
+   },
+   {
+    "id": "20261022-16",
+    "title": "Суд Нью-Мексико обязал Meta выплатить рекордные $25 млрд по делу Cambridge Analytica",
+    "section": "business",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/technology/2026/oct/21/meta-fined-new-mexico-data-privacy-case",
+    "story": "s90"
+   },
+   {
+    "id": "20261022-17",
+    "title": "333 выходных узла сети Tor перехватывали SSH-трафик и заражали серверы бэкдором Ebury",
+    "section": "security",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1097458/?utm_campaign=1097458&utm_source=habrahabr&utm_medium=rss",
+    "story": "s91"
+   },
+   {
+    "id": "20261022-18",
+    "title": "Symantec поймала автономного ИИ-агента, взламывающего серверы через открытые LLM",
+    "section": "security",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/an-ai-agent-in-skynet-mode-hijacks-unprotected-language-models-to-launch-self-sustaining-cyberattacks/",
+    "story": "s92"
+   },
+   {
+    "id": "20261022-19",
+    "title": "Уязвимость в распаковщике Brotli открыла удалённое выполнение кода в Node.js",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/nodejs-brotli-decoder-bug-could-allow.html",
+    "story": "s93"
+   },
+   {
+    "id": "20261022-20",
+    "title": "DeepSeek и Huawei объединили усилия, сокращая отставание чипов Ascend от софта Nvidia",
+    "section": "dev",
+    "source": "scmp_tech",
+    "url": "https://www.scmp.com/tech/tech-war/article/3371806/jensens-nightmare-huawei-deepseek-narrow-ai-chip-ecosystem-gap-nvidia-report",
+    "story": "s94"
+   },
+   {
+    "id": "20261022-21",
+    "title": "Американские банки зафиксировали неавторизованных ИИ-агентов на счетах клиентов",
+    "section": "security",
+    "source": "Axios",
+    "url": "https://www.axios.com/2026/10/22/ai-agents-banks-unauthorized-accounts-access",
+    "story": "s95"
+   },
+   {
+    "id": "20261022-22",
+    "title": "Hugging Face выкатила Carbon-X — открытую 14B мультимодальную модель для анализа ДНК",
+    "section": "model",
+    "source": "techmeme",
+    "url": "https://www.wired.com/story/hugging-face-new-ai-biology-model-chat-with-dna/",
+    "story": "s96"
+   },
+   {
+    "id": "20261022-23",
+    "title": "n8n запустил полностью локальные ИИ-воркфлоу без облачных API на базе DGX Spark",
+    "section": "dev",
+    "source": "n8n_blog",
+    "url": "https://blog.n8n.io/n8n-nvidia-dgx-spark/",
+    "story": "s97"
+   }
+  ]
+ },
+ {
+  "date": "2026-10-22",
   "slot": "morning",
   "headline": "Критический RCE в PHP2Shell, агент Claude Duet и маневры вокруг AI",
   "page": "2026-10-22.html",

@@ -96,6 +96,11 @@ h1{font-size:clamp(1.6rem,2.6vw,2.15rem);font-weight:500;letter-spacing:-.02em;m
 .hero p{margin:0;font-size:1.04rem;line-height:1.65;color:var(--ink-2);max-width:62ch}
 .why{background:var(--inner);border:1px solid var(--border-2);border-radius:10px;padding:11px 14px;font-size:.95rem;line-height:1.55;color:var(--ink-2);max-width:62ch}
 .why b{color:var(--green-ink);font-weight:600}
+/* Словарик ИБ-терминов: строка «термин — что значит» без своей плашки, чтобы не стать карточкой в карточке */
+.terms{margin:10px 0 0;display:grid;gap:4px;max-width:62ch;font-size:.88rem;line-height:1.5;color:var(--ink-2)}
+.terms dt{display:inline;font-weight:600;color:var(--ink)}
+.terms dd{display:inline;margin:0}
+.terms dd::before{content:" — "}
 .legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.86rem;color:var(--ink-2)}
 .legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--green);margin-right:7px}
 .legend .src::before,.legend .buzz::before{display:none}
@@ -311,13 +316,6 @@ a.story-tag:hover{text-decoration:underline}
 .timeline a:hover{text-decoration:underline}
 .timeline .meta{margin-top:6px}
 
-/* «Твой стек»: инструмент, версия-ссылка и метка заметности в одну строку */
-.stack-card ul{margin:0;padding:0 20px 18px;list-style:none;display:grid;gap:10px;font-size:.93rem}
-.stack-card li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
-.stack-card a{font:500 .86rem var(--f-mono);color:var(--blue-ink);text-decoration:none}
-.stack-card a:hover{text-decoration:underline}
-.stack-card small{font-size:.8rem;color:var(--muted)}
-
 @media (max-width:1180px){
   .grid{grid-template-columns:minmax(0,1fr);max-width:900px}
   /* В одну колонку оглавление должно стоять над лентой, а не под ней: карточки правой колонки становятся ячейками сетки */
@@ -403,7 +401,7 @@ a.story-tag:hover{text-decoration:underline}
     <div class="logo"><svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.5" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".2"/><circle cx="16" cy="16" r="9.5" fill="none" stroke="currentColor" stroke-width="1.8" opacity=".45"/><circle cx="16" cy="16" r="4.6" fill="currentColor"/></svg><div><b>сигнал</b><small>ИИ-дайджест</small></div></div>
     <div class="picker">Сюжет <span>22.10</span></div>
     <nav><a class="on" href="#main-story"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18v4H3zM5 9v10h14V9M10 13h4"/></svg>Хронология</a></nav>
-    <div class="arch"><div class="arch-title">Архив</div><a href="2026-10-22.html"><b>22 окт</b><span>Критический RCE в PHP2Shell, агент Claude Duet и маневры вокруг AI</span></a><a href="2026-10-21-evening.html"><b>21 окт веч.</b><span>OpenAI в Google Cloud, Nvidia OpenShell и фреймворк DeepInfer</span></a><a href="2026-10-21.html"><b>21 окт</b><span>Сбои контроля в OpenAI, слияние Tesla и SpaceX, стек Voxtral 3</span></a><a href="2026-10-20-evening.html"><b>20 окт веч.</b><span>Опенсорс от DeepSeek, чипы Nvidia на $35 млрд и зачистка в госсекторе США</span></a><a href="2026-10-20.html"><b>20 окт</b><span>Битва за триллион, кредитные риски и агенты против рекламы</span></a><a href="2026-10-19-evening.html"><b>19 окт веч.</b><span>Автономные агенты выходят из-под контроля, а нео-облака идут ко дну</span></a><a href="2026-10-19.html"><b>19 окт</b><span>Крах Character.AI, зачистка нео-облаков и агенты против джунов</span></a><a class="arch-all" href="archive.html">Все выпуски →</a></div>
+    <div class="arch"><div class="arch-title">Архив</div><a href="2026-10-22-evening.html"><b>22 окт веч.</b><span>Массовые атаки через PHP2Shell, взлом 2250 тенантов ИИ-агентом ARTEX</span></a><a href="2026-10-22.html"><b>22 окт</b><span>Критический RCE в PHP2Shell, агент Claude Duet и маневры вокруг AI</span></a><a href="2026-10-21-evening.html"><b>21 окт веч.</b><span>OpenAI в Google Cloud, Nvidia OpenShell и фреймворк DeepInfer</span></a><a href="2026-10-21.html"><b>21 окт</b><span>Сбои контроля в OpenAI, слияние Tesla и SpaceX, стек Voxtral 3</span></a><a href="2026-10-20-evening.html"><b>20 окт веч.</b><span>Опенсорс от DeepSeek, чипы Nvidia на $35 млрд и зачистка в госсекторе США</span></a><a href="2026-10-20.html"><b>20 окт</b><span>Битва за триллион, кредитные риски и агенты против рекламы</span></a><a href="2026-10-19-evening.html"><b>19 окт веч.</b><span>Автономные агенты выходят из-под контроля, а нео-облака идут ко дну</span></a><a class="arch-all" href="archive.html">Все выпуски →</a></div>
     <div class="side-foot">Утром и вечером · 0 ₽<span class="keys"><kbd>j</kbd> <kbd>k</kbd> листать · <kbd>o</kbd> разбор</span></div>
   </aside>
   <div class="page">
@@ -411,23 +409,23 @@ a.story-tag:hover{text-decoration:underline}
       <div class="crumbs">Дайджест<span>/</span>Сюжет</div>
       <h1>Экстренные RCE-патчи в PHP</h1>
       
-      <div class="sub">2 дня · 3 события<span class="progress" hidden></span></div>
+      <div class="sub">2 дня · 4 события<span class="progress" hidden></span></div>
     </div>
     <div class="grid">
       <main class="stack">
         <section class="card" id="main-story">
           <div class="card-head"><h3>Хронология</h3><small>21 окт — 22 окт</small></div>
-          <ol class="timeline"><li><time>21 окт</time><a href="2026-10-21.html#e-20261021-5">Разработчики PHP выпускают экстренные патчи для двух RCE-дыр с рейтингом 9.2</a><div class="meta"><span class="tag">Безопасность</span><span>Techmeme</span></div></li><li><time>21 окт · вечер</time><a href="2026-10-21-evening.html#e-20261021-11">В Европе отключают сайты из-за уязвимостей в PHP</a><div class="meta"><span class="tag">Безопасность</span><span>Bloomberg</span></div></li><li><time>22 окт</time><a href="2026-10-22.html#e-20261022-0">Экстренный патч PHP2Shell: AI нашел критические RCE, под угрозой 70% сайтов</a><div class="meta"><span class="tag">Безопасность</span><span>Hacker News</span></div></li></ol>
+          <ol class="timeline"><li><time>21 окт</time><a href="2026-10-21.html#e-20261021-5">Разработчики PHP выпускают экстренные патчи для двух RCE-дыр с рейтингом 9.2</a><div class="meta"><span class="tag">Безопасность</span><span>Techmeme</span></div></li><li><time>21 окт · вечер</time><a href="2026-10-21-evening.html#e-20261021-11">В Европе отключают сайты из-за уязвимостей в PHP</a><div class="meta"><span class="tag">Безопасность</span><span>Bloomberg</span></div></li><li><time>22 окт</time><a href="2026-10-22.html#e-20261022-0">Экстренный патч PHP2Shell: AI нашел критические RCE, под угрозой 70% сайтов</a><div class="meta"><span class="tag">Безопасность</span><span>Hacker News</span></div></li><li><time>22 окт · вечер</time><a href="2026-10-22-evening.html#e-20261022-14">PHP2Shell начали атаковать за четыре дня до патчей, Cloudflare видит миллионы попыток</a><div class="meta"><span class="tag">Безопасность</span><span>The Register</span></div></li></ol>
         </section>
       </main>
       <aside class="stack">
         <section class="card">
           <div class="card-head"><h3>Сюжет</h3><small></small></div>
           
-          <div class="stats"><div class="stat"><b>2</b><span>дней</span></div><div class="stat"><b>3</b><span>событий</span></div></div>
+          <div class="stats"><div class="stat"><b>2</b><span>дней</span></div><div class="stat"><b>4</b><span>событий</span></div></div>
         </section>
 
-        <div class="foot"><span>Обновлено 22.10 в 08:07</span></div>
+        <div class="foot"><span>Обновлено 22.10 в 18:08</span></div>
       </aside>
     </div>
   </div>
