@@ -30,46 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-21T18:18:06.410033+00:00",
-   "keys": [
-    "github.com/php/php-src/releases/tag/php-8.2.35",
-    "title:php 8 2 35"
-   ],
-   "strength": 7
-  },
-  {
-   "at": "2026-10-21T18:18:06.410033+00:00",
-   "keys": [
-    "techdirt.com/2026/10/20/accident-or-not-the-no-kings-takedown-is-why-you-shouldnt-rent-your-megaphone-from-zuck",
-    "title:the no kings takedown is why you shouldn t rent your megaphone from zuck"
-   ],
-   "strength": 4
-  },
-  {
-   "at": "2026-10-21T18:18:06.410033+00:00",
-   "keys": [
-    "openai.com/index/att-legal",
-    "title:how at t is rethinking in house legal work with openai"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-10-21T18:18:06.410033+00:00",
-   "keys": [
-    "anthropic.com/news/christopher-stubbs-joins-long-term-benefit-trust",
-    "title:dr christopher stubbs an experimental physicist and former dean of science at harvard university has joined anthropic s long term benefit trust he brings to the trust decades of scientific expertise across observational cosmology and precision measurement"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-10-21T18:18:06.410033+00:00",
-   "keys": [
-    "title:php2shell ai uncovers critical rce in php",
-    "wiz.io/blog/php2shell-php-rce"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-10-21T20:18:06.378017+00:00",
    "keys": [
     "thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security",
@@ -186,12 +146,28 @@
    "strength": 1
   },
   {
-   "at": "2026-10-22T16:18:07.888624+00:00",
+   "at": "2026-10-22T18:18:09.178104+00:00",
    "keys": [
     "emudhra.com/en/press-release/emudhra-to-exit-global-ssl-tls-certificate-business",
     "title:emudhra to exit global ssl tls certificate business"
    ],
+   "strength": 6
+  },
+  {
+   "at": "2026-10-22T18:18:09.178104+00:00",
+   "keys": [
+    "quad9.net/news/blog/au-revoir-france",
+    "title:quad9 dns resolver to exit france"
+   ],
    "strength": 4
+  },
+  {
+   "at": "2026-10-22T18:18:09.178104+00:00",
+   "keys": [
+    "anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
+    "title:we re donating agent skills the open standard that gives ai agents specialized knowledge and workflows to the agentic ai foundation more than 70 agent platforms including chatgpt cursor github copilot and vs code have integrated agent skills since we published the standard in december 2025"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
@@ -229,7 +205,8 @@
   "https://www.anthropic.com/news/wellbeing-research-grants": "2026-10-20T17:18:08.547990+00:00",
   "https://www.anthropic.com/news/claude-text-watermark": "2026-10-20T17:18:08.547990+00:00",
   "https://www.anthropic.com/news/features": "2026-10-21T02:18:11.473261+00:00",
-  "https://www.anthropic.com/news/christopher-stubbs-joins-long-term-benefit-trust": "2026-10-21T18:18:06.410033+00:00"
+  "https://www.anthropic.com/news/christopher-stubbs-joins-long-term-benefit-trust": "2026-10-21T18:18:06.410033+00:00",
+  "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation": "2026-10-22T18:18:09.178104+00:00"
  },
  "primed": true
 }
