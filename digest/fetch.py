@@ -62,6 +62,8 @@ def parse_feed(body: bytes, src: dict) -> list[Item]:
             # описание у него — список ссылок на те же статьи, а не текст
             title, source, summary = title.removesuffix(f" - {publisher}"), publisher, ""
         url = entry.get("link", "")
+        content = entry.get("content") or [{}]
+        full = _text(content[0].get("value", ""))[:ARTICLE_LIMIT] if src.get("body_from_feed") else ""
         if src.get("original_link"):
             url = _original_link(url, entry.get("summary", ""))
         items.append(Item(
@@ -71,6 +73,7 @@ def parse_feed(body: bytes, src: dict) -> list[Item]:
             category=src["category"],
             published=datetime.fromtimestamp(timegm(stamp), timezone.utc) if stamp else None,
             summary=summary,
+            body=full,
         ))
     if src.get("latest_only"):
         # Репозитории вроде llama.cpp выпускают десяток сборок в день; в дайджест идёт одна стабильная
@@ -267,6 +270,14 @@ def fetch_articles(urls: list[str]) -> dict[str, str]:
                 log.error("текст первоисточника %s не получен: %s", url, exc)
                 texts[url] = ""
     return texts
+
+
+def fill_from_feed(texts: dict[str, str], items: list[Item]) -> None:
+    """Страница не отдалась — берём полный текст из ленты, если он есть. Полученная статья важнее: в ленте бывает
+    обрезанная версия."""
+    for item in items:
+        if item.body and not texts.get(item.url):
+            texts[item.url] = item.body
 
 
 def _fetch_one(client: httpx.Client, src: dict, now: datetime) -> list[Item]:

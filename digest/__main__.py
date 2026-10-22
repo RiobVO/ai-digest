@@ -12,7 +12,7 @@ from digest import evaluate, health
 from digest import tip as tip_of_day
 from digest.cover import make_cover
 from digest.dedup import dedupe
-from digest.fetch import attach_discussions, fetch_all, fetch_articles, resolve_gnews
+from digest.fetch import attach_discussions, fetch_all, fetch_articles, fill_from_feed, resolve_gnews
 from digest.llm import LlmError, explain, extras, generate_first, select, verify_copies
 from digest.memory import (Archive, Stories, fetch_feedback, issue_slot, missed_in_morning, preferences_prompt,
                            record_issue, resolve_votes)
@@ -108,6 +108,7 @@ def build(args: argparse.Namespace) -> None:
     resolve_gnews([e.item for e in digest.entries] + [m.item for m in digest.more])
     attach_discussions([e.item for e in digest.entries])
     texts = fetch_articles([e.item.url for e in digest.entries])
+    fill_from_feed(texts, [e.item for e in digest.entries])
     verify_copies(digest.entries, texts)
     try:
         explain(digest.entries, texts, settings["audience"], main_models, api_key)
@@ -278,6 +279,7 @@ def run_eval(args: argparse.Namespace) -> None:
                 # Тексты статей докачиваем один раз и кладём в срез: следующие прогоны видят тот же вход
                 texts.update(fetch_articles(missing))
                 evaluate.save_snapshot(path, items, taken, texts)
+            fill_from_feed(texts, [e.item for e in digest.entries])
             try:
                 explain(digest.entries, texts, settings["audience"], main_models, api_key)
             except LlmError as exc:

@@ -205,6 +205,14 @@ url = "https://cursor.com/changelog/rss.xml"
 title_prefix = "Cursor:"
 max_age_hours = 170
 
+# Блог n8n: уроки по сборке автоматизаций (MCP, агенты, боты) вперемешку с маркетингом — отбор фильтрует
+[[source]]
+name = "n8n_blog"
+type = "rss"
+category = "release"
+url = "https://blog.n8n.io/rss/"
+max_age_hours = 170
+
 # --- Сообщество ---
 [[source]]
 name = "hn"
@@ -248,6 +256,17 @@ name = "reddit"
 type = "rss"
 category = "community"
 url = "https://www.reddit.com/r/LocalLLaMA+ClaudeAI+ChatGPTCoding+cursor/top/.rss?t=day&limit=50"
+# Страницы Reddit отвечают раннерам GitHub 403: полный текст поста берётся из самой ленты
+body_from_feed = true
+
+# Сабреддиты приёмов для фишек — отдельным мультиреддитом, иначе их вытесняют большие сабы выше
+# (22.10: ClaudeCode 36, PromptEngineering 7, ChatGPTPro 6, n8n 1 из 50)
+[[source]]
+name = "reddit_tips"
+type = "rss"
+category = "community"
+url = "https://www.reddit.com/r/ClaudeCode+PromptEngineering+n8n+ChatGPTPro/top/.rss?t=day&limit=50"
+body_from_feed = true
 
 # --- Медиа и рассылки ---
 [[source]]
@@ -488,6 +507,29 @@ name = "trail_of_bits"
 type = "rss"
 category = "security"
 url = "https://blog.trailofbits.com/feed/"
+max_age_hours = 170
+
+# Практика ИБ для фишек: дневники дежурных SANS ISC (разборы с правилами YARA и командами), уроки Black Hills
+# и Hacking Articles (пентест, Impacket, BloodHound). Пишут редко — окно в неделю
+[[source]]
+name = "sans_isc"
+type = "rss"
+category = "security"
+url = "https://isc.sans.edu/rssfeed_full.xml"
+max_age_hours = 170
+
+[[source]]
+name = "bhis"
+type = "rss"
+category = "security"
+url = "https://www.blackhillsinfosec.com/feed/"
+max_age_hours = 170
+
+[[source]]
+name = "hackingarticles"
+type = "rss"
+category = "security"
+url = "https://www.hackingarticles.in/feed/"
 max_age_hours = 170
 
 # --- Инженеры: авторские блоги. X без платного API не читается; эти люди пишут и здесь ---

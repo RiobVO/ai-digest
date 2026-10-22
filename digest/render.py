@@ -58,7 +58,8 @@ SOURCE_LABELS = {
     "simon_til": "Simon Willison · TIL", "securelist": "Securelist", "unit42": "Unit 42",
     "ms_threat_intel": "Microsoft Threat Intelligence", "dfir_report": "The DFIR Report", "project_zero": "Project Zero",
     "thehackernews": "The Hacker News", "securityweek": "SecurityWeek", "xakep": "Хакер", "habr_infosec": "Хабр · ИБ",
-    "embrace_the_red": "Embrace The Red", "trail_of_bits": "Trail of Bits",
+    "embrace_the_red": "Embrace The Red", "trail_of_bits": "Trail of Bits", "reddit_tips": "Reddit",
+    "n8n_blog": "n8n", "sans_isc": "SANS ISC", "bhis": "Black Hills InfoSec", "hackingarticles": "Hacking Articles",
 }
 # Тред с парой баллов — не обсуждение, а чей-то репост; такой не показываем
 HN_MIN_SHOWN = 20
@@ -717,8 +718,9 @@ def render_health(runs: list[dict], settings: dict, now: datetime) -> str:
 
 
 # Темы фишек — в том же порядке, что в llm.TIP_TOPICS; «Разное» — для фишек без темы (архив до арсенала, ошибка модели)
-TIP_TOPIC_LABELS = {"claude_code": "Claude Code", "agents": "Агенты и IDE", "local": "Локальные модели",
-                    "prompts": "Промпты", "api": "API и SDK", "workflow": "Рабочий процесс", "other": "Разное"}
+TIP_TOPIC_LABELS = {"claude_code": "Claude Code", "agents": "Агенты и IDE", "prompts": "Промпты",
+                    "automation": "Автоматизация и боты", "security": "ИБ-инструменты", "local": "Локальные модели",
+                    "api": "API и SDK", "workflow": "Рабочий процесс", "other": "Разное"}
 
 # Галочка «попробовал»: состояние живёт в воркере (страница статичная и пересобирается дважды в день), браузер помнит
 # последний выбор на случай, если воркер не ответил. Снять галочку можно повторным нажатием

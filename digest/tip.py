@@ -52,6 +52,8 @@ def build_tip_message(issue: dict, entry: dict, site_url: str) -> str:
         head.append(escape(_clip(entry["summary"], 1200)))
     if entry.get("why"):
         head += ["", f"<i>{escape(_clip(entry['why'], 600))}</i>"]
+    if entry.get("steps"):
+        head += ["", "<b>Как сделать:</b>", *(f"{n}. {escape(_clip(step, 300))}" for n, step in enumerate(entry["steps"][:5], 1))]
     card = f"{base}/{issue['page']}#e-{entry['id']}"
     tail = ["", f'<a href="{_href(card)}">Карточка в выпуске</a> · <a href="{_href(base + "/tips.html")}">Арсенал фишек</a>']
     # Команда или промпт уже сверены с текстом доверенного источника (llm.verify_copies) до записи в архив

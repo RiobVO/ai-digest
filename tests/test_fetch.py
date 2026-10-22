@@ -260,3 +260,28 @@ def test_hn_source_can_ask_for_show_hn_instead_of_all_stories(monkeypatch):
                 "url": "https://hn.algolia.com/api/v1/search_by_date"}]
     fetch.fetch_all(sources, datetime(2026, 10, 21, tzinfo=timezone.utc))
     assert asked == ["story", "show_hn"]
+
+
+REDDIT_ATOM = """<?xml version="1.0"?><feed xmlns="http://www.w3.org/2005/Atom">
+<entry><title>My Claude Code setup</title><link href="https://www.reddit.com/r/ClaudeCode/comments/1/setup/"/>
+<updated>2026-10-22T05:00:00Z</updated><content type="html">&lt;p&gt;Step one: add a PreToolUse hook. """ + "detail " * 300 + """&lt;/p&gt;</content></entry>
+</feed>"""
+
+
+def test_feed_keeps_the_full_post_only_for_sources_marked_body_from_feed():
+    src = {"name": "reddit_tips", "category": "community"}
+    # Reddit отвечает раннерам GitHub 403: полный текст поста есть только в самой ленте (22.10)
+    item = parse_feed(REDDIT_ATOM.encode(), {**src, "body_from_feed": True})[0]
+    assert item.body.startswith("Step one: add a PreToolUse hook.") and len(item.body) > 2000
+    assert len(item.summary) <= 600
+    assert parse_feed(REDDIT_ATOM.encode(), src)[0].body == ""
+
+
+def test_feed_body_fills_only_articles_that_could_not_be_fetched():
+    from digest.fetch import fill_from_feed
+    from digest.models import Item
+    blocked = Item(source="reddit", title="t", url="https://www.reddit.com/r/x/1", category="community", body="полный пост")
+    fetched = Item(source="reddit", title="t", url="https://www.reddit.com/r/x/2", category="community", body="из ленты")
+    texts = {blocked.url: "", fetched.url: "статья со страницы"}
+    fill_from_feed(texts, [blocked, fetched])
+    assert texts == {blocked.url: "полный пост", fetched.url: "статья со страницы"}

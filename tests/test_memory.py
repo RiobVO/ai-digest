@@ -240,3 +240,15 @@ def test_archive_keeps_tip_text_topic_and_verified_copy_for_the_arsenal(tmp_path
         "summary": "s", "why": "Chromium в песочнице.", "copy": "sandbox.allowNestedUserNamespaces", "topic": "claude_code"}
     # События в архиве остаются короткими: текст карточки нужен только арсеналу фишек
     assert "summary" not in event and "copy" not in event
+
+
+def test_archive_keeps_the_tip_steps_from_its_breakdown(tmp_path):
+    from digest.llm import Details
+    archive = Archive(tmp_path / "issues.json")
+    tip = entry("Хук перед коммитом", section="tips", source="gh_claude_code")
+    # Шаги разбор вытаскивает из полного текста статьи; без них фишка в Telegram — «склонируй и используй» (22.10)
+    tip.details = Details("", ["Открой settings.json", "Добавь хук PreToolUse"], "", "", [])
+    no_breakdown = entry("Флаг", section="tips")
+    record_issue(archive, Stories(tmp_path / "s.json"), date(2026, 10, 22), "h", "p.html", [tip, no_breakdown])
+    saved, bare = archive.issues[0]["entries"]
+    assert saved["steps"] == ["Открой settings.json", "Добавь хук PreToolUse"] and bare["steps"] == []

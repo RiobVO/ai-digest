@@ -620,3 +620,10 @@ def test_term_in_dictionary_form_still_matches_an_inflected_card():
         {"term": "бэкдор", "meaning": "скрытый вход в систему"}]}
     attach_explanations([entry], {"items": [row]}, {})
     assert [t for t, _ in entry.details.terms] == ["эксплойт", "RCE-уязвимость"]
+
+
+def test_tip_topics_cover_automation_and_security_and_every_topic_has_a_label():
+    from digest.render import TIP_TOPIC_LABELS
+    assert {"automation", "security"} <= set(llm.TIP_TOPICS)
+    assert set(llm.TIP_TOPICS) <= set(TIP_TOPIC_LABELS)
+    assert llm.EXTRAS_SCHEMA["properties"]["tips"]["items"]["properties"]["topic"]["enum"] == list(llm.TIP_TOPICS)
