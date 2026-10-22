@@ -30,14 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-21T20:18:06.378017+00:00",
-   "keys": [
-    "thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security",
-    "title:the php foundation details how it found and fixed the two flaws and says it had to release patches a day early after the two cve ids began circulating online the php foundation"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-10-21T22:18:09.028840+00:00",
    "keys": [
     "theverge.com/games/1015647/ea-is-shutting-down-bioware",
@@ -156,16 +148,24 @@
   {
    "at": "2026-10-22T18:18:09.178104+00:00",
    "keys": [
+    "anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
+    "title:we re donating agent skills the open standard that gives ai agents specialized knowledge and workflows to the agentic ai foundation more than 70 agent platforms including chatgpt cursor github copilot and vs code have integrated agent skills since we published the standard in december 2025"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-10-22T20:18:07.722229+00:00",
+   "keys": [
     "quad9.net/news/blog/au-revoir-france",
     "title:quad9 dns resolver to exit france"
    ],
-   "strength": 4
+   "strength": 6
   },
   {
-   "at": "2026-10-22T18:18:09.178104+00:00",
+   "at": "2026-10-22T20:18:07.722229+00:00",
    "keys": [
-    "anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
-    "title:we re donating agent skills the open standard that gives ai agents specialized knowledge and workflows to the agentic ai foundation more than 70 agent platforms including chatgpt cursor github copilot and vs code have integrated agent skills since we published the standard in december 2025"
+    "openai.com/index/decisions-api",
+    "title:build more responsive apps with the decisions api"
    ],
    "strength": 1
   }
