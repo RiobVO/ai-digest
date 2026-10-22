@@ -30,22 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-21T12:18:10.094636+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/confidential-computing-model-builders-infrastructure",
-    "title:nvidia confidential computing expands enabling frontier model builders to securely scale across global infrastructure"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-10-21T12:18:10.094636+00:00",
-   "keys": [
-    "mistral.ai/news/mistral-nvidia-ai-for-industrial-engineering",
-    "title:mistral advances ai for engineering with nvidia"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-10-21T15:18:08.731811+00:00",
    "keys": [
     "openai.com/index/openai-models-google-cloud",
@@ -192,6 +176,14 @@
     "title:tacticaai and nvidia collaborate to scale agentic ai capabilities with nvidia nemotron"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-10-22T13:18:07.641778+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/geforce-now-thursday-call-of-duty-modern-warfare-4",
+    "title:cloud deployment incoming call of duty modern warfare 4 arrives on geforce now"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
