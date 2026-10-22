@@ -100,9 +100,10 @@ Site pages besides issues (all built with the `page.html` shell, rebuilt by ever
 - **Work stack** (`[[work_stack]]` in sources.toml: Entra, ManageEngine, CrowdStrike, NetBird) is the reader's job
   infrastructure: a story matching it (`alert.stack_hits`, whole words) becomes an alert candidate without the
   «3 publishers» bar and goes first; the alert rules drop the scale criterion for it.
-- **Tip of the day** (`digest/tip.py`, `python -m digest tip`) rides the hourly `alert.yml` run: at a random hour per
-  day (seeded by the date, 10–21 Tashkent) it sends the first tip of today's issues from the archive, with sound, and
-  writes `state/tip.json`. No Gemini call. Tips are therefore not listed in the issue's Telegram message.
+- **Tips during the day** (`digest/tip.py`, `python -m digest tip`) ride the hourly `alert.yml` run: every tip of
+  today's issues gets its own random hour (morning tips 10–18, evening 19–23 Tashkent, evenly spread, seeded by date
+  and slot), and each run sends at most one due tip, with sound, logging it in `state/tip.json`. No Gemini call.
+  Tips are therefore not listed in the issue's Telegram message.
 - **Source order in `sources.toml` is dedup priority** (first seen stays primary), except aggregators
   (`news.google.com`, `techmeme.com`) always yield to a direct link. `alert = true` marks sources checked hourly.
 

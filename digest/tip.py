@@ -1,10 +1,10 @@
-"""Фишка дня: первая свежая фишка сегодняшних выпусков приходит отдельным сообщением в случайный час дня.
+"""Фишки в течение дня: каждая свежая фишка сегодняшних выпусков приходит отдельным сообщением в свой случайный час.
 Без модели: текст фишки написан при сборке выпуска и лежит в архиве (memory._archived)."""
 import json
 import logging
 import random
 from collections.abc import Callable
-from datetime import date, datetime
+from datetime import datetime
 from html import escape
 from pathlib import Path
 
@@ -14,36 +14,40 @@ from digest.telegram import TG_LIMIT, _clip, _visible
 
 log = logging.getLogger(__name__)
 
-# Окно случайного часа по Ташкенту: после утреннего выпуска (8:07) и с запасом до тихих часов срочных (23:00),
-# чтобы сорвавшийся запуск успел уйти в следующий час
-TIP_FROM, TIP_TO = 10, 21
+# Окна по Ташкенту: утренние фишки — после выпуска 8:07 и до вечернего, вечерние — после 18:07 и до тихих часов
+# срочных (23:00). Что не успело уйти до тихих часов, остаётся в выпуске и арсенале
+WINDOWS = {"morning": (10, 18), "evening": (19, 23)}
 
 
-def tip_hour(day: date) -> int:
-    """Час случайный, но один на весь день: часовые запуски сходятся в нём, ничего не храня.
-    Строковое зерно random не зависит от PYTHONHASHSEED, поэтому на любом раннере час тот же."""
-    return random.Random(day.isoformat()).randrange(TIP_FROM, TIP_TO)
+def tip_hours(issue: dict) -> dict[str, int]:
+    """Час каждой фишки выпуска: окно делится на равные отрезки, фишка — в случайный час своего отрезка, поэтому
+    они идут в течение дня, а не пачкой. Зерно — дата и выпуск: часовые запуски сходятся в тех же часах, ничего
+    не храня; строковое зерно random не зависит от PYTHONHASHSEED, на любом раннере часы те же."""
+    slot = issue.get("slot", "morning")
+    start, end = WINDOWS.get(slot, WINDOWS["morning"])
+    tips = [e["id"] for e in issue["entries"] if e.get("section") == "tips"]
+    span = (end - start) / max(len(tips), 1)
+    rng = random.Random(f"{issue['date']}-{slot}")
+    return {tip: start + int(n * span) + rng.randrange(max(int(span), 1)) for n, tip in enumerate(tips)}
 
 
-def due_tip(now: datetime, state: dict) -> bool:
-    """Пора слать: настал час этого дня, сегодня ещё не отправляли и не тихие часы."""
+def due_tips(issues: list[dict], now: datetime, sent: list[str]) -> list[tuple[dict, dict]]:
+    """Свежие фишки, чей час настал и которые ещё не отправлены, — по порядку часов. В тихие часы — ничего."""
+    if is_quiet(now):
+        return []
     local = now.astimezone(DISPLAY_TZ)
-    return not is_quiet(now) and local.hour >= tip_hour(local.date()) and state.get("day") != local.date().isoformat()
-
-
-def pick_tip(issues: list[dict], day: date) -> tuple[dict, dict] | None:
-    """Только свежие: фишки выпусков этого дня. Архив — новые сверху, поэтому идём с конца: утренний выпуск вышел
-    раньше вечернего. Внутри выпуска фишки стоят по важности — берём первую."""
-    for issue in reversed([i for i in issues if i["date"] == day.isoformat()]):
-        for entry in issue["entries"]:
-            if entry.get("section") == "tips":
-                return issue, entry
-    return None
+    due = []
+    # Архив — новые сверху: идём с конца, чтобы при равных часах утренняя фишка шла раньше вечерней
+    for issue in reversed([i for i in issues if i["date"] == local.date().isoformat()]):
+        hours = tip_hours(issue)
+        due += [(hours[e["id"]], issue, e) for e in issue["entries"]
+                if e.get("id") in hours and hours[e["id"]] <= local.hour and e["id"] not in sent]
+    return [(issue, entry) for _, issue, entry in sorted(due, key=lambda row: row[0])]
 
 
 def build_tip_message(issue: dict, entry: dict, site_url: str) -> str:
     base = site_url.rstrip("/")
-    head = ["💡 <b>Фишка дня</b>", "", f"<b>{escape(_clip(entry['title'], 200))}</b>"]
+    head = ["💡 <b>Фишка</b>", "", f"<b>{escape(_clip(entry['title'], 200))}</b>"]
     if entry.get("summary"):
         head.append(escape(_clip(entry["summary"], 1200)))
     if entry.get("why"):
@@ -53,27 +57,24 @@ def build_tip_message(issue: dict, entry: dict, site_url: str) -> str:
     # Команда или промпт уже сверены с текстом доверенного источника (llm.verify_copies) до записи в архив
     with_copy = "\n".join(head + ["", f"<code>{escape(entry['copy'])}</code>"] + tail) if entry.get("copy") else ""
     # Длинный промпт не обрезаем — обрезанный не сработает; он остаётся в карточке, а Telegram не отклонит сообщение
-    # (ревью Codex: отказ Telegram повторялся бы каждый час, и фишка не ушла бы весь день)
+    # (ревью Codex: отказ Telegram повторялся бы каждый час, и фишка не ушла бы)
     if with_copy and _visible(with_copy) <= TG_LIMIT:
         return with_copy
     return "\n".join(head + tail)
 
 
 def run(state_dir: Path, now: datetime, site_url: str, sender: Callable[[str, str], None]) -> bool:
-    """Часовой запуск: отправляет фишку дня, если пора, и запоминает день. True — отправлено."""
+    """Часовой запуск: отправляет одну созревшую фишку и запоминает её. True — отправлено. Одна за запуск, даже если
+    созрело несколько (запуски срывались): пачкой они пришли бы так же, как в выпуске."""
     path = state_dir / "tip.json"
     state = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
-    if not due_tip(now, state):
+    today = now.astimezone(DISPLAY_TZ).date().isoformat()
+    sent = state.get("sent", []) if state.get("day") == today else []
+    due = due_tips(json.loads((state_dir / "issues.json").read_text(encoding="utf-8")), now, sent)
+    if not due:
         return False
-    day = now.astimezone(DISPLAY_TZ).date()
-    issues = json.loads((state_dir / "issues.json").read_text(encoding="utf-8"))
-    picked = pick_tip(issues, day)
-    if picked is None:
-        # День не помечаем: утром фишек не было — ещё может принести вечерний выпуск
-        log.info("свежих фишек на %s пока нет", day)
-        return False
-    issue, entry = picked
+    issue, entry = due[0]
     sender(build_tip_message(issue, entry, site_url), f"{site_url.rstrip('/')}/{issue['page']}#e-{entry['id']}")
-    path.write_text(json.dumps({"day": day.isoformat(), "id": entry["id"]}, ensure_ascii=False), encoding="utf-8")
-    log.info("фишка дня отправлена: %s", entry["title"])
+    path.write_text(json.dumps({"day": today, "sent": [*sent, entry["id"]]}, ensure_ascii=False), encoding="utf-8")
+    log.info("фишка отправлена: %s, осталось созревших %d", entry["title"], len(due) - 1)
     return True

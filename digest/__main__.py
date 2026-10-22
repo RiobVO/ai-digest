@@ -233,7 +233,7 @@ def alert(args: argparse.Namespace) -> None:
 
 
 def tip(args: argparse.Namespace) -> None:
-    """Фишка дня — запускается каждый час вместе со срочными и сама решает, пора ли. Gemini не нужен."""
+    """Фишки в течение дня — запуск каждый час вместе со срочными; созревшую фишку шлёт по одной. Gemini не нужен."""
     token, chat = os.environ["TELEGRAM_BOT_TOKEN"], os.environ["TELEGRAM_CHAT_ID"]
     tip_of_day.run(args.state_dir, datetime.now(timezone.utc), os.environ["SITE_URL"],
                    lambda text, url: send(text, url, token, chat))
@@ -371,7 +371,7 @@ def main() -> None:
         cmd.set_defaults(run=run)
         if name == "build":
             cmd.add_argument("--dry-run", action="store_true", help="не обновлять state")
-    tip_cmd = commands.add_parser("tip", help="отправить фишку дня, если настал её час")
+    tip_cmd = commands.add_parser("tip", help="отправить созревшую фишку, если настал её час")
     tip_cmd.add_argument("--state-dir", type=Path, default=Path("state"))
     tip_cmd.set_defaults(run=tip)
     snap_cmd = commands.add_parser("snapshot", help="заморозить сегодняшние новости для проверки промптов")

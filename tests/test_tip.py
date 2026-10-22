@@ -1,6 +1,7 @@
-from datetime import date, datetime, timezone
+import json
+from datetime import datetime, timezone
 
-from digest.tip import TIP_FROM, TIP_TO, build_tip_message, due_tip, pick_tip, tip_hour
+from digest.tip import build_tip_message, due_tips, run, tip_hours
 
 # Архив — новые выпуски сверху, как в state/issues.json
 ISSUES = [
@@ -11,47 +12,73 @@ ISSUES = [
         {"id": "20261022-12", "title": "Песочница <Claude Code>", "section": "tips",
          "summary": "Добавь параметр в настройки.", "why": "Запустит Chromium в песочнице.",
          "copy": "sandbox.allowNestedUserNamespaces", "topic": "claude_code"},
-        {"id": "20261022-13", "title": "Вторая фишка", "section": "tips", "summary": "s", "why": "w", "copy": ""}]},
+        {"id": "20261022-13", "title": "Вторая фишка", "section": "tips", "summary": "s", "why": "w", "copy": ""},
+        {"id": "20261022-14", "title": "Третья фишка", "section": "tips", "summary": "s", "why": "w", "copy": ""}]},
     {"date": "2026-10-21", "slot": "evening", "page": "2026-10-21-evening.html", "entries": [
         {"id": "20261021-22", "title": "Вчерашняя фишка", "section": "tips", "summary": "s", "why": "w", "copy": ""}]},
 ]
+SITE = "https://x.github.io/ai-digest/"
 
 
 def tashkent(hour: int, day: int = 22) -> datetime:
-    return datetime(2026, 10, day, hour - 5, 7, tzinfo=timezone.utc)
+    return datetime(2026, 10, day, hour - 5, 17, tzinfo=timezone.utc)
 
 
-def test_tip_hour_is_random_per_day_but_stable_and_inside_the_daytime_window():
-    hours = [tip_hour(date(2026, 10, d)) for d in range(1, 29)]
-    assert all(TIP_FROM <= h < TIP_TO for h in hours) and len(set(hours)) > 3
-    assert tip_hour(date(2026, 10, 22)) == tip_hour(date(2026, 10, 22))
+def test_morning_tips_spread_over_the_day_and_evening_tips_over_the_evening():
+    hours = tip_hours(ISSUES[1])
+    morning = [hours[i] for i in ("20261022-12", "20261022-13", "20261022-14")]
+    # Каждая фишка — в свой отрезок окна 10–18: пачкой они не придут
+    assert all(10 <= h < 18 for h in morning) and morning == sorted(morning) and len(set(morning)) == 3
+    assert 19 <= tip_hours(ISSUES[0])["20261022-15"] < 23
+    # Час случайный, но стабильный: часовые запуски должны сходиться, ничего не храня
+    assert tip_hours(ISSUES[1]) == hours
 
 
-def test_tip_of_the_day_is_the_first_fresh_tip_of_the_morning_issue():
-    issue, entry = pick_tip(ISSUES, date(2026, 10, 22))
-    assert entry["id"] == "20261022-12" and issue["page"] == "2026-10-22.html"
+def test_hours_differ_from_day_to_day():
+    days = [{**ISSUES[1], "date": f"2026-10-{d:02d}"} for d in range(1, 15)]
+    assert len({tuple(tip_hours(issue).values()) for issue in days}) > 3
 
 
-def test_no_fresh_tip_means_no_tip_of_the_day():
-    # «Только свежие»: вчерашняя фишка не подменяет сегодняшнюю
-    assert pick_tip(ISSUES[2:], date(2026, 10, 22)) is None
+def test_only_fresh_tips_whose_hour_came_are_due_in_order():
+    hours = tip_hours(ISSUES[1])
+    first, second = hours["20261022-12"], hours["20261022-13"]
+    if first > 10:
+        assert due_tips(ISSUES, tashkent(first - 1), []) == []
+    due = due_tips(ISSUES, tashkent(second), [])
+    assert [e["id"] for _, e in due][:2] == ["20261022-12", "20261022-13"]
+    assert [e["id"] for _, e in due_tips(ISSUES, tashkent(second), ["20261022-12"])][0] == "20261022-13"
+    # Вчерашняя фишка не приходит, и в тихие часы — ничего
+    assert all(e["id"] != "20261021-22" for _, e in due_tips(ISSUES, tashkent(22), []))
+    assert due_tips(ISSUES, tashkent(23), []) == []
 
 
-def test_tip_is_due_once_a_day_from_its_hour_until_quiet_hours():
-    day = date(2026, 10, 22)
-    hour = tip_hour(day)
-    assert not due_tip(tashkent(hour - 1), {})
-    assert due_tip(tashkent(hour), {})
-    # Запуск в нужный час сорвался — уходит в следующий, но не в тихие часы
-    assert due_tip(tashkent(22), {}) and not due_tip(tashkent(23), {})
-    assert not due_tip(tashkent(hour), {"day": "2026-10-22"})
-    assert due_tip(tashkent(hour), {"day": "2026-10-21"})
+def test_run_sends_one_tip_per_hourly_run_and_remembers_it(tmp_path):
+    (tmp_path / "issues.json").write_text(json.dumps(ISSUES, ensure_ascii=False), encoding="utf-8")
+    sent: list[str] = []
+
+    def send(text: str, url: str) -> None:
+        sent.append(url.rsplit("#e-", 1)[1])
+
+    # Запуски сорвались весь день — к 22:00 созрели все четыре, но за раз уходит одна: пачкой не шлём
+    assert run(tmp_path, tashkent(22), SITE, send)
+    assert sent == ["20261022-12"]
+    assert run(tmp_path, tashkent(22).replace(minute=59), SITE, send)
+    assert sent == ["20261022-12", "20261022-13"]
+    state = json.loads((tmp_path / "tip.json").read_text())
+    assert state == {"day": "2026-10-22", "sent": ["20261022-12", "20261022-13"]}
+    # Новый день — список отправленных начинается заново
+    assert not run(tmp_path, tashkent(9, day=23), SITE, send)
+
+
+def test_run_without_fresh_tips_sends_nothing(tmp_path):
+    (tmp_path / "issues.json").write_text(json.dumps(ISSUES[2:], ensure_ascii=False), encoding="utf-8")
+    assert not run(tmp_path, tashkent(22), SITE, lambda text, url: None)
+    assert not (tmp_path / "tip.json").exists()
 
 
 def test_tip_message_is_escaped_and_links_the_card_and_the_arsenal():
-    issue, entry = pick_tip(ISSUES, date(2026, 10, 22))
-    text = build_tip_message(issue, entry, "https://x.github.io/ai-digest/")
-    assert text.startswith("💡 <b>Фишка дня</b>")
+    text = build_tip_message(ISSUES[1], ISSUES[1]["entries"][1], SITE)
+    assert text.startswith("💡 <b>Фишка</b>")
     assert "Песочница &lt;Claude Code&gt;" in text and "<Claude Code>" not in text
     assert "Добавь параметр в настройки." in text and "Запустит Chromium в песочнице." in text
     assert "<code>sandbox.allowNestedUserNamespaces</code>" in text
@@ -59,38 +86,10 @@ def test_tip_message_is_escaped_and_links_the_card_and_the_arsenal():
     assert '<a href="https://x.github.io/ai-digest/tips.html">' in text
 
 
-def test_tip_run_sends_once_and_remembers_the_day(tmp_path):
-    import json
-
-    from digest.tip import run
-    (tmp_path / "issues.json").write_text(json.dumps(ISSUES, ensure_ascii=False), encoding="utf-8")
-    sent = []
-    hour = tip_hour(date(2026, 10, 22))
-    assert not run(tmp_path, tashkent(hour - 1), "https://x.io", lambda text, url: sent.append(url))
-    assert run(tmp_path, tashkent(hour), "https://x.io", lambda text, url: sent.append(url))
-    # Следующий часовой запуск того же дня фишку не повторяет
-    assert not run(tmp_path, tashkent(hour + 1), "https://x.io", lambda text, url: sent.append(url))
-    assert sent == ["https://x.io/2026-10-22.html#e-20261022-12"]
-    assert json.loads((tmp_path / "tip.json").read_text()) == {"day": "2026-10-22", "id": "20261022-12"}
-
-
-def test_tip_run_waits_for_the_evening_issue_when_the_morning_had_no_tips(tmp_path):
-    import json
-
-    from digest.tip import run
-    morning = {**ISSUES[1], "entries": ISSUES[1]["entries"][:1]}
-    (tmp_path / "issues.json").write_text(json.dumps([morning], ensure_ascii=False), encoding="utf-8")
-    hour = tip_hour(date(2026, 10, 22))
-    assert not run(tmp_path, tashkent(hour), "https://x.io", lambda text, url: None)
-    # Ничего не отправили — день не помечен, и вечерняя фишка ещё сможет уйти
-    assert not (tmp_path / "tip.json").exists()
-
-
 def test_oversized_tip_still_fits_telegram_and_keeps_the_card_link():
     from digest.telegram import TG_LIMIT, _visible
-    issue, entry = pick_tip(ISSUES, date(2026, 10, 22))
-    # Ревью Codex: длинный промпт в «copy» дал бы отказ Telegram, и фишка не ушла бы весь день
-    long = {**entry, "copy": "промпт " * 1500, "summary": "суть " * 500, "why": "польза " * 500}
-    text = build_tip_message(issue, long, "https://x.io")
+    # Ревью Codex: длинный промпт в «copy» дал бы отказ Telegram, и фишка повторялась бы каждый час
+    long = {**ISSUES[1]["entries"][1], "copy": "промпт " * 1500, "summary": "суть " * 500, "why": "польза " * 500}
+    text = build_tip_message(ISSUES[1], long, SITE)
     assert _visible(text) <= TG_LIMIT
     assert "<code>" not in text and "#e-20261022-12" in text and "Карточка в выпуске" in text
