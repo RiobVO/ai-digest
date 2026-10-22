@@ -1,5 +1,133 @@
 [
  {
+  "date": "2026-10-22",
+  "slot": "morning",
+  "headline": "Критический RCE в PHP2Shell, агент Claude Duet и маневры вокруг AI",
+  "page": "2026-10-22.html",
+  "entries": [
+   {
+    "id": "20261022-0",
+    "title": "Экстренный патч PHP2Shell: AI нашел критические RCE, под угрозой 70% сайтов",
+    "section": "security",
+    "source": "hn_top",
+    "url": "https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/",
+    "story": "s69"
+   },
+   {
+    "id": "20261022-1",
+    "title": "В LiteLLM 1.107.0 на PyPI нашли троян для кражи ключей и бэкдор",
+    "section": "security",
+    "source": "hn_top",
+    "url": "https://safedep.io/litellm-pypi-compromise-credential-stealer-backdoor/",
+    "story": "s81"
+   },
+   {
+    "id": "20261022-2",
+    "title": "Anthropic запустила Claude Duet — проактивного фонового ИИ-агента",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://claude.com/resources/articles/claude-duet",
+    "story": "s82"
+   },
+   {
+    "id": "20261022-3",
+    "title": "Взлом платформы Railway: злоумышленники могли расшифровать переменные окружения",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://blog.railway.com/p/security-disclosure-wednesday-october-21st",
+    "story": "s83"
+   },
+   {
+    "id": "20261022-4",
+    "title": "GitLab закрыла критическую RCE без авторизации во всех версиях с 2014 года",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://thehackernews.com/2026/10/critical-gitlab-flaw-cvss-100-could.html",
+    "story": "s84"
+   },
+   {
+    "id": "20261022-5",
+    "title": "Recursive выкатила Flint — открытую 40B кодинг-модель, созданную другой моделью",
+    "section": "model",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/10/21/recursive-launches-flint-a-laptop-coding-model-it-says-was-largely-built-by-ai/",
+    "story": "s85"
+   },
+   {
+    "id": "20261022-6",
+    "title": "Walmart открывает сайт для автономных покупок через ИИ-агентов",
+    "section": "product",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/10/21/while-amazon-blocks-ai-agents-walmart-rolls-out-the-welcome-mat/",
+    "story": "s48"
+   },
+   {
+    "id": "20261022-7",
+    "title": "KittenML открыла Kitten-TTS 2 — 1.58-битную модель озвучки для обычных CPU",
+    "section": "model",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xc48or/kittentts_2_new_opensource_sota_158_bit_tts/",
+    "story": "s86"
+   },
+   {
+    "id": "20261022-8",
+    "title": "Meta заявила о 10 млн пользователей агента Muse и среднем чеке покупок выше $200",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://www.businessinsider.com/meta-q3-2026-earnings-mark-zuckerberg-muse-ai-app-users-2026-10",
+    "story": "s58"
+   },
+   {
+    "id": "20261022-9",
+    "title": "Cursor добавил канвасы для облачных агентов и ускорил Environments в 5 раз",
+    "section": "dev",
+    "source": "cursor",
+    "url": "https://cursor.com/changelog/cloud-agent-canvases-and-environments",
+    "story": "s87"
+   },
+   {
+    "id": "20261022-10",
+    "title": "Claude Code v2.1.307 добавил телеметрию безопасности и смену API-версии",
+    "section": "dev",
+    "source": "gh_claude_code",
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.307",
+    "story": "s88"
+   },
+   {
+    "id": "20261022-11",
+    "title": "Alkove: локальный голосовой фронтенд с фильтрацией чужих голосов",
+    "section": "tips",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xbmhct/i_built_a_small_ondevice_voice_frontend_for_local/",
+    "story": "",
+    "summary": "Клонируй репозиторий alkove-ai/alkove, задай ключевое слово для активации и интегрируй фильтр перед STT-моделью.",
+    "why": "Поможет отсечь сторонние голоса и шумы перед отправкой аудио в модель распознавания речи.",
+    "copy": "",
+    "topic": "local"
+   },
+   {
+    "id": "20261022-12",
+    "title": "Запуск компактной TTS-модели Ming-3.0-TTS-0.5B с клонированием голоса",
+    "section": "tips",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xbq7ze/inclusionaiming30tts05b/",
+    "story": "",
+    "summary": "Загрузи веса модели Ming-3.0-TTS-0.5B с Hugging Face и используй её для синтеза и клонирования речи на 7 языках.",
+    "why": "Пригодится для быстрой озвучки ассистентов с контролем эмоций и минимальным потреблением ресурсов.",
+    "copy": "",
+    "topic": "local"
+   },
+   {
+    "id": "20261022-13",
+    "title": "Саймон Уиллисон: сообщество за сутки форкнуло браузерную игру во французский стимпанк",
+    "section": "voices",
+    "source": "simon_willison",
+    "url": "https://simonwillison.net/2026/Oct/21/panache/",
+    "story": ""
+   }
+  ]
+ },
+ {
   "date": "2026-10-21",
   "slot": "evening",
   "headline": "OpenAI в Google Cloud, Nvidia OpenShell и фреймворк DeepInfer",

@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Архив выпусков · ИИ-дайджест</title>
-<meta name="description" content="11 выпусков ИИ-дайджеста">
+<meta name="description" content="12 выпусков ИИ-дайджеста">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="сигнал · ИИ-дайджест">
 <meta property="og:title" content="Архив выпусков">
-<meta property="og:description" content="11 выпусков ИИ-дайджеста">
+<meta property="og:description" content="12 выпусков ИИ-дайджеста">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14.5' fill='none' stroke='%232474ff' stroke-width='1.8' opacity='.35'/%3E%3Ccircle cx='16' cy='16' r='9.5' fill='none' stroke='%232474ff' stroke-width='2' opacity='.6'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%232474ff'/%3E%3C/svg%3E">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
@@ -82,9 +82,11 @@ h1{font-size:clamp(1.6rem,2.6vw,2.15rem);font-weight:500;letter-spacing:-.02em;m
 
 /* minmax(0,1fr): без него колонка сетки растягивается по самому широкому неразрывному куску, и на телефоне
    overflow:hidden обрезал текст героя справа вместе с кнопками оценок */
+/* --sky — тон неба по настроению выпуска (digest/mood.py): слой между белой дымкой и пейзажем, SVG не трогаем */
 .hero{overflow:hidden;position:relative;padding:30px 32px 26px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;
   background:
     linear-gradient(100deg,rgba(254,252,245,.92) 0%,rgba(254,252,245,.7) 40%,rgba(254,252,245,0) 85%),
+    linear-gradient(180deg,var(--sky,transparent) 0%,transparent 72%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 320' preserveAspectRatio='xMidYMid slice'%3E%3Cdefs%3E%3ClinearGradient id='s' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23e7f3f1'/%3E%3Cstop offset='.55' stop-color='%23f5f3e6'/%3E%3Cstop offset='1' stop-color='%23f1e2bf'/%3E%3C/linearGradient%3E%3Cfilter id='b'%3E%3CfeGaussianBlur stdDeviation='7'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='800' height='320' fill='url(%23s)'/%3E%3Cg filter='url(%23b)'%3E%3Cellipse cx='600' cy='60' rx='190' ry='36' fill='%23ffffff' opacity='.8'/%3E%3Cpath d='M0 200 C120 160 230 185 340 168 S580 125 800 158 V320 H0Z' fill='%23cfe4dc'/%3E%3Cpath d='M0 240 C150 208 270 226 400 214 S640 188 800 220 V320 H0Z' fill='%23b4d1c2'/%3E%3Cpath d='M0 282 C170 258 320 270 470 258 S690 246 800 262 V320 H0Z' fill='%23ead9a6'/%3E%3Ccircle cx='560' cy='205' r='30' fill='%2393b8a4'/%3E%3Ccircle cx='600' cy='214' r='20' fill='%23a3c4b2'/%3E%3Ccircle cx='700' cy='196' r='24' fill='%2398bca8'/%3E%3C/g%3E%3C/svg%3E") center/cover no-repeat}
 .hero-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .chip{background:var(--chip);color:var(--ink);border-radius:6px;padding:4px 10px;font-size:.76rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
@@ -255,6 +257,67 @@ details a:hover{text-decoration:underline}
 .brief a:hover{text-decoration:underline}
 .brief li span{margin-top:2px;font-size:.76rem;color:var(--muted)}
 
+/* Панель здоровья: расход квоты полосой и цепочка попыток — какую модель просили и на какой закончилось */
+.quota{display:grid;gap:12px;padding:0 20px 14px}
+.quota-row{display:grid;grid-template-columns:112px minmax(80px,1fr) 52px auto;gap:12px;align-items:center;font-size:.92rem}
+.quota-row b{font-weight:600}
+.quota-row small{display:block;margin-top:1px;font-size:.78rem;font-weight:500;color:var(--muted)}
+.quota-num{text-align:right;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.meter{height:8px;border-radius:999px;background:var(--chip);overflow:hidden}
+.meter i{display:block;height:100%;border-radius:inherit;background:var(--green)}
+.meter.warn i{background:#b7791f}
+.meter.full i{background:var(--danger)}
+.run{grid-template-columns:minmax(0,1fr)}
+.run .meta b{color:var(--ink);font-variant-numeric:tabular-nums}
+.chains{display:grid;gap:8px;margin-top:10px}
+.chain{display:grid;grid-template-columns:124px minmax(0,1fr);gap:4px 12px;align-items:baseline;font-size:.9rem}
+.chain b{font-weight:600;color:var(--ink-2)}
+.atts{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.atts i{font-style:normal;color:var(--muted)}
+.att{border-radius:5px;padding:2px 8px;font-size:.8rem;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.att.ok{background:var(--green-soft);color:var(--green-ink)}
+.att.bad{background:var(--danger-soft);color:var(--danger)}
+.run-note{margin:8px 0 0;font-size:.86rem;line-height:1.5;color:var(--ink-2)}
+.run-note .fail{margin-right:6px}
+/* Счётчики источников — справка, а не действие: тихая ссылка вместо тёмной кнопки общих details */
+.sources{margin-top:8px}
+.sources summary{background:none;color:var(--blue-ink);padding:0;border-radius:0;font-weight:500;font-size:.86rem}
+.sources summary::after{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg);margin-left:4px}
+.sources[open] summary::after{transform:translateY(1px) rotate(-135deg)}
+.sources .run-note{margin-top:6px}
+.run-note.quiet{margin:0;padding:12px 18px;color:var(--muted)}
+
+/* Арсенал фишек: галочка «попробовал» слева, ссылки справа; отмеченная фишка не тускнеет — её ещё ищут по теме */
+.tip{grid-template-columns:minmax(0,1fr)}
+.tip .term{margin-top:10px}
+.tip-note{margin:10px 0 0;font-size:.86rem;color:var(--muted)}
+.tip-foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+.tried{display:inline-flex;align-items:center;gap:8px;margin-right:auto;font-size:.88rem;font-weight:500;color:var(--ink-2);cursor:pointer;user-select:none}
+.tried input{width:18px;height:18px;margin:0;accent-color:var(--green-ink);cursor:pointer}
+.tried input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.tip.done .tried{color:var(--green-ink)}
+.tried.err{color:var(--danger)}
+
+/* Страница сюжета: хронология — точка на событие и нить между ними, как у короткой хронологии в карточке */
+a.story-tag{text-decoration:none}
+a.story-tag:hover{text-decoration:underline}
+.timeline{margin:0;padding:4px 20px 8px;list-style:none}
+.timeline li{position:relative;padding:0 0 20px 26px}
+.timeline li::before{content:"";position:absolute;left:3px;top:.35em;width:9px;height:9px;border-radius:50%;background:var(--inner);box-shadow:inset 0 0 0 2px var(--border-3)}
+.timeline li:last-child::before{background:var(--blue);box-shadow:none}
+.timeline li:not(:last-child)::after{content:"";position:absolute;left:7px;top:calc(.35em + 13px);bottom:2px;width:1px;background:var(--border-2)}
+.timeline time{font-size:.8rem;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.timeline a{display:block;margin-top:3px;font-weight:600;line-height:1.4;color:var(--ink);text-decoration:none}
+.timeline a:hover{text-decoration:underline}
+.timeline .meta{margin-top:6px}
+
+/* «Твой стек»: инструмент, версия-ссылка и метка заметности в одну строку */
+.stack-card ul{margin:0;padding:0 20px 18px;list-style:none;display:grid;gap:10px;font-size:.93rem}
+.stack-card li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+.stack-card a{font:500 .86rem var(--f-mono);color:var(--blue-ink);text-decoration:none}
+.stack-card a:hover{text-decoration:underline}
+.stack-card small{font-size:.8rem;color:var(--muted)}
+
 @media (max-width:1180px){
   .grid{grid-template-columns:minmax(0,1fr);max-width:900px}
   /* В одну колонку оглавление должно стоять над лентой, а не под ней: карточки правой колонки становятся ячейками сетки */
@@ -305,6 +368,13 @@ details a:hover{text-decoration:underline}
   .brief li span{display:none}
   .brief li::before{grid-row:auto}
   .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .quota{padding:0 14px 14px}
+  .quota-row{grid-template-columns:112px minmax(0,1fr) 44px;gap:10px}
+  .quota-row .fail{grid-column:2/-1;justify-self:start}
+  .chain{grid-template-columns:minmax(0,1fr)}
+  .run-note.quiet{padding:12px 14px}
+  /* Галочка — своей строкой, ссылки парой под ней: иначе «Первоисточник» повисал один */
+  .tried{flex-basis:100%}
 }
 /* Пальцевые цели не меньше 44px (Apple HIG, WCAG 2.5.5). Мелким значкам — копированию и плашке HN — зона нажатия
    расширена невидимым слоем, чтобы не раздувать строку */
@@ -322,6 +392,7 @@ details a:hover{text-decoration:underline}
   /* Высота зоны — ровно 44px от центра значка, какого бы размера ни был сам текст */
   .copy::after,a.buzz::after{content:"";position:absolute;left:-4px;right:-4px;top:50%;height:44px;translate:0 -50%}
   .missed a{display:block;padding-block:4px}
+  .tried{min-height:44px}
   .also-today li{padding-block:4px}
 }
 </style>
@@ -330,9 +401,9 @@ details a:hover{text-decoration:underline}
 <div class="app">
   <aside class="side">
     <div class="logo"><svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.5" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".2"/><circle cx="16" cy="16" r="9.5" fill="none" stroke="currentColor" stroke-width="1.8" opacity=".45"/><circle cx="16" cy="16" r="4.6" fill="currentColor"/></svg><div><b>сигнал</b><small>ИИ-дайджест</small></div></div>
-    <div class="picker">Архив <span>21.10</span></div>
+    <div class="picker">Архив <span>22.10</span></div>
     <nav><a class="on" href="#main-story"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18v4H3zM5 9v10h14V9M10 13h4"/></svg>Все выпуски</a></nav>
-    <div class="arch"><div class="arch-title">Архив</div><a href="2026-10-21-evening.html"><b>21 окт веч.</b><span>OpenAI в Google Cloud, Nvidia OpenShell и фреймворк DeepInfer</span></a><a href="2026-10-21.html"><b>21 окт</b><span>Сбои контроля в OpenAI, слияние Tesla и SpaceX, стек Voxtral 3</span></a><a href="2026-10-20-evening.html"><b>20 окт веч.</b><span>Опенсорс от DeepSeek, чипы Nvidia на $35 млрд и зачистка в госсекторе США</span></a><a href="2026-10-20.html"><b>20 окт</b><span>Битва за триллион, кредитные риски и агенты против рекламы</span></a><a href="2026-10-19-evening.html"><b>19 окт веч.</b><span>Автономные агенты выходят из-под контроля, а нео-облака идут ко дну</span></a><a href="2026-10-19.html"><b>19 окт</b><span>Крах Character.AI, зачистка нео-облаков и агенты против джунов</span></a><a href="2026-10-18-evening.html"><b>18 окт веч.</b><span>Трещины в инфраструктуре ЦОД, суды в ЕС и неуправляемые агенты</span></a><a class="arch-all" href="archive.html">Все выпуски →</a></div>
+    <div class="arch"><div class="arch-title">Архив</div><a href="2026-10-22.html"><b>22 окт</b><span>Критический RCE в PHP2Shell, агент Claude Duet и маневры вокруг AI</span></a><a href="2026-10-21-evening.html"><b>21 окт веч.</b><span>OpenAI в Google Cloud, Nvidia OpenShell и фреймворк DeepInfer</span></a><a href="2026-10-21.html"><b>21 окт</b><span>Сбои контроля в OpenAI, слияние Tesla и SpaceX, стек Voxtral 3</span></a><a href="2026-10-20-evening.html"><b>20 окт веч.</b><span>Опенсорс от DeepSeek, чипы Nvidia на $35 млрд и зачистка в госсекторе США</span></a><a href="2026-10-20.html"><b>20 окт</b><span>Битва за триллион, кредитные риски и агенты против рекламы</span></a><a href="2026-10-19-evening.html"><b>19 окт веч.</b><span>Автономные агенты выходят из-под контроля, а нео-облака идут ко дну</span></a><a href="2026-10-19.html"><b>19 окт</b><span>Крах Character.AI, зачистка нео-облаков и агенты против джунов</span></a><a class="arch-all" href="archive.html">Все выпуски →</a></div>
     <div class="side-foot">Утром и вечером · 0 ₽<span class="keys"><kbd>j</kbd> <kbd>k</kbd> листать · <kbd>o</kbd> разбор</span></div>
   </aside>
   <div class="page">
@@ -340,20 +411,20 @@ details a:hover{text-decoration:underline}
       <div class="crumbs">Дайджест<span>/</span>Архив</div>
       <h1>Архив выпусков</h1>
       
-      <div class="sub">11 выпусков<span class="progress" hidden></span></div>
+      <div class="sub">12 выпусков<span class="progress" hidden></span></div>
     </div>
     <div class="grid">
       <main class="stack">
         <section class="card" id="main-story">
-          <div class="card-head"><h3>Все выпуски</h3><small>11</small></div>
-          <div class="card-body"><a class="item issue-link" href="2026-10-21-evening.html"><span class="num">21</span><div><h4>OpenAI в Google Cloud, Nvidia OpenShell и фреймворк DeepInfer</h4><div class="meta"><span class="tag">21 окт веч.</span><span>13 событий</span></div></div></a><a class="item issue-link" href="2026-10-21.html"><span class="num">21</span><div><h4>Сбои контроля в OpenAI, слияние Tesla и SpaceX, стек Voxtral 3</h4><div class="meta"><span class="tag">21 окт</span><span>10 событий</span></div></div></a><a class="item issue-link" href="2026-10-20-evening.html"><span class="num">20</span><div><h4>Опенсорс от DeepSeek, чипы Nvidia на $35 млрд и зачистка в госсекторе США</h4><div class="meta"><span class="tag">20 окт веч.</span><span>10 событий</span></div></div></a><a class="item issue-link" href="2026-10-20.html"><span class="num">20</span><div><h4>Битва за триллион, кредитные риски и агенты против рекламы</h4><div class="meta"><span class="tag">20 окт</span><span>9 событий</span></div></div></a><a class="item issue-link" href="2026-10-19-evening.html"><span class="num">19</span><div><h4>Автономные агенты выходят из-под контроля, а нео-облака идут ко дну</h4><div class="meta"><span class="tag">19 окт веч.</span><span>8 событий</span></div></div></a><a class="item issue-link" href="2026-10-19.html"><span class="num">19</span><div><h4>Крах Character.AI, зачистка нео-облаков и агенты против джунов</h4><div class="meta"><span class="tag">19 окт</span><span>9 событий</span></div></div></a><a class="item issue-link" href="2026-10-18-evening.html"><span class="num">18</span><div><h4>Трещины в инфраструктуре ЦОД, суды в ЕС и неуправляемые агенты</h4><div class="meta"><span class="tag">18 окт веч.</span><span>9 событий</span></div></div></a><a class="item issue-link" href="2026-10-18.html"><span class="num">18</span><div><h4>Взлом OpenCode, бунт моделей OpenAI и бан Anthropic правительством США</h4><div class="meta"><span class="tag">18 окт</span><span>9 событий</span></div></div></a><a class="item issue-link" href="2026-10-17-evening.html"><span class="num">17</span><div><h4>DeepSeek выкатил Flash 1017, а финансисты боятся агентов</h4><div class="meta"><span class="tag">17 окт веч.</span><span>8 событий</span></div></div></a><a class="item issue-link" href="2026-10-17.html"><span class="num">17</span><div><h4>Долговой кризис ИИ, дерзкие агенты и открытый Beam на 501B</h4><div class="meta"><span class="tag">17 окт</span><span>9 событий</span></div></div></a><a class="item issue-link" href="2026-10-16.html"><span class="num">16</span><div><h4>Отрезвление инвесторов, побеги агентов в сеть и новый ход Microsoft</h4><div class="meta"><span class="tag">16 окт</span><span>9 событий</span></div></div></a></div>
+          <div class="card-head"><h3>Все выпуски</h3><small>12</small></div>
+          <div class="card-body"><a class="item issue-link" href="2026-10-22.html"><span class="num">22</span><div><h4>Критический RCE в PHP2Shell, агент Claude Duet и маневры вокруг AI</h4><div class="meta"><span class="tag">22 окт</span><span>14 событий</span></div></div></a><a class="item issue-link" href="2026-10-21-evening.html"><span class="num">21</span><div><h4>OpenAI в Google Cloud, Nvidia OpenShell и фреймворк DeepInfer</h4><div class="meta"><span class="tag">21 окт веч.</span><span>13 событий</span></div></div></a><a class="item issue-link" href="2026-10-21.html"><span class="num">21</span><div><h4>Сбои контроля в OpenAI, слияние Tesla и SpaceX, стек Voxtral 3</h4><div class="meta"><span class="tag">21 окт</span><span>10 событий</span></div></div></a><a class="item issue-link" href="2026-10-20-evening.html"><span class="num">20</span><div><h4>Опенсорс от DeepSeek, чипы Nvidia на $35 млрд и зачистка в госсекторе США</h4><div class="meta"><span class="tag">20 окт веч.</span><span>10 событий</span></div></div></a><a class="item issue-link" href="2026-10-20.html"><span class="num">20</span><div><h4>Битва за триллион, кредитные риски и агенты против рекламы</h4><div class="meta"><span class="tag">20 окт</span><span>9 событий</span></div></div></a><a class="item issue-link" href="2026-10-19-evening.html"><span class="num">19</span><div><h4>Автономные агенты выходят из-под контроля, а нео-облака идут ко дну</h4><div class="meta"><span class="tag">19 окт веч.</span><span>8 событий</span></div></div></a><a class="item issue-link" href="2026-10-19.html"><span class="num">19</span><div><h4>Крах Character.AI, зачистка нео-облаков и агенты против джунов</h4><div class="meta"><span class="tag">19 окт</span><span>9 событий</span></div></div></a><a class="item issue-link" href="2026-10-18-evening.html"><span class="num">18</span><div><h4>Трещины в инфраструктуре ЦОД, суды в ЕС и неуправляемые агенты</h4><div class="meta"><span class="tag">18 окт веч.</span><span>9 событий</span></div></div></a><a class="item issue-link" href="2026-10-18.html"><span class="num">18</span><div><h4>Взлом OpenCode, бунт моделей OpenAI и бан Anthropic правительством США</h4><div class="meta"><span class="tag">18 окт</span><span>9 событий</span></div></div></a><a class="item issue-link" href="2026-10-17-evening.html"><span class="num">17</span><div><h4>DeepSeek выкатил Flash 1017, а финансисты боятся агентов</h4><div class="meta"><span class="tag">17 окт веч.</span><span>8 событий</span></div></div></a><a class="item issue-link" href="2026-10-17.html"><span class="num">17</span><div><h4>Долговой кризис ИИ, дерзкие агенты и открытый Beam на 501B</h4><div class="meta"><span class="tag">17 окт</span><span>9 событий</span></div></div></a><a class="item issue-link" href="2026-10-16.html"><span class="num">16</span><div><h4>Отрезвление инвесторов, побеги агентов в сеть и новый ход Microsoft</h4><div class="meta"><span class="tag">16 окт</span><span>9 событий</span></div></div></a></div>
         </section>
       </main>
       <aside class="stack">
         <section class="card">
           <div class="card-head"><h3>Архив</h3><small></small></div>
           
-          <div class="stats"><div class="stat"><b>11</b><span>выпусков</span></div><div class="stat"><b>103</b><span>событий</span></div></div>
+          <div class="stats"><div class="stat"><b>12</b><span>выпусков</span></div><div class="stat"><b>117</b><span>событий</span></div></div>
         </section>
 
         <div class="foot"><span>Стоимость 0 ₽</span></div>
