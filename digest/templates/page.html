@@ -96,6 +96,11 @@ h1{font-size:clamp(1.6rem,2.6vw,2.15rem);font-weight:500;letter-spacing:-.02em;m
 .hero p{margin:0;font-size:1.04rem;line-height:1.65;color:var(--ink-2);max-width:62ch}
 .why{background:var(--inner);border:1px solid var(--border-2);border-radius:10px;padding:11px 14px;font-size:.95rem;line-height:1.55;color:var(--ink-2);max-width:62ch}
 .why b{color:var(--green-ink);font-weight:600}
+/* Словарик ИБ-терминов: строка «термин — что значит» без своей плашки, чтобы не стать карточкой в карточке */
+.terms{margin:10px 0 0;display:grid;gap:4px;max-width:62ch;font-size:.88rem;line-height:1.5;color:var(--ink-2)}
+.terms dt{display:inline;font-weight:600;color:var(--ink)}
+.terms dd{display:inline;margin:0}
+.terms dd::before{content:" — "}
 .legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.86rem;color:var(--ink-2)}
 .legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--green);margin-right:7px}
 .legend .src::before,.legend .buzz::before{display:none}

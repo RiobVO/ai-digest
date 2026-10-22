@@ -256,6 +256,13 @@ def _why(entry: Entry) -> str:
     return f'<div class="why"><b>Почему важно:</b> {escape(entry.why)}</div>' if entry.why else ""
 
 
+def _terms(entry: Entry) -> str:
+    """Словарик ИБ-терминов карточки. На виду, а не в «Подробнее»: читатель входит в ИБ и без термина не поймёт новость."""
+    terms = entry.details.terms if entry.details else []
+    rows = "".join(f"<div><dt>{escape(t)}</dt><dd>{escape(m)}</dd></div>" for t, m in terms)
+    return f'<dl class="terms">{rows}</dl>' if rows else ""
+
+
 def _vote(entry: Entry, enabled: bool) -> str:
     if not enabled or not entry.id:
         return ""
@@ -366,7 +373,7 @@ def _hero(entry: Entry, votes: bool, chip: str, day_mood: str = "calm") -> str:
         f'          <div class="hero-top"><span class="chip">{chip}</span>'
         f'<a class="btn" href="{_href(entry.item.url)}">Первоисточник {ARROW}</a></div>\n'
         f'          <h2{_anchor(entry)}>{escape(entry.title)}</h2>\n          {_story(entry)}\n          <p>{escape(entry.summary)}</p>\n'
-        f'          {_why(entry)}\n'
+        f'          {_why(entry)}{_terms(entry)}\n'
         f'          <div class="legend"><span>{SECTION_LABELS.get(entry.section, "Событие")}</span>{_status(entry)}'
         f'{_source(entry.item.url)}'
         f'{_buzz(entry.item)}{also}</div>\n'
@@ -383,7 +390,7 @@ def _item(n: int, entry: Entry, votes: bool) -> str:
             f'<div><div class="meta">{_status(entry)}'
             f'{_source(entry.item.url)}{_buzz(entry.item)}{also}</div>'
             f'<h4{_anchor(entry)}>{escape(entry.title)}</h4>{_story(entry)}<p>{escape(entry.summary)}</p>{_why(entry)}'
-            f'{copy}{_actions(entry, votes)}</div></div>')
+            f'{_terms(entry)}{copy}{_actions(entry, votes)}</div></div>')
 
 
 def _paper(entry: Entry, votes: bool) -> str:

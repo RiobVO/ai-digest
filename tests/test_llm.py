@@ -561,3 +561,49 @@ def test_tips_get_a_topic_from_a_closed_list():
         {"ids": [2], "title": "Другое", "summary": "s", "why": "w", "copy": "", "topic": "магия", "importance": 5}]}
     llm.attach_extras(digest, raw, pool)
     assert [(e.title, e.topic) for e in digest.entries if e.section == "tips"] == [("Effort", "claude_code"), ("Другое", "")]
+
+
+def test_terms_are_kept_only_for_security_cards_and_only_when_the_card_uses_them():
+    from digest.llm import Entry, attach_explanations
+    bug = Item(source="thehackernews", title="PHP2Shell", url="https://thn/php", category="security")
+    entries = [Entry(bug, "security", 8, "Две RCE в ядре PHP", "Атакуют через supply chain-сборки.", ""),
+               Entry(items()[2], "dev", 6, "Ollama 0.40 с RCE-фиксом", "s", "")]
+    row = {"what": "", "points": [], "try_it": "", "caveats": "", "commands": []}
+    raw = {"items": [
+        {**row, "id": 0, "terms": [
+            {"term": "RCE", "meaning": "удалённое выполнение кода: атакующий запускает свои команды на сервере"},
+            # Термина нет в карточке — читатель его не встретит, объяснение лишнее
+            {"term": "буткит", "meaning": "вредонос, который грузится раньше ОС"},
+            {"term": " ", "meaning": "пусто"},
+            {"term": "Supply chain", "meaning": "атака через поставщика: заражают пакет или сборку, которой доверяют"},
+            {"term": "RCE", "meaning": "дубль"}]},
+        # Термины нужны читателю, который входит в ИБ: у карточек других разделов их нет
+        {**row, "id": 1, "terms": [{"term": "RCE", "meaning": "удалённое выполнение кода"}]},
+    ]}
+    attach_explanations(entries, raw, {})
+    assert entries[0].details.terms == [
+        ("RCE", "удалённое выполнение кода: атакующий запускает свои команды на сервере"),
+        ("Supply chain", "атака через поставщика: заражают пакет или сборку, которой доверяют")]
+    assert entries[1].details.terms == []
+
+
+def test_explain_tells_the_model_which_cards_are_security(monkeypatch):
+    captured = []
+    monkeypatch.setattr(llm, "generate", lambda prompt, schema, model, api_key: captured.append(prompt) or {"items": []})
+    bug = Item(source="thehackernews", title="PHP2Shell", url="https://thn/php", category="security")
+    llm.explain([Entry(bug, "security", 8, "Две RCE в PHP", "s", ""), Entry(items()[1], "model", 7, "Meta", "s", "")],
+                {}, "читатель", "m", "k")
+    assert "--- событие id=0 · раздел security ---" in captured[0]
+    assert "--- событие id=1 · раздел model ---" in captured[0]
+    assert "terms" in llm.EXPLAIN_SCHEMA["properties"]["items"]["items"]["required"]
+
+
+def test_malformed_terms_are_dropped_without_losing_the_breakdown():
+    from digest.llm import Entry, attach_explanations
+    bug = Item(source="thehackernews", title="PHP2Shell", url="https://thn/php", category="security")
+    row = {"what": "Контекст.", "points": [], "try_it": "", "caveats": "", "commands": []}
+    # Gemini не обязан соблюдать схему: кривое необязательное поле не должно ронять выпуск (ревью Codex)
+    for terms in (None, "RCE", [None], ["RCE"], [{"term": None, "meaning": 5}]):
+        entries = [Entry(bug, "security", 8, "Две RCE в PHP", "s", "")]
+        attach_explanations(entries, {"items": [{**row, "id": 0, "terms": terms}]}, {})
+        assert entries[0].details.what == "Контекст." and entries[0].details.terms == []

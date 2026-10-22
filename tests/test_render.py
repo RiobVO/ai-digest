@@ -490,3 +490,27 @@ def test_every_source_in_the_config_has_a_readable_label():
     config = tomllib.loads((Path(__file__).parent.parent / "sources.toml").read_text(encoding="utf-8"))
     assert [s["name"] for s in config["source"]
             if s["name"] not in SOURCE_LABELS and not s.get("publisher_in_title")] == []
+
+
+def test_security_card_explains_its_terms_in_plain_sight():
+    from digest.llm import Details
+    bug = Item(source="thehackernews", title="PHP2Shell", url="https://thn/php", category="security")
+    digest = sample()
+    digest.entries.insert(1, Entry(bug, "security", 7, "Две RCE в ядре PHP", "Патч вышел.", ""))
+    digest.entries[1].details = Details("", [], "", "", [], [("RCE", "удалённое выполнение <кода>")])
+    page = render_page(digest, STATS, WHEN, failures=[])
+    card = page[page.index("Две RCE в ядре PHP"):]
+    card = card[:card.index("Подробнее") if "Подробнее" in card else len(card)]
+    # Термин виден сразу под карточкой, а не спрятан в «Подробнее»
+    assert '<dl class="terms">' in card and "<dt>RCE</dt>" in card and "<dd>удалённое выполнение &lt;кода&gt;</dd>" in card
+    assert '<dl class="terms">' not in render_page(sample(), STATS, WHEN, failures=[])
+
+
+def test_hero_from_security_shows_terms_too():
+    from digest.llm import Details
+    bug = Item(source="securelist", title="APT41", url="https://securelist.ru/apt41", category="security")
+    hero = Entry(bug, "security", 9, "APT41 вернула буткит BlackLotus", "Атакуют дипломатов.", "")
+    hero.details = Details("", [], "", "", [], [("буткит", "вредонос, который загружается раньше ОС")])
+    page = render_page(Digest("h", "l", [hero]), STATS, WHEN, failures=[])
+    block = page[page.index('id="main-story"'):page.index("</section>", page.index('id="main-story"'))]
+    assert "<dt>буткит</dt>" in block
