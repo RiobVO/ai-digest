@@ -30,14 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-21T02:18:11.473261+00:00",
-   "keys": [
-    "anthropic.com/news/features",
-    "title:features"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-10-21T04:18:05.983437+00:00",
    "keys": [
     "blog.google/company-news/inside-google/around-the-globe/google-asia/e-conomy-sea-report-2026",
