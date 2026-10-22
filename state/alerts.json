@@ -30,16 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-21T01:18:08.638228+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMihAFBVV95cUxQX2JkT1NWcmJNb29hRlM1eW9IWnY3Z1dVd2hSRkJPeUpxZ2F2alBTVWZ5QzNqS1JXbmF4V3BUVUoyaW5uZVVZLXU5bmxvcEh6cG1uUFJ5eWdvVTU1azJsOFEyNnpvcXlnV1dCaEs3a2xNQlpUeTQteEl6dWIzRXZSWmJCc1k?oc=5",
-    "news.google.com/rss/articles/CBMipgFBVV95cUxPcEZzNFdpQUlYMnFXc2t6YkluTzEzbWt4X0YyV1RJUWItRGJwYUxGamRFWXpJZmV1elZRVG1YTFdMMzBGakxXQ3JtN19XWFRxdXM1eWdEa21zSnplR2lyZlhDaU5ULW9KQV9sZDJqaGNqQTNrNkREd2NRQUFNakRWZzB3NVljOUtEQVpteEREOGZmaEoyWEtrY25Zbm5JRHVRS2JnY1Bn?oc=5",
-    "techcrunch.com/2026/10/20/spacexs-ai-business-is-beating-expectations",
-    "title:spacex s ai business is beating expectations"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-10-21T02:18:11.473261+00:00",
    "keys": [
     "anthropic.com/news/features",
