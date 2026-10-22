@@ -74,8 +74,6 @@ jobs:
           FEEDBACK_TOKEN: ${{ secrets.FEEDBACK_TOKEN }}
           # Утро или вечер задаёт планировщик по запланированному времени: опоздавший запуск не сменит выпуск
           ISSUE_SLOT: ${{ inputs.slot }}
-          # «Твой стек» читает GitHub Releases API: с токеном запуска лимит не делится с чужими раннерами
-          GITHUB_TOKEN: ${{ github.token }}
         run: python -m digest build
 
       - name: Build weekly

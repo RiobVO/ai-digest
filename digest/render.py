@@ -12,7 +12,6 @@ from digest.dedup import ARXIV_ID, coverage
 from digest.llm import EXTRA_SECTIONS, Digest, Entry, Mention
 from digest.models import Item
 from digest.mood import MOODS, mood
-from digest.stack import Release
 
 TEMPLATE = Template((Path(__file__).parent / "templates" / "page.html").read_text(encoding="utf-8"))
 # Читатель в Ташкенте: даты на странице — по его времени, а не по UTC раннера
@@ -404,24 +403,6 @@ def _also_today(more: list[Mention]) -> str:
             f'          <ol>{rows}</ol>\n        </section>')
 
 
-RELEASE_KINDS = {"major": ('<span class="tag green">мажор</span>'), "minor": '<span class="tag">минор</span>',
-                 "breaking": '<span class="fail">ломающие изменения</span>'}
-
-
-def _stack(releases: list[Release]) -> str:
-    """«Твой стек»: заметные релизы инструментов читателя. В тихий день блока нет — пустая карточка была бы шумом."""
-    # Строка на инструмент: SDK выпускают по несколько миноров в сутки (Claude API 20–21.10 — три), список шумел бы
-    by_tool: dict[str, list[Release]] = {}
-    for r in sorted(releases, key=lambda r: r.published, reverse=True):
-        by_tool.setdefault(r.name, []).append(r)
-    rows = "".join(f'<li><b>{escape(name)}</b> <a href="{_href(rs[0].url)}">{escape(rs[0].version)}</a>'
-                   f'{RELEASE_KINDS[rs[0].kind]}{f"<small>ещё {len(rs) - 1}</small>" if len(rs) > 1 else ""}</li>'
-                   for name, rs in by_tool.items())
-    return (f'        <section class="card stack-card" id="stack">\n          <div class="card-head"><h3>Твой стек</h3>'
-            f'<small>{plural(len(by_tool), "инструмент", "инструмента", "инструментов")}</small></div>\n'
-            f'          <ul>{rows}</ul>\n        </section>')
-
-
 def _issue_day(issue: dict) -> str:
     return short_day(issue["date"]) + (" веч." if issue.get("slot") == "evening" else "")
 
@@ -481,7 +462,7 @@ def _add_rows(main: list[str], nav: list[str], rows: list[tuple[str, str, str, s
 def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str], *,
                 feedback_url: str = "", issues: list[dict] | None = None, kind: str = "day", period: str = "",
                 page_name: str = "", slot: str = "morning", missed: list[dict] | None = None,
-                morning_page: str = "", og_image: str = "", stack: list[Release] | None = None) -> str:
+                morning_page: str = "", og_image: str = "") -> str:
     votes = bool(feedback_url)
     # Героем идёт событие: если модель вернула одни авторские посты и фишки, «Главного» нет, они остаются в разделах
     top = next((e for e in digest.entries if e.section not in EXTRA_SECTIONS), None)
@@ -499,7 +480,7 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
         nav.append(_nav("also-today", "Ещё за день", len(digest.more)))
     _add_rows(main, nav, [row for row in ROW_SECTIONS if row[0] in EXTRA_SECTIONS], rest, votes)
 
-    aside = [_stack(stack)] if stack else []
+    aside = []
     papers = [e for e in rest if e.section == "paper"]
     if papers:
         aside.append(f'        <section class="card" id="papers">\n'

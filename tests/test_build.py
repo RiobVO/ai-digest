@@ -81,7 +81,6 @@ def env(tmp_path, monkeypatch):
     monkeypatch.setattr(main, "attach_discussions", lambda items: None)
     monkeypatch.setattr(main, "fetch_articles", lambda urls: {})
     monkeypatch.setattr(main, "make_cover", lambda *a: False)
-    monkeypatch.setattr(main, "fetch_stack", lambda tools, now: [])
     monkeypatch.setattr(llm, "generate", fake_generate())
     args = argparse.Namespace(config=config, state_dir=tmp_path / "state", site=tmp_path / "site", dry_run=False)
     return tmp_path, args

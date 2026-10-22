@@ -315,13 +315,6 @@ a.story-tag:hover{text-decoration:underline}
 .timeline a:hover{text-decoration:underline}
 .timeline .meta{margin-top:6px}
 
-/* «Твой стек»: инструмент, версия-ссылка и метка заметности в одну строку */
-.stack-card ul{margin:0;padding:0 20px 18px;list-style:none;display:grid;gap:10px;font-size:.93rem}
-.stack-card li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
-.stack-card a{font:500 .86rem var(--f-mono);color:var(--blue-ink);text-decoration:none}
-.stack-card a:hover{text-decoration:underline}
-.stack-card small{font-size:.8rem;color:var(--muted)}
-
 @media (max-width:1180px){
   .grid{grid-template-columns:minmax(0,1fr);max-width:900px}
   /* В одну колонку оглавление должно стоять над лентой, а не под ней: карточки правой колонки становятся ячейками сетки */
@@ -461,10 +454,6 @@ a.story-tag:hover{text-decoration:underline}
         <section class="card brief" id="brief">
           <div class="card-head"><h3>Коротко</h3><small>весь выпуск за полминуты</small></div>
           <ol><li data-toc="20261022-0"><a href="#e-20261022-0">Экстренный патч PHP2Shell: AI нашел критические RCE, под угрозой 70% сайтов</a><span>Безопасность</span></li><li data-toc="20261022-1"><a href="#e-20261022-1">В LiteLLM 1.107.0 на PyPI нашли троян для кражи ключей и бэкдор</a><span>Безопасность</span></li><li data-toc="20261022-2"><a href="#e-20261022-2">Anthropic запустила Claude Duet — проактивного фонового ИИ-агента</a><span>Компании</span></li><li data-toc="20261022-3"><a href="#e-20261022-3">Взлом платформы Railway: злоумышленники могли расшифровать переменные окружения</a><span>Безопасность</span></li><li data-toc="20261022-4"><a href="#e-20261022-4">GitLab закрыла критическую RCE без авторизации во всех версиях с 2014 года</a><span>Безопасность</span></li><li data-toc="20261022-5"><a href="#e-20261022-5">Recursive выкатила Flint — открытую 40B кодинг-модель, созданную другой моделью</a><span>Модели</span></li><li data-toc="20261022-6"><a href="#e-20261022-6">Walmart открывает сайт для автономных покупок через ИИ-агентов</a><span>Компании</span></li><li data-toc="20261022-7"><a href="#e-20261022-7">KittenML открыла Kitten-TTS 2 — 1.58-битную модель озвучки для обычных CPU</a><span>Модели</span></li><li data-toc="20261022-8"><a href="#e-20261022-8">Meta заявила о 10 млн пользователей агента Muse и среднем чеке покупок выше $200</a><span>Компании</span></li><li data-toc="20261022-9"><a href="#e-20261022-9">Cursor добавил канвасы для облачных агентов и ускорил Environments в 5 раз</a><span>Для тебя</span></li><li data-toc="20261022-10"><a href="#e-20261022-10">Claude Code v2.1.307 добавил телеметрию безопасности и смену API-версии</a><span>Для тебя</span></li><li data-toc="20261022-11"><a href="#e-20261022-11">Alkove: локальный голосовой фронтенд с фильтрацией чужих голосов</a><span>Фишки</span></li><li data-toc="20261022-12"><a href="#e-20261022-12">Запуск компактной TTS-модели Ming-3.0-TTS-0.5B с клонированием голоса</a><span>Фишки</span></li><li data-toc="20261022-13"><a href="#e-20261022-13">Саймон Уиллисон: сообщество за сутки форкнуло браузерную игру во французский стимпанк</a><span>Инженеры</span></li></ol>
-        </section>
-        <section class="card stack-card" id="stack">
-          <div class="card-head"><h3>Твой стек</h3><small>4 инструмента</small></div>
-          <ul><li><b>Claude API</b> <a href="https://github.com/anthropics/anthropic-sdk-python/releases/tag/v2.1.0">v2.1.0</a><span class="tag">минор</span><small>ещё 2</small></li><li><b>OpenAI API</b> <a href="https://github.com/openai/openai-python/releases/tag/v3.36.0">v3.36.0</a><span class="tag">минор</span></li><li><b>Gemini API</b> <a href="https://github.com/googleapis/python-genai/releases/tag/v2.32.0">v2.32.0</a><span class="tag">минор</span></li><li><b>Gemini CLI</b> <a href="https://github.com/google-gemini/gemini-cli/releases/tag/v0.65.0">v0.65.0</a><span class="tag">минор</span></li></ul>
         </section>
         <section class="card noise" id="noise">
           <h3>Отсеяно как шум: 178</h3>
