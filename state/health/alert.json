@@ -16,5 +16,6 @@
 {"at": "2026-10-22T08:18:16Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [{"at": "2026-10-22T08:18:15Z", "call": "triage", "asked": "gemini-3.5-flash-lite", "served": "gemini-3.5-flash-lite", "status": 200, "seconds": 0.9, "thinking": 0, "error": ""}], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-10-22T09:18:13Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-10-22T09:56:28Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
-{"at": "2026-10-22T10:18:20Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}}
+{"at": "2026-10-22T10:18:20Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
+{"at": "2026-10-22T11:20:04Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [{"at": "2026-10-22T11:20:03Z", "call": "triage", "asked": "gemini-3.5-flash-lite", "served": "gemini-3.5-flash-lite", "status": 200, "seconds": 1.0, "thinking": 0, "error": ""}], "failed": {}, "sources": {}, "events": {}}
 ]
