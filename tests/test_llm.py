@@ -633,3 +633,12 @@ def test_tips_take_defending_your_own_models_but_not_jailbreaks_of_others():
     # Решение владельца 22.10: проверка и защита своих ботов и агентов — фишка; обход ограничений чужих сервисов — нет
     prompt = llm.EXTRAS_PROMPT
     assert "prompt injection" in prompt and "джейлбрейк" in prompt
+
+
+def test_tips_put_the_readers_daily_agents_first_and_keep_why_honest():
+    # 22.10: своих ботов у владельца нет, каждый день — Claude Code и Codex; пример garak обещал «проверишь бота»,
+    # а команда атаковала голую модель и требовала платный ключ
+    prompt = llm.EXTRAS_PROMPT
+    assert "Claude Code и OpenAI Codex" in prompt
+    assert "чужой репозиторий или веб-страницу" in prompt
+    assert "результат именно этих шагов" in prompt and "платный ключ" in prompt
