@@ -375,9 +375,46 @@ category = "newsletter"
 url = "https://www.interconnects.ai/feed"
 max_age_hours = 170
 
-# --- Информационная безопасность: массовые инциденты и уязвимости, а не CVE для специалистов ---
-# The Hacker News и SecurityWeek не взяты: в первом сплошные CVE корпоративных продуктов, во втором — безопасность
-# компаний; SecurityLab.ru смешивает ИБ с научпопом, Хабр — инструкции для специалистов
+# --- Информационная безопасность: читатель готовится перейти в ИБ (SOC, пентест, защита рабочих мест) ---
+# Разборы атак от исследователей стоят первыми: при склейке дублей основным остаётся первоисточник, а не пересказ.
+# Редкие блоги (разбор раз в недели) — с окном в неделю. Проверено 22.10: SecurityLab.ru — 58 записей за двое суток
+# вперемешку с научпопом, Anti-Malware.ru — общие ИТ-новости, ленты CISA отвечают 403 — не взяты; эксплуатируемые
+# уязвимости из каталога CISA KEV пересказывают The Hacker News и SecurityWeek
+[[source]]
+name = "securelist"
+type = "rss"
+category = "security"
+url = "https://securelist.ru/feed/"
+max_age_hours = 72
+
+[[source]]
+name = "unit42"
+type = "rss"
+category = "security"
+url = "https://unit42.paloaltonetworks.com/feed/"
+max_age_hours = 72
+
+[[source]]
+name = "ms_threat_intel"
+type = "rss"
+category = "security"
+url = "https://www.microsoft.com/en-us/security/blog/topic/threat-intelligence/feed/"
+max_age_hours = 72
+
+[[source]]
+name = "dfir_report"
+type = "rss"
+category = "security"
+url = "https://thedfirreport.com/feed/"
+max_age_hours = 170
+
+[[source]]
+name = "project_zero"
+type = "rss"
+category = "security"
+url = "https://googleprojectzero.blogspot.com/feeds/posts/default"
+max_age_hours = 170
+
 [[source]]
 name = "bleepingcomputer"
 alert = true
@@ -410,6 +447,46 @@ name = "wired_security"
 type = "rss"
 category = "security"
 url = "https://www.wired.com/feed/category/security/latest/rss"
+
+[[source]]
+name = "thehackernews"
+type = "rss"
+category = "security"
+url = "https://feeds.feedburner.com/TheHackersNews"
+
+[[source]]
+name = "securityweek"
+type = "rss"
+category = "security"
+url = "https://www.securityweek.com/feed/"
+
+# Русскоязычная ИБ: Хабр — только топ дня по хабу (вся лента — 34 статьи за двое суток, много инструкций)
+[[source]]
+name = "xakep"
+type = "rss"
+category = "security"
+url = "https://xakep.ru/feed/"
+
+[[source]]
+name = "habr_infosec"
+type = "rss"
+category = "security"
+url = "https://habr.com/ru/rss/hubs/infosecurity/articles/top/daily/?fl=ru"
+
+# ИИ в ИБ: атаки на агентов и ассистентов (prompt injection, кража данных через инструменты) и ИИ в аудите кода
+[[source]]
+name = "embrace_the_red"
+type = "rss"
+category = "security"
+url = "https://embracethered.com/blog/index.xml"
+max_age_hours = 170
+
+[[source]]
+name = "trail_of_bits"
+type = "rss"
+category = "security"
+url = "https://blog.trailofbits.com/feed/"
+max_age_hours = 170
 
 # --- Инженеры: авторские блоги. X без платного API не читается; эти люди пишут и здесь ---
 # Отбор кладёт их посты в раздел «Что пишут инженеры», а не в шум «мнения без новости»

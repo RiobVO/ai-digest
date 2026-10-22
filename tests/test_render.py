@@ -478,3 +478,15 @@ def test_nameless_story_page_is_titled_by_its_first_event():
     page = render_story_pages(STORY_ISSUES, stories, WHEN)["story-s39.html"]
     assert "<h1>Disney забирает &lt;команду&gt; Character.AI</h1>" in page
 
+
+
+def test_every_source_in_the_config_has_a_readable_label():
+    import tomllib
+    from pathlib import Path
+
+    from digest.render import SOURCE_LABELS
+    # Без подписи на странице видно техническое имя («thn», «securelist_ru») вместо издания. Google News подписывает
+    # запись изданием из заголовка (publisher_in_title) — ему подпись не нужна
+    config = tomllib.loads((Path(__file__).parent.parent / "sources.toml").read_text(encoding="utf-8"))
+    assert [s["name"] for s in config["source"]
+            if s["name"] not in SOURCE_LABELS and not s.get("publisher_in_title")] == []

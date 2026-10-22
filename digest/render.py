@@ -55,7 +55,10 @@ SOURCE_LABELS = {
     "the_guardian": "The Guardian", "the_register": "The Register", "scmp_tech": "SCMP", "technode": "TechNode",
     "sifted": "Sifted", "bloomberg_tech": "Bloomberg", "ft_tech": "Financial Times", "wired_security": "Wired",
     "anthropic_eng": "Anthropic Engineering", "claude_dev": "Claude Code Blog", "gh_claude_code": "GitHub · Claude Code",
-    "simon_til": "Simon Willison · TIL",
+    "simon_til": "Simon Willison · TIL", "securelist": "Securelist", "unit42": "Unit 42",
+    "ms_threat_intel": "Microsoft Threat Intelligence", "dfir_report": "The DFIR Report", "project_zero": "Project Zero",
+    "thehackernews": "The Hacker News", "securityweek": "SecurityWeek", "xakep": "Хакер", "habr_infosec": "Хабр · ИБ",
+    "embrace_the_red": "Embrace The Red", "trail_of_bits": "Trail of Bits",
 }
 # Тред с парой баллов — не обсуждение, а чей-то репост; такой не показываем
 HN_MIN_SHOWN = 20
