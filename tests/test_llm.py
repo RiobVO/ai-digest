@@ -607,3 +607,16 @@ def test_malformed_terms_are_dropped_without_losing_the_breakdown():
         entries = [Entry(bug, "security", 8, "Две RCE в PHP", "s", "")]
         attach_explanations(entries, {"items": [{**row, "id": 0, "terms": terms}]}, {})
         assert entries[0].details.what == "Контекст." and entries[0].details.terms == []
+
+
+def test_term_in_dictionary_form_still_matches_an_inflected_card():
+    from digest.llm import Entry, attach_explanations
+    bug = Item(source="thehackernews", title="PHP2Shell", url="https://thn/php", category="security")
+    # Прогон 22.10: термин в форме карточки («эксплойте») в словарике читается криво — модель пишет начальную форму
+    entry = Entry(bug, "security", 8, "Две RCE-уязвимости в PHP", "Первые атаки идут по готовому эксплойту.", "")
+    row = {"id": 0, "what": "", "points": [], "try_it": "", "caveats": "", "commands": [], "terms": [
+        {"term": "эксплойт", "meaning": "программа, которая использует уязвимость для взлома"},
+        {"term": "RCE-уязвимость", "meaning": "дыра, через которую чужой код запускается на сервере"},
+        {"term": "бэкдор", "meaning": "скрытый вход в систему"}]}
+    attach_explanations([entry], {"items": [row]}, {})
+    assert [t for t, _ in entry.details.terms] == ["эксплойт", "RCE-уязвимость"]
