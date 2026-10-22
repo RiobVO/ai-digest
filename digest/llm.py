@@ -749,9 +749,16 @@ def select(items: list[Item], audience: str, models: list[str], api_key: str,
 
 def extras(digest: Digest, items: list[Item], audience: str, models: list[str], api_key: str,
            stories: list[dict] | None = None) -> None:
-    """Второй вызов: «Ещё за день» и фишки по записям, которые не вошли в события выпуска."""
-    raw = generate_first(build_extras_prompt(digest, items, audience, stories), EXTRAS_SCHEMA, models, api_key,
-                         call="extras")
+    """Второй вызов: «Ещё за день» и фишки по записям, которые не вошли в события выпуска. Последняя модель цепочки
+    (Lite) пишет только «Ещё за день»: фишек она находит 0–1 за прогон, и те слабые (замеры 22.10), а лучше ни одной
+    фишки, чем слабая."""
+    prompt = build_extras_prompt(digest, items, audience, stories)
+    *flash, lite = models
+    try:
+        raw = generate_first(prompt, EXTRAS_SCHEMA, flash, api_key, call="extras")
+    except LlmError as exc:
+        log.warning("Flash не ответил, фишек в этом выпуске не будет: %s", exc)
+        raw = {**generate_first(prompt, EXTRAS_SCHEMA, [lite], api_key, call="extras"), "tips": []}
     attach_extras(digest, raw, items)
 
 

@@ -459,3 +459,37 @@ def test_alert_triage_failing_on_every_model_shelves_the_candidates(env, monkeyp
     calls.clear()
     main.alert(args)
     assert calls == []
+
+
+def _extras_models_and_archive(env, monkeypatch, failing: set[str]):
+    tmp, args = env
+    extras_models = []
+
+    def flaky(prompt, schema, model, api_key):
+        if schema is llm.EXTRAS_SCHEMA:
+            extras_models.append(model)
+            if model in failing:
+                raise llm.LlmError(f"Gemini {model} ответил 503", status=503)
+            tip = {"ids": [4], "title": "Хук перед коммитом", "summary": "s", "why": "w", "copy": "", "topic": "claude_code",
+                   "importance": 6}
+            return {**EXTRAS, "tips": [tip]}
+        return fake_generate()(prompt, schema, model, api_key)
+
+    monkeypatch.setattr(llm, "generate", flaky)
+    main.build(args)
+    sections = [e["section"] for e in json.loads((args.state_dir / "issues.json").read_text())[0]["entries"]]
+    return extras_models, sections
+
+
+def test_tips_fall_back_to_the_main_flash_when_the_side_one_is_down(env, monkeypatch):
+    # 3.6 на бесплатном тарифе отказывает в ~85% вызовов (22.10): фишки пишет 3.8, а не Lite
+    models, sections = _extras_models_and_archive(env, monkeypatch, {"side-model"})
+    assert models == ["side-model", "test-model"] and "tips" in sections
+
+
+def test_lite_writes_also_today_but_never_tips(env, monkeypatch):
+    # Lite находит 0–1 фишку, и та слабая (замеры 22.10): лучше ни одной фишки, чем слабая
+    models, sections = _extras_models_and_archive(env, monkeypatch, {"side-model", "test-model"})
+    assert models == ["side-model", "test-model", "lite-model"] and "tips" not in sections
+    tmp, _ = env
+    assert "Сеть магазинов" in json.loads((tmp / "out" / "message.json").read_text(encoding="utf-8"))["text"]

@@ -98,6 +98,6 @@ def test_oversized_tip_still_fits_telegram_and_keeps_the_card_link():
 def test_tip_message_lists_the_steps_from_the_breakdown():
     tip = {**ISSUES[1]["entries"][2], "steps": ["Открой <settings.json>", "Добавь хук PreToolUse"]}
     text = build_tip_message(ISSUES[1], tip, SITE)
-    assert "<b>Как сделать:</b>\n1. Открой &lt;settings.json&gt;\n2. Добавь хук PreToolUse" in text
+    assert "<b>Подробности:</b>\n1. Открой &lt;settings.json&gt;\n2. Добавь хук PreToolUse" in text
     # Старые фишки в архиве без шагов — без блока
-    assert "Как сделать" not in build_tip_message(ISSUES[1], ISSUES[1]["entries"][3], SITE)
+    assert "Подробности" not in build_tip_message(ISSUES[1], ISSUES[1]["entries"][3], SITE)

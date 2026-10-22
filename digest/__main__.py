@@ -31,9 +31,10 @@ OUT = Path("out")
 def model_chains(settings: dict) -> tuple[list[str], list[str]]:
     """Цепочки моделей бесплатного ключа: квоты раздельные, и при сбое вызов сразу идёт к следующей модели.
     Главная — отбор и разборы: сначала 3.8 Flash (20 запросов в день). Побочная — «Ещё за день» и фишки: 3.6 Flash,
-    чтобы не тратить квоту 3.8. Последней везде стоит Lite (500 в день): выпуск похуже лучше, чем никакого."""
+    чтобы не тратить квоту 3.8; но 3.6 на бесплатном тарифе отказывает в ~85% вызовов (22.10), поэтому дальше 3.8,
+    а не сразу Lite. Последней везде стоит Lite (500 в день): выпуск похуже лучше, чем никакого."""
     return ([settings["model"], settings["extras_model"], settings["lite_model"]],
-            [settings["extras_model"], settings["lite_model"]])
+            [settings["extras_model"], settings["model"], settings["lite_model"]])
 
 
 def load_env(path: Path) -> None:

@@ -259,15 +259,6 @@ url = "https://www.reddit.com/r/LocalLLaMA+ClaudeAI+ChatGPTCoding+cursor/top/.rs
 # Страницы Reddit отвечают раннерам GitHub 403: полный текст поста берётся из самой ленты
 body_from_feed = true
 
-# Сабреддиты приёмов для фишек — отдельным мультиреддитом, иначе их вытесняют большие сабы выше
-# (22.10: ClaudeCode 36, PromptEngineering 7, ChatGPTPro 6, n8n 1 из 50)
-[[source]]
-name = "reddit_tips"
-type = "rss"
-category = "community"
-url = "https://www.reddit.com/r/ClaudeCode+PromptEngineering+n8n+ChatGPTPro/top/.rss?t=day&limit=50"
-body_from_feed = true
-
 # --- Медиа и рассылки ---
 [[source]]
 name = "techcrunch"
@@ -601,6 +592,16 @@ name = "simon_til"
 type = "rss"
 category = "engineer"
 url = "https://til.simonwillison.net/tils/feed.atom"
+
+# Сабреддиты приёмов для фишек — отдельным мультиреддитом, иначе их вытесняют большие сабы
+# (22.10: ClaudeCode 36, PromptEngineering 7, ChatGPTPro 6, n8n 1 из 50). Стоит последним: второй запрос к Reddit
+# сразу за первым получал 429, а пока собираются остальные ленты, проходит полминуты
+[[source]]
+name = "reddit_tips"
+type = "rss"
+category = "community"
+url = "https://www.reddit.com/r/ClaudeCode+PromptEngineering+n8n+ChatGPTPro/top/.rss?t=day&limit=50"
+body_from_feed = true
 
 # --- Рабочий стек читателя: о дыре, атаке или сбое в этих продуктах — срочно, даже если пишет одно издание ---
 # match — слова для поиска в заголовке и описании записи (целиком, без учёта регистра); старые названия тоже
