@@ -4,7 +4,8 @@ version = "0.1.0"
 requires-python = ">=3.12"
 # httpx: свой набор CA-сертификатов (urllib на Windows не проходит SSL arXiv) и пул соединений.
 # feedparser: RSS/Atom во всех вариациях; руками через xml.etree это сотни строк крайних случаев.
-dependencies = ["httpx>=0.28", "feedparser>=6.0"]
+# tzdata: в Windows нет системной базы часовых поясов, без неё zoneinfo не находит Asia/Tashkent
+dependencies = ["httpx>=0.28", "feedparser>=6.0", "tzdata; sys_platform == 'win32'"]
 
 [project.optional-dependencies]
 # Линтеры только с патч-обновлениями: шаг Lint стоит перед сборкой, и новый минор с новыми проверками
