@@ -719,7 +719,8 @@ def render_health(runs: list[dict], settings: dict, now: datetime) -> str:
 
 # Темы фишек — в том же порядке, что в llm.TIP_TOPICS; «Разное» — для фишек без темы (архив до арсенала, ошибка модели)
 TIP_TOPIC_LABELS = {"claude_code": "Claude Code", "agents": "Агенты и IDE", "prompts": "Промпты",
-                    "automation": "Автоматизация и боты", "security": "ИБ-инструменты", "local": "Локальные модели",
+                    "automation": "Автоматизация и боты", "security": "ИБ-инструменты", "ai_security": "ИИ-безопасность",
+                    "local": "Локальные модели",
                     "api": "API и SDK", "workflow": "Рабочий процесс", "other": "Разное"}
 
 # Галочка «попробовал»: состояние живёт в воркере (страница статичная и пересобирается дважды в день), браузер помнит
