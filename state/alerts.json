@@ -30,22 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-21T22:18:09.028840+00:00",
-   "keys": [
-    "theverge.com/games/1015647/ea-is-shutting-down-bioware",
-    "title:ea is shutting down bioware"
-   ],
-   "strength": 4
-  },
-  {
-   "at": "2026-10-21T22:18:09.028840+00:00",
-   "keys": [
-    "openai.com/index/broad-access-through-consistent-standards",
-    "title:broad access through consistent standards"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-10-22T05:18:05.429256+00:00",
    "keys": [
     "blogs.nvidia.com/blog/european-financial-services-organizations-open-models-proprietary-intelligence",
@@ -168,6 +152,24 @@
     "title:build more responsive apps with the decisions api"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-10-22T22:18:13.057956+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMie0FVX3lxTFBUQ0xBdVVtdnAwaTlVUzNXZHBuVldrQ0p3Qm5zcmJoSmN3eldPMzllYjh0MTFLbE9tdEN4Rnl0dHBDN3ZDLXMxalhjek4xM25sS2dVVzBoc2JUYk5IU2hGakJXMS1pU0xEZ1VVVS04aTJtR2phQ3ZidWRaVQ?oc=5",
+    "news.google.com/rss/articles/CBMilgFBVV95cUxQYzlYMElEZWpheDcybHdGNUJyelJDb1JNSVlBbHZQWXd5Znp3OGNWSnYyZ2MzRElldkFsblhleUtJZGxTYUVuQ01TZnoyeUxra29SRGZnc2JWRHo2NU5NMmY0YXhoeTBpY0xzd0Z0cWxXUFhIdHJNeHFOdHJiSEdVdXdyeTFfcGJnM2xVdWN0MkdPUVNRVGc?oc=5",
+    "news.google.com/rss/articles/CBMipgFBVV95cUxNTWxDZDg5X0padGNvb2k2V2ZkX2tEWW9YWkdjeVdMZHNUTlg1MXY4TmUyTDZHdUhNTHFRNWRPRjc2VFlEN3RXTDhNSjhDYmRfTWZGXzdKYXdLejRHNGgwRVdNbmZRUkFhSm9GakxMek56UUZ2OUtqajd6NVkzRkR1VzBNWlo5VWp5NUFkX2phUjlSSFlndUlNNGxvUXlHSm1wMlpTbkRR?oc=5",
+    "title:s p 500 nasdaq end sharply lower as revived ai doubts ignite tech selloff"
+   ],
+   "strength": 3
+  },
+  {
+   "at": "2026-10-22T22:18:13.057956+00:00",
+   "keys": [
+    "anthropic.com/news/open-call-guest-investigators-life-sciences",
+    "title:today we re inviting members of the life sciences community to apply to work with us on special projects"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
@@ -206,7 +208,8 @@
   "https://www.anthropic.com/news/claude-text-watermark": "2026-10-20T17:18:08.547990+00:00",
   "https://www.anthropic.com/news/features": "2026-10-21T02:18:11.473261+00:00",
   "https://www.anthropic.com/news/christopher-stubbs-joins-long-term-benefit-trust": "2026-10-21T18:18:06.410033+00:00",
-  "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation": "2026-10-22T18:18:09.178104+00:00"
+  "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation": "2026-10-22T18:18:09.178104+00:00",
+  "https://www.anthropic.com/news/open-call-guest-investigators-life-sciences": "2026-10-22T22:18:13.057956+00:00"
  },
  "primed": true
 }
