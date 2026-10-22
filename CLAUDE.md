@@ -43,6 +43,8 @@ Local runs read `.env` (`load_env` in `digest/__main__.py`; never overrides real
   urgent (an alert can wake the reader at night — the best model writes it). `build` = 2 calls on 3.8 + 1 on 3.6, `weekly` = 1 → ≈5 calls/day on 3.8.
 - **503 counts against RPD** (verified 2026-10-21: AI Studio counters matched exactly, 3.6 = 6, 3.8 = 17, incl.
   every 503). Free-tier 3.8/3.6 shed load with an instant 503 «high demand» (1–2 s) that clears within minutes.
+- Logs before 2026-10-21 07:38 UTC show zero 503s: until then the key was by mistake in the billed «Default Gemini
+  Project». On the free key 3.8 fails ≈50% and 3.6 ≈85% of calls (Lite 0%) — that is the free tier, not a code bug.
 - `llm.generate` makes ONE attempt; `llm.generate_first` moves to the next model on any failure (429, 5xx, timeout,
   404 of a retired model). The only same-model retry: `select` waits `llm.OVERLOAD_WAIT` (60 s) once after a 503.
   Don't add more retries: every retry, timeout and 503 costs a request. Logs show latency and thinking tokens.
