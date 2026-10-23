@@ -1,6 +1,94 @@
 [
  {
   "date": "2026-10-23",
+  "slot": "evening",
+  "headline": "Бегство от дефицита чипов, новые уязвимости в Python и PHP",
+  "page": "2026-10-23-evening.html",
+  "entries": [
+   {
+    "id": "20261023-14",
+    "title": "OpenAI поднимает до $30 млрд раунд при оценке в $1,25 трлн",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/openai-lowers-valuation-target-raises-up-to-30-billion/",
+    "story": "s105"
+   },
+   {
+    "id": "20261023-15",
+    "title": "Критическая уязвимость в Pillow позволяет выполнять команды через картинки",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/critical-flaw-in-pythons-popular-pillow.html",
+    "story": "s106"
+   },
+   {
+    "id": "20261023-16",
+    "title": "Пакет LiteLLM скомпрометирован через украденные GitHub CLI токены",
+    "section": "security",
+    "source": "securityweek",
+    "url": "https://www.securityweek.com/litellm-compromised-in-fresh-supply-chain-attack/",
+    "story": "s81"
+   },
+   {
+    "id": "20261023-17",
+    "title": "Уязвимость в x402 SDK могла позволить API опустошать баланс ИИ-агентов",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/critical-x402-sdk-flaw-could-let.html",
+    "story": "s107"
+   },
+   {
+    "id": "20261023-18",
+    "title": "Правительство Швеции запретило сотрудникам использовать ChatGPT и Claude",
+    "section": "business",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xdcmm4/swedens_government_is_blocking_chatgpt_and_claude/",
+    "story": "s108"
+   },
+   {
+    "id": "20261023-19",
+    "title": "DeepSeek и MiniMax получили одобрение на зарубежный экспорт и софт",
+    "section": "business",
+    "source": "scmp_tech",
+    "url": "https://www.scmp.com/tech/policy/article/3371880/deepseek-minimax-secure-open-source-licenses-days-after-new-china-export-rules-state-media",
+    "story": "s109"
+   },
+   {
+    "id": "20261023-20",
+    "title": "Anthropic запускает консалтинг по внедрению ИИ в Европе вместе с фондом Hg",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.ft.com/content/df70bf20-e809-48d0-8485-f8f514a7fbc4",
+    "story": "s110"
+   },
+   {
+    "id": "20261023-21",
+    "title": "Основатель Unitree ждет прорыва в гуманоидных роботах уже к 2028 году",
+    "section": "product",
+    "source": "bloomberg_tech",
+    "url": "https://www.bloomberg.com/news/articles/2026-10-23/unitree-founder-now-expects-robots-breakthrough-as-soon-as-2028",
+    "story": "s111"
+   },
+   {
+    "id": "20261023-22",
+    "title": "Canva выкатила Craft — свою первую модель генерации картинок",
+    "section": "product",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/canva-launches-craft-its-first-in-house-image-model/",
+    "story": "s104"
+   },
+   {
+    "id": "20261023-23",
+    "title": "Линус Торвальдс: ИИ хорош для толковых девчонок и парней, но хватит мусорить патчами",
+    "section": "voices",
+    "source": "the_register",
+    "url": "https://www.theregister.com/columnists/2026/10/23/torvalds-ai-is-fine-for-competent-devs-but-spare-us-the-drive-by-patches/5304357",
+    "story": ""
+   }
+  ]
+ },
+ {
+  "date": "2026-10-23",
   "slot": "morning",
   "headline": "Атаки на PHP2Shell до патчей, уход eMudhra и микро-ВМ для агентов",
   "page": "2026-10-23.html",
