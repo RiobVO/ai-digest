@@ -1,15 +1,6 @@
 {
  "sent": [
   {
-   "at": "2026-10-20T11:18:08.031078+00:00",
-   "day": "2026-10-20",
-   "title": "DeepSeek открыла исходный код своего движка инференса",
-   "keys": [
-    "github.com/deepseek-ai/DeepInfer",
-    "title:deepseek just open sourced its inference engine"
-   ]
-  },
-  {
    "at": "2026-10-20T16:18:07.002527+00:00",
    "day": "2026-10-20",
    "title": "Mistral выпустила Voxtral 3 — SDK для голосовых агентов на 50+ языках",
