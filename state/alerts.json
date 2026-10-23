@@ -1,15 +1,6 @@
 {
  "sent": [
   {
-   "at": "2026-10-20T16:18:07.002527+00:00",
-   "day": "2026-10-20",
-   "title": "Mistral выпустила Voxtral 3 — SDK для голосовых агентов на 50+ языках",
-   "keys": [
-    "mistral.ai/news/voxtral-3",
-    "title:voxtral 3"
-   ]
-  },
-  {
    "at": "2026-10-21T22:18:09.028840+00:00",
    "day": "2026-10-22",
    "title": "Mistral запустила превью флагманской модели Mistral Large 4 на 1 трлн параметров",
@@ -95,6 +86,22 @@
     "title:your phone is about to stop being yours 70 days until lockdown"
    ],
    "strength": 26
+  },
+  {
+   "at": "2026-10-23T16:42:31.785269+00:00",
+   "keys": [
+    "kadoa.com/energy-prices/insights/investor-owned-utilities",
+    "title:investor owned utilities charge 23 more for electricity than public providers"
+   ],
+   "strength": 4
+  },
+  {
+   "at": "2026-10-23T16:42:31.785269+00:00",
+   "keys": [
+    "openai.com/index/scaling-storage-one-billion-users-part-two",
+    "title:rapidly scaling online storage to serve over 1 billion chatgpt users part ii"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
