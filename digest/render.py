@@ -299,6 +299,10 @@ def _status(entry: Entry) -> str:
     return f'<span class="tag status">{label}</span>' if label else ""
 
 
+# Промпт фишки из непроверенного источника (Reddit, HN): вставленный агенту, он исполняется как команда
+UNTRUSTED_LABEL = "Промпт из непроверенного источника — прочитай перед вставкой"
+
+
 def _term(commands: list[str], label: str = "Терминал") -> str:
     return (f'<div class="term"><div class="term-bar">{ICONS["terminal"]}<span>{label}</span>'
             f'<button type="button" class="copy">Скопировать</button></div>'
@@ -386,7 +390,7 @@ def _item(n: int, entry: Entry, votes: bool) -> str:
     hot = " hot" if entry.importance >= 8 else ""
     also = f'<span class="also">{_also(entry)}</span>' if entry.item.also else ""
     # Оценка важности нужна только отбору: читателю «8.6» ничего не говорит, главное видно по месту в выпуске
-    copy = _term([entry.copy], "Команда или промпт") if entry.copy else ""
+    copy = _term([entry.copy], UNTRUSTED_LABEL if entry.copy_untrusted else "Команда или промпт") if entry.copy else ""
     return (f'<div class="item"{_entry_attr(entry)}><span class="num{hot}">{n}</span>'
             f'<div><div class="meta">{_status(entry)}'
             f'{_source(entry.item.url)}{_buzz(entry.item)}{also}</div>'
@@ -766,7 +770,7 @@ TIPS_SCRIPT = """<script>
 
 
 def _tip(tip: dict, page: str, tried: bool) -> str:
-    copy = (_term([tip["copy"]], "Команда или промпт") if tip.get("copy")
+    copy = (_term([tip["copy"]], UNTRUSTED_LABEL if tip.get("copy_untrusted") else "Команда или промпт") if tip.get("copy")
             else '<p class="tip-note">Команда не подтверждена источником — шаги в первоисточнике</p>')
     why = f'<div class="why"><b>Зачем:</b> {escape(tip["why"])}</div>' if tip.get("why") else ""
     summary = f'<p>{escape(tip["summary"])}</p>' if tip.get("summary") else ""

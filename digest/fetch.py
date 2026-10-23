@@ -1,6 +1,7 @@
 import json
 import logging
 import re
+import time
 from calendar import timegm
 from datetime import datetime, timedelta, timezone
 from html import unescape
@@ -238,6 +239,7 @@ def parse_html(body: str, src: dict) -> list[Item]:
 NOISE_BLOCKS = re.compile(r"<(script|style|noscript|svg|nav|header|footer|aside|form)\b.*?</\1>", re.S | re.I)
 MAIN_BLOCK = re.compile(r"<(article|main)\b[^>]*>(.*)</\1>", re.S | re.I)
 ARTICLE_LIMIT = 8000
+RATE_LIMIT_PAUSE, RATE_LIMIT_MAX_PAUSE = 10.0, 30.0
 # Короче — заглушка («Google News», «включите JavaScript»), а не статья: модель получит «текст недоступен»
 # и не станет додумывать по мусору
 MIN_ARTICLE_CHARS = 300
@@ -289,6 +291,16 @@ def _fetch_one(client: httpx.Client, src: dict, now: datetime) -> list[Item]:
         response = client.get(src["url"], params=params)
     else:
         response = client.get(src["url"])
+        if response.status_code == 429:
+            # Reddit отвечает 429 на второй запрос подряд (22.10: мультиреддит фишек пропадал через раз): одна пауза
+            # и повтор. Retry-After бывает и датой — тогда ждём по умолчанию; дольше 30 с выпуск не держим
+            try:
+                pause = min(float(response.headers.get("Retry-After", RATE_LIMIT_PAUSE)), RATE_LIMIT_MAX_PAUSE)
+            except ValueError:
+                pause = RATE_LIMIT_PAUSE
+            log.warning("источник %s ответил 429, повтор через %.0f с", src["name"], pause)
+            time.sleep(pause)
+            response = client.get(src["url"])
     response.raise_for_status()
     if kind == "rss":
         return parse_feed(response.content, src)

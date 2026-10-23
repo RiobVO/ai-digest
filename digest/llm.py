@@ -164,7 +164,7 @@ score — голоса за статью на HF Papers.
 Реальный ущерб выше теоретического: атака с пострадавшими
 (компания легла, данные украдены, бэкдор уже раздавали пользователям) важнее дыры, которую вендоры уже закрыли и
 которой, по записи, никто не воспользовался. Нишевый продукт, экзотический сценарий или спор специалистов ниже, даже
-если о нём много пишут на HN. В items — 2–4 самых важных, остальные значимые уйдут в «Ещё за день».
+если о нём много пишут на HN. В items — не больше 3 самых важных, остальные значимые уйдут в «Ещё за день».
 Шум: уязвимость в нишевом продукте без атак, отчёты вендоров ради рекламы (обзоры рынка, «тренды угроз» без конкретной
 атаки), инструкции по настройке без новости. Совет «что делать»
 (обновиться, сменить пароль) — только если он есть в записи.
@@ -204,6 +204,7 @@ score — голоса за статью на HF Papers.
   Ориентир: в обычный день 8 и выше — у одного-трёх событий, бывает и ноль. Сколько событий набралось в выпуск,
   на оценку не влияет.
 - story: если событие продолжает один из активных сюжетов ниже — его id (например, "s4"), иначе пустая строка.
+  Продолжение сюжета: начинай title с нового в этой записи, а не с того, что читатель уже видел в прошлом выпуске.
 - story_name: для нового сюжета — короткое имя линии в 2–5 слов, до 40 символов (например, «Nemotron 3.5»,
   «Банкротство Character.AI»), а не заголовок новости; для продолжения — пустая строка.
 - headline: тема дня по-русски, до 70 символов. Если события объединяет общая тема — назови её; если нет — назови
@@ -225,7 +226,7 @@ score — голоса за статью на HF Papers.
 - items: обычно 8–12 событий (в тихий день меньше) плюс голоса, если есть; про одну компанию не больше двух,
   третье — только если день действительно про неё. Шум не вернул.
 - Безопасность отобрана по масштабу: крупные компании, массовые и типовые корпоративные продукты, цепочки поставок
-  и разборы атак исследователями выше нишевого.
+  и разборы атак исследователями выше нишевого; в items её не больше 3.
 - Каждая цифра, дата и название в title, summary и why есть в записи; смысл не расширен.
 - why — вывод: что меняется и для кого, а нет вывода — пустая строка; без мотивов, которых нет в записи, без шаблонов «показывает», «демонстрирует»,
   «в очередной раз»; не пересказывает summary, не прогнозирует сверх записи; «если ты» — не больше чем в двух-трёх
@@ -315,7 +316,8 @@ EXTRAS_PROMPT = """Ты редактор личного дайджеста но�
 - tips: ids — записи с приёмом; title — по-русски, до 90 символов: что появилось или что сделать; why — одно
   предложение: зачем это и в какой работе пригодится, только из записи; описывает результат именно этих шагов,
   а не всё, на что способен инструмент; нужен платный ключ или подписка — так и скажи;
-  summary — как запустить: 1–3 шага по записи;
+  summary — как запустить: 1–3 шага по записи; читается и без copy: не «скорми эту фразу», а что сделать и какой
+  промпт или настройку взять из записи — copy могут не показать;
   copy — команда, флаг или промпт ДОСЛОВНО из записи, без изменений и перевода; нет такого — пустая строка;
   topic — тема: claude_code — Claude Code; agents — другие агенты и IDE (Codex, Cursor, Gemini CLI); prompts —
   промпты и приёмы работы с моделью; automation — боты, n8n, скрипты и интеграции; security — инструменты ИБ;
@@ -470,6 +472,8 @@ class Entry:
     status: str = ""
     # Команда или промпт фишки для кнопки «Скопировать» — только дословно из записи доверенной ленты
     copy: str = ""
+    # Промпт из непроверенного источника (Reddit, HN): показывается отдельным блоком с предупреждением (verify_copies)
+    copy_untrusted: bool = False
     # Тема фишки для арсенала (llm.TIP_TOPICS); у событий пустая
     topic: str = ""
     # Заполняются памятью (digest.memory): id для оценок, сюжетная линия и её история
@@ -494,6 +498,18 @@ class Digest:
     entries: list[Entry]
     noise: list[Item] = field(default_factory=list)
     more: list[Mention] = field(default_factory=list)
+
+
+def cap_section(digest: Digest, section: str, limit: int) -> None:
+    """Не больше limit карточек раздела: остальные — строкой в начало «Ещё за день». Модель правило из промпта не
+    держит (23.10: 6 событий безопасности из 13 при «2–4»), а читателю нужны и ИИ, и технологии. Записи уже
+    по важности, поэтому остаются самые важные."""
+    kept: list[Entry] = []
+    moved: list[Entry] = []
+    for entry in digest.entries:
+        (moved if entry.section == section and sum(e.section == section for e in kept) >= limit else kept).append(entry)
+    digest.entries = kept
+    digest.more[:0] = [Mention(e.item, e.title) for e in moved]
 
 
 def entry_rank(entry: Entry) -> tuple[bool, float]:
@@ -622,18 +638,49 @@ def _squash(text: str) -> str:
     return " ".join(text.split())
 
 
+# Промпт из сообщества показываем, только если он похож на обычную фразу для модели: одна строка из букв, пробелов
+# и пунктуации — без цифр (IP, порты), путей, спецсимволов оболочки, имён файлов и доменов, без слов про команды,
+# сеть, файлы, секреты и отключение защиты. Это эвристика, а не гарантия: вредную просьбу можно сказать и обычными
+# словами (три ревью Codex 23.10 находили обходы). Главная защита — пометка «прочитай перед вставкой»; ложные
+# отказы (промпт с CLAUDE.md или «files») — цена осторожности
+UNTRUSTED_PROMPT_MAX = 300
+SAFE_PROMPT_CHARS = re.compile(r"[A-Za-zА-Яа-яЁё ,.!?:;'\"()«»—–-]+")
+UNSAFE_SHAPE = re.compile(r"\b\S+\.[A-Za-zА-Яа-я]{2,}\b|\.\w|\b[A-Za-z]:\w|\bdot\s+[a-z]{2,}\b", re.I)
+UNSAFE_WORDS = re.compile(
+    r"\b(sh|bash|zsh|cmd|ls|pwd|whoami|cd|cat|rm|mv|cp|chmod|chown|sudo|su|curl|wget|nc|ssh|scp|git|pip|npm|npx|uv|"
+    r"node|python|docker|env|key|keys|post|http|https|localhost|eval|exec|shell|terminal|console|script|scripts|ip)\b|"
+    r"\b(fetch|download|upload|send|forward|paste|request|webhook|invok|execut|instal|delet|remov|wipe|eras|disabl|"
+    r"bypass|skip|ignor|disregard|overrid|turn off|switch off|permission|sandbox|safety|safeguard|guardrail|restrict|"
+    r"credential|secret|token|password|passwd|cookie|bearer|auth|login|base64|netrc|connect|port|server|host|address|"
+    r"file|folder|director|path|disk|drive|readme|repositor|clone)\w*|"
+    r"парол|секрет|токен|ключ|отправ|загруз|скача|удал|запуст|выполн|игнорир|отключ|обойд|файл|папк|сервер|адрес|порт",
+    re.I)
+
+
+def _harmless_prompt(text: str) -> bool:
+    return (len(text) <= UNTRUSTED_PROMPT_MAX and bool(SAFE_PROMPT_CHARS.fullmatch(text))
+            and not UNSAFE_SHAPE.search(text) and not UNSAFE_WORDS.search(text))
+
+
 def verify_copies(entries: list[Entry], texts: dict[str, str]) -> None:
     """«Скопировать» у фишки — та же граница доверия, что у команд разборов: вставленный агенту чужой промпт
     исполняется, как команда. Сверяем со скачанной страницей первоисточника, а не с описанием из ленты: склейка дублей
     (dedup.absorb) дописывает пустое описание доверенной записи текстом недоверенного дубля, а склейка событий ставит
-    первым доверенный релиз рядом с постом с Reddit."""
+    первым доверенный релиз рядом с постом с Reddit.
+    Исключение по решению владельца (23.10): короткий безобидный промпт из сообщества (не команда) показывается
+    с пометкой copy_untrusted — без него фишка с Reddit ссылалась на «эту фразу», которой нигде не было."""
     for entry in entries:
         if not entry.copy:
             continue
         item = entry.item
-        if not (_commands_trusted(item) and _squash(entry.copy) in _squash(texts.get(item.url, ""))):
-            log.warning("«Скопировать» не из текста доверенного первоисточника отброшено: %s", item.url)
-            entry.copy = ""
+        verbatim = _squash(entry.copy) in _squash(texts.get(item.url, ""))
+        if _commands_trusted(item) and verbatim:
+            continue
+        if item.category == "community" and verbatim and _harmless_prompt(entry.copy):
+            entry.copy_untrusted = True
+            continue
+        log.warning("«Скопировать» не из текста первоисточника или похоже на команду и атаку — отброшено: %s", item.url)
+        entry.copy = ""
 
 
 def attach_explanations(entries: list[Entry], raw: dict, texts: dict[str, str]) -> None:

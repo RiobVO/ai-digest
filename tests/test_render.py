@@ -514,3 +514,15 @@ def test_hero_from_security_shows_terms_too():
     page = render_page(Digest("h", "l", [hero]), STATS, WHEN, failures=[])
     block = page[page.index('id="main-story"'):page.index("</section>", page.index('id="main-story"'))]
     assert "<dt>буткит</dt>" in block
+
+
+def test_untrusted_prompt_on_the_page_carries_a_warning():
+    from digest.render import _term
+    assert "непроверенного источника" not in _term(["ls"], "Команда или промпт")
+    digest = sample()
+    tip = Entry(Item(source="reddit_tips", title="p", url="https://www.reddit.com/r/x/1", category="community"), "tips", 6,
+                "Промпт", "s", "w")
+    tip.copy, tip.copy_untrusted = "Prove to me this works", True
+    digest.entries.append(tip)
+    page = render_page(digest, STATS, WHEN, failures=[])
+    assert "Промпт из непроверенного источника — прочитай перед вставкой" in page

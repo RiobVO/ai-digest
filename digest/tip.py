@@ -9,7 +9,7 @@ from html import escape
 from pathlib import Path
 
 from digest.alert import is_quiet
-from digest.render import DISPLAY_TZ, _href
+from digest.render import DISPLAY_TZ, UNTRUSTED_LABEL, _href
 from digest.telegram import TG_LIMIT, _clip, _visible
 
 log = logging.getLogger(__name__)
@@ -57,7 +57,10 @@ def build_tip_message(issue: dict, entry: dict, site_url: str) -> str:
     card = f"{base}/{issue['page']}#e-{entry['id']}"
     tail = ["", f'<a href="{_href(card)}">Карточка в выпуске</a> · <a href="{_href(base + "/tips.html")}">Арсенал фишек</a>']
     # Команда или промпт уже сверены с текстом доверенного источника (llm.verify_copies) до записи в архив
-    with_copy = "\n".join(head + ["", f"<code>{escape(entry['copy'])}</code>"] + tail) if entry.get("copy") else ""
+    # Промпт из сообщества — отдельным блоком кода и с предупреждением, но не обычным текстом (решение владельца 23.10)
+    warning = [f"<i>{UNTRUSTED_LABEL}:</i>"] if entry.get("copy_untrusted") else []
+    with_copy = ("\n".join(head + ["", *warning, f"<code>{escape(entry['copy'])}</code>"] + tail)
+                 if entry.get("copy") else "")
     # Длинный промпт не обрезаем — обрезанный не сработает; он остаётся в карточке, а Telegram не отклонит сообщение
     # (ревью Codex: отказ Telegram повторялся бы каждый час, и фишка не ушла бы)
     if with_copy and _visible(with_copy) <= TG_LIMIT:

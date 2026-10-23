@@ -285,3 +285,22 @@ def test_feed_body_fills_only_articles_that_could_not_be_fetched():
     texts = {blocked.url: "", fetched.url: "статья со страницы"}
     fill_from_feed(texts, [blocked, fetched])
     assert texts == {blocked.url: "полный пост", fetched.url: "статья со страницы"}
+
+
+def test_rate_limited_feed_is_retried_once_after_a_pause(monkeypatch):
+    import httpx
+
+    from digest import fetch
+    calls, pauses = [], []
+    atom = REDDIT_ATOM.encode()
+
+    def handler(request):
+        calls.append(request.url)
+        return httpx.Response(429, headers={"Retry-After": "120"}) if len(calls) == 1 else httpx.Response(200, content=atom)
+
+    monkeypatch.setattr(fetch.time, "sleep", pauses.append)
+    # 22.10: второй запрос к Reddit подряд получал 429, и мультиреддит фишек пропадал через раз
+    with httpx.Client(transport=httpx.MockTransport(handler)) as client:
+        items = fetch._fetch_one(client, {"name": "reddit_tips", "type": "rss", "category": "community",
+                                          "url": "https://www.reddit.com/r/x/top/.rss"}, datetime.now(timezone.utc))
+    assert len(calls) == 2 and pauses == [30] and items[0].title == "My Claude Code setup"

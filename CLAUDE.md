@@ -138,6 +138,13 @@ Site pages besides issues (all built with the `page.html` shell, rebuilt by ever
 - Copyable terminal commands are shown only if they appear **verbatim** in the source text **and** the item is from a
   trusted category (`lab`, `release`, `engineer`, `newsletter`) on the feed's own host (`llm._commands_trusted`).
   The same rule guards a trick's `Entry.copy` (command or prompt): a prompt pasted into an agent runs like a command.
+  One owner-approved exception (2026-10-23): a short prompt from a `community` source (Reddit/HN) is kept with
+  `copy_untrusted` and a warning label if it is verbatim in the post and passes `llm._harmless_prompt` (one line of
+  letters and punctuation only, no digits, paths, file or domain names, no words about commands, network, files,
+  secrets or disabling safeguards). It is a heuristic, not a guarantee — three Codex reviews found bypasses of word
+  lists; the warning label is the main safeguard. Never commands from community sources.
+- Security events are capped at 3 cards per issue (`__main__.SECURITY_CAP`, `llm.cap_section`); the rest become
+  «Ещё за день» lines — the model does not keep the prompt's cap.
 - The Telegram bot token is in request URLs and Actions logs are public: `httpx`/`httpcore` logging is raised to WARNING
   and `TelegramError` drops the original exception. Don't log request URLs.
 - Worker: constant-time token compare, page endpoints (`/vote`, `/read`, `/tried` GET+POST) accept only `PAGE_ORIGIN`,

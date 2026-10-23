@@ -49,15 +49,15 @@ def _dump(path: Path, data) -> None:
 
 
 def _archived(e: Entry) -> dict:
-    row: dict[str, str | list[str]] = {"id": e.id, "title": e.title, "section": e.section, "source": e.item.source,
+    row: dict[str, str | bool | list[str]] = {"id": e.id, "title": e.title, "section": e.section, "source": e.item.source,
                                        "url": e.item.url, "story": e.story}
     if e.section == "tips":
         # Арсенал фишек собирается из архива: ему нужен текст карточки, тема и уже проверенная команда
         # (verify_copies отработал до записи). Событиям это не нужно — архив не раздувается
         # Шаги — из разбора по полному тексту статьи: в описании ленты приёма часто нет, и без шагов фишка
         # в Telegram звучала как «склонируй и используй» (22.10)
-        row |= {"summary": e.summary, "why": e.why, "copy": e.copy, "topic": e.topic,
-                "steps": list(e.details.points) if e.details else []}
+        row |= {"summary": e.summary, "why": e.why, "copy": e.copy, "copy_untrusted": e.copy_untrusted,
+                "topic": e.topic, "steps": list(e.details.points) if e.details else []}
     return row
 
 

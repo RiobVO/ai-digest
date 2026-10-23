@@ -252,3 +252,11 @@ def test_archive_keeps_the_tip_steps_from_its_breakdown(tmp_path):
     record_issue(archive, Stories(tmp_path / "s.json"), date(2026, 10, 22), "h", "p.html", [tip, no_breakdown])
     saved, bare = archive.issues[0]["entries"]
     assert saved["steps"] == ["Открой settings.json", "Добавь хук PreToolUse"] and bare["steps"] == []
+
+
+def test_archive_remembers_that_a_tip_copy_is_from_an_unverified_source(tmp_path):
+    archive = Archive(tmp_path / "issues.json")
+    tip = entry("Промпт", section="tips", source="reddit_tips")
+    tip.copy, tip.copy_untrusted = "Prove to me this works", True
+    record_issue(archive, Stories(tmp_path / "s.json"), date(2026, 10, 23), "h", "p.html", [tip])
+    assert archive.issues[0]["entries"][0]["copy_untrusted"] is True
