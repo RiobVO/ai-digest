@@ -30,14 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-22T06:18:08.823860+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/european-public-sector-open-models",
-    "title:nvidia open models power a new wave of european public sector projects"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-10-22T08:18:07.200192+00:00",
    "keys": [
     "bloomberg.com/news/articles/2026-10-22/softbank-market-value-poised-to-halve-from-peak-as-ai-fears-grow",
