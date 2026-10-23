@@ -12,22 +12,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-22T20:18:07.722229+00:00",
-   "keys": [
-    "quad9.net/news/blog/au-revoir-france",
-    "title:quad9 dns resolver to exit france"
-   ],
-   "strength": 6
-  },
-  {
-   "at": "2026-10-22T20:18:07.722229+00:00",
-   "keys": [
-    "openai.com/index/decisions-api",
-    "title:build more responsive apps with the decisions api"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-10-22T22:18:13.057956+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMie0FVX3lxTFBUQ0xBdVVtdnAwaTlVUzNXZHBuVldrQ0p3Qm5zcmJoSmN3eldPMzllYjh0MTFLbE9tdEN4Rnl0dHBDN3ZDLXMxalhjek4xM25sS2dVVzBoc2JUYk5IU2hGakJXMS1pU0xEZ1VVVS04aTJtR2phQ3ZidWRaVQ?oc=5",
@@ -100,6 +84,14 @@
    "keys": [
     "blog.calif.io/p/iphone",
     "title:today we hacked what we d set out to hack the iphone"
+   ],
+   "strength": 4
+  },
+  {
+   "at": "2026-10-23T20:18:14.684781+00:00",
+   "keys": [
+    "kimi.ai/blog/kimi-k3-1-pro",
+    "title:moonshot unveils kimi k3 1 pro a 3t class open weight model with a 1m token context window and k3 1 pro highspeed with full weights to be released by nov 4 kimi"
    ],
    "strength": 4
   }
