@@ -1,5 +1,141 @@
 [
  {
+  "date": "2026-10-23",
+  "slot": "morning",
+  "headline": "Атаки на PHP2Shell до патчей, уход eMudhra и микро-ВМ для агентов",
+  "page": "2026-10-23.html",
+  "entries": [
+   {
+    "id": "20261023-0",
+    "title": "PHP2Shell начали атаковать за 4 дня до патчей, в Британии встали 32 госсервиса",
+    "section": "security",
+    "source": "ars_ai",
+    "url": "https://arstechnica.com/security/2026/10/hackers-got-a-four-day-head-start-on-epic-php2shell-vulnerability/",
+    "story": "s69"
+   },
+   {
+    "id": "20261023-1",
+    "title": "eMudhra сворачивает выпуск SSL/TLS после обнаружения ключа со значением «4»",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/emudhra-to-exit-global-ssltls-business.html",
+    "story": "s67"
+   },
+   {
+    "id": "20261023-2",
+    "title": "Банки США закрывают доступ сторонним ИИ-агентам с клиентскими паролями",
+    "section": "security",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/major-us-banks-are-locking-out-ai-agents-that-log-in-with-customer-credentials/",
+    "story": "s95"
+   },
+   {
+    "id": "20261023-3",
+    "title": "В Arista VeloCloud Orchestrator закрыли 0-day SQL-инъекцию под атаками",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/arista-warns-of-critical-velocloud-sql.html",
+    "story": "s98"
+   },
+   {
+    "id": "20261023-4",
+    "title": "Anthropic передала спецификацию Agent Skills независимому фонду AAIF",
+    "section": "dev",
+    "source": "anthropic",
+    "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
+    "story": "s99"
+   },
+   {
+    "id": "20261023-5",
+    "title": "Хакеры внедрили стилер в пять релизов официального CLI-инструмента OVHcloud",
+    "section": "security",
+    "source": "xakep",
+    "url": "https://xakep.ru/2026/10/22/ovhcloud-cli-hack/",
+    "story": "s100"
+   },
+   {
+    "id": "20261023-6",
+    "title": "1Password выкатил авторизацию для ИИ-агентов без передачи мастер-паролей",
+    "section": "security",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/10/22/1password-launches-a-way-for-ai-agents-to-log-in-on-your-behalf-without-seeing-your-password/",
+    "story": "s101"
+   },
+   {
+    "id": "20261023-7",
+    "title": "Google представила Agent Compute Engine с аппаратной изоляцией агентов Gemini",
+    "section": "dev",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/googles-agent-compute-engine-gives-every-gemini-agent-its-own-hardware-isolated-micro-virtual-machine/",
+    "story": "s102"
+   },
+   {
+    "id": "20261023-8",
+    "title": "OpenAI запустила Decisions API для быстрой классификации и маршрутизации",
+    "section": "product",
+    "source": "openai",
+    "url": "https://openai.com/index/decisions-api",
+    "story": "s103"
+   },
+   {
+    "id": "20261023-9",
+    "title": "В Claude Code v2.1.309 закрыли побег Bash-команд за пределы песочницы",
+    "section": "dev",
+    "source": "gh_claude_code",
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.309",
+    "story": "s88"
+   },
+   {
+    "id": "20261023-10",
+    "title": "Canva выпустила Craft — модель генерации картинок с предварительным планированием",
+    "section": "model",
+    "source": "techmeme",
+    "url": "https://techcrunch.com/2026/10/22/canva-releases-its-first-image-generation-model/",
+    "story": "s104"
+   },
+   {
+    "id": "20261023-11",
+    "title": "Гергей Орос: «Месячная норма взломов за день — пора переосмыслить безопасность софта»",
+    "section": "voices",
+    "source": "pragmatic_engineer",
+    "url": "https://newsletter.pragmaticengineer.com/p/the-pulse-do-we-need-to-rethink-software",
+    "story": ""
+   },
+   {
+    "id": "20261023-12",
+    "title": "Промпт для ловли скрытых багов в Claude Code",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xcl2ca/i_tested_2_of_boris_chernys_coding_prompts_one/",
+    "story": "",
+    "summary": "Когда агент выдал готовое решение, скорми ему эту фразу вместо аппрува — он начнёт гонять тесты и искать ошибки в логике.",
+    "why": "Заставляет модель написать проверочные тесты и перепроверить краевые случаи до того, как ты примешь дифф.",
+    "copy": "",
+    "topic": "claude_code",
+    "steps": [
+     "Фраза 'Prove to me this works' отловила скрытые ошибки в 3 из 3 тестовых прогонов и исправила падающий тест.",
+     "Альтернативный промпт с просьбой переписать всё начисто для элегантности показал 0 улучшений в 6 тестах и в одном случае сломал работавший код.",
+     "Тестирование проводилось на моделях Claude Sonnet 5.5 и Codex Sol 6.1 на задачах фикса бага и фичи из восьми файлов."
+    ]
+   },
+   {
+    "id": "20261023-13",
+    "title": "Правило для точных промптов через инженерные термины",
+    "section": "tips",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xcx3td/do_yall_nondev_vibecoders_implement_any_kind_of/",
+    "story": "",
+    "summary": "Добавь в системные инструкции или файл правил требование начинать ответ с этой фразы каждый раз, когда описываешь задачу своими словами.",
+    "why": "Помогает быстро вытащить общепринятые технические термины и формулировать для ИИ точные требования без длинных описаний.",
+    "copy": "",
+    "topic": "prompts",
+    "steps": [
+     "По наблюдениям автора, задание стандартного инженерного контекста в начале работы удерживает модель в строгих профессиональных рамках."
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-10-22",
   "slot": "evening",
   "headline": "Массовые атаки через PHP2Shell, взлом 2250 тенантов ИИ-агентом ARTEX",
