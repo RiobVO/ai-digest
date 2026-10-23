@@ -80,20 +80,20 @@
    "strength": 3
   },
   {
-   "at": "2026-10-23T19:08:00.158825+00:00",
-   "keys": [
-    "blog.calif.io/p/iphone",
-    "title:today we hacked what we d set out to hack the iphone"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-10-23T20:18:14.684781+00:00",
    "keys": [
     "kimi.ai/blog/kimi-k3-1-pro",
     "title:moonshot unveils kimi k3 1 pro a 3t class open weight model with a 1m token context window and k3 1 pro highspeed with full weights to be released by nov 4 kimi"
    ],
    "strength": 4
+  },
+  {
+   "at": "2026-10-23T22:18:08.103457+00:00",
+   "keys": [
+    "blog.calif.io/p/iphone",
+    "title:today we hacked what we d set out to hack the iphone"
+   ],
+   "strength": 6
   }
  ],
  "undated": {
