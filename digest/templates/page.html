@@ -136,6 +136,8 @@ a.buzz:hover{text-decoration:underline}
 .copy:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
 .term pre{margin:0;padding:12px 14px;overflow-x:auto}
 .term code{font:500 .86rem/1.65 var(--f-mono);color:#e9e6f5;white-space:pre}
+/* Промпт фишки — текст: переносится по ширине, а не уезжает за край экрана телефона */
+.term.wrap code{white-space:pre-wrap;overflow-wrap:anywhere}
 .note{margin:0;font-size:.9rem;line-height:1.6;color:var(--ink-2)}
 .caveat{display:grid;grid-template-columns:18px minmax(0,1fr);gap:10px;background:#fbf3e2;border:1px solid #f0e2c2;border-radius:10px;padding:12px 14px;color:#6b5320}
 .caveat svg{width:18px;height:18px;margin-top:2px;color:#b7791f}
@@ -295,6 +297,7 @@ details a:hover{text-decoration:underline}
 /* Арсенал фишек: галочка «попробовал» слева, ссылки справа; отмеченная фишка не тускнеет — её ещё ищут по теме */
 .tip{grid-template-columns:minmax(0,1fr)}
 .tip .term{margin-top:10px}
+.tip .more-label{margin:12px 0 8px}
 .tip-note{margin:10px 0 0;font-size:.86rem;color:var(--muted)}
 .tip-foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
 .tried{display:inline-flex;align-items:center;gap:8px;margin-right:auto;font-size:.88rem;font-weight:500;color:var(--ink-2);cursor:pointer;user-select:none}

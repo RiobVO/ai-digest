@@ -106,4 +106,4 @@ def test_tip_message_lists_the_steps_from_the_breakdown():
 def test_untrusted_prompt_is_a_separate_code_block_with_a_warning():
     tip = {**ISSUES[1]["entries"][2], "copy": "Prove to me this works", "copy_untrusted": True}
     text = build_tip_message(ISSUES[1], tip, SITE)
-    assert "<i>Промпт из непроверенного источника — прочитай перед вставкой:</i>\n<code>Prove to me this works</code>" in text
+    assert "<i>Непроверенный промпт — прочитай перед вставкой:</i>\n<code>Prove to me this works</code>" in text

@@ -525,4 +525,19 @@ def test_untrusted_prompt_on_the_page_carries_a_warning():
     tip.copy, tip.copy_untrusted = "Prove to me this works", True
     digest.entries.append(tip)
     page = render_page(digest, STATS, WHEN, failures=[])
-    assert "Промпт из непроверенного источника — прочитай перед вставкой" in page
+    assert "Непроверенный промпт — прочитай перед вставкой" in page
+    # Промпт — текст, а не команда: переносится, а не уезжает за край экрана телефона (23.10)
+    assert '<div class="term wrap">' in page
+
+
+def test_arsenal_shows_the_tip_steps_and_the_untrusted_prompt():
+    issues = [{"date": "2026-10-23", "headline": "h", "page": "2026-10-23.html", "entries": [
+        {"id": "20261023-13", "title": "Правило для точных промптов", "section": "tips", "source": "reddit",
+         "url": "https://www.reddit.com/r/ClaudeAI/1", "summary": "s", "why": "w", "topic": "prompts",
+         "copy": "The industry standard term for what you're describing is...", "copy_untrusted": True,
+         "steps": ["Добавь фразу в <правила>", "Описывай задачу своими словами"]}]}]
+    page = render_tips(issues, WHEN)
+    card = page[page.index('data-tip="20261023-13"'):]
+    # Шаги из разбора уже в архиве — в Telegram они есть, в арсенале их не было (23.10)
+    assert '<ol class="points"><li>Добавь фразу в &lt;правила&gt;</li><li>Описывай задачу своими словами</li></ol>' in card
+    assert "Непроверенный промпт" in card and "you&#x27;re describing" in card and '<div class="term wrap">' in card
