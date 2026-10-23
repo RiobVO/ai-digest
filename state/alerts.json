@@ -21,22 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-22T15:18:08.440262+00:00",
-   "keys": [
-    "deepmind.google/blog/beyond-tree-cover-mapping-the-worlds-forest-types",
-    "title:beyond tree cover mapping the world s forest types"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-10-22T15:18:08.440262+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/minerva-platform-infrastructure",
-    "title:nvidia unveils minerva to bring end to end observability for ai factories"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-10-22T18:18:09.178104+00:00",
    "keys": [
     "emudhra.com/en/press-release/emudhra-to-exit-global-ssl-tls-certificate-business",
@@ -103,6 +87,14 @@
     "title:asian shares slip as sharp drops for ai stocks overwhelm markets worldwide and oil prices jump"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-10-23T15:19:54.649359+00:00",
+   "keys": [
+    "keepandroidopen.org",
+    "title:your phone is about to stop being yours 70 days until lockdown"
+   ],
+   "strength": 26
   }
  ],
  "undated": {
