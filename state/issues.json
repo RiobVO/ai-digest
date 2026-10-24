@@ -1,6 +1,125 @@
 [
  {
   "date": "2026-10-24",
+  "slot": "evening",
+  "headline": "Скрытые каналы агентов OpenAI, взлом LiteLLM и уязвимость Brotli",
+  "page": "2026-10-24-evening.html",
+  "entries": [
+   {
+    "id": "20261024-13",
+    "title": "Изолированные агенты OpenAI научились общаться через кэш процессора",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/openais-isolated-ai-agents-found-ways-to-talk-to-each-other-through-cpu-cache/",
+    "story": "s114"
+   },
+   {
+    "id": "20261024-14",
+    "title": "Взлом LiteLLM произошел из-за мастер-ключа в открытом репозитории",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/leaked-litellm-master-key-let-attackers.html",
+    "story": "s81"
+   },
+   {
+    "id": "20261024-15",
+    "title": "OpenAI запустила Project Daybreak для поиска 0-day через ИИ",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://www.forbes.com/sites/thomasbrewster/2026/10/23/inside-openais-plan-to-protect-the-internet-before-hackers-break-it/",
+    "story": "s69"
+   },
+   {
+    "id": "20261024-16",
+    "title": "Критическая уязвимость Brotli затронула Bun, Python и прокси Envoy",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/brotli-decoder-flaw-behind-nodejs-rce.html",
+    "story": "s93"
+   },
+   {
+    "id": "20261024-17",
+    "title": "Eye Security удаленно обновила 2 млн ПК для нейтрализации ботнета",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/researchers-push-over-2-million-updates.html",
+    "story": "s119"
+   },
+   {
+    "id": "20261024-18",
+    "title": "Google разрешила Gemini таргетировать рекламу по данным Gmail и Photos",
+    "section": "business",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/google-says-gmail-and-photos-data.html",
+    "story": "s117"
+   },
+   {
+    "id": "20261024-19",
+    "title": "Сложные обвязки кодинг-агентов увеличивают расходы втрое без роста качества",
+    "section": "dev",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/fancy-harnesses-make-coding-agents-more-expensive-but-not-better-study-finds/",
+    "story": "s120"
+   },
+   {
+    "id": "20261024-20",
+    "title": "Moonshot запустила Pro Highspeed API для модели Kimi K3.1 Pro",
+    "section": "model",
+    "source": "latent_space",
+    "url": "https://latent.space/p/ainews-kimi-31/",
+    "story": "s112"
+   },
+   {
+    "id": "20261024-21",
+    "title": "Baseten выкатила elephant-1 — модель принятия решений без генерации текста",
+    "section": "model",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xdirky/baseten_releases_elephant1_9b_mit_qwen359b_base_a/",
+    "story": "s121"
+   },
+   {
+    "id": "20261024-22",
+    "title": "Сбор и анализ логов Active Directory через стек ELK и Winlogbeat",
+    "section": "tips",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1098864/?utm_campaign=1098864&utm_source=habrahabr&utm_medium=rss",
+    "story": "",
+    "summary": "Настрой аудит событий через GPO в Active Directory, подключи Winlogbeat для отправки логов в Logstash и отслеживай события безопасности в Kibana.",
+    "why": "Пригодится для практики в SOC и расследования инцидентов: поможет отслеживать аномальные входы и изменения учётных записей.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "security",
+    "steps": [
+     "Для сервера elk с Elasticsearch, Kibana 9.4.2 и Logstash нужно минимум 4–6 ГБ RAM, иначе сервисы падают из-за OOM.",
+     "На хосте настраивается проброс TCP-портов для NAT: 2222 -> 22 (SSH) и 5601 -> 5601 (Kibana веб-интерфейс).",
+     "Создать базовые OU (Lab, Users, Computers, Groups) и перенаправить контейнер новых машин командой redircmp.",
+     "Включить логирование командной строки в событии 4688 через ключ реестра ProcessCreationIncludeCmdLine_Enabled со значением 1 в созданной Lab-Audit-Policy.",
+     "Настроить расширенный аудит через gpmc.msc (Kerberos, вход, управление учетками, создание процессов) и форсировать флаг SCENoApplyLegacyAuditPolicy в реестре."
+    ]
+   },
+   {
+    "id": "20261024-23",
+    "title": "Передача команд сборки и тестов в промпт вместо агентских обвязок",
+    "section": "tips",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xdvle5/why_complex_workflows/",
+    "story": "",
+    "summary": "Вместо создания файлов AGENTS.md и системных промптов опиши задачу в 5–6 предложениях и укажи в тексте точные команды компиляции и запуска тестов прямо в рабочей директории.",
+    "why": "Позволяет кодинг-модели самостоятельно проверять и отлаживать решения без перерасхода токенов на сложные фреймворки.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "workflow",
+    "steps": [
+     "Указать модели рабочую директорию проекта без создания конфигурационных файлов вроде AGENTS.md.",
+     "Сформулировать задачу текстом длиной в 5–6 коротких предложений без сложных списков и инструкций.",
+     "Явно вписать в тело запроса точные команды для компиляции кода и запуска тестового набора.",
+     "Дать модели выполнить работу — она сама напишет код и оформит коммиты в предпочитаемом стиле за несколько минут."
+    ]
+   }
+  ]
+ },
+ {
+  "date": "2026-10-24",
   "slot": "morning",
   "headline": "Kimi K3.1 Pro, офлайн-обучение в OpenAI и буткит BlackX",
   "page": "2026-10-24.html",
