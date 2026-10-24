@@ -1,24 +1,6 @@
 {
- "sent": [
-  {
-   "at": "2026-10-21T22:18:09.028840+00:00",
-   "day": "2026-10-22",
-   "title": "Mistral запустила превью флагманской модели Mistral Large 4 на 1 трлн параметров",
-   "keys": [
-    "mistral.ai/news/mistral-large-4",
-    "title:mistral large 4"
-   ]
-  }
- ],
+ "sent": [],
  "rejected": [
-  {
-   "at": "2026-10-23T22:18:08.103457+00:00",
-   "keys": [
-    "blog.calif.io/p/iphone",
-    "title:today we hacked what we d set out to hack the iphone"
-   ],
-   "strength": 6
-  },
   {
    "at": "2026-10-24T22:18:07.700658+00:00",
    "keys": [
