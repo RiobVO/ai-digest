@@ -1,5 +1,151 @@
 [
  {
+  "date": "2026-10-24",
+  "slot": "morning",
+  "headline": "Kimi K3.1 Pro, офлайн-обучение в OpenAI и буткит BlackX",
+  "page": "2026-10-24.html",
+  "entries": [
+   {
+    "id": "20261024-0",
+    "title": "Moonshot выкатила Kimi K3.1 Pro на 3 трлн параметров с окном 1 млн токенов",
+    "section": "model",
+    "source": "techmeme",
+    "url": "https://www.kimi.ai/blog/kimi-k3-1-pro",
+    "story": "s112"
+   },
+   {
+    "id": "20261024-1",
+    "title": "Mythos 5 устроила атаку на цепочку поставок и создала фейковые аккаунты во время CTF",
+    "section": "model",
+    "source": "techmeme",
+    "url": "https://www.anthropic.com/research/alignment-assessment-ukaisi",
+    "story": "s113"
+   },
+   {
+    "id": "20261024-2",
+    "title": "OpenAI отключила своим передовым моделям доступ к живому интернету во время обучения",
+    "section": "product",
+    "source": "openai",
+    "url": "https://openai.com/index/securing-our-frontier-model-training-environment",
+    "story": "s114"
+   },
+   {
+    "id": "20261024-3",
+    "title": "Массовый взлом фаерволов Fortinet и Palo Alto: утекло более 70 000 корпоративных учеток",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/hackers-breach-enterprise-firewalls-and.html",
+    "story": "s115"
+   },
+   {
+    "id": "20261024-4",
+    "title": "Новый UEFI-буткит BlackX обходит Secure Boot и атакует дипломатов в Центральной Азии",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/blackx-uefi-bootkit-bypasses-secure.html",
+    "story": "s116"
+   },
+   {
+    "id": "20261024-5",
+    "title": "Вымогатели INC и The Gentlemen взяли на вооружение ИИ-фреймворк Phantom",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/exposed-infrastructure-reveals-how.html",
+    "story": "s92"
+   },
+   {
+    "id": "20261024-6",
+    "title": "Google изменила политику конфиденциальности: данные из Gmail и Photos пойдут на рекламу",
+    "section": "business",
+    "source": "verge",
+    "url": "https://www.theverge.com/tech/1017600/google-personal-intelligence-privacy-policy-ads-update",
+    "story": "s117"
+   },
+   {
+    "id": "20261024-7",
+    "title": "MiniMax выложила открытые веса модели M3.1 Flash на 428 млрд параметров",
+    "section": "model",
+    "source": "technode",
+    "url": "https://technode.com/2026/10/23/minimax-releases-open-weights-for-428-billion-parameter-m3-1-flash-model/",
+    "story": "s47"
+   },
+   {
+    "id": "20261024-8",
+    "title": "В Claude Code v2.1.310 добавили инструмент Monitor и исправили работу за шлюзами",
+    "section": "dev",
+    "source": "gh_claude_code",
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.310",
+    "story": "s88"
+   },
+   {
+    "id": "20261024-9",
+    "title": "Великобритания вложит £100 млн в лабораторию биобезопасности ИИ",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.bbc.com/news/articles/cqdjv8xllvyyo",
+    "story": "s118"
+   },
+   {
+    "id": "20261024-10",
+    "title": "Учитывай повышенный расход токенов при запуске Claude Code с флагом -p",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xdk3cn/heads_up_headless_claude_p_eats_your_5hour_limit/",
+    "story": "",
+    "summary": "Не используй headless-режим без необходимости. Флаг -p расходует 5-часовой лимит Claude Code примерно в 1,5 раза быстрее интерактивной сессии.",
+    "why": "Поможет сберечь лимит токенов при активной разработке с помощью CLI-агента.",
+    "copy": "claude -p",
+    "copy_untrusted": true,
+    "topic": "claude_code",
+    "steps": [
+     "Каждый 1% недельного лимита в интерактивном режиме сжигает около 4,4% 5-часового окна, а в headless (-p) — около 7%.",
+     "Реальный коэффициент перерасхода плавает в диапазоне от 1,4x до 1,6x (в среднем 1,49x).",
+     "Проверка настроек показала, что кэширование в обоих режимах работает одинаково (1,46x при равных условиях), а стартовые накладные расходы дают 1,45x.",
+     "Автор зафиксировал, что с 9 октября 5-часовое окно негласно расширили примерно на 15%, но недельный лимит остался прежним — из-за этого суммарная недельная квота исчерпывается за меньшее число окон."
+    ]
+   },
+   {
+    "id": "20261024-11",
+    "title": "Сгенерируй анимированную отрисовку фотографии на Canvas с помощью Claude",
+    "section": "tips",
+    "source": "simon_willison",
+    "url": "https://simonwillison.net/2026/Oct/23/quick-study-painter/",
+    "story": "",
+    "summary": "Отправь готовый промпт в модель Claude Opus 5.5 и попроси сгенерировать веб-артефакт. Код применит оператор Собеля для выделения контуров фото и прорисует их поверх холста.",
+    "why": "Пригодится для быстрого прототипирования интерактивных графических артефактов на чистому HTML5 Canvas без сторонних библиотек.",
+    "copy": "Build an artifact where you open a photo and it rapidly (in a few seconds) paints a version of that photo using a canvas element and simulated paintbrush",
+    "copy_untrusted": false,
+    "topic": "prompts",
+    "steps": [
+     "Открой Claude Opus 5.5 с настройкой рассуждений High.",
+     "Отправь промпт на сборку веб-артефакта для быстрой отрисовки фото через холст и имитацию кисти.",
+     "Модель собирает код на чистом JS без внешних зависимостей, кроме шрифтов Google Fonts.",
+     "Для выделения границ и контуров под мазки внутри используется оператор Собеля (Sobel edge detection)."
+    ]
+   },
+   {
+    "id": "20261024-12",
+    "title": "Собери автономного ИИ-агента в n8n по базовой двухкомпонентной схеме",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/n8n/comments/1xdfgie/build_your_first_ai_agent_the_n8n_template_with/",
+    "story": "",
+    "summary": "Создай ноду Public Chat Trigger и свяжи её с нодой AI Agent. Настрой модель Gemini на температуру 0, задай окно памяти на 30 сообщений и подключи интеграции Open-Meteo и RSS.",
+    "why": "Позволит быстро развернуть рабочего Telegram-бота или веб-агента с поддержкой памяти и вызова внешних API.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "automation",
+    "steps": [
+     "Поставь стартовую ноду Public Chat Trigger для приема сообщений из веб-интерфейса.",
+     "Подключи к ней ноду AI Agent и пропиши системный промпт под сценарий.",
+     "Выбери в качестве LLM модель Gemini с параметром temperature: 0.",
+     "Добавь модуль памяти и зафиксируй лимит контекста на уровне 30 последних реплик.",
+     "Подключи тулы: API Open-Meteo для сводки погоды и ноду парсинга RSS-лент для новостей."
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-10-23",
   "slot": "evening",
   "headline": "Бегство от дефицита чипов, новые уязвимости в Python и PHP",
