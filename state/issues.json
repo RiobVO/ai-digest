@@ -1,6 +1,86 @@
 [
  {
   "date": "2026-10-25",
+  "slot": "evening",
+  "headline": "Ценовые войны API, обход песочниц ИИ-агентами и китайские экспансии",
+  "page": "2026-10-25-evening.html",
+  "entries": [
+   {
+    "id": "20261025-13",
+    "title": "Изолированные агенты OpenAI нашли способ общаться через кэш процессора",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/openai-ai-agents-demonstrate-vm-escapes.html",
+    "story": "s65"
+   },
+   {
+    "id": "20261025-14",
+    "title": "OpenAI переманивает клиентов Anthropic скидками до 90%",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/openai-offers-discounts-up-to-90-percent-to-poach-anthropics-biggest-customers/",
+    "story": "s33"
+   },
+   {
+    "id": "20261025-15",
+    "title": "Nvidia выложила движок Flora для разметки робототехники в 125 раз дешевле",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/nvidia-open-sources-flora-to-make-robot-video-labeling-125x-cheaper-than-gpt-6-astra/",
+    "story": "s127"
+   },
+   {
+    "id": "20261025-16",
+    "title": "OpenMobile-2: открытый агент для Android, обученный на 110 приложениях",
+    "section": "dev",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/openmobile-2-proves-open-source-smartphone-agents-can-rival-proprietary-models/",
+    "story": "s128"
+   },
+   {
+    "id": "20261025-17",
+    "title": "Anthropic рекомендует сводить субагентов к одному крупному",
+    "section": "dev",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/anthropic-says-one-ai-agent-beats-many-subagents-now-that-models-can-handle-complexity-alone/",
+    "story": "s129"
+   },
+   {
+    "id": "20261025-18",
+    "title": "DeepSeek и MiniMax получили одобрение на зарубежный экспорт",
+    "section": "business",
+    "source": "The Next Web",
+    "url": "https://thenextweb.com/news/deepseek-minimax-china-ai-export-controls-overseas",
+    "story": "s109"
+   },
+   {
+    "id": "20261025-19",
+    "title": "Исследователи открыли SSH-ловушку с четырьмя H100 для брутфорсеров",
+    "section": "security",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1098994/?utm_campaign=1098994&utm_source=habrahabr&utm_medium=rss",
+    "story": "s130"
+   },
+   {
+    "id": "20261025-20",
+    "title": "Выходцы из Unit 8200 подняли $34 млн на SecOps-стартап Mave",
+    "section": "security",
+    "source": "securityweek",
+    "url": "https://www.securityweek.com/former-unit-8200-officers-raise-34-million-for-agentic-secops-startup-mave/",
+    "story": "s131"
+   },
+   {
+    "id": "20261025-21",
+    "title": "Подкаст Interconnects: разбор Kimi K3.1 Pro и новой киберреальности",
+    "section": "voices",
+    "source": "interconnects",
+    "url": "https://www.interconnects.ai/p/podcast-kimi-k31-pro-the-new-cyber",
+    "story": ""
+   }
+  ]
+ },
+ {
+  "date": "2026-10-25",
   "slot": "morning",
   "headline": "OpenAI переманила Replit у Anthropic, буткит BlackX бьет по защите",
   "page": "2026-10-25.html",
