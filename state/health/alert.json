@@ -96,5 +96,6 @@
 {"at": "2026-10-25T14:18:19Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [{"at": "2026-10-25T14:18:18Z", "call": "triage", "asked": "gemini-3.5-flash-lite", "served": "gemini-3.5-flash-lite", "status": 200, "seconds": 0.8, "thinking": 0, "error": ""}], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-10-25T15:18:17Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-10-25T16:18:24Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
-{"at": "2026-10-25T17:18:43Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {"the_register": "ValueError"}, "sources": {}, "events": {}}
+{"at": "2026-10-25T17:18:43Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {"the_register": "ValueError"}, "sources": {}, "events": {}},
+{"at": "2026-10-25T18:18:15Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}}
 ]
