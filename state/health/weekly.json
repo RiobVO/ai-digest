@@ -1,0 +1,3 @@
+[
+{"at": "2026-10-25T03:12:32Z", "kind": "weekly", "slot": "", "outcome": "ok", "calls": [{"at": "2026-10-25T03:11:59Z", "call": "weekly", "asked": "gemini-flash-latest", "served": "gemini-3.8-flash", "status": 200, "seconds": 31.9, "thinking": 0, "error": ""}], "failed": {}, "sources": {}, "events": {}}
+]

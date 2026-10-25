@@ -1,5 +1,147 @@
 [
  {
+  "date": "2026-10-25",
+  "slot": "morning",
+  "headline": "OpenAI переманила Replit у Anthropic, буткит BlackX бьет по защите",
+  "page": "2026-10-25.html",
+  "entries": [
+   {
+    "id": "20261025-0",
+    "title": "Скидка более 30% на $100 млн: как OpenAI переманила Replit у Anthropic",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.theinformation.com/articles/anthropics-margin-openais-opportunity",
+    "story": "s33"
+   },
+   {
+    "id": "20261025-1",
+    "title": "Буткит BlackX глушит антивирусы Касперского и Avast через уязвимость Baton Drop",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/blackx-uefi-bootkit-exploits-baton-drop-flaw-to-bypass-secure-boot/",
+    "story": "s116"
+   },
+   {
+    "id": "20261025-2",
+    "title": "Эксперимент: ИИ помогает джунам в работе, но тормозит их профессиональный рост",
+    "section": "paper",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/ai-makes-junior-patent-attorneys-instantly-better-but-may-quietly-stunt-their-professional-growth/",
+    "story": "s122"
+   },
+   {
+    "id": "20261025-3",
+    "title": "Block показала голосовую модель Dessa, считывающую сарказм и эмоции",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/blocks-new-ai-model-dessa-was-trained-entirely-on-human-speech-to-catch-emotions-text-based-models-miss/",
+    "story": "s123"
+   },
+   {
+    "id": "20261025-4",
+    "title": "Moonshot вырезала данные о кибератаках из открытых весов Kimi K3.1",
+    "section": "model",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xecgrf/kimi_k31_removes_cyberattack_training_data_from/",
+    "story": "s112"
+   },
+   {
+    "id": "20261025-5",
+    "title": "Уволенные ресерчеры безопасности OpenAI заявили, что им не назвали причину",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/three-fired-openai-safety-researchers-say-they-were-never-told-what-they-actually-leaked/",
+    "story": "s124"
+   },
+   {
+    "id": "20261025-6",
+    "title": "Около дюжины банковских приложений официально разрешили запуск на GrapheneOS",
+    "section": "security",
+    "source": "hn_top",
+    "url": "https://grapheneos.social/@GrapheneOS/117492375462459244",
+    "story": "s125"
+   },
+   {
+    "id": "20261025-7",
+    "title": "В llama.cpp завезли поддержку DeepSeek V4.1 Flash",
+    "section": "dev",
+    "source": "gh_llama_cpp",
+    "url": "https://github.com/ggml-org/llama.cpp/releases/tag/b11870",
+    "story": "s126"
+   },
+   {
+    "id": "20261025-8",
+    "title": "Команду Claude Code покинули ведущие инженеры Тарик и Энтони Моррис",
+    "section": "dev",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xdyz48/thariq_left_anthropic/",
+    "story": "s88"
+   },
+   {
+    "id": "20261025-9",
+    "title": "Добавить строчку в CLAUDE.md для экономии токенов",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xeautc/whats_the_one_line_in_your_claudemd_that_made_the/",
+    "story": "",
+    "summary": "Добавь правило в CLAUDE.md: перед любыми изменениями агент обязан составить список нужных файлов, прочитать их за один заход, внести правки и только потом запустить тесты.",
+    "why": "Предотвращает бесконечный цикл повторного чтения и редактирования файлов, экономя токены при крупных задачах.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Открой файл CLAUDE.md в корне своего проекта.",
+     "Добавь директиву: «Before changing anything, list every file you'll need and read them in one pass. Then make all edits, then run the tests once.»"
+    ]
+   },
+   {
+    "id": "20261025-10",
+    "title": "Связать Telegram-бота для суммаризации YouTube с Claude через Qdrant и MCP",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/n8n/comments/1xej92z/update_my_youtube_summary_bot_now_remembers_every/",
+    "story": "",
+    "summary": "Сохраняй суммаризации из бота в векторную базу Qdrant, затем подключи к Claude MCP-сервер для поиска по базе.",
+    "why": "Превращает Telegram-бота в семантическую базу знаний с поиском по роликам и таймштампам прямо из Claude.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "automation",
+    "steps": [
+     "Транскрипт бьется на куски примерно по 1 минуте по меткам времени, к каждому добавляется заголовок видео.",
+     "Векторные эмбеддинги генерируются через Gemini, а хранятся в Qdrant на том же VPS, где крутится n8n (без публичного порта).",
+     "В n8n создается MCP-сервер с инструментом search_youtube_memory и подключается к Claude как custom connector.",
+     "Чтобы куски не дробились повторно парсером с потерей сути, размер чанка в сплиттере Default Data Loader выставлен на 2000 символов вместо 1000.",
+     "Перед вставкой отправляется HTTP Request на удаление прошлых точек по video_id для защиты от дубликатов."
+    ]
+   },
+   {
+    "id": "20261025-11",
+    "title": "Инженер с 10-летним стажем рассказал о выгорании от безумного темпа развития ИИ",
+    "section": "voices",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xebls8/im_tired_boss/",
+    "story": ""
+   },
+   {
+    "id": "20261025-12",
+    "title": "Убрать два лишних пробела при копировании из Claude Code",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xeccaa/𝗽𝗿𝗼𝗯𝗹𝗲𝗺_copy_from_claude_code_2_annoying_spaces/",
+    "story": "",
+    "summary": "Зажми и удерживай Alt при выделении фрагмента текста или кода в консоли Claude Code.",
+    "why": "Избавляет от раздражающих лишних пробелов в начале строк при копировании кода из терминального интерфейса.",
+    "copy": "hold alt",
+    "copy_untrusted": true,
+    "topic": "claude_code",
+    "steps": [
+     "Зажми клавишу Alt на клавиатуре.",
+     "Выдели нужный блок текста или фрагмент кода в терминале мышью."
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-10-24",
   "slot": "evening",
   "headline": "Скрытые каналы агентов OpenAI, взлом LiteLLM и уязвимость Brotli",
