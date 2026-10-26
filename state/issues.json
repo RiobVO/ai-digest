@@ -1,6 +1,86 @@
 [
  {
   "date": "2026-10-26",
+  "slot": "evening",
+  "headline": "Мегараунд Meta на $95 млрд, ИИ-агенты против инфраструктуры Anthropic",
+  "page": "2026-10-26-evening.html",
+  "entries": [
+   {
+    "id": "20261026-12",
+    "title": "Meta привлекает $95 млрд на инфраструктуру ИИ через продажу акций",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.ft.com/content/94e5a0ae-874d-447a-bbfc-cd465a1a7555",
+    "story": "s138"
+   },
+   {
+    "id": "20261026-13",
+    "title": "Стартап бывших сотрудников DOGE взломал внутренние системы Anthropic с помощью ИИ-агентов",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://www.washingtonpost.com/technology/2026/10/26/researchers-cybersecurity-start-up-cathedral-got-inside-anthropic/?pwapi_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyZWFzb24iOiJnaWZ0IiwibmJmIjoxNzkyOTg3MjAwLCJpc3MiOiJzdWJzY3JpcHRpb25zIiwiZXhwIjoxNzk0MzczMTk5LCJpYXQiOjE3OTI5ODcyMDAsImp0aSI6ImI1M2RjZmEzLThkNTItNGE3NC05ZjI4LWU1ZGJkZTIyZDFmOSIsInVybCI6Imh0dHBzOi8vd3d3Lndhc2hpbmd0b25wb3N0LmNvbS90ZWNobm9sb2d5LzIwMjYvMTAvMjYvcmVzZWFyY2hlcnMtY3liZXJzZWN1cml0eS1zdGFydC11cC1jYXRoZWRyYWwtZ290LWluc2lkZS1hbnRocm9waWMvIn0.k3b70wv6ePisrPvCYfDOPAjt5vHweVxm4rBnhcnDU-M&itid=gfta",
+    "story": "s139"
+   },
+   {
+    "id": "20261026-14",
+    "title": "Критическая уязвимость Node2Shell в декодере Brotli затрагивает Node.js и Python",
+    "section": "security",
+    "source": "securityweek",
+    "url": "https://www.securityweek.com/node2shell-brotli-flaw-triggers-patching-across-microsoft-node-js-python-packages/",
+    "story": "s93"
+   },
+   {
+    "id": "20261026-15",
+    "title": "Уязвимости PHP2Shell зафиксированы в реальных атаках",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/php2shell-security-flaws-now-sucessfully-exploited-in-the-wild/",
+    "story": "s69"
+   },
+   {
+    "id": "20261026-16",
+    "title": "SpaceX привлекла $40 млрд от Apollo в рамках сделки под ИИ-чипы",
+    "section": "business",
+    "source": "Reuters",
+    "url": "https://www.reuters.com/business/media-telecom/spacex-enters-40-billion-deal-with-apollo-ai-chip-financing-2026-10-26/",
+    "story": "s132"
+   },
+   {
+    "id": "20261026-17",
+    "title": "Правообладатели Элвиса Пресли подали в суд на Anthropic за обучение моделей",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.nytimes.com/2026/10/25/arts/music/anthropic-lawsuit-elvis-presley-songs.html?unlocked_article_code=1.LVE.Unk9.7e04-FAQ9Ei8&smid=nytcore-ios-share",
+    "story": "s133"
+   },
+   {
+    "id": "20261026-18",
+    "title": "Вышла Ternary-Nemotron-3.5-Lightning-30B-A3B в квантовании 1.58-бит",
+    "section": "model",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xfqi2d/boro64ternarynemotron35lightning30ba3bgguf/",
+    "story": "s140"
+   },
+   {
+    "id": "20261026-19",
+    "title": "Инструмент openskycam для поиска метеоров с помощью Claude Code",
+    "section": "dev",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xfqc9x/i_built_an_open_source_sky_camera_that_claude/",
+    "story": "s141"
+   },
+   {
+    "id": "20261026-20",
+    "title": "Авторский инструмент Seam Cutter для ручной склейки длинных скриншотов",
+    "section": "voices",
+    "source": "simon_willison",
+    "url": "https://simonwillison.net/2026/Oct/25/seam-cutter/",
+    "story": ""
+   }
+  ]
+ },
+ {
+  "date": "2026-10-26",
   "slot": "morning",
   "headline": "Конец эпохи легких кредитов на ИИ-инфраструктуру, уязвимости PHP2Shell и иски против Anthropic",
   "page": "2026-10-26.html",
