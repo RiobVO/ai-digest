@@ -2,14 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-10-25T14:18:07.968501+00:00",
-   "keys": [
-    "panamericandispatch.org/p/meta-ignores-brazilian-court-order",
-    "title:meta ignores brazilian court order to end bolsonaro favoritism"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-10-25T21:21:49.055281+00:00",
    "keys": [
     "lynchlab.net/llm-skin-cancer",
@@ -48,20 +40,20 @@
   {
    "at": "2026-10-26T14:18:07.227851+00:00",
    "keys": [
-    "sec.gov/Archives/edgar/data/2130357/000162828026067168/anthropicpbc-sx1.htm",
-    "title:anthropic s co founders say they believe that ai is one of the most consequential technologies in human history detail its scientific potential and more sec gov"
-   ],
-   "strength": 4
-  },
-  {
-   "at": "2026-10-26T14:18:07.227851+00:00",
-   "keys": [
     "news.google.com/rss/articles/CBMif0FVX3lxTE5sSFJLY0lBd04tbkdyYi1fZlhJTm1aTDVBcFhNWGUwRWJOQXA5MEl6QkEtZWVNOC1pX25PM1BIOUhEZTZubE9zSlJpbEI0M3F5U2lMd0FjcGRHQ1J1eHNBNTRBSnV5cS1uNTY0Y01FZ1NCcDl4dlFraTFMeGFCTEE?oc=5",
     "news.google.com/rss/articles/CBMiggFBVV95cUxPaHh4b2RrbUVPXzFYM2tNeEh1UnlLajduNFFjRVpFUkRFaWZ0blozR3d5SUllRVpvbzVqZEJ3U3BZZ0tsNjRoVkFnWl9namh0djNTTWtJbGJ4Mlp2eXVxVk4yNVRHRkt1V1FmOUZrYkpxSGwyUEtIMHVXYkxab2tOVjhn?oc=5",
     "news.google.com/rss/articles/CBMiiAFBVV95cUxPTnhLb1ZGYUdnbENkWmMyZDZqTHlsckJwbEsxWVZGTnI5U2lPcFNXLXFoYmRRZm1rU2NWREZrWGVRblRES2FmdkwtUVIzMDlTS2N4ZW5vNno1Y2JCR1FzclhmdUVBOU5jMElCd2FwTlN1VzdfOU94YXlFc2VSWmRObXZyMVhyNnlf?oc=5",
     "title:in china the ai bubble has already burst"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-10-26T15:18:08.126052+00:00",
+   "keys": [
+    "sec.gov/Archives/edgar/data/2130357/000162828026067168/anthropicpbc-sx1.htm",
+    "title:anthropic s co founders say they believe that ai is one of the most consequential technologies in human history detail its scientific potential and more sec gov"
+   ],
+   "strength": 6
   }
  ],
  "undated": {
