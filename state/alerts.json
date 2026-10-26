@@ -48,12 +48,20 @@
    "strength": 3
   },
   {
-   "at": "2026-10-26T15:18:08.126052+00:00",
+   "at": "2026-10-26T16:18:11.649269+00:00",
    "keys": [
     "sec.gov/Archives/edgar/data/2130357/000162828026067168/anthropicpbc-sx1.htm",
     "title:anthropic s co founders say they believe that ai is one of the most consequential technologies in human history detail its scientific potential and more sec gov"
    ],
-   "strength": 6
+   "strength": 8
+  },
+  {
+   "at": "2026-10-26T16:18:11.649269+00:00",
+   "keys": [
+    "blog.google/products-and-platforms/products/education/ai-quests-polar-peaks",
+    "title:our newest ai quest mapping the human brain"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
