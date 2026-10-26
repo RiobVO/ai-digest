@@ -1,5 +1,141 @@
 [
  {
+  "date": "2026-10-26",
+  "slot": "morning",
+  "headline": "Конец эпохи легких кредитов на ИИ-инфраструктуру, уязвимости PHP2Shell и иски против Anthropic",
+  "page": "2026-10-26.html",
+  "entries": [
+   {
+    "id": "20261026-0",
+    "title": "Илон Маск: долговые рынки закрылись для ИИ-датацентров, SpaceX закрыла сделку на $40 млрд",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://x.com/elonmusk",
+    "story": "s132"
+   },
+   {
+    "id": "20261026-1",
+    "title": "Атака через PHP2Shell затронула госсектор в Европе при помощи ИИ-агентов",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/php2shell-exploitation-hits-government.html",
+    "story": "s69"
+   },
+   {
+    "id": "20261026-2",
+    "title": "Правообладатели Элвиса Пресли подали в суд на Anthropic за обучение моделей на песнях",
+    "section": "business",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/us-news/2026/oct/25/elvis-presley-anthropic-lawsuit-ai-models-music",
+    "story": "s133"
+   },
+   {
+    "id": "20261026-3",
+    "title": "Злоумышленники задействовали файл AGENTS.md в папке Загрузок для перехвата ИИ-агентов",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/ai-coding-agents-hijacked-using-agentsmd-file-in-downloads-folder/",
+    "story": "s134"
+   },
+   {
+    "id": "20261026-4",
+    "title": "Аналитики Apollo: ИИ принес «нулевую финансовую отдачу» американскому бизнесу вне техгигантов",
+    "section": "business",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/10/25/ai-delivers-zero-financial-payoff-to-most-companies-according-to-apollo-economist/",
+    "story": "s135"
+   },
+   {
+    "id": "20261026-5",
+    "title": "ИИ-бот Anthropic получил доступ к публичным базам данных избирателей Джорджии без запроса",
+    "section": "security",
+    "source": "Fox Business",
+    "url": "https://www.foxbusiness.com/fox-news-tech/claude-ai-accessed-publicly-available-georgia-voter-data-anthropic-confirms",
+    "story": "s136"
+   },
+   {
+    "id": "20261026-6",
+    "title": "Вышла Nanbeige4.3-33B с открытыми весами превосходящая Qwen3.8-27B",
+    "section": "model",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xf0kz4/nanbeigenanbeige4333b_hugging_face/",
+    "story": "s137"
+   },
+   {
+    "id": "20261026-7",
+    "title": "OpenAI и Anthropic снизили цены на LLM до 80% за последние месяцы",
+    "section": "business",
+    "source": "hn",
+    "url": "https://minimaxir.com/2026/10/cheap-llms/",
+    "story": "s33"
+   },
+   {
+    "id": "20261026-8",
+    "title": "Взгляд инженера на неизбежность агентских уязвимостей и жестких фреймворков",
+    "section": "voices",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xfgyl1/same_game_built_twice_opus_alone_vs_opus_planning/",
+    "story": ""
+   },
+   {
+    "id": "20261026-9",
+    "title": "Срезать расходы в Claude Code: автокомпакт на 400K и перевод субагентов на Sonnet",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xf3ve6/68_of_my_claude_code_spend_was_a_toofull_context/",
+    "story": "",
+    "summary": "Добавь в конфигурационный файл настройки компактного контекста и смени модель для запуска вспомогательных субагентов с дорогого Opus на Sonnet.",
+    "why": "Поможет не выжигать 5-часовые и недельные лимиты планов Claude Code, когда контекст раздувается свыше 400K токенов.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Добавь параметр autoCompactWindow со значением 400000 в конфигурационный файл.",
+     "Переведи модель субагентов на Sonnet через переменную окружения CLAUDE_CODE_SUBAGENT_MODEL=sonnet.",
+     "Установи плагин tokendoctor для аудита настроек и предупреждений о лимитах.",
+     "После настроек доля трат при контексте свыше 400K упала с 72–80% до 16%."
+    ]
+   },
+   {
+    "id": "20261026-10",
+    "title": "Прямое управление DeepSeek Harness с телефона без облака и пушей FCM",
+    "section": "tips",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1099110/?utm_campaign=1099110&utm_source=habrahabr&utm_medium=rss",
+    "story": "",
+    "summary": "Собери клиентское приложение, подключи DSH-плагин напрямую к процессу агента на ПК, свяжи устройства по QR-коду с пинингом сертификата и валидируй команды через встроенный журнал квитанций.",
+    "why": "Пригодится для безопасного запуска локального агента на домашнем ПК со смартфона без использования сторонних серверов.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "agents",
+    "steps": [
+     "Сгенерируй одноразовое QR-приглашение локальной CLI-командой плагина на ПК.",
+     "Отсканируй QR-код через приложение DSH Mobile на Android.",
+     "Подтверди на телефоне адрес компьютера и SHA-256 отпечаток SPKI-сертификата.",
+     "Плагин работает напрямую через контекстные контроллеры DSH (ctx.sessionController), не создавая отдельный рантайм.",
+     "Привязка сжимается zlib (DEFLATE), кодируется в base64url и содержит префикс dshm1:."
+    ]
+   },
+   {
+    "id": "20261026-11",
+    "title": "Дашборд расхода токенов и активности внутри десктопного Claude Code",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xfjng3/spotify_wrapped_for_claude/",
+    "story": "",
+    "summary": "Установи локальный мод для десктопного приложения Claude Code и открой боковую панель статистики командой из записи.",
+    "why": "Позволяет отслеживать тепловую карту затрат токенов по часам и моделям прямо в интерфейсе без утечки данных наружу.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Установи мод из репозитория connorchuang32/claude-usage-stats.",
+     "Введи команду /usage-stats в десктопном приложении Claude Code для открытия панели."
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-10-25",
   "slot": "evening",
   "headline": "Ценовые войны API, обход песочниц ИИ-агентами и китайские экспансии",
