@@ -26,6 +26,24 @@
     "title:meta announces 95 billion stock offering to fund ai expansion"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-10-26T13:18:10.211953+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMif0FVX3lxTFBVWi02U1pKX2xOSnZNR2NLeFBGckhzRFRmem5Odk5WY3JzNlNGTURWSEc2SmQ3dm9qdEpSNGJXdkR2X0F0bXkzTVd3ZmY2WFJZY1ZoOXljcVNQdGtFdzAxQzN2SzlEN1g4NjlFcGlQMGZZOVNVOUxOYXBRV19vUTg?oc=5",
+    "news.google.com/rss/articles/CBMihAFBVV95cUxQVnVJODNQRzhDTEwwQWRiaXNvdG13aHp1Wm9kSlJNMDUtQlZ6bmhEYUFHRXA2WXJUNm9MUDRSQ3J1WnBvMjVha3ZJSC1rZTdhdUxvNUlQczB4dzhrSmVaTXdDdGdQVFFJUW41bFlXcll5Q0hjVTd6bUsyMW56ZDl1bGRPY1Q?oc=5",
+    "news.google.com/rss/articles/CBMiwAFBVV95cUxQQUQ1U254bkc5VjVYM2lpaUtFbXRXX29JU0NCQmpUSTQwbGg2MmJVdHFYeExvZW1oWGdfRVl1V0hMUGVxV1NFajFRWGM5ZWhDU3ZBNnR2cEw4VF83NlJ3RXN2aUJJLTJySm04RjU2X1NZcm1femNwVjhEZnBCMWxyYXZKOGEzVDVrT0Ztc1IzMWFoMEtROVJWSmJMak9KakhNaWt0UUd1UXhadzhSaTNVakQzMmJCckc5OU1UQ1FYc3I?oc=5",
+    "title:exclusive us political candidates tailor messages for ai models used by voters"
+   ],
+   "strength": 3
+  },
+  {
+   "at": "2026-10-26T13:18:10.211953+00:00",
+   "keys": [
+    "anthropic.com/news/s1-sec",
+    "title:anthropic files s 1 with the sec for proposed initial public offering"
+   ],
+   "strength": 6
   }
  ],
  "undated": {
@@ -65,7 +83,8 @@
   "https://www.anthropic.com/news/features": "2026-10-21T02:18:11.473261+00:00",
   "https://www.anthropic.com/news/christopher-stubbs-joins-long-term-benefit-trust": "2026-10-21T18:18:06.410033+00:00",
   "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation": "2026-10-22T18:18:09.178104+00:00",
-  "https://www.anthropic.com/news/open-call-guest-investigators-life-sciences": "2026-10-22T22:18:13.057956+00:00"
+  "https://www.anthropic.com/news/open-call-guest-investigators-life-sciences": "2026-10-22T22:18:13.057956+00:00",
+  "https://www.anthropic.com/news/s1-sec": "2026-10-26T13:18:10.211953+00:00"
  },
  "primed": true
 }
