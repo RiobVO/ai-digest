@@ -2,25 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-10-26T19:18:09.888831+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMiqAFBVV95cUxNSi1DNG90UDYzV1AyUDZ4U1o2U3pmVnF5cXRhVVlBTkx1c3d5bWV3aTY1ZVVEQXhLM2ZKS0o1amd6QkhSZzhPZWxMdUNuMTVBcGtjQUJLOURnbVpLZjJaUmtZZGVvd1RmNjRQS1pILW9kNDJydUdKZjRBMElpcVowdEdDMnY1eGVhdUQtXzBzODhTaGVHWHdEX1AxSDc2Ync2WUNKMzh0R0Q?oc=5",
-    "news.google.com/rss/articles/CBMiqAFBVV95cUxPVl9KNzJxX3oxSF9IbkJBSS1BRU8xVExmbG5EQ0ZxSGRpeVd0cDF5Q3FjV2FTNlJTR0V4N1l2NGpQd3BMR1V1clNvRG5uSzZ0bzBQemx0SGVmR3pmMTlRUVBsclRDeVVmTk5zSW1rdkt0eHg0SHdSS3ZBbnF1MFN6akh3amhmNlppUFZBNElSZERQSzVjV0Yza3l1eklnWmdMbGlxTUktUzc?oc=5",
-    "news.google.com/rss/articles/CBMiqAFBVV95cUxQSkt0N0NpbTY3WWdWSEZHcGJCQ0Utd3ZnWjFwYWhPcF8wMXFIc0xUUE82eE1ERXlUNTZtR3R1UGpTRUFWZTFMbUF4TVM5b0FYdGkyNWZoWjRuZG5xTDRoZzlJaElfeUQzMElOTHp1WUxPeXBMcnNROFpQdjlzWExUZVVsbmp5cFYxYlBoN2pmR2dfVXVYN0V4UmxORTRJR1JiZXRSdXM2TDI?oc=5",
-    "news.google.com/rss/articles/CBMiqAFBVV95cUxQU2F4Tmk1ZWRTa2VaMEloaVFIZWFKU2FfWl9ENmRxTzBKd0JGdXZQX1VGcUxuU0lublVxYmJLRmowOTRJdEdBMTUyZEVvZWVIZW1iR2gzY2NUZnJGUmtEd0Nkb0d3eHRBbFNQLWdHUmRRTzcxTzZkQTFfNWlNX0hwOFZ2aXY5YS1xYy1qVEF6N1hqN3pYNjRhN2F2dXJVSDVJUWtaNTJ4ZHA?oc=5",
-    "title:detected how artificial intelligence is changing breast cancer detection"
-   ],
-   "strength": 4
-  },
-  {
-   "at": "2026-10-26T19:18:09.888831+00:00",
-   "keys": [
-    "seattletimes.com/business/microsoft/microsoft-offers-mass-buyouts-for-roughly-a-quarter-of-its-workforce",
-    "title:microsoft offers mass buyouts for roughly a quarter of its workforce"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-10-26T20:18:09.226054+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMi0wFBVV95cUxOZVJ3UjVBc3k5bGw5NW91U01kWGFyd05kT1BRb3hIODdqLTRUdExySGhIQWdUdkxfU2Zmc0V1cVF4LWNFVjRqTU03VVM3cmozcTkxTXozX0ZuUWcxRlNIc3lVNW1tWDJTcnVLTXl5aDNyangxYmZFSGtIemFIbUg1Q2h2UmZfOGtISkxPM2hwc2lPek93cXhiTjlMZFk4S2F1Z0U3MVhqZkJFUDA5MkJkNVhUdWswbHJCWUE2MHktNlRMSUpIbFVtR1lIbUZ5LUFHQVE4?oc=5",
@@ -136,20 +117,20 @@
    "strength": 5
   },
   {
-   "at": "2026-10-27T16:18:07.215006+00:00",
-   "keys": [
-    "deepmind.google/blog/genie-4-a-new-generation-of-world-simulation",
-    "title:genie 4 a new generation of world simulation"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-10-27T18:18:07.048267+00:00",
    "keys": [
     "title:the us government is hiding secret court ruling about how it spies on americans",
     "wired.com/story/the-us-government-is-hiding-a-secret-court-ruling-about-how-it-spies-on-americans"
    ],
    "strength": 4
+  },
+  {
+   "at": "2026-10-27T20:18:08.205403+00:00",
+   "keys": [
+    "deepmind.google/blog/genie-4-a-new-generation-of-world-simulation",
+    "title:genie 4 a new generation of world simulation"
+   ],
+   "strength": 5
   }
  ],
  "undated": {
