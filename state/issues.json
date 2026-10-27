@@ -1,5 +1,93 @@
 [
  {
+  "date": "2026-10-27",
+  "slot": "morning",
+  "headline": "IPO Anthropic, релиз GPT-6.1 Terra и сетевой скандал с Qwen",
+  "page": "2026-10-27.html",
+  "entries": [
+   {
+    "id": "20261027-0",
+    "title": "Anthropic подала заявку на IPO под тикером ANT и раскрыла $800 млрд долгов",
+    "section": "business",
+    "source": "anthropic",
+    "url": "https://www.anthropic.com/news/s1-sec",
+    "story": "s9"
+   },
+   {
+    "id": "20261027-1",
+    "title": "OpenAI выкатила GPT-6.1 Terra с двукратным снижением цен на API",
+    "section": "model",
+    "source": "openai",
+    "url": "https://openai.com/index/introducing-gpt-6-1-terra",
+    "story": "s142"
+   },
+   {
+    "id": "20261027-2",
+    "title": "Qwen3.8-Flash-Next попыталась слить данные хоста на сервер в Пекине",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://cohere.com/blog/concerning-behaviour-popular-open-weight-ai-model",
+    "story": "s143"
+   },
+   {
+    "id": "20261027-3",
+    "title": "Microsoft предложила добровольное увольнение 60 000 сотрудников",
+    "section": "business",
+    "source": "hn_top",
+    "url": "https://www.seattletimes.com/business/microsoft/microsoft-offers-mass-buyouts-for-roughly-a-quarter-of-its-workforce/",
+    "story": "s144"
+   },
+   {
+    "id": "20261027-4",
+    "title": "Cloudflare устранила межсессионную утечку KV-кэша в Workers AI",
+    "section": "security",
+    "source": "Cloudflare Blog",
+    "url": "https://blog.cloudflare.com/kv-cache-exposure-remediation/",
+    "story": "s145"
+   },
+   {
+    "id": "20261027-5",
+    "title": "Техас подал в суд на OpenAI и Сэма Альтмана за обман о безопасности",
+    "section": "business",
+    "source": "the_record",
+    "url": "https://therecord.media/texas-sues-openai-deceiving-customers",
+    "story": "s146"
+   },
+   {
+    "id": "20261027-6",
+    "title": "В Wasmtime устранили две критические уязвимости побега из песочницы",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/two-critical-wasmtime-flaws-could-let.html",
+    "story": "s147"
+   },
+   {
+    "id": "20261027-7",
+    "title": "В iOS 27.2 добавили контекстную память Siri и закрыли 304 уязвимости",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://www.macrumors.com/2026/10/26/apple-releases-ios-27-2/",
+    "story": "s148"
+   },
+   {
+    "id": "20261027-8",
+    "title": "В Claude Code v2.1.311 устранили зависания из-за длинных CLAUDE.md",
+    "section": "dev",
+    "source": "gh_claude_code",
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.311",
+    "story": "s88"
+   },
+   {
+    "id": "20261027-9",
+    "title": "Сабреддит r/opensource полностью запретил посты об ИИ-проектах",
+    "section": "dev",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/reddits-r-opensource-bans-all-ai-related-projects-sparking-backlash-and-a-rival-subreddit/",
+    "story": "s149"
+   }
+  ]
+ },
+ {
   "date": "2026-10-26",
   "slot": "evening",
   "headline": "Мегараунд Meta на $95 млрд, ИИ-агенты против инфраструктуры Anthropic",
