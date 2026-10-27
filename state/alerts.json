@@ -2,16 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-10-26T14:18:07.227851+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMif0FVX3lxTE5sSFJLY0lBd04tbkdyYi1fZlhJTm1aTDVBcFhNWGUwRWJOQXA5MEl6QkEtZWVNOC1pX25PM1BIOUhEZTZubE9zSlJpbEI0M3F5U2lMd0FjcGRHQ1J1eHNBNTRBSnV5cS1uNTY0Y01FZ1NCcDl4dlFraTFMeGFCTEE?oc=5",
-    "news.google.com/rss/articles/CBMiggFBVV95cUxPaHh4b2RrbUVPXzFYM2tNeEh1UnlLajduNFFjRVpFUkRFaWZ0blozR3d5SUllRVpvbzVqZEJ3U3BZZ0tsNjRoVkFnWl9namh0djNTTWtJbGJ4Mlp2eXVxVk4yNVRHRkt1V1FmOUZrYkpxSGwyUEtIMHVXYkxab2tOVjhn?oc=5",
-    "news.google.com/rss/articles/CBMiiAFBVV95cUxPTnhLb1ZGYUdnbENkWmMyZDZqTHlsckJwbEsxWVZGTnI5U2lPcFNXLXFoYmRRZm1rU2NWREZrWGVRblRES2FmdkwtUVIzMDlTS2N4ZW5vNno1Y2JCR1FzclhmdUVBOU5jMElCd2FwTlN1VzdfOU94YXlFc2VSWmRObXZyMVhyNnlf?oc=5",
-    "title:in china the ai bubble has already burst"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-10-26T16:18:11.649269+00:00",
    "keys": [
     "blog.google/products-and-platforms/products/education/ai-quests-polar-peaks",
@@ -104,16 +94,6 @@
    "strength": 7
   },
   {
-   "at": "2026-10-27T05:18:06.905440+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMi9AFBVV95cUxNaFlWajUtRHp1bHRFTko1UFpBUWJpNGhzbExzVkJKeTMxMmxhZkh6eF9zX003YTFyc0R5VTlxaUhzTHB6eWtVUlhPdUwtdXdUaDYtVG1FQ3hWN1I4UG8yazRzNWZqWXJjYlJEQmc0YXRZQVViVW9sNGFfZmFla04xMHdjRlM1a1plbGtFVU5SVjJkb3g3di1EYTlKTlZxOURuY25yakQtb18zWVJ5TGY5V0E0OXRQTWhGY0xPWGRGYlZiUWVnYmxnU1JKRm1HOUtkWllqdE9iTk1QRl9sX2hNTEw5c0lYcjI4b0RCVVhzam5oOG1n?oc=5",
-    "news.google.com/rss/articles/CBMitgFBVV95cUxQY1ZvdzRyMWN1VnZLbmtNRXVJOXRMVmp6RGYxQ25PS29pcGdRU1BWQkh4WmZSajdEOFBTUHBIclRvVVhQWV9CU1ByQjljZGc1SkNoVjVZWE1QUFl3Vzh4WWczaERXdUFyNkQ2aTkxT19PU0FKNURDV2N4OEdueEhpdzVVMnE1Y1pleTFhQlZGd0FTZndnMjdELUtXTGF2TmN3S0RnM2xha3AyZDNWaWsyNUNRdkZUZw?oc=5",
-    "news.google.com/rss/articles/CBMiuwFBVV95cUxQRG1nS2lwRkJnTThGOHloblRlVTZqR1pCQVdMcVU1cllBM2FDMDladHdMWjRhUERoVjdwSkxvTEUwdHJkRDlWMFR0enV5WlNzZEF4Rk9vdGtfZlNRb1VnLTNrTnI1YjJpMzlTM0FWeldLNEVlZno0ejkyZ195VjJsYTZ5WXFXaHp0T0w3cEVaTm1yUFBya1pQY0VpVWNoRXJLbW9NckU1Tnp3eUVYWXphQzRGM1h0ejUwNzlR?oc=5",
-    "title:risks spelled out for anthropic investors include possible harms from runaway ai"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-10-27T11:18:07.121003+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMimwFBVV95cUxOQ2xTZHEtU0FleHh5TTVHaHdET1NPN1RzYkEtSFB5QUF6aHdyNGFxcDM1Qjk2Y2kyZ0ZPWXI2YV9VVlUxVmZoQUV1ZDRzZ2V4amM0aktVZzVrclZiMmRoSnJPcFFleTlKQXZuV1Q4MVY5RktKdDhTRVhHdnM1OE05SVFJQVBoNWlGR1VocE95dk8wbHlxeE1vWmxyaw?oc=5",
@@ -128,6 +108,32 @@
     "title:roblox downloaded 145gb models from us including adult content without asking"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-10-27T15:18:05.702028+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMicEFVX3lxTE9KV05sRlU2VjVGTnlYWE8tTUdmOEJ6WWVURDJHdURvb1lVQnl6a2I1YWJMb3pBX2FEWVMzVEdQdWktSUgya0Fsa3IzSkdKR1k4eVI0Nk5UU3BqVXVBUnBCaWluczdkT2lsOVJCMnp3MTI?oc=5",
+    "news.google.com/rss/articles/CBMipwFBVV95cUxNYmZNa2p6aGplWkZtMVVMclVDTW5XZTdELTZ5Um1WOGI3aW5CVkNURjdOTnhNa2dYRFFsY0ozZlNTbmhBNFNsODRFZExwRFJXbmx1cWo0eGhQRUNCNlAzSGppaVB3ZFZrWHNuNHBxemhsZDVMUFNRYWxfdjNuYWJsci1ST25udDgyWHI4cDJqTGFVMk9temVreThTMThUYUxvRE1iQ29IWdIBuwFBVV95cUxQR0hhMlJnMXlwU0pjM0pOTlpYcno3ODFiblliLXJrMkdPY3AzOUZjWFZ5emdaQ0czbkR0U3oxaExYZ0k2OWZ4VVVKYVpYZDVzX2swMVZ6dnpoTEtMbjUyRHVIeWY3WVlXVHJva2c2anI0UWR1eXphRUYyRElmZVNXUGNseWxFZ1hJMy1pVWI3NnJYdkVWcmpyNkxLMm51SndSTWRTalAtU1ZUM1N1RFVDUzN1ZF9DcVcwbmlr?oc=5",
+    "securityweek.com/risks-spelled-out-for-anthropic-investors-include-possible-harms-from-runaway-ai",
+    "title:risks spelled out for anthropic investors include possible harms from runaway ai"
+   ],
+   "strength": 3
+  },
+  {
+   "at": "2026-10-27T15:18:05.702028+00:00",
+   "keys": [
+    "oioannou.com/blog/ai-promised-less-work",
+    "title:ai promised less work i ve never worked more"
+   ],
+   "strength": 3
+  },
+  {
+   "at": "2026-10-27T15:18:05.702028+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/open-source-ai-tools-cbrain-dementia",
+    "title:how ai is changing the pace of discovery for millions living with dementia"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
