@@ -2,14 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-10-26T16:18:11.649269+00:00",
-   "keys": [
-    "blog.google/products-and-platforms/products/education/ai-quests-polar-peaks",
-    "title:our newest ai quest mapping the human brain"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-10-26T18:18:08.040295+00:00",
    "keys": [
     "sec.gov/Archives/edgar/data/2130357/000162828026067168/anthropicpbc-sx1.htm",
