@@ -1,6 +1,122 @@
 [
  {
   "date": "2026-10-27",
+  "slot": "evening",
+  "headline": "Anthropic выходит на IPO с рекордными долгами, а CISA требует экстренных патчей для PHP2Shell",
+  "page": "2026-10-27-evening.html",
+  "entries": [
+   {
+    "id": "20261027-10",
+    "title": "Anthropic подала заявку на IPO под тикером ANT и раскрыла $800 млрд долгов",
+    "section": "business",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/technology/2026/oct/26/anthropic-stock-market-filing-takeaways",
+    "story": "s9"
+   },
+   {
+    "id": "20261027-11",
+    "title": "CISA добавила PHP2Shell в каталог KEV и потребовала закрыть уязвимости до четверга",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/cisa-confirms-php2shell-vulnerabilities-now-exploited-in-attacks/",
+    "story": "s69"
+   },
+   {
+    "id": "20261027-12",
+    "title": "Nvidia вложит $3 млрд в Meta и расширит поставки чипов под агентов Muse",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.wsj.com/tech/ai/nvidia-to-invest-3-billion-in-metas-equity-offering-as-they-expand-ai-partnership-e8d3850a?st=4eEQYV&reflink=desktopwebshare_permalink",
+    "story": "s138"
+   },
+   {
+    "id": "20261027-13",
+    "title": "Microsoft устранила критический баг в Authenticator для Android, позволявший красть токены",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://cybersecuritynews.com/microsoft-authenticator-flaw/",
+    "story": "s150"
+   },
+   {
+    "id": "20261027-14",
+    "title": "Уязвимость в compaction у OpenAI позволила извлечь скрытый ход рассуждений моделей",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/openai-compaction-flaw-let-researchers.html",
+    "story": "s151"
+   },
+   {
+    "id": "20261027-15",
+    "title": "OpenAI привлекла нобелевских лауреатов для проверки математических доказательств моделей",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/openai-asks-outside-experts-including-a-nobel-laureate-to-check-proofs-its-ai-produced-in-math-computer-science-and-physics/",
+    "story": "s152"
+   },
+   {
+    "id": "20261027-16",
+    "title": "Opera предложила веб-стандарт WebAI для локального запуска моделей в браузере",
+    "section": "dev",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/10/27/opera-introduces-a-new-web-standard-to-let-users-deploy-ai-locally-in-their-browser/",
+    "story": "s153"
+   },
+   {
+    "id": "20261027-17",
+    "title": "Исследование выявило «налог на токенизацию» для неанглийских языков",
+    "section": "model",
+    "source": "techmeme",
+    "url": "https://restofworld.org/2026/ai-tokenizer-tax-non-english-languages-cost-inequity/",
+    "story": "s154"
+   },
+   {
+    "id": "20261027-18",
+    "title": "Очистка TV-приставок от трекеров и рекламы с помощью Claude Code",
+    "section": "tips",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xggxqy/cleaned_up_my_fire_stick_with_this_claude_code/",
+    "story": "",
+    "summary": "Включи отладку по ADB на приставке, запусти Claude Code и скорми ему промпт с пошаговым бэкапом и отключением софта.",
+    "why": "Пригодится для безопасного отключения рекламных модулей и софта на Android TV без риска сломать систему.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Поддерживает бэкап списка приложений, настроек и создание скриншотов перед модификацией системы.",
+     "Включает установку альтернативного лаунчера Projectivy Launcher и медиаплеера SmartTube для блокировки рекламы.",
+     "Предусматривает перезагрузку и верификацию состояния системы после каждого этапа отключения пакетов."
+    ]
+   },
+   {
+    "id": "20261027-19",
+    "title": "Anthropic подтвердила в проспекте IPO отказ от внедрения рекламы в Claude",
+    "section": "voices",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/anthropic-uses-its-ipo-letter-to-renew-its-pledge-that-claude-will-never-show-ads/",
+    "story": ""
+   },
+   {
+    "id": "20261027-20",
+    "title": "Подключение n-gram Q8 к низким квантам Qwen в Strata для роста качества",
+    "section": "tips",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xglhtx/how_to_use_q8_ngram_with_lower_quant_qwen_38/",
+    "story": "",
+    "summary": "При запуске инференса в Strata подключи отдельный файл n-gram высокого качества через аргумент CLI.",
+    "why": "Позволяет повысить точность ответов сжатой модели без расхода VRAM и падения скорости инференса.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "local",
+    "steps": [
+     "Для подключения используется аргумент командной строки --ple-gguf=/path/to/ngram.gguf или переменная окружения STRATA_SET в Docker-композе.",
+     "Чтобы обойти ошибку несовместимости архитектуры при использовании n-gram от другого источника, необходимо добавить метаданные general.architecture со строковым значением strata-ple.",
+     "Изменить метаданные можно через инструмент gguf-editor-gui из пакета gguf для Python или скачав готовый файл."
+    ]
+   }
+  ]
+ },
+ {
+  "date": "2026-10-27",
   "slot": "morning",
   "headline": "IPO Anthropic, релиз GPT-6.1 Terra и сетевой скандал с Qwen",
   "page": "2026-10-27.html",
