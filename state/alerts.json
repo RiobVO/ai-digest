@@ -2,22 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-10-26T18:18:08.040295+00:00",
-   "keys": [
-    "sec.gov/Archives/edgar/data/2130357/000162828026067168/anthropicpbc-sx1.htm",
-    "title:anthropic s 1"
-   ],
-   "strength": 11
-  },
-  {
-   "at": "2026-10-26T18:18:08.040295+00:00",
-   "keys": [
-    "magazine.sebastianraschka.com/p/building-reasoning-models",
-    "title:sebastian raschka s from scratch video course on building reasoning models"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-10-26T19:18:09.888831+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMiqAFBVV95cUxNSi1DNG90UDYzV1AyUDZ4U1o2U3pmVnF5cXRhVVlBTkx1c3d5bWV3aTY1ZVVEQXhLM2ZKS0o1amd6QkhSZzhPZWxMdUNuMTVBcGtjQUJLOURnbVpLZjJaUmtZZGVvd1RmNjRQS1pILW9kNDJydUdKZjRBMElpcVowdEdDMnY1eGVhdUQtXzBzODhTaGVHWHdEX1AxSDc2Ync2WUNKMzh0R0Q?oc=5",
