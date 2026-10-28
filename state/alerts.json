@@ -2,14 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-10-27T14:18:06.746578+00:00",
-   "keys": [
-    "open3dlab.com/news/roblox-downloaded-145-gb-of-models-from-our-sites",
-    "title:roblox downloaded 145gb models from us including adult content without asking"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-10-27T15:18:05.702028+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMicEFVX3lxTE9KV05sRlU2VjVGTnlYWE8tTUdmOEJ6WWVURDJHdURvb1lVQnl6a2I1YWJMb3pBX2FEWVMzVEdQdWktSUgya0Fsa3IzSkdKR1k4eVI0Nk5UU3BqVXVBUnBCaWluczdkT2lsOVJCMnp3MTI?oc=5",
@@ -125,6 +117,17 @@
     "title:unitree s q3 profit down 17 4 on year in test for china s robotics sector"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-10-28T14:18:07.509797+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMi0gFBVV95cUxQRENvYzM0TS13bWtrZGIwNGVMWHAyZV9fV2VUYmhyZ0RpNVRkc3VsT2wyN21KM0tYV2hmSHlDUGNxbGdic1laeC03bVhHMXlEdWNFZUhDQ0pqSmpJR2FtZHFZRVNCcFdsWkx6YUROQ0RpTEFPdWxVQ2EtSjJEeDdrVkx6ZzMyTHdHZGpTdlY5dmd0dmVDd084TDkzbFhHaV9YVXJCWEVyUFhUaUo2ellzSG5EdEQyQXJnOW9QRDVQUmFNM1FycHlFTHNIdTk3cmZONmc?oc=5",
+    "news.google.com/rss/articles/CBMi2AFBVV95cUxQYnFyQzhfRUJORzRNc0x2dHVzWkxoRUpWLTREWnpQYm9pS0hrYVY5ZFdJeTFrVm1ZLWhFVzZOSGhlcUpoUk1zanJXV0FyNXZHN2E1V1VUVTNtb3pVdWxZRnU4aTZiazEwajBibHMzSjZiblZyN3Z4WHRNekxRanBhYXR6bzlKbjZRMGMteC1rcnVSajZYdThpRTNPdUx0aWxtX1Fla3hIMnp0cXo4TUh6RWFIR0xha1FZY2VMTTE0Wmx5aUdtS2hCT2FNMFBjN3dNNDZZTVNaS0I?oc=5",
+    "news.google.com/rss/articles/CBMi4AFBVV95cUxQV29yWjNtNkl2bllOcWdxbGphYnE5Q1RhMnR4aFpQQzNVTzA3U1QybkE3dDhCU1JCUUdMRmVwZXpSTXlMb0VaUVJSX0pkRXRQVTlIT0d5U3F1WDZ0WjZydW9YaDBEY24wZzRYdjhlSlM2SlJDamw2VDlOXzNiT1BqMklVekdhNEtBMjJmbXpBR19xR0lZal9xcTM5QUltb3AtbUNHTl9fYVBFeW9vMXQyQXBTcjZhSXNXbHhhWEJtRUw3SVZlQ3c2Vi1GeXdUc09kelJPUEl4Qk1XMEZPTGpHcQ?oc=5",
+    "news.google.com/rss/articles/CBMi8AFBVV95cUxOdmhwWnRIbERQLVZacnM1a3NJV2R4RGpDUU56SHBWRUFyVjRHdE13RHdwYjY3cXJCMnktNXRyZmhKMHhrTF9mYnV4azB0WVBCa2JlVG0xXzdvLUtVVFlXdEVtekJEQmNPaUlkMldRY201QnZVRUk2ekgwLTJ1bUVWNHZkajd2NXV6SEZ2X0c4TVMxaC0ycWtTUWo5RFlpeFVDUWI0aFJCY3VnM1BJelJPc05BWUR2U1k1RHQ3WjVkbExyMzNwdS13My1KYmlpSk9YWVJNd0lVeldHVFlYeUNCZEx4UkVSWXF1blZJSDRLYm0?oc=5",
+    "title:vote do you think ai makes your life better"
+   ],
+   "strength": 4
   }
  ],
  "undated": {
