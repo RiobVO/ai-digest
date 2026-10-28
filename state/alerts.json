@@ -12,14 +12,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-27T18:18:07.048267+00:00",
-   "keys": [
-    "title:the us government is hiding secret court ruling about how it spies on americans",
-    "wired.com/story/the-us-government-is-hiding-a-secret-court-ruling-about-how-it-spies-on-americans"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-10-27T20:18:08.205403+00:00",
    "keys": [
     "deepmind.google/blog/genie-4-a-new-generation-of-world-simulation",
@@ -120,6 +112,14 @@
     "wired.com/story/ice-is-running-one-of-the-largest-anti-left-surveillance-operations-in-us-history"
    ],
    "strength": 8
+  },
+  {
+   "at": "2026-10-28T18:18:08.724144+00:00",
+   "keys": [
+    "blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon",
+    "title:google unveils gemini 4 carbon its strongest model with state of the art cybersecurity capabilities ranked 1 on artificial analysis new intelligence index koray kavukcuoglu google"
+   ],
+   "strength": 3
   }
  ],
  "undated": {
