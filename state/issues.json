@@ -1,5 +1,157 @@
 [
  {
+  "date": "2026-10-28",
+  "slot": "morning",
+  "headline": "OpenAI закупает TPU Google, а Google DeepMind выкатила Genie 4",
+  "page": "2026-10-28.html",
+  "entries": [
+   {
+    "id": "20261028-0",
+    "title": "OpenAI начала закупать тензорные процессоры Google TPU для оптимизации моделей",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://www.theinformation.com/articles/openai-longtime-nvidia-customer-plans-buy-googles-ai-chips",
+    "story": "s155"
+   },
+   {
+    "id": "20261028-1",
+    "title": "Google DeepMind представила модель симуляции миров Genie 4 с генерацией звука",
+    "section": "model",
+    "source": "deepmind",
+    "url": "https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/",
+    "story": "s156"
+   },
+   {
+    "id": "20261028-2",
+    "title": "В Японии зафиксировали атаки с участием 44 ИИ-агентов под управлением CyberStrikeAI",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/cyberstrikeai-uses-44-ai-agents-to.html",
+    "story": "s92"
+   },
+   {
+    "id": "20261028-3",
+    "title": "В Tailscale SSH нашли около десятка уязвимостей для повышения прав до root",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/tailscale-warns-of-serious-ssh-flaws-allowing-root-privilege-escalation/",
+    "story": "s157"
+   },
+   {
+    "id": "20261028-4",
+    "title": "Liquid AI выложила семейство компактных моделей LFM3 для локального запуска",
+    "section": "model",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xgy8s3/liquidailfm317b_hugging_face/",
+    "story": "s158"
+   },
+   {
+    "id": "20261028-5",
+    "title": "Project Zero сравнил ИИ-агента BigSleep и классический фаззер Fuzzilli в Chrome V8",
+    "section": "security",
+    "source": "project_zero",
+    "url": "https://projectzero.google/2026/10/fuzzing-v-AI.html",
+    "story": "s159"
+   },
+   {
+    "id": "20261028-6",
+    "title": "Исследователи выяснили причину сетевых запросов Qwen 3.8 на серверы Alibaba",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/alibabas-latest-qwen-models-routed-some-requests-through-company-servers-researchers-find/",
+    "story": "s143"
+   },
+   {
+    "id": "20261028-7",
+    "title": "Anthropic снизила цены на Claude Enterprise и API для госсектора США на 40%",
+    "section": "business",
+    "source": "anthropic",
+    "url": "https://www.anthropic.com/news/expanding-partnership-gsa",
+    "story": "s160"
+   },
+   {
+    "id": "20261028-8",
+    "title": "В Claude Code v2.1.312 добавили кастомный OIDC для корпоративной авторизации",
+    "section": "dev",
+    "source": "gh_claude_code",
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.312",
+    "story": "s88"
+   },
+   {
+    "id": "20261028-9",
+    "title": "В Codex CLI 0.165.0 завезли нативную интеграцию с Google Cloud Vertex AI",
+    "section": "dev",
+    "source": "gh_codex",
+    "url": "https://github.com/openai/codex/releases/tag/rust-v0.165.0",
+    "story": "s161"
+   },
+   {
+    "id": "20261028-10",
+    "title": "Нанимающий менеджер Anthropic отменил секции по коду из-за превосходства Claude",
+    "section": "voices",
+    "source": "techmeme",
+    "url": "https://felixrieseberg.com/hunger-beats-tenure-advice-for-junior-engineers/",
+    "story": ""
+   },
+   {
+    "id": "20261028-11",
+    "title": "Полное отключение подтверждений прав в Claude Code",
+    "section": "tips",
+    "source": "the_register",
+    "url": "https://www.theregister.com/ai-and-ml/2026/10/27/anthropic-now-lets-claude-users-jump-out-of-plane-without-parachute/5305807",
+    "story": "",
+    "summary": "Задай переменную окружения CLAUDE_CODE_EVEN_MORE_DANGEROUSLY_SKIP_PERMISSIONS при запуске CLI, чтобы агент не запрашивал подтверждения на выполнение команд.",
+    "why": "Пригодится для абсолютно автономного запуска скриптов и агентов в изолированном окружении.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Флаг --dangerously-skip-permissions пропускал большинство запросов, но блокировал опасные команды вроде rm и rmdir.",
+     "Переменная CLAUDE_CODE_EVEN_MORE_DANGEROUSLY_SKIP_PERMISSIONS=1 снимает вообще все встроенные ограничения, включая rm -rf ~.",
+     "Установка переменной выполняется в окружении шелла перед запуском CLI."
+    ]
+   },
+   {
+    "id": "20261028-12",
+    "title": "Очистка TV-приставок от рекламы и мусора через Claude Code и ADB",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xgp61q/cleaned_up_my_fire_stick_with_this_claude_code/",
+    "story": "",
+    "summary": "Подключи устройство по ADB и передай Claude Code готовый промпт с правилами безопасной отключки служб через pm disable-user.",
+    "why": "Помогает автоматически сформировать списки безопасных к отключению пакетов и сделать бэкап системы по ADB.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Подключиться к Fire Stick по ADB, прочитать модель и версию софта.",
+     "Сделать бэкап списка приложений, настроек и скриншот экрана.",
+     "Отключить рекламу и трекинг в настройках Amazon, затем разделить приложения на три категории ( safe, ask, never touch ).",
+     "Отключать сервисы небольшими группами через pm disable-user с проверкой перезагрузкой и скриншотом, не удаляя их насовсем.",
+     "Установить Projectivy Launcher (и SmartTube), настроить док-панель и создать файл restore.sh с проверкой восстановления."
+    ]
+   },
+   {
+    "id": "20261028-13",
+    "title": "Исключение дублей вебхуков в n8n без базы данных",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/n8n/comments/1xguxvm/how_are_you_deduping_webhook_retries_in_n8n/",
+    "story": "",
+    "summary": "Поставь узел Respond to Webhook сразу после триггера для моментальной отдачи ответа 200 OK, а основную цепочку обработки вынеси в следующий асинхронный шаг.",
+    "why": "Избавляет от повторной обработки заказов и транзакций при повторных отправках от Stripe или Shopify.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "automation",
+    "steps": [
+     "Поставить узел Respond to Webhook в самое начало сценария сразу после Webhook Trigger.",
+     "Настроить узел на мгновенную отдачу статуса 200 OK сервису-отправителю.",
+     "Перенести всю длительную логику обработки воркфлоу на следующие асинхронные шаги."
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-10-27",
   "slot": "evening",
   "headline": "Anthropic выходит на IPO с рекордными долгами, а CISA требует экстренных патчей для PHP2Shell",
