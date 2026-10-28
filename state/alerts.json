@@ -114,20 +114,52 @@
    "strength": 8
   },
   {
-   "at": "2026-10-28T18:18:08.724144+00:00",
-   "keys": [
-    "blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon",
-    "title:google unveils gemini 4 carbon its strongest model with state of the art cybersecurity capabilities ranked 1 on artificial analysis new intelligence index koray kavukcuoglu google"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-10-28T19:18:09.897114+00:00",
    "keys": [
     "religionnews.com/2026/10/26/in-a-first-a-humanist-granted-a-religious-exemption-from-using-ai",
     "title:kentucky man becomes the first humanist granted religious exemption from ai"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-10-28T20:18:07.269753+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMikAFBVV95cUxPVkpqakZoN2tUN3RUZlh4czFwdEs2WnFaUEtmTVIwX1I0eV83YjJXd004eThCYlVqUDdtVzROdDZsNzBLMW9HeXA1VnlOQ2haN21JclpkSDhiT2VRRFNBeWR3WGV5dkdFMDFKdS1hc3E4dmRUWG1rNnkyZ3o4Zmp5RE8tWkZ5bXUySFlCRHFKZzfSAaQBQVVfeXFMUHY5N3d0aWtQQTJYLUwyY2x4dHB2NUx2RDhPLWFvcDhScU5jOURvUUJnMTI0NzBqMzJhS01naUVVQ3c1NWhkckRiU3hwWnZ6SjFEdDZ3cjE3WlRNcEZvVERzeFdSRTJrT0twMmgyWHRMVVBUUVpPS3FVbWRSYlpJZE9yY3lOdU9qLXpIaXdsYktEbzNDaDAyVnNsM3NWbnQzWVpCaWI?oc=5",
+    "news.google.com/rss/articles/CBMikwFBVV95cUxNSjJkeEhlUG1ZLVJsREIxdVJrTE1rS09uWGJnT2tKNmpEUTNmazhSYkJ2dlFmT0pEVmVCX0M0QmhXS0ZoeVBjc3h1dGhIbzhCbG5LV25ZTkhQZnZDMnJBZGhlZ2RYc0JjdXJRT0R5bGFHeVRyb1k1Vjl4T2RMbUJuOTlXTHhyNE0xWHhFdXBGYVRPaWc?oc=5",
+    "news.google.com/rss/articles/CBMikwFBVV95cUxQc3FGZV9UdWhCTGdJdDBfaThhckFXbmFnSDFQWE5MWU8zU19RMmNIcUF0SmhGcW5pS3pSQXJGUjNqRGJxQWNld0dseHFKcEtrNkdLM3JBTDJzZXZZekVoOGU3TnZKdnJOTXlMaHBiS3RVNTlGemxlSFNzQ0JWVWdjSHZ3TUJJNEhjZXJxRERBSGEzU1k?oc=5",
+    "news.google.com/rss/articles/CBMikwFBVV95cUxQdDh0WjZ6ZE5ia2VIczFKQkhQWkNYRGttdHUtckNGa3MyOHhmMUdiMVlSc2xNYnFXRTB3TzBTRVk4YWwxY2dpMVA2ODFad3hwWmJYR3k3YXQ4WEQtbHJxUFU3VE9xTEhxV2hBZkVNRWRjZDQ5VmVTNGg3a0ktNkpkdW1Vd0c3TDFhazVBQ0ZwRzBVcXc?oc=5",
+    "news.google.com/rss/articles/CBMilAFBVV95cUxNWFNaLWJuQ25DdnJ2cnNBRXE3LTdiQW03bW40MkQyMGZFaXdLYnJtVjZ5alM0VlI3bDUzcy1Ebm5RZkVtMGt3OEdEeWoxX3ZiZFI2U245bjJqZ3lXUWFmcF9BOGljbnBTOUNmZlUwSkk3bF9MUlEwV1ZVdzltUWVwdEY2NzlLRWY1QmJQeXEtZUtqenFO?oc=5",
+    "news.google.com/rss/articles/CBMilAFBVV95cUxNZkQ1UUdKRVVPVGZUc0RTeUhqd1BraWhaTEcwOG8xcGdyQmRId3FaQjN1UVJRY3JPYW1COUtMeEJPTjZOZWZaOG1KelZJXzRJQ04xOUJJc25INGlXbzltZlNCLXc2Y2hQQWpEVDlKeS1tY0NCYmhKdFZUWDlac3VqZXR5d2JnSG9QcEhRcVl0RmhkNzBt?oc=5",
+    "news.google.com/rss/articles/CBMilAFBVV95cUxOTzRfWXhsMVpONVlpUVRPVG5saExJRmp3ckpWSmlrQ1JlU3NDT3B6Zkt4ZWhtajlNQm1QYlBqN1o2dTc3ZjBsRzdZTnZlWTdBQWNrWW0zYlNxd0llcDE1TlhQZUpQazhSdFFEM0lrRUZvaVVNdVJSU0puRmdocTM2MGVmdm5ZTjV0WkJPb1A3YnF4V0l3?oc=5",
+    "news.google.com/rss/articles/CBMilAFBVV95cUxPQ3AyRkFmV2tFMy1zc3I1d1pUc1NNbnEzRWJ1QU9mcWZrMDJ0RE43b2U0akp1S3lYSmtXdS1IZkw5bVp5R2psRmN5Tl9id2c4TlpIQWE3Q014eVk1eGI3RFdBLVRoNmt2MXc0eWpaYkZmRHdJenh2SEw3X2VJbC1HYm5zVVZZZm5GalNyZFhMSWRkcWxE?oc=5",
+    "news.google.com/rss/articles/CBMilAFBVV95cUxPQk5GUVkwbmgxY1kzbWFZempaSE1NVjVoU2UxaE90Szh4aXp2SEZxclAtM1J2bGhYX2dJZV9qZklqVm9BZW9zcnRKeGVGb0ZYMDNadngwamNIQ1lBWEJ1X2pQWkpZbXVnOENxanNlU203NUloUWRoejZPRGxkZnZscGR5X0lCTS02eE1FdnpsSVR3d0gz?oc=5",
+    "news.google.com/rss/articles/CBMilAFBVV95cUxPSGVjWktmOGE1SXZHQS04Q0xhN0ljcC0xU1dTYm1QMlRlNlpvZXV4WWd2a29kSVg5TGhEVW5PbVFHVWpKdEhwVGdzSWxGOXo0R2hOUGk5NHh6TklvY1FBOFJOYldwTjVzaTA3RjZ1VXY5a1RvZTA5bzNhSEswaGRHRjZzNVA4VlVVa092eW10cnJ3OHlB?oc=5",
+    "news.google.com/rss/articles/CBMilAFBVV95cUxPVHFhMldzcjdNM2VHZDdSV0NTSGZiQUhWM0lFSjlyalRYcklvMzM1RHJkbjlHSHJOZXBLQnNPTG9xMGJ1S2VNa1dRNV94ekVZemVOTV9BWll5aG9wdEZEYkpRdEZrMDcxQjBmaGtvelotZUR3Yy12d1BHellOWVBWbExXSC1TYU02MzNsNWJkakdjNE0x?oc=5",
+    "news.google.com/rss/articles/CBMilAFBVV95cUxPVW9vMnNGRUVWaXNJQnlyTTl6SElTWm94VXh2REl6Mjctblp4bEd4MUJ4RGtoMFRNblk5cHI2WFg2bnFhQ3V5Umo5RzJsMXJCMUVwNHZsSWNfUUlhSHYtRThwUGlYbm5Fa1Z0YTduNkItaUFFU1JSN0ljVzZEY2ExNGNLeWJrbVBRc0FqOTJUaUhnWllk?oc=5",
+    "news.google.com/rss/articles/CBMilAFBVV95cUxQR0NIM2x3WVZrQndpWjV1RFpGa1hXVndvbGptSkRDUkxCVHFXeFBvNG1YaXJkSUhreUQ2d3Z1UHpMWThXS0o5XzNsN3MyeGVFRUdGdDZVV3NtT3lobGdWdGsxc3RYeGZzeTFVMkRtMWkyb1hxbGhuM2dzcEhUY01Ec2pxejRua29OYzhkN0ZiMTlobHRS?oc=5",
+    "news.google.com/rss/articles/CBMilAFBVV95cUxQSHNwZHJxVGpoblJEemxHRkNnRXRZN25oNVZ4djNqLUZlb19BdFVHQThrSVl2cFlFUDJCaTBOVG45WlhJbFItSG9OWmtMUy12eEJjcm1Ud1hjQXpqY2ozVWM2ZFJxVHhJR2d2bmtGR1BXR1Z0T0dEWjB6TUJ1SkhWTmFPVHRKbDRGcTNMeXFqOFk0VDZh?oc=5",
+    "news.google.com/rss/articles/CBMinAFBVV95cUxPUTN0ODAtZi0zMmR5cEZiZkszODdueFZSQWFVblRTRlpYTDVDR1ptWHE2RlV1TXhpV2ZFMGNVN1JzS2ZhOTNtQjNqSEstY2RFUlplS25jd1NveXV5d09waVBmVDFQckdobFNvbmlkQndCNUpmVkw3RTl2Qmk2YXRrTDdINGJxUUJiOVNsY1FJOEplSERaQ3huYnNmbXY?oc=5",
+    "news.google.com/rss/articles/CBMingFBVV95cUxNSTQ4bWJSTERUcWhnbk96ajNteHhOdExCNHdlcTlPWkRiUS1wVFZlSFhXeEU5TDFwcGt1bm5ualFHeUdBejNSamp6WUFORWk5U2lUb3I5NkdLMzF6RWR6bkw4UDZxTnR1OS1tdXI3TllhcHlpczhna1VUZkFLTE4zZHVfN0xDVzRkUXBwZkoyaVpOa1BrbGdJOXU3M2YzQQ?oc=5",
+    "news.google.com/rss/articles/CBMiowFBVV95cUxOQTJUaEF1Y0k3ejFacFpwMTZvdnkwXzdJMHE1OTdyYUlHRk1lU3laN3Z5RUtaT3F0a09udjdYLVdSS0hfQlJtNGQwT1R2RTdWUWFwb1dOUEZQY3dxSktJRnNTR2VqRGFGVGdWdUtVc2NRLW9PTnNMTTE0aVZlUGc0UkpzajByRy1QSjBUcmZDT1hhd3dxSXlua1ZrQS1ET2tmOXFv?oc=5",
+    "title:trump says us will beat china in ai as technology emerges"
+   ],
+   "strength": 17
+  },
+  {
+   "at": "2026-10-28T20:18:07.269753+00:00",
+   "keys": [
+    "anthropic.com/news/ai-for-science-expands-foundations-research-institutions",
+    "title:we re highlighting 20 scientific foundations institutions and research groups from around the world that we ve partnered with in an expansion of our ai for science program"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-10-28T20:18:07.269753+00:00",
+   "keys": [
+    "blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon",
+    "title:google unveils gemini 4 carbon its strongest model with state of the art cybersecurity capabilities ranked 1 on artificial analysis new intelligence index koray kavukcuoglu google"
+   ],
+   "strength": 5
   }
  ],
  "undated": {
@@ -169,7 +201,8 @@
   "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation": "2026-10-22T18:18:09.178104+00:00",
   "https://www.anthropic.com/news/open-call-guest-investigators-life-sciences": "2026-10-22T22:18:13.057956+00:00",
   "https://www.anthropic.com/news/s1-sec": "2026-10-26T13:18:10.211953+00:00",
-  "https://www.anthropic.com/news/expanding-partnership-gsa": "2026-10-27T23:18:08.306944+00:00"
+  "https://www.anthropic.com/news/expanding-partnership-gsa": "2026-10-27T23:18:08.306944+00:00",
+  "https://www.anthropic.com/news/ai-for-science-expands-foundations-research-institutions": "2026-10-28T20:18:07.269753+00:00"
  },
  "primed": true
 }
