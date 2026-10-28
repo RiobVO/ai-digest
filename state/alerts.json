@@ -2,14 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-10-27T02:18:06.043002+00:00",
-   "keys": [
-    "openai.com/index/building-scientific-understanding-with-academic-communities",
-    "title:openai announces three breakthroughs in computer science math and physics including that the exponential time hypothesis a longstanding conjecture is false openai"
-   ],
-   "strength": 5
-  },
-  {
    "at": "2026-10-27T04:18:06.376907+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMijwFBVV95cUxNVE5uOGFnUGpqLS1KR2Z4TnFWUjd2MHdHYnBLT0dSaXVrY28yeDhZWW1iS1UxalBXem9sNktFYkE1c0Z0czZ2Q094TGtqcllrRDFvOGNfV1I1VFNXemliSU96M3dBQmI2Qm5PNFBsYnpxYVlCeDVNY2JDTlo2Ry1EVk1WY1J5aGJKNC1zTk85SQ?oc=5",
