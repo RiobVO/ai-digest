@@ -2,38 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-10-27T16:18:07.215006+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMihwFBVV95cUxPcDM0bzYtdGtuVlhWeHdobTV3b1pNWHVBQ2V4Y3dYVFZqVFhvaGpwMkttNDVvZDZrLW9mVGowM0RybVhtZXdyWndPQ3pNQ2RqSHVWMTV5SEs3MUpHUENrd09hUVltY3dyX1VsZlU5dlJBb3dlTUtaMnlXSWl2VmxlYUlLSGhJWm8?oc=5",
-    "news.google.com/rss/articles/CBMijgFBVV95cUxQZ0pObzdEdUo5OGZac1U0ZHM0Sjl0T0ViWEx2VnlhdWhQTzVtRlVDbjhRdFU2WmcwbEo3eGpKR0lpMVFQanVCQzZBZ1FRY2lEVVc2SUF1Q2d3YmxVNzEySWlJcEtPRGdJTWdHVjhSNjlFd0psbG1xTEowZmkyU1RQdGk2aG5nUDFBMHNhTFNB?oc=5",
-    "news.google.com/rss/articles/CBMijwFBVV95cUxNRkIyTUZNaDZOUFNLcjJOLU5MOFd2S2ZCbzZ1RlpNNnI5RG1WWDkxN0NpUVZkbDUzNzRjc3h5TXgtZmsydktoTnZnX0p6WjJuSWRTQ2VuWXpBNVZtc0VLWFo1Q1p5TGlHSktVWmVta0pOaDR5RU1aMVBWeG1iSlJQODV6U0NuZnd1SXYzbFJUWQ?oc=5",
-    "news.google.com/rss/articles/CBMijwFBVV95cUxNZmFteVdCNkNYNEpHUWllZkdDeGtiU2hPTk5HODVGZ09tVFZwRWZsTEdxeUcxZDZpVTJ5TGpUU202bFpjeWtiN09CZXF2dkFyeFB4X2hiaW1sVzdRVHNJaGFwZlZfbUQ4MGJ6QnJFUjd4dG9DdXR3VUhnS2xQdTQzdFlVTFBjNXRGS1lfVG5POA?oc=5",
-    "news.google.com/rss/articles/CBMijwFBVV95cUxNZzBDazFndlNRUzdQMU9ldGtSakxYbG00aEs2SHdsSUZwQlg2TlJCem5pbG5GaEw3STVIZnVnc1VvV09EcjF2MGFKODVXYVZnTUlyQjJCMGxYOHNQNVRyNkVTVzNpSEwzaUY3c0xXbUF6QzNrRHQzWG83dlVaVm54SGd3amVQbVE1MkFJSlV0NA?oc=5",
-    "news.google.com/rss/articles/CBMijwFBVV95cUxNcTlCWW42WnZEUzFNbmJsR1NaRU8zaVBhNThLQnhQemd5eUZSc293a0p3NHU1WHR1eTdUbTY3TmxBM3pqX0dGMTA0TnVPYVFrc2F6cUU3dG14QTVGVkR1WHVCdkFHdnN1ZUM2eDgzdVQ2WWNxMmhvTExvM2FSRG1CVG9KakZKZjlJQTUwakJLbw?oc=5",
-    "news.google.com/rss/articles/CBMijwFBVV95cUxON2dGaEF5NWpkTFJyNFVTdmY5dHUtaGhWOWFMNmxPNVVvZ1lqX3RvalR6SURGbHBkSFhnMTNpU2lzM3Z0YnBlNDhaLVUwd2lPMDlGaGp3TkFKUWxFZGF0bVdROEVjLS1HVmdUaGxIU0taZm9vRzFMQTZIemkwOVc5ckRfQjZlVWhSTUpTUWNrRQ?oc=5",
-    "news.google.com/rss/articles/CBMijwFBVV95cUxPM3NpcllzVGFQdU5BY2xxYWY5M0E4UjM5d05JeVA1ZlhaVFJETHVBb3otUnFXNHFJYjRUbU5zUWt1eHNMbTJZWG04WWdvU3hncERBOVl4bTB6U1ZQZjg5WVRzaDFyMk5PYjlIYm9mdHJYc3AxR2ZQQmVael9jWmRLWjZiQzNNODB0RnVjUTF0dw?oc=5",
-    "news.google.com/rss/articles/CBMijwFBVV95cUxQQlFxQ2tXd2pIMzk4Q1NGMVlxMHN4M282X3lWMS05Q1ZaS082Q1FaU2lBWHZYSWVqUkxIMEVIVDNrTlVoYndyTzZlU3loMjJxNkZjLXMwcmh0ejZoZWdNT0xMdHAzSVZfVUZQbGx3R3haTHh4MXBxcktERzBCYUE5NG53bjBlaUVxaTQzQTVzZw?oc=5",
-    "news.google.com/rss/articles/CBMikAFBVV95cUxNRnlNQUkwT1BNN2NzakdBWG1WQW9ZcFVDdWNjTEowX0FjT05RN3JlTjYwX0prU29aeklkWGs4azNBNGlqMkZIbjlueHJORFV6NmhUVlRWallNWDNuZmdmOHZHUDlEcnQtU2dtektjLXB4a0RGcHhlMzBYUUsxcDJjVWNLMmxtZjA2dnBOb0V1REM?oc=5",
-    "news.google.com/rss/articles/CBMikAFBVV95cUxNckU0bzRaT0VDTFhIb2ptTU9BbV83dzdROEhEWnFtT2MzcXNBeXN6QTFEZ0IxZHNaUXplRDZmWV8zbTZBbFhBMDFQc04wc0dEdzJfX3BMbml5Z3JnVVFScDNPdjRITnBSUzhNUWlaRUlxellOckZLOElZUzJGS3d3dVRITnl1WHdCX3hFejE2S0E?oc=5",
-    "news.google.com/rss/articles/CBMikgFBVV95cUxNeDVUZzE4T3FUQWN1OTJUeW1ESVpxeWVITlNwaXpid2I5c3pvVURrWS1NUmMzaGNZaU9CaGNRQlYtOS1BQWVHNkllclpVVnphR2t1OWdacFB6SERJX1hPeUhJS19kbVRrbk9IWXhHRHN4VGJrdEcyNVpzaFZ2TEFaM20ybnJJMTk5My1fei1MYzVRUQ?oc=5",
-    "news.google.com/rss/articles/CBMikgFBVV95cUxQLTltckFXT2R4NlY3dGRLOTNMaE5VMkx4RmJBb0pRRkVsYWJtMk16UFZvQXZhYjVYQmN0OHR6WjN2LWNjd1ZxMzA4bWl3NVkzRkVXTHR5ejRMVzNVTUxHX19nakN5VnlaY1hJSWYyQWpGOVlkVC1CQlY3ZlJncTdkRXdXTng0VlZIb2NHS1lxcWJuQQ?oc=5",
-    "news.google.com/rss/articles/CBMilAFBVV95cUxOYzhPUU1mZTJXQmpiTEJTMUctQVlBU1gwT0RnYVc0MWNLRFp6N1VXcS1lVXllVVhOQ1BSd0FscUdSR1I4M3d0VGJYMTdqTTQ4em4tZzZYMHNLaS1YRVRvb0NQWllpaTZLOEh4UEdTSWRIWHVFcTlvakZZcEVFSXFjRXBRamNNQ041QlRsTlZJYVRjY0lX?oc=5",
-    "news.google.com/rss/articles/CBMilgFBVV95cUxOcTNXWS1aelYya2c2VmliNXJqTzJ3c1lfM2tUYW1ZNnYzblZXdExQWjdybXFSa2RLNWlZOU9MQkVUR2FUSWs3T0FqYXI5VkIySjBRZlBXOTg1WWdqOVVreVp5cnMwRlJrbndwMGZqVG5HX2RfNnZfazMwRlZrc1E1a0ltZHVNdHE2bWlKNzA5Q3VYTU4zZ0E?oc=5",
-    "news.google.com/rss/articles/CBMilwFBVV95cUxNRDUxWllBVkF3NWxKTlRwNkU1dVh5V2hJWlBtMHN6cmNBdmlFbHVEQ0FCa3RhS3FwbGxBYmR2QzZYZUpQQ3pJZzNzQWdNNkV5YmJteHhQRnFnYjF2WGJGcmVGcnFUZUtvQlduWkZybnMtRXhQV2R4NU9nSm9BZ190X1dEZXlQb3lXYS1JTmNIUVVlOTVIRWdj?oc=5",
-    "news.google.com/rss/articles/CBMingFBVV95cUxObGM4amRtQTV5OVJhdUFrM0g4dmJaM2NYQTRET0VDMlotWU9STXphMS1FRkIwMmE3OFkxbDBFNElDNVdmOS1jVzFhSzdyVzhhRG9BaTd3eXJRWU8xdjctdVNqUXFRVmJESFFjNVFQb3Bxb3lhT3Y5LWxCWGxwdi1qaXluTkJpeTB4cElGZXVNcUxLY0VUVjNnX1U0ei1TUQ?oc=5",
-    "title:how to use ai to budget for the holidays without overspending"
-   ],
-   "strength": 17
-  },
-  {
-   "at": "2026-10-27T16:18:07.215006+00:00",
-   "keys": [
-    "oioannou.com/blog/ai-promised-less-work",
-    "title:ai promised less work i ve never worked more"
-   ],
-   "strength": 5
-  },
-  {
    "at": "2026-10-27T18:18:07.048267+00:00",
    "keys": [
     "title:the us government is hiding secret court ruling about how it spies on americans",
@@ -114,14 +82,6 @@
   {
    "at": "2026-10-28T15:18:07.252850+00:00",
    "keys": [
-    "title:ice is running one of the largest anti left surveillance ops in us history",
-    "wired.com/story/ice-is-running-one-of-the-largest-anti-left-surveillance-operations-in-us-history"
-   ],
-   "strength": 5
-  },
-  {
-   "at": "2026-10-28T15:18:07.252850+00:00",
-   "keys": [
     "bleepingcomputer.com/news/microsoft/microsoft-reminds-entra-id-admins-to-migrate-users-to-passkeys",
     "title:microsoft urges entra id admins to migrate users to passkeys"
    ],
@@ -142,6 +102,14 @@
     "title:nvidia rtx spark windows laptops gain new models agent tools and games"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-10-28T16:18:07.666685+00:00",
+   "keys": [
+    "title:ice is running one of the largest anti left surveillance ops in us history",
+    "wired.com/story/ice-is-running-one-of-the-largest-anti-left-surveillance-operations-in-us-history"
+   ],
+   "strength": 8
   }
  ],
  "undated": {
