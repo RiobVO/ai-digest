@@ -2,24 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-10-27T15:18:05.702028+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMicEFVX3lxTE9KV05sRlU2VjVGTnlYWE8tTUdmOEJ6WWVURDJHdURvb1lVQnl6a2I1YWJMb3pBX2FEWVMzVEdQdWktSUgya0Fsa3IzSkdKR1k4eVI0Nk5UU3BqVXVBUnBCaWluczdkT2lsOVJCMnp3MTI?oc=5",
-    "news.google.com/rss/articles/CBMipwFBVV95cUxNYmZNa2p6aGplWkZtMVVMclVDTW5XZTdELTZ5Um1WOGI3aW5CVkNURjdOTnhNa2dYRFFsY0ozZlNTbmhBNFNsODRFZExwRFJXbmx1cWo0eGhQRUNCNlAzSGppaVB3ZFZrWHNuNHBxemhsZDVMUFNRYWxfdjNuYWJsci1ST25udDgyWHI4cDJqTGFVMk9temVreThTMThUYUxvRE1iQ29IWdIBuwFBVV95cUxQR0hhMlJnMXlwU0pjM0pOTlpYcno3ODFiblliLXJrMkdPY3AzOUZjWFZ5emdaQ0czbkR0U3oxaExYZ0k2OWZ4VVVKYVpYZDVzX2swMVZ6dnpoTEtMbjUyRHVIeWY3WVlXVHJva2c2anI0UWR1eXphRUYyRElmZVNXUGNseWxFZ1hJMy1pVWI3NnJYdkVWcmpyNkxLMm51SndSTWRTalAtU1ZUM1N1RFVDUzN1ZF9DcVcwbmlr?oc=5",
-    "securityweek.com/risks-spelled-out-for-anthropic-investors-include-possible-harms-from-runaway-ai",
-    "title:risks spelled out for anthropic investors include possible harms from runaway ai"
-   ],
-   "strength": 3
-  },
-  {
-   "at": "2026-10-27T15:18:05.702028+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/open-source-ai-tools-cbrain-dementia",
-    "title:how ai is changing the pace of discovery for millions living with dementia"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-10-27T16:18:07.215006+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMihwFBVV95cUxPcDM0bzYtdGtuVlhWeHdobTV3b1pNWHVBQ2V4Y3dYVFZqVFhvaGpwMkttNDVvZDZrLW9mVGowM0RybVhtZXdyWndPQ3pNQ2RqSHVWMTV5SEs3MUpHUENrd09hUVltY3dyX1VsZlU5dlJBb3dlTUtaMnlXSWl2VmxlYUlLSGhJWm8?oc=5",
@@ -128,6 +110,38 @@
     "title:vote do you think ai makes your life better"
    ],
    "strength": 4
+  },
+  {
+   "at": "2026-10-28T15:18:07.252850+00:00",
+   "keys": [
+    "title:ice is running one of the largest anti left surveillance ops in us history",
+    "wired.com/story/ice-is-running-one-of-the-largest-anti-left-surveillance-operations-in-us-history"
+   ],
+   "strength": 5
+  },
+  {
+   "at": "2026-10-28T15:18:07.252850+00:00",
+   "keys": [
+    "bleepingcomputer.com/news/microsoft/microsoft-reminds-entra-id-admins-to-migrate-users-to-passkeys",
+    "title:microsoft urges entra id admins to migrate users to passkeys"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-10-28T15:18:07.252850+00:00",
+   "keys": [
+    "emudhra.we-have-a-problem.com/apple.html",
+    "title:ten days later git on macos still trusts the compromised emudhra certificates"
+   ],
+   "strength": 5
+  },
+  {
+   "at": "2026-10-28T15:18:07.252850+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/local-ai-rtx-spark-laptops-updates-models-agents-games",
+    "title:nvidia rtx spark windows laptops gain new models agent tools and games"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
