@@ -1,6 +1,78 @@
 [
  {
   "date": "2026-10-28",
+  "slot": "evening",
+  "headline": "Взломы через Brotli, новые модели в llama.cpp и рекордная прибыль Moore Threads",
+  "page": "2026-10-28-evening.html",
+  "entries": [
+   {
+    "id": "20261028-14",
+    "title": "CISA добавляет Brotli-уязвимость Node2Shell в каталог KEV из-за атак",
+    "section": "security",
+    "source": "securityweek",
+    "url": "https://www.securityweek.com/cisa-warns-of-node2shell-exploitation-as-honeypots-log-attack-attempts/",
+    "story": "s93"
+   },
+   {
+    "id": "20261028-15",
+    "title": "Нейросеть Anthropic нашла уязвимости в Chrome, Android и Linux и заэксплуатировала их",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/anthropics-unreleased-ai-model-chains.html",
+    "story": "s162"
+   },
+   {
+    "id": "20261028-16",
+    "title": "Tailscale патчит уязвимости в SSH-сервере для защиты от эскалации привилегий",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/tailscale-patches-ssh-flaws-that-could.html",
+    "story": "s157"
+   },
+   {
+    "id": "20261028-17",
+    "title": "Вышла llama.cpp v0.8.0 с поддержкой DeepSeek V4.1 Flash и новыми эндпоинтами",
+    "section": "dev",
+    "source": "gh_llama_cpp",
+    "url": "https://github.com/ggml-org/llama.cpp/releases/tag/v0.8.0",
+    "story": "s126"
+   },
+   {
+    "id": "20261028-18",
+    "title": "Moore Threads отчиталась о росте выручки в 18 раз и строит кластер со 100K GPU",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.bloomberg.com/news/articles/2026-10-28/moore-threads-sales-surge-nearly-1-800-on-ai-hardware-demand",
+    "story": "s163"
+   },
+   {
+    "id": "20261028-19",
+    "title": "Upwind Security привлекла $400 млн при оценке в $3,8 млрд",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.bloomberg.com/news/articles/2026-10-28/ai-cybersecurity-startup-upwind-raises-at-3-8-billion-value",
+    "story": "s164"
+   },
+   {
+    "id": "20261028-20",
+    "title": "Отказ от классических собеседований по коду из-за того, что Claude решает их лучше",
+    "section": "voices",
+    "source": "latent_space",
+    "url": "https://latent.space/p/ainews-anthropic-ends-coding-interviews-hunger-beats-tenure/",
+    "story": ""
+   },
+   {
+    "id": "20261028-21",
+    "title": "Позиция инженеров Amazon по поводу неэффективности ИИ-инструментов на ряде задач",
+    "section": "voices",
+    "source": "simon_willison",
+    "url": "https://simonwillison.net/2026/Oct/28/terk-terkowitz/",
+    "story": ""
+   }
+  ]
+ },
+ {
+  "date": "2026-10-28",
   "slot": "morning",
   "headline": "OpenAI закупает TPU Google, а Google DeepMind выкатила Genie 4",
   "page": "2026-10-28.html",

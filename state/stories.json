@@ -1,5 +1,5 @@
 {
- "next": 162,
+ "next": 165,
  "stories": {
   "s9": {
    "name": "Финансы и IPO Anthropic",
@@ -1190,6 +1190,12 @@
      "title": "Критическая уязвимость Node2Shell в декодере Brotli затрагивает Node.js и Python",
      "entry": "20261026-14",
      "issue": "2026-10-26-evening.html"
+    },
+    {
+     "date": "2026-10-28",
+     "title": "CISA добавляет Brotli-уязвимость Node2Shell в каталог KEV из-за атак",
+     "entry": "20261028-14",
+     "issue": "2026-10-28-evening.html"
     }
    ]
   },
@@ -1601,6 +1607,12 @@
      "title": "В llama.cpp завезли поддержку DeepSeek V4.1 Flash",
      "entry": "20261025-7",
      "issue": "2026-10-25.html"
+    },
+    {
+     "date": "2026-10-28",
+     "title": "Вышла llama.cpp v0.8.0 с поддержкой DeepSeek V4.1 Flash и новыми эндпоинтами",
+     "entry": "20261028-17",
+     "issue": "2026-10-28-evening.html"
     }
    ]
   },
@@ -1966,6 +1978,12 @@
      "title": "В Tailscale SSH нашли около десятка уязвимостей для повышения прав до root",
      "entry": "20261028-3",
      "issue": "2026-10-28.html"
+    },
+    {
+     "date": "2026-10-28",
+     "title": "Tailscale патчит уязвимости в SSH-сервере для защиты от эскалации привилегий",
+     "entry": "20261028-16",
+     "issue": "2026-10-28-evening.html"
     }
    ]
   },
@@ -2010,6 +2028,39 @@
      "title": "В Codex CLI 0.165.0 завезли нативную интеграцию с Google Cloud Vertex AI",
      "entry": "20261028-9",
      "issue": "2026-10-28.html"
+    }
+   ]
+  },
+  "s162": {
+   "name": "Автономные эксплойты ИИ",
+   "events": [
+    {
+     "date": "2026-10-28",
+     "title": "Нейросеть Anthropic нашла уязвимости в Chrome, Android и Linux и заэксплуатировала их",
+     "entry": "20261028-15",
+     "issue": "2026-10-28-evening.html"
+    }
+   ]
+  },
+  "s163": {
+   "name": "Рынок ИИ-чипов в Китае",
+   "events": [
+    {
+     "date": "2026-10-28",
+     "title": "Moore Threads отчиталась о росте выручки в 18 раз и строит кластер со 100K GPU",
+     "entry": "20261028-18",
+     "issue": "2026-10-28-evening.html"
+    }
+   ]
+  },
+  "s164": {
+   "name": "Инвестиции в ИБ-стартапы",
+   "events": [
+    {
+     "date": "2026-10-28",
+     "title": "Upwind Security привлекла $400 млн при оценке в $3,8 млрд",
+     "entry": "20261028-19",
+     "issue": "2026-10-28-evening.html"
     }
    ]
   }
