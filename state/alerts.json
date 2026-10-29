@@ -21,22 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-28T21:18:06.584074+00:00",
-   "keys": [
-    "nullpt.rs/fingerprinting-bioweapons",
-    "title:why is this fingerprinting script creating bioweapons"
-   ],
-   "strength": 4
-  },
-  {
-   "at": "2026-10-28T21:18:06.584074+00:00",
-   "keys": [
-    "apple.com/macbook-pro/proled-xdr-display",
-    "title:macbook pro with proled xdr display and touch"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-10-28T23:18:06.394542+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMikgFBVV95cUxPd3B6ZXVjbTNsMnJwT2lYTHNVa0wyMzVDNGtCaWFBMkx3WFdLLS1FNHZMR09SWDI3STFZMHhtd2hidUNURUYxQXVTb0Rqbjg3a243Rl9GOUoxenA4TllfMVowVS03R0sxQUVuZS1DT2YzZk4tZVVGS2kwYmlrdi1ESWc3WnVQV3VQTmowM3JUVmdLd9IBpgFBVV95cUxONy1MQTBBMzUwRk1MZll5RWdFRVpMMmx6TnV4T2ZDbno0U0dmeVlseUlWNXhpWEVZSjRtb01RUEVtdk5kOUpUeWtUMUZrR3dnUGVEUjEwa01QRlcxNEd2OTk3NjMzOHpRNndxbjZIOXM2bmFyZlBiTE9ibWhfLXl4NThMUW1aUWpZR0w2MVFnajhDbUZ4Nlp5MHpqZFM1SHFIdVdDMmV3?oc=5",
@@ -114,12 +98,12 @@
    "strength": 2
   },
   {
-   "at": "2026-10-29T21:18:05.478379+00:00",
+   "at": "2026-10-29T22:18:07.757129+00:00",
    "keys": [
     "nytimes.com/2026/10/29/arts/television/patrick-stewart-dead.html",
     "title:patrick stewart has died"
    ],
-   "strength": 13
+   "strength": 17
   }
  ],
  "undated": {
