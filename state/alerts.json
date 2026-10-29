@@ -21,14 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-28T19:18:09.897114+00:00",
-   "keys": [
-    "religionnews.com/2026/10/26/in-a-first-a-humanist-granted-a-religious-exemption-from-using-ai",
-    "title:kentucky man becomes the first humanist granted religious exemption from ai"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-10-28T20:18:07.269753+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMikAFBVV95cUxPVkpqakZoN2tUN3RUZlh4czFwdEs2WnFaUEtmTVIwX1I0eV83YjJXd004eThCYlVqUDdtVzROdDZsNzBLMW9HeXA1VnlOQ2haN21JclpkSDhiT2VRRFNBeWR3WGV5dkdFMDFKdS1hc3E4dmRUWG1rNnkyZ3o4Zmp5RE8tWkZ5bXUySFlCRHFKZzfSAaQBQVVfeXFMUHY5N3d0aWtQQTJYLUwyY2x4dHB2NUx2RDhPLWFvcDhScU5jOURvUUJnMTI0NzBqMzJhS01naUVVQ3c1NWhkckRiU3hwWnZ6SjFEdDZ3cjE3WlRNcEZvVERzeFdSRTJrT0twMmgyWHRMVVBUUVpPS3FVbWRSYlpJZE9yY3lOdU9qLXpIaXdsYktEbzNDaDAyVnNsM3NWbnQzWVpCaWI?oc=5",
@@ -160,6 +152,14 @@
     "title:an updated model spec for more capable and beneficial ai"
    ],
    "strength": 2
+  },
+  {
+   "at": "2026-10-29T20:18:06.151803+00:00",
+   "keys": [
+    "nytimes.com/2026/10/29/arts/television/patrick-stewart-dead.html",
+    "title:patrick stewart has died"
+   ],
+   "strength": 4
   }
  ],
  "undated": {
