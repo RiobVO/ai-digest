@@ -8,33 +8,18 @@
     "deepmind.google/blog/gemini-4-carbon-our-next-frontier-model",
     "title:gemini 4 carbon our next frontier model"
    ]
+  },
+  {
+   "at": "2026-10-29T15:18:11.329849+00:00",
+   "day": "2026-10-29",
+   "title": "Mistral открыла веса флагманской модели Mistral Large 4 на 1 трлн параметров",
+   "keys": [
+    "mistral.ai/news/mistral-large-4-oss",
+    "title:le chonk built for coders trusted by defenders"
+   ]
   }
  ],
  "rejected": [
-  {
-   "at": "2026-10-28T15:18:07.252850+00:00",
-   "keys": [
-    "bleepingcomputer.com/news/microsoft/microsoft-reminds-entra-id-admins-to-migrate-users-to-passkeys",
-    "title:microsoft urges entra id admins to migrate users to passkeys"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-10-28T15:18:07.252850+00:00",
-   "keys": [
-    "emudhra.we-have-a-problem.com/apple.html",
-    "title:ten days later git on macos still trusts the compromised emudhra certificates"
-   ],
-   "strength": 5
-  },
-  {
-   "at": "2026-10-28T15:18:07.252850+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/local-ai-rtx-spark-laptops-updates-models-agents-games",
-    "title:nvidia rtx spark windows laptops gain new models agent tools and games"
-   ],
-   "strength": 1
-  },
   {
    "at": "2026-10-28T16:18:07.666685+00:00",
    "keys": [
