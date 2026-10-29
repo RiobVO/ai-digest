@@ -12,17 +12,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-28T14:18:07.509797+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMi0gFBVV95cUxQRENvYzM0TS13bWtrZGIwNGVMWHAyZV9fV2VUYmhyZ0RpNVRkc3VsT2wyN21KM0tYV2hmSHlDUGNxbGdic1laeC03bVhHMXlEdWNFZUhDQ0pqSmpJR2FtZHFZRVNCcFdsWkx6YUROQ0RpTEFPdWxVQ2EtSjJEeDdrVkx6ZzMyTHdHZGpTdlY5dmd0dmVDd084TDkzbFhHaV9YVXJCWEVyUFhUaUo2ellzSG5EdEQyQXJnOW9QRDVQUmFNM1FycHlFTHNIdTk3cmZONmc?oc=5",
-    "news.google.com/rss/articles/CBMi2AFBVV95cUxQYnFyQzhfRUJORzRNc0x2dHVzWkxoRUpWLTREWnpQYm9pS0hrYVY5ZFdJeTFrVm1ZLWhFVzZOSGhlcUpoUk1zanJXV0FyNXZHN2E1V1VUVTNtb3pVdWxZRnU4aTZiazEwajBibHMzSjZiblZyN3Z4WHRNekxRanBhYXR6bzlKbjZRMGMteC1rcnVSajZYdThpRTNPdUx0aWxtX1Fla3hIMnp0cXo4TUh6RWFIR0xha1FZY2VMTTE0Wmx5aUdtS2hCT2FNMFBjN3dNNDZZTVNaS0I?oc=5",
-    "news.google.com/rss/articles/CBMi4AFBVV95cUxQV29yWjNtNkl2bllOcWdxbGphYnE5Q1RhMnR4aFpQQzNVTzA3U1QybkE3dDhCU1JCUUdMRmVwZXpSTXlMb0VaUVJSX0pkRXRQVTlIT0d5U3F1WDZ0WjZydW9YaDBEY24wZzRYdjhlSlM2SlJDamw2VDlOXzNiT1BqMklVekdhNEtBMjJmbXpBR19xR0lZal9xcTM5QUltb3AtbUNHTl9fYVBFeW9vMXQyQXBTcjZhSXNXbHhhWEJtRUw3SVZlQ3c2Vi1GeXdUc09kelJPUEl4Qk1XMEZPTGpHcQ?oc=5",
-    "news.google.com/rss/articles/CBMi8AFBVV95cUxOdmhwWnRIbERQLVZacnM1a3NJV2R4RGpDUU56SHBWRUFyVjRHdE13RHdwYjY3cXJCMnktNXRyZmhKMHhrTF9mYnV4azB0WVBCa2JlVG0xXzdvLUtVVFlXdEVtekJEQmNPaUlkMldRY201QnZVRUk2ekgwLTJ1bUVWNHZkajd2NXV6SEZ2X0c4TVMxaC0ycWtTUWo5RFlpeFVDUWI0aFJCY3VnM1BJelJPc05BWUR2U1k1RHQ3WjVkbExyMzNwdS13My1KYmlpSk9YWVJNd0lVeldHVFlYeUNCZEx4UkVSWXF1blZJSDRLYm0?oc=5",
-    "title:vote do you think ai makes your life better"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-10-28T15:18:07.252850+00:00",
    "keys": [
     "bleepingcomputer.com/news/microsoft/microsoft-reminds-entra-id-admins-to-migrate-users-to-passkeys",
@@ -159,6 +148,14 @@
    "keys": [
     "blogs.nvidia.com/blog/geforce-now-thursday-phantom-blade-zero",
     "title:slice into gfn thursday phantom blade zero launches on geforce now"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-10-29T14:18:10.671696+00:00",
+   "keys": [
+    "mistral.ai/news/mistral-large-4-oss",
+    "title:le chonk built for coders trusted by defenders"
    ],
    "strength": 1
   }
