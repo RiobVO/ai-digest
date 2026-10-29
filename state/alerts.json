@@ -21,14 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-28T16:18:07.666685+00:00",
-   "keys": [
-    "title:ice is running one of the largest anti left surveillance ops in us history",
-    "wired.com/story/ice-is-running-one-of-the-largest-anti-left-surveillance-operations-in-us-history"
-   ],
-   "strength": 8
-  },
-  {
    "at": "2026-10-28T19:18:09.897114+00:00",
    "keys": [
     "religionnews.com/2026/10/26/in-a-first-a-humanist-granted-a-religious-exemption-from-using-ai",
@@ -151,6 +143,14 @@
     "title:into the omniverse how developers turn ideas into simulations with frontier ai agents"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-10-29T17:18:06.664683+00:00",
+   "keys": [
+    "artificialanalysis.ai/articles/gemini-4-carbon-new-number-1",
+    "title:gemini 4 carbon is the new 1 on the artificial analysis intelligence index v5"
+   ],
+   "strength": 3
   }
  ],
  "undated": {
