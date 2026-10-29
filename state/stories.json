@@ -1,5 +1,5 @@
 {
- "next": 165,
+ "next": 174,
  "stories": {
   "s9": {
    "name": "Финансы и IPO Anthropic",
@@ -904,6 +904,12 @@
      "title": "CISA добавила PHP2Shell в каталог KEV и потребовала закрыть уязвимости до четверга",
      "entry": "20261027-11",
      "issue": "2026-10-27-evening.html"
+    },
+    {
+     "date": "2026-10-29",
+     "title": "Хакеры использовали PHP2Shell и ИИ для захвата 25 серверов в США",
+     "entry": "20261029-0",
+     "issue": "2026-10-29.html"
     }
    ]
   },
@@ -2061,6 +2067,105 @@
      "title": "Upwind Security привлекла $400 млн при оценке в $3,8 млрд",
      "entry": "20261028-19",
      "issue": "2026-10-28-evening.html"
+    }
+   ]
+  },
+  "s165": {
+   "name": "Утечка DHS через Okta",
+   "events": [
+    {
+     "date": "2026-10-29",
+     "title": "Утечка данных 41 000 сотрудников DHS после взлома корпоративной Okta",
+     "entry": "20261029-1",
+     "issue": "2026-10-29.html"
+    }
+   ]
+  },
+  "s166": {
+   "name": "Модель Gemini 4 Carbon",
+   "events": [
+    {
+     "date": "2026-10-29",
+     "title": "Google выпустила модель Gemini 4 Carbon с прицелом на кибербезопасность",
+     "entry": "20261029-2",
+     "issue": "2026-10-29.html"
+    }
+   ]
+  },
+  "s167": {
+   "name": "Уязвимость UEFI в EDK II",
+   "events": [
+    {
+     "date": "2026-10-29",
+     "title": "16-летняя уязвимость в EDK II позволяет перехватить серверы до старта ОС",
+     "entry": "20261029-3",
+     "issue": "2026-10-29.html"
+    }
+   ]
+  },
+  "s168": {
+   "name": "Дистилляция из GPT-6 Astra",
+   "events": [
+    {
+     "date": "2026-10-29",
+     "title": "DeepSeek и Moonshot обучали новые модели дистилляцией из GPT-6 Astra",
+     "entry": "20261029-4",
+     "issue": "2026-10-29.html"
+    }
+   ]
+  },
+  "s169": {
+   "name": "Nemotron 3.5 Transcribe",
+   "events": [
+    {
+     "date": "2026-10-29",
+     "title": "Nvidia открыла веса модели распознавания речи Nemotron 3.5 Transcribe",
+     "entry": "20261029-5",
+     "issue": "2026-10-29.html"
+    }
+   ]
+  },
+  "s170": {
+   "name": "Покупка Hugging Face Nvidia",
+   "events": [
+    {
+     "date": "2026-10-29",
+     "title": "Минюст США проверяет покупку платформы Hugging Face компанией Nvidia",
+     "entry": "20261029-6",
+     "issue": "2026-10-29.html"
+    }
+   ]
+  },
+  "s171": {
+   "name": "Агенты в Android Studio",
+   "events": [
+    {
+     "date": "2026-10-29",
+     "title": "В Android Studio завезли интеграцию сторонних ИИ-агентов Claude и Codex",
+     "entry": "20261029-7",
+     "issue": "2026-10-29.html"
+    }
+   ]
+  },
+  "s172": {
+   "name": "Партнерство ServiceNow и OpenAI",
+   "events": [
+    {
+     "date": "2026-10-29",
+     "title": "OpenAI и ServiceNow объединяют агентов и корпоративные воркфлоу",
+     "entry": "20261029-8",
+     "issue": "2026-10-29.html"
+    }
+   ]
+  },
+  "s173": {
+   "name": "Инструменты для Claude Code",
+   "events": [
+    {
+     "date": "2026-10-29",
+     "title": "Вышел omux — бесплатный macOS-клиент для параллельных сессий Claude Code",
+     "entry": "20261029-9",
+     "issue": "2026-10-29.html"
     }
    ]
   }

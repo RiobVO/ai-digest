@@ -1,5 +1,101 @@
 [
  {
+  "date": "2026-10-29",
+  "slot": "morning",
+  "headline": "Gemini 4 Carbon от Google и взлом серверов через связку PHP2Shell",
+  "page": "2026-10-29.html",
+  "entries": [
+   {
+    "id": "20261029-0",
+    "title": "Хакеры использовали PHP2Shell и ИИ для захвата 25 серверов в США",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/php2shell-attack-roots-25-servers.html",
+    "story": "s69"
+   },
+   {
+    "id": "20261029-1",
+    "title": "Утечка данных 41 000 сотрудников DHS после взлома корпоративной Okta",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://www.wired.com/story/massive-leak-exposes-41000-homeland-security-workers-including-undercover-ice-agents/",
+    "story": "s165"
+   },
+   {
+    "id": "20261029-2",
+    "title": "Google выпустила модель Gemini 4 Carbon с прицелом на кибербезопасность",
+    "section": "model",
+    "source": "deepmind",
+    "url": "https://deepmind.google/blog/gemini-4-carbon-our-next-frontier-model/",
+    "story": "s166"
+   },
+   {
+    "id": "20261029-3",
+    "title": "16-летняя уязвимость в EDK II позволяет перехватить серверы до старта ОС",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/critical-16-year-old-uefi-flaw-can-run.html",
+    "story": "s167"
+   },
+   {
+    "id": "20261029-4",
+    "title": "DeepSeek и Moonshot обучали новые модели дистилляцией из GPT-6 Astra",
+    "section": "model",
+    "source": "Reuters",
+    "url": "https://www.reuters.com/technology/deepseek-moonshot-used-openais-gpt-6-astra-train-latest-models-information-2026-10-29/",
+    "story": "s168"
+   },
+   {
+    "id": "20261029-5",
+    "title": "Nvidia открыла веса модели распознавания речи Nemotron 3.5 Transcribe",
+    "section": "model",
+    "source": "hf_blog",
+    "url": "https://huggingface.co/blog/nvidia/nemotron-transcribe-granary",
+    "story": "s169"
+   },
+   {
+    "id": "20261029-6",
+    "title": "Минюст США проверяет покупку платформы Hugging Face компанией Nvidia",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.reuters.com/world/us-doj-is-inquiring-about-nvidias-purchase-hugging-face-sources-say-2026-10-28/",
+    "story": "s170"
+   },
+   {
+    "id": "20261029-7",
+    "title": "В Android Studio завезли интеграцию сторонних ИИ-агентов Claude и Codex",
+    "section": "dev",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/google-opens-android-development-to-third-party-ai-agents-and-unveils-new-gemini-apis/",
+    "story": "s171"
+   },
+   {
+    "id": "20261029-8",
+    "title": "OpenAI и ServiceNow объединяют агентов и корпоративные воркфлоу",
+    "section": "product",
+    "source": "openai",
+    "url": "https://openai.com/index/openai-servicenow-partnership-expansion",
+    "story": "s172"
+   },
+   {
+    "id": "20261029-9",
+    "title": "Вышел omux — бесплатный macOS-клиент для параллельных сессий Claude Code",
+    "section": "dev",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xhyagv/i_made_omux_a_native_mac_app_for_running_lots_of/",
+    "story": "s173"
+   },
+   {
+    "id": "20261029-10",
+    "title": "Саймон Уиллисон: число PR на GitHub утроилось за год из-за ИИ-агентов",
+    "section": "voices",
+    "source": "simon_willison",
+    "url": "https://simonwillison.net/2026/Oct/28/github-octoverse-2026/",
+    "story": ""
+   }
+  ]
+ },
+ {
   "date": "2026-10-28",
   "slot": "evening",
   "headline": "Взломы через Brotli, новые модели в llama.cpp и рекордная прибыль Moore Threads",
