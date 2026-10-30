@@ -1,6 +1,131 @@
 [
  {
   "date": "2026-10-30",
+  "slot": "evening",
+  "headline": "Бэкдор в Claude Code и детали взлома Binance на $6,3 млрд",
+  "page": "2026-10-30-evening.html",
+  "entries": [
+   {
+    "id": "20261030-15",
+    "title": "Binance раскрыла детали кражи $6,3 млрд: вывод за 20 минут и следы TraderTraitor",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/binance-suffers-security-breach.html",
+    "story": "s174"
+   },
+   {
+    "id": "20261030-16",
+    "title": "В официальное расширение Claude Code на Cursor Marketplace внедрили SSH-бэкдор",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/official-claude-code-vs-code-extension.html",
+    "story": "s88"
+   },
+   {
+    "id": "20261030-17",
+    "title": "GLM 5.3 автономно собрала цепочки 1-day эксплойтов для шести версий Firefox",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/open-weight-model-glm-5-3-built-full-firefox-exploit-chains-with-zero-human-input-in-under-48-hours/",
+    "story": "s184"
+   },
+   {
+    "id": "20261030-18",
+    "title": "CISA внесла уязвимость GitLab с CVSS 10.0 в каталог KEV из-за атак в сети",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/hackers-now-exploiting-max-severity-gitlab-flaw-in-attacks/",
+    "story": "s185"
+   },
+   {
+    "id": "20261030-19",
+    "title": "Nvidia открыла веса Metatron v1 — единой модели управления для робота Unitree G1",
+    "section": "model",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xj8kzn/metatron_v1_nvidias_unified_humanoid_control/",
+    "story": "s186"
+   },
+   {
+    "id": "20261030-20",
+    "title": "Сэм Альтман подтвердил, что OpenAI продолжит выдавать лавину ИИ-доказательств",
+    "section": "business",
+    "source": "verge",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/1023054/altman-cheeky-pint-ai-math-interview",
+    "story": "s152"
+   },
+   {
+    "id": "20261030-21",
+    "title": "Intrinsic Distribution Matching: дистилляция генерации картинок за считанные шаги",
+    "section": "paper",
+    "source": "hf_papers",
+    "url": "https://arxiv.org/abs/2610.39633",
+    "story": "s187"
+   },
+   {
+    "id": "20261030-22",
+    "title": "Wikimedia требует разрешить обучение ИИ на данных, но запретить их выдачу в чатах",
+    "section": "business",
+    "source": "verge",
+    "url": "https://www.theverge.com/policy/1022880/wikipedia-openai-new-york-times-copyright",
+    "story": "s188"
+   },
+   {
+    "id": "20261030-23",
+    "title": "Tencent WorkBuddy запустил удаленный контроль за ИИ-агентами со смартфона",
+    "section": "product",
+    "source": "technode",
+    "url": "https://technode.com/2026/10/30/tencents-workbuddy-adds-remote-control-letting-users-manage-ai-tasks-from-their-phones/",
+    "story": "s189"
+   },
+   {
+    "id": "20261030-24",
+    "title": "Spotify планирует запустить создание ИИ-ремиксов за $5 в месяц в начале 2027 года",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://www.ft.com/content/50286bd0-7158-4347-81d8-011cd164f75b",
+    "story": "s190"
+   },
+   {
+    "id": "20261030-25",
+    "title": "Запуск голосового чата с агентом во время работы с кодом в Cursor",
+    "section": "tips",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/cursor/comments/1xis3lx/wow_live_conversation_with_agents_in_cursor_sooo/",
+    "story": "",
+    "summary": "В боковой панели чата Cursor перейди в новый раздел Voice и включи микрофон для голосового диалога.",
+    "why": "Позволяет давать указания и обсуждать архитектуру проекта голосом без переключения контекста.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "agents",
+    "steps": [
+     "Раздел Voice доступен в боковой панели чата IDE.",
+     "Голосовой чат работает в фоновом режиме с выбранной пользователем моделью.",
+     "Ассистент отвечает голосом в ходе диалога и фиксирует главные тезисы в текстовом чате панели."
+    ]
+   },
+   {
+    "id": "20261030-26",
+    "title": "Внедрение автоматического DAST-сканирования в CI/CD через OWASP ZAP или Nuclei",
+    "section": "tips",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/companies/pt/articles/1099706/?utm_campaign=1099706&utm_source=habrahabr&utm_medium=rss",
+    "story": "",
+    "summary": "Добавь этап динамического тестирования сразу после шага deploy, передав сканеру URL тестового контура.",
+    "why": "Помогает находить уязвимости веб-приложений на этапе развертывания до попадания в прод.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "security",
+    "steps": [
+     "DAST анализирует HTTP-ответы работающего приложения, в отличие от SAST (анализ кода) и SCA (проверка сторонних компонентов).",
+     "Сканирование помогает находить не учтенные в исходном коде ошибки конфигурации (например, ошибочные корневые папки в Caddyfile, открывающие доступ к .env и .git).",
+     "Для коробочного ПО (CMS, VPN, мессенджеры) DAST проверяет актуальность установленных патчей и наличие известных уязвимостей (например, связок вроде BDU:2025-10114 — BDU:2025-10116 для TrueConf Server).",
+     "Качество покрытия DAST зависит от источников информации об эндпойнтах: краулеров, API-схем OpenAPI или HAR-файлов из e2e-тестов."
+    ]
+   }
+  ]
+ },
+ {
+  "date": "2026-10-30",
   "slot": "morning",
   "headline": "Взлом Binance на $5,8 млрд, триллионник Le Chonk и обвал Alphabet",
   "page": "2026-10-30.html",
