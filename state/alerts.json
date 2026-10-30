@@ -21,15 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-29T18:18:12.473064+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMiV0FVX3lxTE5xNEEzYVdFemd2ZlNTclVaYVZ4M0JlcTBSODQ2ODlQRWpkc05hWk5sMDIxVG00OEJCbm8wX284VFBTTm1kUEktV0VlemVUQzI2WWFBNTlOWQ?oc=5",
-    "openai.com/index/updated-model-spec",
-    "title:an updated model spec for more capable and beneficial ai"
-   ],
-   "strength": 2
-  },
-  {
    "at": "2026-10-30T00:18:06.607416+00:00",
    "keys": [
     "nytimes.com/2026/10/29/arts/television/patrick-stewart-dead.html",
@@ -111,6 +102,14 @@
     "title:chinese hackers use ai powered artex to target over 200 organizations worldwide"
    ],
    "strength": 2
+  },
+  {
+   "at": "2026-10-30T19:18:08.305910+00:00",
+   "keys": [
+    "newsletter.signoz.io/p/ai-isnt-replacing-sres-its-deskilling",
+    "title:ai isn t replacing sres it s deskilling them"
+   ],
+   "strength": 3
   }
  ],
  "undated": {
