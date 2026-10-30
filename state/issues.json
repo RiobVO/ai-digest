@@ -1,5 +1,180 @@
 [
  {
+  "date": "2026-10-30",
+  "slot": "morning",
+  "headline": "Взлом Binance на $5,8 млрд, триллионник Le Chonk и обвал Alphabet",
+  "page": "2026-10-30.html",
+  "entries": [
+   {
+    "id": "20261030-0",
+    "title": "С кошельков Binance вывели до $5,8 млрд через атаку на механизм EIP-7702",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://www.theblock.co/news/markets/2026-10-29-binance-investigating-hack-suspicious-outflows-5-billion-432171",
+    "story": "s174"
+   },
+   {
+    "id": "20261030-1",
+    "title": "Mistral выкатила Le Chonk — открытую модель на 1 трлн параметров под код и ИБ",
+    "section": "model",
+    "source": "mistral",
+    "url": "https://mistral.ai/news/mistral-large-4-oss/",
+    "story": "s175"
+   },
+   {
+    "id": "20261030-2",
+    "title": "Alphabet потеряла $500 млрд стоимости: ИИ-поиск пока приносит меньше денег",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/googles-ai-search-problem-finally-shows-up-in-the-earnings-report-some-investors-believe/",
+    "story": "s176"
+   },
+   {
+    "id": "20261030-3",
+    "title": "В Telegram для Android закрыли RCE-уязвимость при ответе на голосовой звонок",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/telegram-android-flaw-lets-attackers.html",
+    "story": "s177"
+   },
+   {
+    "id": "20261030-4",
+    "title": "OpenAI вдвое подняла лимиты на планах Pro и начислила эквивалент в API-кредитах",
+    "section": "business",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/artificial-intelligence/openai-doubles-chatgpt-pro-usage-limits-after-backlash-over-planned-50-percent-cut/",
+    "story": "s178"
+   },
+   {
+    "id": "20261030-5",
+    "title": "Reddit закрывает треды от внешнего интернета и требует авторизацию",
+    "section": "product",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/10/29/as-search-traffic-dries-up-reddit-announces-its-shifting-to-a-logged-in-experience/",
+    "story": "s179"
+   },
+   {
+    "id": "20261030-6",
+    "title": "В Claude Code v2.1.314 запретили запись файлов за пределами рабочего каталога",
+    "section": "dev",
+    "source": "gh_claude_code",
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.314",
+    "story": "s88"
+   },
+   {
+    "id": "20261030-7",
+    "title": "Аналитики в 86% случаев перенимали скрытые предвзятости агента Claude Code",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/experts-adopt-ai-agents-random-opinions-and-think-theyre-their-own-anthropic-study-finds/",
+    "story": "s180"
+   },
+   {
+    "id": "20261030-8",
+    "title": "GitHub запустил npm Firewall для блокировки вредоносных пакетов при установке",
+    "section": "dev",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/github-launches-npm-firewall-to-block.html",
+    "story": "s181"
+   },
+   {
+    "id": "20261030-9",
+    "title": "Личный агент Claude подрядчика Accenture два месяца работал в сети Пентагона",
+    "section": "security",
+    "source": "wired_ai",
+    "url": "https://www.wired.com/story/a-defense-contractor-gave-their-personal-ai-agent-access-to-a-secure-pentagon-system/",
+    "story": "s182"
+   },
+   {
+    "id": "20261030-10",
+    "title": "Google разрешила редактировать документы Docs и таблицы прямо в чате Gemini",
+    "section": "product",
+    "source": "verge",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/1022519/google-gemini-file-editing-documents-pdfs",
+    "story": "s183"
+   },
+   {
+    "id": "20261030-11",
+    "title": "Генерация промо-роликов из URL через скилл Claude Code",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xj0cp2/i_made_a_claude_code_skill_that_turns_any_product/",
+    "story": "",
+    "summary": "Добавь скилл для Claude Code и передай ему адрес продукта, чтобы агент сам снял скриншоты в Chrome и сверстал видео в Framer Motion.",
+    "why": "Позволяет быстро сделать анимированный видеоролик по сайту без ручной верстки и монтажа.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Использует headless Chrome для создания скриншотов десктопной, мобильной и полной версий сайта",
+     "Проектирует сценарий, выделяя ценностное предложение, три главных фичи и одну цифру",
+     "Пишет раскадровку и анимирует ее с помощью Framer Motion с 3D-эффектами и туннелями из экранов",
+     "Рендерит точный по кадрам MP4-файл в разрешении 1080x1920 с помощью установленного через npm ffmpeg",
+     "Поддерживает 12 типов сцен и распространяется под лицензией MIT"
+    ]
+   },
+   {
+    "id": "20261030-12",
+    "title": "Проверка туллов ИИ-агентов через локальный прокси SafeAgents",
+    "section": "tips",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xii45s/safeagents_an_opensource_proxy_that_checks_every/",
+    "story": "",
+    "summary": "Запусти локальный прокси SafeAgents и перенаправь параметр base_URL агента на него. Прокси перехватывает вызовы инструментов и подменяет опасные команды на текст.",
+    "why": "Защитит от выполнения опасных команд кодинг-агентами без отправки данных во внешние сервисы.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "ai_security",
+    "steps": [
+     "Прокси принимает запросы в формате OpenAI Chat Completions и Anthropic Messages (как потоковые, так и обычные)",
+     "Проверяет, был ли инструмент объявлен обвязкой и не обращается ли вызов к посторонним хостам",
+     "Модуль atif-scan запускает около 110 детерминированных детекторов прямо в процессе без сетевых запросов",
+     "Опционально можно подключить языковую модель-судью через любой совместимый с OpenAI API сервер для проверки более мягких находок",
+     "Поддерживает режим логирования --log-only и задание доверенных хостов через --allow-host",
+     "Репозиторий содержит гайды настройки для 12 программных обвязок (harnesses), а для 6 из них тесты пройдены в CI"
+    ]
+   },
+   {
+    "id": "20261030-13",
+    "title": "Оптимизация расхода токенов в системных промптах",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/PromptEngineering/comments/1xizkob/i_measured_what_my_prompts_were_wasting_most_of/",
+    "story": "",
+    "summary": "Убери из промптов форматированный JSON с отступами, устрани дублирующиеся правила и удали вежливый филлер вроде «пожалуйста» и «спасибо».",
+    "why": "Поможет снизить затраты на API и ускорить ответы моделей без изменения смысла инструкций.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "prompts",
+    "steps": [
+     "Устраняет форматированные JSON-схемы с отступами (pretty-printed), дублирующиеся правила и вежливый филлер",
+     "На трех тестовых промптах удаление такого мусора сократило вводные токены для GPT-4o на 20.6% (английский), 26.0% (персидский) и 30.8% (китайский)",
+     "На примере промпта длиной 834 токена экономия составляет около $422 на миллион вызовов",
+     "Инструмент работает в офлайн-режиме, показывает экономию в токенах и долларах, а спорные дубликаты отправляет на ручную проверку"
+    ]
+   },
+   {
+    "id": "20261030-14",
+    "title": "Клонирование голоса в Kokoro через ToneColorConverter",
+    "section": "tips",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xiplj7/kokoro_can_now_clone_any_voice_with_just_600_mb/",
+    "story": "",
+    "summary": "Запусти модуль ToneColorConverter из библиотеки OpenVoice поверх движка Kokoro TTS для переноса тембра на сгенерированный аудиопоток.",
+    "why": "Позволяет генерировать речь с произвольным голосом на локальной видеокарте, докупив ~600 МБ VRAM.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "local",
+    "steps": [
+     "Модуль ToneColorConverter работает независимо от модели синтеза речи",
+     "Базовый движок TTS отвечает за произношение, контент и просодию, а VC-модель переносит характеристики целевого спикера",
+     "Накладные расходы составляют около 600 МБ дополнительной пиковой VRAM, замедление на CUDA примерно на 10% и скорость около 0.5× от исходной на CPU (с сохранением работы в 2 раза быстрее реального времени)",
+     "Показатели схожести голосов (speaker similarity), измеренные через CAM++, лежат в диапазоне от 0.7 до 0.8"
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-10-29",
   "slot": "morning",
   "headline": "Gemini 4 Carbon от Google и взлом серверов через связку PHP2Shell",
