@@ -21,14 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-29T13:18:07.888880+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/geforce-now-thursday-phantom-blade-zero",
-    "title:slice into gfn thursday phantom blade zero launches on geforce now"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-10-29T14:18:10.671696+00:00",
    "keys": [
     "mistral.ai/news/mistral-large-4-oss",
@@ -104,10 +96,18 @@
    "strength": 3
   },
   {
-   "at": "2026-10-30T13:18:07.134546+00:00",
+   "at": "2026-10-30T14:18:08.031553+00:00",
    "keys": [
     "cyberplace.social/@GossiTheDog/117528831681803563",
     "title:backdoors in official claude code extensions"
+   ],
+   "strength": 5
+  },
+  {
+   "at": "2026-10-30T14:18:08.031553+00:00",
+   "keys": [
+    "doublepulsar.com/anthropic-hacked-to-deliver-remote-access-trojan-to-claude-developer-laptops-worldwide-1148a92baae2",
+    "title:anthropic hacked to deliver remote access trojan"
    ],
    "strength": 3
   }
