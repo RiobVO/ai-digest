@@ -21,14 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-29T14:18:10.671696+00:00",
-   "keys": [
-    "mistral.ai/news/mistral-large-4-oss",
-    "title:le chonk built for coders trusted by defenders"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-10-29T16:18:07.341665+00:00",
    "keys": [
     "blogs.nvidia.com/blog/developers-simulation-frontier-ai-agents",
@@ -110,6 +102,14 @@
     "title:anthropic hacked to deliver remote access trojan"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-10-30T15:18:05.456549+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/ai-joins-the-search-for-extraterrestrial-signals",
+    "title:things that go beep in the night agentic ai joins the search for extraterrestrial signals"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
