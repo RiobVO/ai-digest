@@ -1,5 +1,109 @@
 [
  {
+  "date": "2026-10-31",
+  "slot": "morning",
+  "headline": "Новые тарифы Anthropic, RCE в ядре Linux и WordPress",
+  "page": "2026-10-31.html",
+  "entries": [
+   {
+    "id": "20261031-0",
+    "title": "Исследователи нашли уязвимость удаленного root-доступа в ядре Linux через MPTCP",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/critical-linux-kernel-flaw-allows-remote-root-attacks-on-mptcp-servers/",
+    "story": "s191"
+   },
+   {
+    "id": "20261031-1",
+    "title": "Ядро WordPress получило 63 000 атак на свежую RCE-уязвимость за первые сутки",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/wordpress-rce-flaw-draws-nearly-63000.html",
+    "story": "s192"
+   },
+   {
+    "id": "20261031-2",
+    "title": "Китайская APT-группировка применила фреймворк ARTEX для атак на 200 компаний",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/chinese-hackers-use-ai-powered-artex-to.html",
+    "story": "s193"
+   },
+   {
+    "id": "20261031-3",
+    "title": "Anthropic сняла 5-часовой лимит в тарифе Ultra, но урезала квоту токенов",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://x.com/claudeai",
+    "story": "s194"
+   },
+   {
+    "id": "20261031-4",
+    "title": "В Reddit связали обвал акций на 29% с потерей поискового трафика из-за Google AI",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/googles-ai-mode-doesnt-drive-traffic-for-anybody-reddit-ceo-huffman-warns-the-entire-web/",
+    "story": "s179"
+   },
+   {
+    "id": "20261031-5",
+    "title": "Техгиганты поддержали единый robots.txt-стандарт запрета сбора данных для ИИ",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://www.theverge.com/tech/1023763/openai-google-microsoft-ai-scraping-standard-opt-out",
+    "story": "s195"
+   },
+   {
+    "id": "20261031-6",
+    "title": "Модель Claude автономно провела операцию на мозге мыши",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/a-claude-model-autonomously-chose-a-gene-therapy-and-operated-on-a-mouse-brain-with-no-human-decision-making/",
+    "story": "s196"
+   },
+   {
+    "id": "20261031-7",
+    "title": "В Claude Code v2.1.316 добавили отключение ultrathink и пулы бюджетов",
+    "section": "dev",
+    "source": "gh_claude_code",
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.316",
+    "story": "s88"
+   },
+   {
+    "id": "20261031-8",
+    "title": "Google запустила Gemma 4 на бортовом TPU орбитального спутника",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://techcrunch.com/2026/10/30/googles-first-data-center-satellite-is-online-and-writing-poetry/",
+    "story": "s197"
+   },
+   {
+    "id": "20261031-9",
+    "title": "В веса открытой модели Qwen3.5-4B зашили рабочий эмулятор Nintendo",
+    "section": "dev",
+    "source": "simon_willison",
+    "url": "https://simonwillison.net/2026/Oct/30/nesformer/",
+    "story": "s198"
+   },
+   {
+    "id": "20261031-10",
+    "title": "Pragmatic Engineer: почему Anthropic убрала лайвкодинг из процесса найма",
+    "section": "voices",
+    "source": "pragmatic_engineer",
+    "url": "https://newsletter.pragmaticengineer.com/p/the-pulse-anthropic-kills-the-coding",
+    "story": ""
+   },
+   {
+    "id": "20261031-11",
+    "title": "Нейтан Ламберт: октябрьские взломы доказали реальность киберугроз от моделей",
+    "section": "voices",
+    "source": "interconnects",
+    "url": "https://www.interconnects.ai/p/was-i-wrong-about-open-models-and",
+    "story": ""
+   }
+  ]
+ },
+ {
   "date": "2026-10-30",
   "slot": "evening",
   "headline": "Бэкдор в Claude Code и детали взлома Binance на $6,3 млрд",
