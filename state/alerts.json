@@ -21,30 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-30T14:18:08.031553+00:00",
-   "keys": [
-    "cyberplace.social/@GossiTheDog/117528831681803563",
-    "title:backdoors in official claude code extensions"
-   ],
-   "strength": 5
-  },
-  {
-   "at": "2026-10-30T14:18:08.031553+00:00",
-   "keys": [
-    "doublepulsar.com/anthropic-hacked-to-deliver-remote-access-trojan-to-claude-developer-laptops-worldwide-1148a92baae2",
-    "title:anthropic hacked to deliver remote access trojan"
-   ],
-   "strength": 3
-  },
-  {
-   "at": "2026-10-30T15:18:05.456549+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/ai-joins-the-search-for-extraterrestrial-signals",
-    "title:things that go beep in the night agentic ai joins the search for extraterrestrial signals"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-10-30T16:18:06.977346+00:00",
    "keys": [
     "progressives.house.gov/2026/10/reps-casar-waters-lead-democratic-resolution-opposing-a-i-bubble-bailout-for-big-tech-commit-to-protecting-american-people-instead",
