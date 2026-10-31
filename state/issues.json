@@ -1,6 +1,70 @@
 [
  {
   "date": "2026-10-31",
+  "slot": "evening",
+  "headline": "Тяжелый октябрь на рынках, ИИ-агенты Chainalysis и инцидент с Claude Code",
+  "page": "2026-10-31-evening.html",
+  "entries": [
+   {
+    "id": "20261031-12",
+    "title": "OpenAI собрала только $11 млрд из плановых $30 млрд на фоне падения рынков",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/openai-raises-just-11-billion-of-its-30-billion-target-as-big-investors-lose-their-ai-appetite/",
+    "story": "s176"
+   },
+   {
+    "id": "20261031-13",
+    "title": "Взломали Chainalysis и подсунули поддельную копию расширения Claude Code через Cursor",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://x.com/felixrieseberg",
+    "story": "s199"
+   },
+   {
+    "id": "20261031-14",
+    "title": "ИИ-агент самостоятельно выбрал генную терапию и провел операцию на мозге мыши",
+    "section": "model",
+    "source": "wired_ai",
+    "url": "https://www.wired.com/story/an-ai-agent-did-brain-surgery-on-live-mouse/",
+    "story": "s196"
+   },
+   {
+    "id": "20261031-15",
+    "title": "CISA добавила две критические уязвимости Ivanti Connect Secure в каталог KEV",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/10/attackers-chain-three-ivanti-connect.html",
+    "story": "s200"
+   },
+   {
+    "id": "20261031-16",
+    "title": "Новый инфостилер Volta-Autodoxer собирает данные о жертвах с помощью ИИ",
+    "section": "security",
+    "source": "wired_ai",
+    "url": "https://www.wired.com/story/kernel-panic-volta-autodoxer-ai-infostealer-malware/",
+    "story": "s201"
+   },
+   {
+    "id": "20261031-17",
+    "title": "Apple Intelligence запустится в Китае в декабре при поддержке Alibaba",
+    "section": "product",
+    "source": "scmp_tech",
+    "url": "https://www.scmp.com/tech/big-tech/article/3372831/apple-intelligence-roll-out-iphones-china-december-alibaba-backing",
+    "story": "s202"
+   },
+   {
+    "id": "20261031-18",
+    "title": "Манифест CTO Proton о разработке кода в эпоху ИИ",
+    "section": "voices",
+    "source": "Business Insider",
+    "url": "https://www.businessinsider.com/protons-cto-ai-manifesto-software-engineers-coding-2026-10",
+    "story": ""
+   }
+  ]
+ },
+ {
+  "date": "2026-10-31",
   "slot": "morning",
   "headline": "Новые тарифы Anthropic, RCE в ядре Linux и WordPress",
   "page": "2026-10-31.html",
