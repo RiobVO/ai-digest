@@ -21,14 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-30T00:18:06.607416+00:00",
-   "keys": [
-    "nytimes.com/2026/10/29/arts/television/patrick-stewart-dead.html",
-    "title:patrick stewart has died"
-   ],
-   "strength": 22
-  },
-  {
    "at": "2026-10-30T03:18:06.281950+00:00",
    "keys": [
     "arkm.com/explorer/entity/21a94755-f604-45e5-9501-6542e23005e8",
