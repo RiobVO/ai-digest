@@ -1,5 +1,5 @@
 {
- "next": 210,
+ "next": 216,
  "stories": {
   "s9": {
    "name": "Финансы и IPO Anthropic",
@@ -1135,6 +1135,12 @@
      "title": "В Claude Code v2.1.316 добавили отключение ultrathink и пулы бюджетов",
      "entry": "20261031-7",
      "issue": "2026-10-31.html"
+    },
+    {
+     "date": "2026-11-01",
+     "title": "В Claude Code разрешили запускать режим Ultracode с низким расходом thinking",
+     "entry": "20261101-16",
+     "issue": "2026-11-01-evening.html"
     }
    ]
   },
@@ -2225,6 +2231,12 @@
      "title": "Binance покрыла 90% потерь от крупного взлома",
      "entry": "20261101-0",
      "issue": "2026-11-01.html"
+    },
+    {
+     "date": "2026-11-01",
+     "title": "ФБР связало взлом Binance с TraderTraitor, биржа возвращает вывод активов",
+     "entry": "20261101-12",
+     "issue": "2026-11-01-evening.html"
     }
    ]
   },
@@ -2275,6 +2287,12 @@
      "title": "OpenAI вдвое подняла лимиты на планах Pro и начислила эквивалент в API-кредитах",
      "entry": "20261030-4",
      "issue": "2026-10-30.html"
+    },
+    {
+     "date": "2026-11-01",
+     "title": "OpenAI вводит лимиты на устройства и переводит ChatGPT на общие квоты токенов",
+     "entry": "20261101-13",
+     "issue": "2026-11-01-evening.html"
     }
    ]
   },
@@ -2628,6 +2646,72 @@
      "title": "Microsoft привлекла $25 млрд через облигации на расширение ИИ-инфраструктуры",
      "entry": "20261101-9",
      "issue": "2026-11-01.html"
+    }
+   ]
+  },
+  "s210": {
+   "name": "Уязвимость в Canonical LXD",
+   "events": [
+    {
+     "date": "2026-11-01",
+     "title": "В Canonical LXD и MicroCloud закрыли критическую уязвимость CVSS 10.0",
+     "entry": "20261101-11",
+     "issue": "2026-11-01-evening.html"
+    }
+   ]
+  },
+  "s211": {
+   "name": "DeepSeek Super-Agent",
+   "events": [
+    {
+     "date": "2026-11-01",
+     "title": "DeepSeek открыла прототип автономного кодинг-агента Super-Agent",
+     "entry": "20261101-14",
+     "issue": "2026-11-01-evening.html"
+    }
+   ]
+  },
+  "s212": {
+   "name": "Взлом Polymarket через DebugBear",
+   "events": [
+    {
+     "date": "2026-11-01",
+     "title": "Хакеры увели $2,7 млн у пользователей Polymarket через скрипт DebugBear",
+     "entry": "20261101-15",
+     "issue": "2026-11-01-evening.html"
+    }
+   ]
+  },
+  "s213": {
+   "name": "Датасет FineDNA",
+   "events": [
+    {
+     "date": "2026-11-01",
+     "title": "Hugging Face Bio выложила датасет FineDNA на 300 млрд токенов",
+     "entry": "20261101-17",
+     "issue": "2026-11-01-evening.html"
+    }
+   ]
+  },
+  "s214": {
+   "name": "Google StreamVibe",
+   "events": [
+    {
+     "date": "2026-11-01",
+     "title": "Google показала StreamVibe для контекстных подсказок во время ручной работы",
+     "entry": "20261101-18",
+     "issue": "2026-11-01-evening.html"
+    }
+   ]
+  },
+  "s215": {
+   "name": "Исследование цензуры в LLM",
+   "events": [
+    {
+     "date": "2026-11-01",
+     "title": "Исследование Vals AI: язык промпта кардинально меняет цензуру китайских моделей",
+     "entry": "20261101-19",
+     "issue": "2026-11-01-evening.html"
     }
    ]
   }

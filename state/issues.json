@@ -1,6 +1,122 @@
 [
  {
   "date": "2026-11-01",
+  "slot": "evening",
+  "headline": "Ограничения подписок в OpenAI, Super-Agent от DeepSeek и дыра в LXD",
+  "page": "2026-11-01-evening.html",
+  "entries": [
+   {
+    "id": "20261101-11",
+    "title": "В Canonical LXD и MicroCloud закрыли критическую уязвимость CVSS 10.0",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/critical-lxd-and-microcloud-flaw-cvss.html",
+    "story": "s210"
+   },
+   {
+    "id": "20261101-12",
+    "title": "ФБР связало взлом Binance с TraderTraitor, биржа возвращает вывод активов",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://www.reuters.com/legal/government/binance-resume-withdrawals-after-recovering-bulk-6-billion-stolen-funds-2026-11-01/",
+    "story": "s174"
+   },
+   {
+    "id": "20261101-13",
+    "title": "OpenAI вводит лимиты на устройства и переводит ChatGPT на общие квоты токенов",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/openais-upcoming-chat-and-work-merger-in-chatgpt-signals-the-end-of-all-you-can-prompt-pricing/",
+    "story": "s178"
+   },
+   {
+    "id": "20261101-14",
+    "title": "DeepSeek открыла прототип автономного кодинг-агента Super-Agent",
+    "section": "model",
+    "source": "scmp_tech",
+    "url": "https://www.scmp.com/tech/article/3372884/deepseek-unveils-ai-super-agent-coding-race-openai-anthropic",
+    "story": "s211"
+   },
+   {
+    "id": "20261101-15",
+    "title": "Хакеры увели $2,7 млн у пользователей Polymarket через скрипт DebugBear",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/hackers-steal-about-27-million-from.html",
+    "story": "s212"
+   },
+   {
+    "id": "20261101-16",
+    "title": "В Claude Code разрешили запускать режим Ultracode с низким расходом thinking",
+    "section": "dev",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xks0kb/psa_ultracode_isnt_locked_to_max_effort_anymore/",
+    "story": "s88"
+   },
+   {
+    "id": "20261101-17",
+    "title": "Hugging Face Bio выложила датасет FineDNA на 300 млрд токенов",
+    "section": "dev",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xkwvwg/finedna_the_largest_dataset_to_teach_any_llm_dna/",
+    "story": "s213"
+   },
+   {
+    "id": "20261101-18",
+    "title": "Google показала StreamVibe для контекстных подсказок во время ручной работы",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/google-wants-video-ai-to-understand-what-people-need-as-they-workgoogle-researchers-are-teaching-a-video-assistant-when-to-offer-help/",
+    "story": "s214"
+   },
+   {
+    "id": "20261101-19",
+    "title": "Исследование Vals AI: язык промпта кардинально меняет цензуру китайских моделей",
+    "section": "paper",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/chinese-ai-models-are-politically-complex-not-just-government-mouthpieces-study-finds/",
+    "story": "s215"
+   },
+   {
+    "id": "20261101-20",
+    "title": "Визуализация прочитанных и изменённых файлов в Claude Code",
+    "section": "tips",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xkzlis/i_built_a_live_file_tree_for_claude_code_so_i_can/",
+    "story": "",
+    "summary": "Установи открытое расширение-панель для Claude Code. Инструмент отображает дерево файлов в реальном времени: прочитанные подсвечивает фиолетовым, а отредактированные — оранжевым со счётчиком строк.",
+    "why": "Поможет не терять контроль над кодовой базой, когда агент автономно читает и меняет много файлов.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Прочитанные файлы подсвечиваются фиолетовым цветом",
+     "Отредактированные файлы подсвечиваются оранжевым со счетчиком добавленных и удаленных строк",
+     "Поддерживает десктопное приложение, плагин для VS Code и терминал на macOS и Linux"
+    ]
+   },
+   {
+    "id": "20261101-21",
+    "title": "Разделение ролей ИИ-моделей в OpenCode для экономии на API",
+    "section": "tips",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xkz4lf/glm53flash_on_our_h200s_does_most_of_my_coding/",
+    "story": "",
+    "summary": "Разверни быструю локальную модель типа GLM-5.3-Flash в качестве рабочего органа для написания кода, а мощную модель уровня GPT-6.1 назначь оркестратором сессии в OpenCode.",
+    "why": "Пригодится для снижения расходов на API при интенсивной агентской разработке с большими контекстами.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "agents",
+    "steps": [
+     "В качестве рабочего агента развернута GLM-5.3-Flash (MoE, 320B total, 18B active) с окном контекста 512K",
+     "Инфраструктура запущена локально на сервере с 4 видеокартами H200",
+     "Роль оркестратора выполняет GPT-6.1 Sol"
+    ]
+   }
+  ]
+ },
+ {
+  "date": "2026-11-01",
   "slot": "morning",
   "headline": "Безопасность ИИ и масштабные атаки, новые модели и аппаратные закупки",
   "page": "2026-11-01.html",
