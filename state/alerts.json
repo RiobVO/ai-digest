@@ -1,15 +1,5 @@
 {
- "sent": [
-  {
-   "at": "2026-10-29T15:18:11.329849+00:00",
-   "day": "2026-10-29",
-   "title": "Mistral открыла веса флагманской модели Mistral Large 4 на 1 трлн параметров",
-   "keys": [
-    "mistral.ai/news/mistral-large-4-oss",
-    "title:le chonk built for coders trusted by defenders"
-   ]
-  }
- ],
+ "sent": [],
  "rejected": [
   {
    "at": "2026-11-01T01:18:08.130089+00:00",
