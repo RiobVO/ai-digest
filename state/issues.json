@@ -1,5 +1,101 @@
 [
  {
+  "date": "2026-11-01",
+  "slot": "morning",
+  "headline": "Безопасность ИИ и масштабные атаки, новые модели и аппаратные закупки",
+  "page": "2026-11-01.html",
+  "entries": [
+   {
+    "id": "20261101-0",
+    "title": "Binance покрыла 90% потерь от крупного взлома",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.reuters.com/legal/government/binance-says-90-stolen-assets-replenished-2026-10-31/",
+    "story": "s174"
+   },
+   {
+    "id": "20261101-1",
+    "title": "Утечка в Northflank привела к компрометации API-ключей ИИ",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/northflank-security-breach-leads-to-abuse-of-customers-ai-api-keys/",
+    "story": "s203"
+   },
+   {
+    "id": "20261101-2",
+    "title": "Opera анонсировала стандарт WebAI для локального запуска моделей в браузере",
+    "section": "product",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xk70qu/standard_for_websites_extensions_to_use_local/",
+    "story": "s153"
+   },
+   {
+    "id": "20261101-3",
+    "title": "Исследователь опубликовал эксплойт SMS of Death для Android",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/new-android-sms-of-death-exploit-can-remotely-crash-unpatched-phones/",
+    "story": "s204"
+   },
+   {
+    "id": "20261101-4",
+    "title": "OpenAI задействует данные сессий Daybreak Blue для обучения моделей",
+    "section": "security",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/openai-plans-to-train-models-on-daybreak-blue-cybersecurity-session-data-that-was-previously-off-limits/",
+    "story": "s205"
+   },
+   {
+    "id": "20261101-5",
+    "title": "Исследование Anthropic: обучающие данные маскируют саботаж моделей",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/beekeeping-tips-and-wrestling-advice-can-train-ai-models-to-sabotage-oversight/",
+    "story": "s206"
+   },
+   {
+    "id": "20261101-6",
+    "title": "NVIDIA выпустила модель Bolt E4B на базе Gemma 4",
+    "section": "model",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xkcdlz/nvidia_nemotron_35_bolt_e4b_4gb_posttrained_gemma/",
+    "story": "s207"
+   },
+   {
+    "id": "20261101-7",
+    "title": "Anthropic заблокировала реверс-инжиниринг видеоигр в Claude",
+    "section": "product",
+    "source": "hn",
+    "url": "https://mashable.com/tech/anthropic-takes-steps-to-block-video-game-cloning-and-reverse-engineering",
+    "story": "s208"
+   },
+   {
+    "id": "20261101-8",
+    "title": "Вышла llama.cpp b12025 с исправлениями тензоров внимания",
+    "section": "dev",
+    "source": "latent_space",
+    "url": "https://latent.space/p/arca/",
+    "story": "s126"
+   },
+   {
+    "id": "20261101-9",
+    "title": "Microsoft привлекла $25 млрд через облигации на расширение ИИ-инфраструктуры",
+    "section": "business",
+    "source": "Yahoo Finance",
+    "url": "https://finance.yahoo.com/technology/ai/articles/microsoft-msft-lands-25-billion-011021686.html",
+    "story": "s209"
+   },
+   {
+    "id": "20261101-10",
+    "title": "Как организовать работу агентов в Claude Code без постоянных ручных подтверждений",
+    "section": "voices",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xk5de5/i_built_two_claude_code_skillsplugins_one_makes/",
+    "story": ""
+   }
+  ]
+ },
+ {
   "date": "2026-10-31",
   "slot": "evening",
   "headline": "Тяжелый октябрь на рынках, ИИ-агенты Chainalysis и инцидент с Claude Code",
