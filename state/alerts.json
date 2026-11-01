@@ -12,20 +12,20 @@
  ],
  "rejected": [
   {
-   "at": "2026-10-31T14:18:06.133218+00:00",
-   "keys": [
-    "science.org/content/article/serbia-just-elected-world-s-brainiest-parliament",
-    "title:serbia just elected the world s brainiest parliament"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-11-01T01:18:08.130089+00:00",
    "keys": [
     "karpathy.bearblog.dev/hacker-tube",
     "title:hackertube youtube built from videos recommended by hn"
    ],
    "strength": 6
+  },
+  {
+   "at": "2026-11-01T14:18:19.007689+00:00",
+   "keys": [
+    "title:norway makes shithouses great again",
+    "visitnorway.com/plan-your-trip/travel-tips-a-z/norwegian-scenic-routes/worlds-best-toilets"
+   ],
+   "strength": 4
   }
  ],
  "undated": {
