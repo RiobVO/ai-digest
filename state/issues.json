@@ -1,5 +1,153 @@
 [
  {
+  "date": "2026-11-02",
+  "slot": "morning",
+  "headline": "Отток $4 млрд с Binance, Claude Code 2.1.316 и квоты OpenAI",
+  "page": "2026-11-02.html",
+  "entries": [
+   {
+    "id": "20261102-0",
+    "title": "OpenAI удваивает лимиты Pro и объединяет квоты ChatGPT и Codex",
+    "section": "product",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/artificial-intelligence/openai-says-its-doubling-pro-usage-limits-and-bringing-work-features-to-chat/",
+    "story": "s178"
+   },
+   {
+    "id": "20261102-1",
+    "title": "Alpine Linux пересобрала инфраструктуру GitLab после попытки взлома",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/alpine-linux-rebuilds-gitlab-after-attempted-rce-attack/",
+    "story": "s185"
+   },
+   {
+    "id": "20261102-2",
+    "title": "Binance потеряла $4 млрд оттока активов после возобновления вывода",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://www.theblock.co/news/business/2026-11-01-binance-sees-3-64-billion-in-net-outflows-after-reopening-withdrawals-following-record-hack-432259",
+    "story": "s174"
+   },
+   {
+    "id": "20261102-3",
+    "title": "В Claude Code 2.1.316 разделили настройки усилий для субагентов",
+    "section": "dev",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xlgb5q/claude_code_21316_subagent_effort_is_now_its_own/",
+    "story": "s88"
+   },
+   {
+    "id": "20261102-4",
+    "title": "OpenAI готовит кампанию за скоростные лимиты ИИ и ребрендинг ЦОД",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.axios.com/2026/11/01/scoop-openai-post-midterm-policy",
+    "story": "s216"
+   },
+   {
+    "id": "20261102-5",
+    "title": "Торвальдс оценил влияние ИИ-патчей на разработку ядра Linux",
+    "section": "dev",
+    "source": "the_register",
+    "url": "https://www.theregister.com/os-platforms/2026/11/01/linus-torvalds-says-linux-kernel-is-out-of-stabilization-phase-and-using-much-healthier-model-for-ai-contributions/5306852",
+    "story": "s217"
+   },
+   {
+    "id": "20261102-6",
+    "title": "Патч tandem.cpp ускорил запуск MoE на связке GPU и CPU в 3,3 раза",
+    "section": "dev",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xldent/tandemcpp_qwen38flashnext_at_97_toks_on_a_single/",
+    "story": "s218"
+   },
+   {
+    "id": "20261102-7",
+    "title": "Adobe протестировала агента EditAgent для работы в Photoshop",
+    "section": "product",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/adobe-is-testing-how-well-ai-agents-can-use-editing-tools-like-a-photoshop-professional-would/",
+    "story": "s219"
+   },
+   {
+    "id": "20261102-8",
+    "title": "Эмпатичные промпты заставляют LLM выдумывать травмы от обучения",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/empathetic-prompts-can-turn-ai-chatbots-into-seemingly-traumatized-conversational-partners/",
+    "story": "s220"
+   },
+   {
+    "id": "20261102-9",
+    "title": "Кингсбери и Уиллисон: ИИ размывает доверие к коду и документации",
+    "section": "voices",
+    "source": "simon_willison",
+    "url": "https://simonwillison.net/2026/Nov/1/kyle-kingsbury/",
+    "story": ""
+   },
+   {
+    "id": "20261102-10",
+    "title": "Сокращение ответов Claude Code в 3 раза через навык /tldr",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xl5ec8/tldr_a_skill_that_cuts_claude_code_replies_to_⅓/",
+    "story": "",
+    "summary": "Создай навык /tldr, который переписывает итоговый ответ Claude Code сгруппированными списками. Укажи требование сохранить все факты, пути, решения и цифры, удалив только связующий текст.",
+    "why": "Экономит время на чтение длинных итоговых отчетов агента и подсвечивает ключевые факты и открытые задачи.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Клонируй репозиторий в ~/.claude/skills/tldr для глобального доступа или в .claude/skills/tldr внутри проекта для локального.",
+     "Запусти новую сессию Claude Code — скилл подтянется автоматически.",
+     "Используй команду /tldr для однократного сжатия последнего ответа или /tldr on, чтобы включить формат списков для всех ответов сессии.",
+     "Для максимальной плотности текста без потери фактов используй команду /tldr super.",
+     "Блоки кода, текст ошибок и консольные команды навык оставляет без изменений."
+    ]
+   },
+   {
+    "id": "20261102-11",
+    "title": "Проверка 3D-рендеров Blender в Claude Code через дайджест кадров",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xlkers/the_contact_sheet_loop_that_let_claude_code_check/",
+    "story": "",
+    "summary": "Попроси Claude Code отрендерить 5–10 кадров 3D-сцены в уменьшенном разрешении (30%) через CLI Blender. Склей кадры в одну картинку-контактный лист и передай ее обратно агенту для визуальной оценки.",
+    "why": "Позволяет Claude Code оценивать визуальный результат работы Python-скриптов в Blender без внешних инструментов.",
+    "copy": "blender -b",
+    "copy_untrusted": true,
+    "topic": "workflow",
+    "steps": [
+     "Заставь Claude написать 3D-сцену на Python и выполнить ее через headless-режим blender -b.",
+     "Отрендери скриптом от 5 до 10 кадров в 30% от оригинального разрешения и собери их в один контактный лист (contact sheet).",
+     "Скорми изображение агенту с требованием найти и исправить ровно одну самую грубую ошибку за проход, чтобы не сломать остальную сцену.",
+     "Записывай каждое исправление одной строкой в файл LESSONS.md и заставляй новые сессии читать его перед генерацией.",
+     "Держи единый файл таймлайна для сцен, субтитров и звука, чтобы изменения не сбивали общую синхронизацию."
+    ]
+   },
+   {
+    "id": "20261102-12",
+    "title": "Автоматическая сортировка Gmail по 5 ярлыкам через n8n и OpenAI",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/n8n/comments/1xl7t4g/sorting_gmail_into_5_labels_with_one_openai_call/",
+    "story": "",
+    "summary": "Настрой ноду Gmail Trigger в n8n на опрос почты каждые 5 минут. Передавай текст нового письма в ноду OpenAI с требованием вернуть JSON с одной из 5 категорий, после чего накладывай соответствующий ярлык в Gmail.",
+    "why": "Разбирает входящие письма по категориям без написания кода и вручную настроенных фильтров.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "automation",
+    "steps": [
+     "В ноде Gmail Trigger настрой опрос раз в 5 минут по фильтру is:unread in:inbox -label:triaged и отключи Simplify для получения полного тела письма.",
+     "В ноде Set (Config) пропиши ID пяти ярлыков Gmail (формата Label_123...), предварительно узнав их через вызов ноды Get many labels.",
+     "В ноде HTTP Request отправь запрос к модели gpt-4o-mini с параметром response_format: json_object, используя системный промпт с однострочными определениями категорий и схемой {\"category\",\"reason\"}.",
+     "В ноде Code (Parse) распарси ответ через JSON.parse с полями id, threadId, from, subject и выставлением флага parse_error вместо падения воркфлоу при сбое.",
+     "В финальных нодах назначь ярлык категории (с фоллбэком на other) и повесь ярлык triaged, чтобы письмо не попадало в повторный триггер."
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-11-01",
   "slot": "evening",
   "headline": "Ограничения подписок в OpenAI, Super-Agent от DeepSeek и дыра в LXD",
