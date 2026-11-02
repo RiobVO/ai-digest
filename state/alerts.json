@@ -2,14 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-01T01:18:08.130089+00:00",
-   "keys": [
-    "karpathy.bearblog.dev/hacker-tube",
-    "title:hackertube youtube built from videos recommended by hn"
-   ],
-   "strength": 6
-  },
-  {
    "at": "2026-11-01T14:18:19.007689+00:00",
    "keys": [
     "title:norway makes shithouses great again",
