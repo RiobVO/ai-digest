@@ -87,18 +87,18 @@
   {
    "at": "2026-11-02T18:18:10.201522+00:00",
    "keys": [
-    "chalmovsky.com/posts/wtf-ubuntu",
-    "title:wtf ubuntu"
-   ],
-   "strength": 7
-  },
-  {
-   "at": "2026-11-02T18:18:10.201522+00:00",
-   "keys": [
     "blog.google/innovation-and-ai/technology/ai/google-ai-updates-october-2026",
     "title:the latest ai news we announced in october 2026"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-11-02T19:18:08.051949+00:00",
+   "keys": [
+    "chalmovsky.com/posts/wtf-ubuntu",
+    "title:wtf ubuntu"
+   ],
+   "strength": 9
   }
  ],
  "undated": {
