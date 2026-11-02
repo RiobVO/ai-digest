@@ -14,14 +14,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-01T20:18:09.055162+00:00",
-   "keys": [
-    "hackerbooks.org",
-    "title:show hn hackerbooks hackertube but for books mentioned on hn"
-   ],
-   "strength": 5
-  },
-  {
    "at": "2026-11-02T04:18:07.742755+00:00",
    "keys": [
     "bloomberg.com/news/articles/2026-11-02/oaktree-s-howard-marks-says-ai-stumbles-have-boosted-skepticism",
@@ -101,12 +93,20 @@
    "strength": 9
   },
   {
-   "at": "2026-11-02T20:18:08.356524+00:00",
+   "at": "2026-11-02T21:18:08.402656+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMipAFBVV95cUxOOVNNU1pLMmVDanVNT1M4N1hyak9tZ3Y4WmtFbUVIN3pWNFJCNmhxUmlNazBxajF3SnVRQ2JCSEhBUnpZWEdXMXUyYjBNYTJRLWQ0Mmd6cDVYZThRVXVCdVl2RFRINmlkbVBiblF0Sm1FQzRoblFldmVSYW40VUFudWs3NGZLV2lVbHNQTzJGdkZyUGFEazRUckZfRnIxY2hQYUxQZg?oc=5",
+    "title:crowdstrike expands partnerships to strengthen ai security"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-02T21:18:08.402656+00:00",
    "keys": [
     "rikiyat.github.io/blog/weight-space-programming",
     "title:researchers say llms can be good at natively reading and writing neural network weights gpt 6 astra edited qwen3 5 0 8b s weights to make it better at math rikiya takehi"
    ],
-   "strength": 7
+   "strength": 10
   }
  ],
  "undated": {
