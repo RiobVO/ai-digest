@@ -1,6 +1,110 @@
 [
  {
   "date": "2026-11-02",
+  "slot": "evening",
+  "headline": "Взлом холодильников в Европе, атаки на AD CS и Qwen в Apple Intelligence",
+  "page": "2026-11-02-evening.html",
+  "entries": [
+   {
+    "id": "20261102-13",
+    "title": "Хакеры под видом IT-поддержки в Teams захватывают домен-контроллеры через AD CS",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/attackers-pose-as-it-support-on.html",
+    "story": "s221"
+   },
+   {
+    "id": "20261102-14",
+    "title": "Trail of Bits применила Codex для бэкпортирования патчей безопасности в ядро Linux",
+    "section": "security",
+    "source": "trail_of_bits",
+    "url": "https://blog.trailofbits.com/2026/11/02/backporting-security-fixes-at-scale-with-codex/",
+    "story": "s222"
+   },
+   {
+    "id": "20261102-15",
+    "title": "В супермаркетах Европы хакеры удаленно перегрели холодильники до +55 °C",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://www.bloomberg.com/news/articles/2026-11-02/belgian-swedish-supermarkets-report-new-suspected-freezer-hack",
+    "story": "s223"
+   },
+   {
+    "id": "20261102-16",
+    "title": "Meituan выпустила мультимодальную модель LongCat-2.5 на 1,6 трлн параметров",
+    "section": "model",
+    "source": "technode",
+    "url": "https://technode.com/2026/11/02/meituan-launches-longcat-2-5-multimodal-ai-model-for-extended-coding-tasks/",
+    "story": "s224"
+   },
+   {
+    "id": "20261102-17",
+    "title": "OpenAI заключила соглашения с госструктурами и энергетическими компаниями ОАЭ",
+    "section": "product",
+    "source": "bloomberg_tech",
+    "url": "https://www.bloomberg.com/news/videos/2026-11-02/altman-says-ai-will-transform-the-economics-of-energy-video",
+    "story": "s225"
+   },
+   {
+    "id": "20261102-18",
+    "title": "Стартапы очищают открытые китайские модели от цензуры методом machine unlearning",
+    "section": "model",
+    "source": "techmeme",
+    "url": "https://restofworld.org/2026/western-startups-realigning-chinese-ai-models/",
+    "story": "s226"
+   },
+   {
+    "id": "20261102-19",
+    "title": "Apple подтвердила бета-тест Qwen в составе Apple Intelligence в Китае с 4 ноября",
+    "section": "product",
+    "source": "technode",
+    "url": "https://technode.com/2026/11/02/apple-confirms-qwen-integration-for-china-ai-rollout-with-beta-testing-starting-november-4/",
+    "story": "s202"
+   },
+   {
+    "id": "20261102-20",
+    "title": "JetBrains выложила Mellum 2.1 — 12B модель с параллельным декодированием",
+    "section": "model",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xln8f2/jetbrainsmellum2112ba25bthinkingmtp_hugging_face/",
+    "story": "s227"
+   },
+   {
+    "id": "20261102-21",
+    "title": "Энтузиаст заставил Qwen исполнять код на языке Bend прямо внутри своего forward pass",
+    "section": "model",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xle8ta/qwenbend_qwen_writes_a_bend_program_then_the_same/",
+    "story": "s228"
+   },
+   {
+    "id": "20261102-22",
+    "title": "Вышел Berth — менеджер ресурсов GPU на Go для управления очередью CUDA-нагрузок",
+    "section": "dev",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xlmu81/liveswap_cuda_workloads_llamacpp_comfyui_strata/",
+    "story": "s229"
+   },
+   {
+    "id": "20261102-23",
+    "title": "Теренс Тао предупредил о риске разрушения мыслительного процесса математиков из-за ИИ",
+    "section": "voices",
+    "source": "techmeme",
+    "url": "https://www.newyorker.com/magazine/2026/11/09/the-year-math-changed-forever?currentPage=all",
+    "story": ""
+   },
+   {
+    "id": "20261102-24",
+    "title": "Скотт Александер разобрал стратегию SURA в спорах о безопасности ИИ",
+    "section": "voices",
+    "source": "techmeme",
+    "url": "https://www.lesswrong.com/posts/xikGZ8fuhdG6DApAo/against-sura",
+    "story": ""
+   }
+  ]
+ },
+ {
+  "date": "2026-11-02",
   "slot": "morning",
   "headline": "Отток $4 млрд с Binance, Claude Code 2.1.316 и квоты OpenAI",
   "page": "2026-11-02.html",
