@@ -14,14 +14,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-01T14:18:19.007689+00:00",
-   "keys": [
-    "title:norway makes shithouses great again",
-    "visitnorway.com/plan-your-trip/travel-tips-a-z/norwegian-scenic-routes/worlds-best-toilets"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-11-01T20:18:09.055162+00:00",
    "keys": [
     "hackerbooks.org",
@@ -59,6 +51,30 @@
     "title:north korea s hackers supercharge crypto heists with ai skills"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-11-02T15:18:06.054141+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMisgFBVV95cUxNcWY0emdsakJNU0h5ZGhBVFB5YkoxNkZ0R0F3clNReEx0UUxacjBFVDFYb0h1Q3Y1WkRFWkN4SVNJd2c5eXhIZkEtbnpzdmNDZmNNODJhbm9WeVlzdXBkbHp5V1JBQzNLV1YtQU4zLXhJS1czQkVQckVsMzNMTk50ekY2SmNUYVppRU9sbGZWcmVUcWhkaURWcTllakh2cE1aQlNpdE1EY1R1TWtyVUQ3TjdB?oc=5",
+    "title:crowdstrike expands coreweave partnership to secure ai workloads brings falcon protection 24 7 security to cloud customers"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-02T15:18:06.054141+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMingFBVV95cUxPNk5PVllZb3FUVHM2cmlGeHhiSzgxaU9UWlRfQ2lRTEVPS0duTnNkSVQxQTFYMzBaMDVlTGU0UUZnbnhmamYtOUl0SzNaZ1MwNFo1UzNDLXU2QzhlZTlSdUVLZjViM3ZZSVFrN0I2eVVhZUJsN3lURzgwaEhhR0hDSHVNcVFlTVJlSXczNjY5TzJ0TGdrekwwRmxvZEVidw?oc=5",
+    "title:crowdstrike deutsche bank sees ai fueling cyber demand tsunami upgrades to buy"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-02T15:18:06.054141+00:00",
+   "keys": [
+    "openai.com/index/grid-protectors-program",
+    "title:introducing the grid protectors program"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
