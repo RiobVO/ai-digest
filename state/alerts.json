@@ -201,12 +201,28 @@
    "strength": 4
   },
   {
-   "at": "2026-11-03T19:18:18.110949+00:00",
+   "at": "2026-11-03T20:18:23.027399+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMiggFBVV95cUxQY2hvQXJrTkR2WVQzQ3lkTUNrczVfcXc2VEVSbW5tQ2hhb0pQSk5MZ0xsNjBCcW5FdlJxeTZSeF80MUw3b2hhcWk3NG5LR0RxX0pkY1ZDUWdFaWdSekJnX0Npemh1ME1TbEl3WVBtUlNmVjNyNFlpWFhHcXlvWC05U3NR0gGHAUFVX3lxTE1kb2tRX0VwdjZndEhueklPNmxSOEFMdzI4d21MajNrVlh3QW02c0hGaWxiWWRnREQ3cl9fMnU4WXVpYXZkVEk2QmlQR2RldHlQUXNtVHdMdEUtUndhUjBEYTBjNkZELTVXclUtMWpIZGhfYTJnU0FpN3JObC1Wb0s0RG45UXM5SQ?oc=5",
+    "title:crowdstrike launches ai kill switch that it says can stop internal agents that go rogue"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-03T20:18:23.027399+00:00",
+   "keys": [
+    "news.ycombinator.com/item?id=50352757",
+    "title:openai seems to be silently re enabling model training on codex chats"
+   ],
+   "strength": 3
+  },
+  {
+   "at": "2026-11-03T20:18:23.027399+00:00",
    "keys": [
     "github.com/postmanlabs/postman-app-support/issues/14370",
     "title:postman silently auto installs ai plugins and attempts to share all api data"
    ],
-   "strength": 4
+   "strength": 6
   }
  ],
  "undated": {
