@@ -1,6 +1,86 @@
 [
  {
   "date": "2026-11-03",
+  "slot": "evening",
+  "headline": "Кризис памяти у Apple и Nvidia, уязвимость в ядре Linux и атаки на ИИ-инфраструктуру",
+  "page": "2026-11-03-evening.html",
+  "entries": [
+   {
+    "id": "20261103-14",
+    "title": "Критическая RCE-уязвимость CVE-2026-98432 в IPv4 TCP-стеке ядра Linux",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/red-hat-patches-98-rated-linux-tcp-rce.html",
+    "story": "s238"
+   },
+   {
+    "id": "20261103-15",
+    "title": "Apple и Raspberry Pi предупреждают о дефиците и рекордном росте цен на память",
+    "section": "business",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/technology/2026/nov/02/apple-third-quarter-revenue-earnings",
+    "story": "s239"
+   },
+   {
+    "id": "20261103-16",
+    "title": "Weight-Space Programming: GPT-6 Astra научилась напрямую читать и писать веса сетей",
+    "section": "model",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xmo5xu/paper_sparks_of_weightspace_programming_llms_can/",
+    "story": "s232"
+   },
+   {
+    "id": "20261103-17",
+    "title": "Anthropic добавила Message threads в API для передачи только измененных сообщений",
+    "section": "dev",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xmh012/anthropic_added_message_threads_to_the_messages/",
+    "story": "s240"
+   },
+   {
+    "id": "20261103-18",
+    "title": "Nvidia требует от облачных провайдеров продавать не менее 51% мощностей не-китайским клиентам",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/nvidia-pushes-cloud-customers-to-cut-back-on-china-business/",
+    "story": "s241"
+   },
+   {
+    "id": "20261103-19",
+    "title": "Google ликвидировала ботнет XCPE из 1,3 млн зараженных Android TV устройств",
+    "section": "security",
+    "source": "securityweek",
+    "url": "https://www.securityweek.com/google-dismantles-xcpe-botnet-of-1-3-million-android-devices/",
+    "story": "s231"
+   },
+   {
+    "id": "20261103-20",
+    "title": "Атаки на уязвимость в BTCPay Server для кражи средств с горячих кошельков",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/hackers-exploit-btcpay-server-flaw-to.html",
+    "story": "s242"
+   },
+   {
+    "id": "20261103-21",
+    "title": "В репозитории Alibaba засветились модели qwen4-max и qwen4-omni-120b",
+    "section": "product",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xmitzx/alibabas_qwen_code_repo_just_leaked_qwen4max/",
+    "story": "s243"
+   },
+   {
+    "id": "20261103-22",
+    "title": "Обзор октября: волна уязвимостей, рост цен на подписки и расцвет код-агентов",
+    "section": "voices",
+    "source": "latent_space",
+    "url": "https://latent.space/p/ainews-llms-can-read-write-neural-network-weights-weight-space-programming-cuts-autoresearch-out-of/",
+    "story": ""
+   }
+  ]
+ },
+ {
+  "date": "2026-11-03",
   "slot": "morning",
   "headline": "Anthropic S-1 раскрыл триллионные траты, Google и партнеры обезвредили ботнет на 1,3 млн ТВ-боксов",
   "page": "2026-11-03.html",
