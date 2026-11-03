@@ -14,30 +14,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-02T15:18:06.054141+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMisgFBVV95cUxNcWY0emdsakJNU0h5ZGhBVFB5YkoxNkZ0R0F3clNReEx0UUxacjBFVDFYb0h1Q3Y1WkRFWkN4SVNJd2c5eXhIZkEtbnpzdmNDZmNNODJhbm9WeVlzdXBkbHp5V1JBQzNLV1YtQU4zLXhJS1czQkVQckVsMzNMTk50ekY2SmNUYVppRU9sbGZWcmVUcWhkaURWcTllakh2cE1aQlNpdE1EY1R1TWtyVUQ3TjdB?oc=5",
-    "title:crowdstrike expands coreweave partnership to secure ai workloads brings falcon protection 24 7 security to cloud customers"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-02T15:18:06.054141+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMingFBVV95cUxPNk5PVllZb3FUVHM2cmlGeHhiSzgxaU9UWlRfQ2lRTEVPS0duTnNkSVQxQTFYMzBaMDVlTGU0UUZnbnhmamYtOUl0SzNaZ1MwNFo1UzNDLXU2QzhlZTlSdUVLZjViM3ZZSVFrN0I2eVVhZUJsN3lURzgwaEhhR0hDSHVNcVFlTVJlSXczNjY5TzJ0TGdrekwwRmxvZEVidw?oc=5",
-    "title:crowdstrike deutsche bank sees ai fueling cyber demand tsunami upgrades to buy"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-02T15:18:06.054141+00:00",
-   "keys": [
-    "openai.com/index/grid-protectors-program",
-    "title:introducing the grid protectors program"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-02T16:18:23.220120+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMilgFBVV95cUxPRl9EbjhEVEtVaG1FRzZuVGJJcVpoV0NXZEY5M3NBZ002U0otM2NwdWtXR1RiZjBhT0NSaF9wcG9fYk9YS2JkbzljM0NVTzliYTBWWHVsczByX1NJekNla2lQcGdTTUdzV3BZbHc5Tmd4SHlBU2tIRUhZU3RRRDBfS3NTTTg2LTVaRUs4SzZJZlZVb0V4N2c?oc=5",
@@ -166,6 +142,38 @@
     "title:crowdstrike reportedly paying 495 million for ai security firms fiddler dreadnode"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-11-03T15:18:13.354523+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMi7wFBVV95cUxPLWd6a1VYcmlSZGFMMHBWQ2E2UFhUbkJNZXMzU3R0ak9wZFBQaGw1eXRkSEtmYTRlQUtSWVVQQmJDRzl6akEtMXNqYTdiTV9MMHRNX01HZWl4MVF1VEFOc2o2YnF2SldPdUtLZlVNZ2I1SzFoTnpWNm5TdnBuTEhMdmFLR3d4NUZvQ1JQVnhnQ2xYbmI5VDNzcnAwMHVzeC01bmFtRG5wQkt6d0FjdnBNNHFTd3pWUk5CVGpmMTlPODhUZ1FzNmxBaDFlRlpEVUFUcl9wRHpXUmQ1WjROWldNRU5IOEtYYzdVN3ZtRXdqMA?oc=5",
+    "title:crowdstrike says it will buy two ai cybersecurity startups announces kill switch for ai agents"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-03T15:18:13.354523+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMiqgFBVV95cUxPUzJid1ZVVVplM1pXb1pYWEs0enZPdDFrZnNacHdWNTczRmp5bjBUdzZKbV81MnhZNHRGM2JGajVrdVp4eks4Y2dTTEsxRG5ZQWh2cjczcjJaV1J3MVcwWld6UzVmaVFSY2ZfWUN2dE9QQmlXZlNCbTlyRUItM25kNXgzb2cxN2tqRHdGZ3BTa3VFRW5YcWthdC1jSE13TXd6ckJ1YTNDVGl3dw?oc=5",
+    "title:what is crowdstrike holdings crwd signaling with its latest ai security moves"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-03T15:18:13.354523+00:00",
+   "keys": [
+    "honnibal.dev/blog/astra-read-write-misleading",
+    "title:the astra can read and write weights to improve qwen post is misleading"
+   ],
+   "strength": 4
+  },
+  {
+   "at": "2026-11-03T15:18:13.354523+00:00",
+   "keys": [
+    "title:crowdstrike agrees to buy fiddler ai which helps monitor ai agents for 400m and dreadnode an automated security ai testing tool for 95m mostly in cash james rundle wall street journal",
+    "wsj.com/pro/cybersecurity/crowdstrike-to-buy-two-ai-security-startups-for-495-million-b0ef6a9e"
+   ],
+   "strength": 0
   }
  ],
  "undated": {
