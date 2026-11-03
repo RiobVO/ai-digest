@@ -209,14 +209,6 @@
    "strength": 3
   },
   {
-   "at": "2026-11-03T20:18:23.027399+00:00",
-   "keys": [
-    "github.com/postmanlabs/postman-app-support/issues/14370",
-    "title:postman silently auto installs ai plugins and attempts to share all api data"
-   ],
-   "strength": 6
-  },
-  {
    "at": "2026-11-03T21:18:16.933158+00:00",
    "keys": [
     "simonwillison.net/2026/Nov/3/qwen-can-interpret-model-weights",
@@ -231,6 +223,14 @@
     "title:crowdstrike debuts an ai kill switch in falcon guardian to stop internal ai agents that go rogue and announces a falcon guardian integration with claude cowork samantha subin cnbc"
    ],
    "strength": 0
+  },
+  {
+   "at": "2026-11-03T22:18:06.008443+00:00",
+   "keys": [
+    "github.com/postmanlabs/postman-app-support/issues/14370",
+    "title:postman silently auto installs ai plugins and attempts to share all api data"
+   ],
+   "strength": 8
   }
  ],
  "undated": {
