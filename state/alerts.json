@@ -14,14 +14,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-02T16:18:23.220120+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMilgFBVV95cUxPRl9EbjhEVEtVaG1FRzZuVGJJcVpoV0NXZEY5M3NBZ002U0otM2NwdWtXR1RiZjBhT0NSaF9wcG9fYk9YS2JkbzljM0NVTzliYTBWWHVsczByX1NJekNla2lQcGdTTUdzV3BZbHc5Tmd4SHlBU2tIRUhZU3RRRDBfS3NTTTg2LTVaRUs4SzZJZlZVb0V4N2c?oc=5",
-    "title:crowdstrike upgraded on expected ai cybersecurity leadership"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-02T18:18:10.201522+00:00",
    "keys": [
     "blog.google/innovation-and-ai/technology/ai/google-ai-updates-october-2026",
@@ -162,14 +154,6 @@
   {
    "at": "2026-11-03T15:18:13.354523+00:00",
    "keys": [
-    "honnibal.dev/blog/astra-read-write-misleading",
-    "title:the astra can read and write weights to improve qwen post is misleading"
-   ],
-   "strength": 4
-  },
-  {
-   "at": "2026-11-03T15:18:13.354523+00:00",
-   "keys": [
     "title:crowdstrike agrees to buy fiddler ai which helps monitor ai agents for 400m and dreadnode an automated security ai testing tool for 95m mostly in cash james rundle wall street journal",
     "wsj.com/pro/cybersecurity/crowdstrike-to-buy-two-ai-security-startups-for-495-million-b0ef6a9e"
    ],
@@ -188,6 +172,22 @@
    "keys": [
     "news.google.com/rss/articles/CBMif0FVX3lxTFBlMkVlRzFiRGM1enhnM0hGNWxUM2I4a0s0UlVsS1YxR09DSmpKQXVsYWZQWGpzbkNlTkRmWFhnN0tMb2JHbFdvc2NhN3VTTkRxV29sZmpsTHFVUlZNelRqODVGT3g1QzhwQ0RJb3hMdW5zbXdjZzNFbjY4a1RfVTA?oc=5",
     "title:crowdstrike moves to acquire fiddler and dreadnode adding ai observability and testing to its security platform"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-03T17:18:08.786633+00:00",
+   "keys": [
+    "honnibal.dev/blog/astra-read-write-misleading",
+    "title:the astra can read and write weights to improve qwen post is misleading"
+   ],
+   "strength": 6
+  },
+  {
+   "at": "2026-11-03T17:18:08.786633+00:00",
+   "keys": [
+    "deepmind.google/blog/agentic-cheminformatics-with-google-antigravity",
+    "title:agentic cheminformatics with google antigravity"
    ],
    "strength": 1
   }
