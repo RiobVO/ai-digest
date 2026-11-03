@@ -14,14 +14,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-02T21:18:08.402656+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMipAFBVV95cUxOOVNNU1pLMmVDanVNT1M4N1hyak9tZ3Y4WmtFbUVIN3pWNFJCNmhxUmlNazBxajF3SnVRQ2JCSEhBUnpZWEdXMXUyYjBNYTJRLWQ0Mmd6cDVYZThRVXVCdVl2RFRINmlkbVBiblF0Sm1FQzRoblFldmVSYW40VUFudWs3NGZLV2lVbHNQTzJGdkZyUGFEazRUckZfRnIxY2hQYUxQZg?oc=5",
-    "title:crowdstrike expands partnerships to strengthen ai security"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-02T22:18:08.198393+00:00",
    "keys": [
     "news.ycombinator.com/item?id=50340088",
@@ -223,6 +215,22 @@
     "title:postman silently auto installs ai plugins and attempts to share all api data"
    ],
    "strength": 6
+  },
+  {
+   "at": "2026-11-03T21:18:16.933158+00:00",
+   "keys": [
+    "simonwillison.net/2026/Nov/3/qwen-can-interpret-model-weights",
+    "title:qwen 3 8 27b on my laptop can interpret model weights too"
+   ],
+   "strength": 3
+  },
+  {
+   "at": "2026-11-03T21:18:16.933158+00:00",
+   "keys": [
+    "cnbc.com/2026/11/03/crowdstrike-ai-kill-switch-rogue-agents.html",
+    "title:crowdstrike debuts an ai kill switch in falcon guardian to stop internal ai agents that go rogue and announces a falcon guardian integration with claude cowork samantha subin cnbc"
+   ],
+   "strength": 0
   }
  ],
  "undated": {
