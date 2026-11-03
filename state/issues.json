@@ -1,5 +1,167 @@
 [
  {
+  "date": "2026-11-03",
+  "slot": "morning",
+  "headline": "Anthropic S-1 раскрыл триллионные траты, Google и партнеры обезвредили ботнет на 1,3 млн ТВ-боксов",
+  "page": "2026-11-03.html",
+  "entries": [
+   {
+    "id": "20261103-0",
+    "title": "Anthropic отчиталась о $17 млрд выручки за Q3 и показала $895 млрд инфраструктурных обязательств",
+    "section": "business",
+    "source": "hn",
+    "url": "https://www.cnbc.com/2026/11/02/anthropic-ant-s-1-quarter-financials.html",
+    "story": "s230"
+   },
+   {
+    "id": "20261103-1",
+    "title": "Google и партнеры отключили ботнет из 1,3 млн зараженных Android TV-боксов",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/google-disrupts-million-device-xcpe-android-malware-botnet-bans-tv-box-maker/",
+    "story": "s231"
+   },
+   {
+    "id": "20261103-2",
+    "title": "GPT-6 Astra научилась редактировать веса Qwen3.5-0.8B напрямую через weight-space программирование",
+    "section": "model",
+    "source": "techmeme",
+    "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+    "story": "s232"
+   },
+   {
+    "id": "20261103-3",
+    "title": "Apple отчиталась за Q4 с выручкой $114,48 млрд и предупредила о росте цен на память",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.businesswire.com/news/home/20261102433950/en/",
+    "story": "s233"
+   },
+   {
+    "id": "20261103-4",
+    "title": "Крупнейшая криптобиржа Бразилии Mercado Bitcoin остановила вывод средств после взлома на $46 млн",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://www.theblock.co/news/defi/2026-11-02-mercado-bitcoin-hack-46-million-brazil-exchange-432333",
+    "story": "s234"
+   },
+   {
+    "id": "20261103-5",
+    "title": "Китайские хакеры применили ИИ-фреймворк ARTEX для атак на 200 организаций",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/chinese-hackers-use-artex-ai-in-automated-attacks-against-200-orgs/",
+    "story": "s193"
+   },
+   {
+    "id": "20261103-6",
+    "title": "Salesforce покупает разработчика ИИ для колл-центров Cresta за $2,7 млрд",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://www.theinformation.com/briefings/exclusive-salesforce-acquires-startup-cresta-2-7-billion",
+    "story": "s235"
+   },
+   {
+    "id": "20261103-7",
+    "title": "Palantir отчиталась о росте выручки в США на 148% и подняла прогноз на 2026 год",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.cnbc.com/2026/11/02/palantir-pltr-earnings-q3-2026.html",
+    "story": "s236"
+   },
+   {
+    "id": "20261103-8",
+    "title": "Вышла Ollama v0.40.14 с исправлениями повторных подключений ChatGPT и лимитами для Claude Code",
+    "section": "dev",
+    "source": "gh_ollama",
+    "url": "https://github.com/ollama/ollama/releases/tag/v0.40.14-rc0",
+    "story": "s237"
+   },
+   {
+    "id": "20261103-9",
+    "title": "Интервью с агентом: как заставить Claude Code расспросить тебя перед стартом задачи",
+    "section": "voices",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xm3ca3/before_your_agent_plans_anything_let_it_interview/",
+    "story": ""
+   },
+   {
+    "id": "20261103-10",
+    "title": "Запуск Claude Code в изолированной песочнице через claude-cage",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xmc3i5/claudecage_run_claude_code_confined_to_your/",
+    "story": "",
+    "summary": "Запусти Claude Code через Nix-флейк claude-cage. Инструмент оборачивает агент в bubblewrap, очищает переменные окружения, подставляет пустой $HOME и запрещает доступ к родительским каталогам.",
+    "why": "Защитит локальную систему и секреты от доступа агента к файлам за пределами директории проекта.",
+    "copy": "claude-cage",
+    "copy_untrusted": true,
+    "topic": "ai_security",
+    "steps": [
+     "Песочница сбрасывает окружение (--clearenv), создает изолированную директорию конфигурации и подставляет пустой $HOME.",
+     "Файлы flake.nix, .envrc и гитовские хуки монтируются в режиме read-only.",
+     "Вся изоляция подключается добавлением одной строчки в .envrc проекта.",
+     "Внутри окружения полностью заблокирован доступ к ключам SSH и GPG."
+    ]
+   },
+   {
+    "id": "20261103-11",
+    "title": "Синхронизация единого канбан-борда для кодинг-агентов через Kanzo",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xlpha5/kanzo_update_one_kanban_board_shared_across_all/",
+    "story": "",
+    "summary": "Запусти kanzo share on на хост-машине и подключись с других устройств через kanzo join. Лёгкий бинарник на 4,5 МБ синхронизирует статус выполнения задач между агентами.",
+    "why": "Позволяет координировать задачи нескольких агентов на разных компьютерах без разворачивания тяжелой инфраструктуры.",
+    "copy": "kanzo share on",
+    "copy_untrusted": true,
+    "topic": "agents",
+    "steps": [
+     "Утилита стартует за 2 мс и загружает доску на 3000 задач за 17 мс.",
+     "Режим Backlog скрывает задачи от агентов до тех пор, пока ты вручную не переместишь их в колонку todo.",
+     "Серверную часть удобно поднимать на Raspberry Pi в локалке или через Tailscale."
+    ]
+   },
+   {
+    "id": "20261103-12",
+    "title": "Изоляция API-ключей в n8n через промежуточный шлюз",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/n8n/comments/1xm1l8o/i_built_a_full_social_media_pipeline_on_n8n_news/",
+    "story": "",
+    "summary": "Храни API-ключи в отдельной веб-панели, а из n8n вызывай только её эндпоинты. Шлюз сам добавит необходимые заголовки авторизации перед отправкой запроса во внешние сервисы.",
+    "why": "Предотвращает утечку секретов и сторонних API-ключей при выполнении воркфлоу n8n.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "automation",
+    "steps": [
+     "Ноды публикации настраиваются с флагом Continue on Error, а финальный Code-узел агрегирует отчёт выполнения.",
+     "Сбой отправки на одну платформу не ломает весь проход, а повтор через Telegram переотправляет только упавшие задачи.",
+     "JSON-схема воркфлоу собирается скриптом из .js файлов, а CI сверяет имена нод с Docker-образом n8n.",
+     "Человеческий контроль реализован через Telegram-бота с кнопками одобрения публикаций."
+    ]
+   },
+   {
+    "id": "20261103-13",
+    "title": "Детект тихих сбоев в воркфлоу n8n по подсчету элементов",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/n8n/comments/1xlq9m9/my_workflow_showed_green_for_a_week_and_did/",
+    "story": "",
+    "summary": "Проверяй количество элементов после каждого важного шага получения или фильтрации данных. Если нормальный поток возвращает 0 элементов, генерируй явную ошибку для срабатывания алерта.",
+    "why": "Помогает поймать сбои в автоматизациях, когда сценарий завершается без ошибок, но фактически не обрабатывает данные из-за пустой выдачи.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "automation",
+    "steps": [
+     "После шагов фильтрации проверяется количество элементов: если вместо привычного списка приходит 0, сценарий вызывает ошибку.",
+     "После операций записи воркфлоу запрашивает итоговую таблицу и сравнивает число созданных строк с ожидаемым.",
+     "Система уведомлений настраивается на пустые прогоны (Empty runs), а не только на критические сбои."
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-11-02",
   "slot": "evening",
   "headline": "Взлом холодильников в Европе, атаки на AD CS и Qwen в Apple Intelligence",
