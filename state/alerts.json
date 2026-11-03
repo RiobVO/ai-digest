@@ -14,14 +14,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-02T19:18:08.051949+00:00",
-   "keys": [
-    "chalmovsky.com/posts/wtf-ubuntu",
-    "title:wtf ubuntu"
-   ],
-   "strength": 9
-  },
-  {
    "at": "2026-11-02T21:18:08.402656+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMipAFBVV95cUxOOVNNU1pLMmVDanVNT1M4N1hyak9tZ3Y4WmtFbUVIN3pWNFJCNmhxUmlNazBxajF3SnVRQ2JCSEhBUnpZWEdXMXUyYjBNYTJRLWQ0Mmd6cDVYZThRVXVCdVl2RFRINmlkbVBiblF0Sm1FQzRoblFldmVSYW40VUFudWs3NGZLV2lVbHNQTzJGdkZyUGFEazRUckZfRnIxY2hQYUxQZg?oc=5",
@@ -182,6 +174,39 @@
     "title:agentic cheminformatics with google antigravity"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-11-03T19:18:18.110949+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMi2gFBVV95cUxNckFpWnYtcGc5YWlIY09HN2YteHBDM2IxdzQzTmVlM1VxNjI3OTBYTjgyS3psVDQydE80QkVweVY4V0NiX0F3MUg3NHV2ODduaTBfSS1hN3FNZWtrR3J5MHYxZzMzekwyN1Yta2FDaUk4amEyTzdoLWV3VWdLYWpzb2FtQXpNNWtROE0weTFBRWRoQVduZmd1bW9nQ1pKbmpDbGtUNGhiaHhfRl8zQUVoSWdROG9iUzJEQVh0U1V2WjRWYWxXNzM3WkRmemhLMHl4Tm1UMEVwZFFMUQ?oc=5",
+    "title:crowdstrike to shell out nearly 500m for 2 ai security startups as the market for securing agents takes off"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-03T19:18:18.110949+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMiuwFBVV95cUxNMGxYbmYxQldRTmQ3cHVRZlhTTnF3eFcyb2lya3hXMUNSQ1NOcTd2S2pUbXNJczdCeklxRzlEbV84QlNuZ3BaRE1Pa0NHRFg3N1AyOWN6X0lRUGRxMlhhUmt3OUJXdFlWRlA5S041NWJMX0kxTU8td2pwT3EtbWhzRFBERzF0aDZFVVlCQ1VkaXdwdHNCbms5QjgzLWNrdmxMUWdjVGdaQzdUUTY2djZIcFVpYko5UXJWMGkw?oc=5",
+    "title:jim cramer likes crowdstrike s new ai kill switch and the cyber stock"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-03T19:18:18.110949+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMiggFBVV95cUxPa2ZWRmYyZW9YZng5SmhjYnpjQ213dnRKVjVjNW1rcS1RRFoxVUFKYnl2VlVjMk1abE1kQTE2Qk1Ea09WcHlvMjFNbTREWnhmYXZiTjE5RTY0bUdMZGsyRFRCNDNWQjg0SG90WXlaSVV1d19iV0x4UEVnVlFzS3dyVWZB?oc=5",
+    "nytimes.com/2026/11/03/us/google-search-schools-restrict-ai.html",
+    "title:google will turn off search for schools that reject ai"
+   ],
+   "strength": 4
+  },
+  {
+   "at": "2026-11-03T19:18:18.110949+00:00",
+   "keys": [
+    "github.com/postmanlabs/postman-app-support/issues/14370",
+    "title:postman silently auto installs ai plugins and attempts to share all api data"
+   ],
+   "strength": 4
   }
  ],
  "undated": {
