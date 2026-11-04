@@ -14,14 +14,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-03T11:18:08.743758+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMipwFBVV95cUxPY2swQVRzRFk3RlVhLXdKR0h2UGF3LTI5T1pXbktQeUdHS3FiUkVpeEt3YzhwSDN4U0VFaTEtUUdOOGR0QWFTcUkyRktTaFVJS2JHLU5SS09UMVNzWlBRX3RyZUp2T2FVT05DNUxpSnAxUkRKNlBieVdCWXotdVVpTWNVd25MYTRWbENsVFIyUjZWZWludmN6TnFXZlRRU2wtc3dEMGpoaw?oc=5",
-    "title:crowdstrike announces new native ai security innovations on aws"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-03T13:18:05.690430+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMiwAFBVV95cUxPemV1RWJSWTBlQ2VxbVlDN1dHQ01DVUh3WWFhOGxNTXhGOXpFaGxvTXpXTTNDb3NkNDRINnJsVzhiZ25WN0QxTDdqR2QycnN5WVNMdVBaNWM5eWlPelFXUmc4WTMzWUlwbWM1ZGp2R3pST2lmNDRIalZuMUFBQW9tcW5wZGxSSjdIbEdNamZWSHliNUdBN3I0blZ1bUttc211MHlTTjEtLUpvc0R0V3hGa2kybVNEQVMxYjVBOXdDaDg?oc=5",
@@ -211,6 +203,39 @@
    "keys": [
     "news.google.com/rss/articles/CBMiuwFBVV95cUxOOVI1dkk3aDJ3LUlqZjRIYkdaZGZpa2ZEcC03c1V2OV9wcElYODJFUzNPZEQwREdFSV9PNGgza0tMbnhmdFlGOERXeW5DUHVEdDFxUTJuTFRXZFdqMy1wZGRsSUpwdF9VSlgyMFZ3eVFCZkYzYUJwbTRPYTl0eENodXNiUk1Qa2ZXUlBTRjFFOUxLbUlRNE5uVWU0dmpBbktFckxIdWsxLVZOOE5kUGVmYUkxNGJCVFducHpR?oc=5",
     "title:crowdstrike s ai soc vision evolves as agentic uncertainty adds new twist"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-04T12:18:12.943694+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMilAFBVV95cUxNdTh0bzJvbmIwendSeGNPQTBmWHQxT3BMMXE4ck9hU3JmUWlLdklEdFdycEdGb1lHRjg3cG91VER5TnpWRTJhVmtqOEYwRmEzTFNOcGlUY2tIc3o5NHdIR2h2U2UtbHpmb2xuZnBkZ1FEaENTR1RfUHI5eGpHbTh0emprSEJJS1NjdUdqUm04OUNaY2tx?oc=5",
+    "news.google.com/rss/articles/CBMivgFBVV95cUxNU3hqV1RYeFNyQ2Q0dDZBRWZVT3BlbEtjWUgxVTlmOXAwbG4td2xNR3B2MFdhYVRzWngtcFFQdWVPSmJiVmhLWEhscUFOTUs1Y3BGRzVKN1U5aklOa3JFcGk1QlI0dTU1ZGlOQzFEaFRPNkVzb3dVRExNd3plVEM1QTZxZkFmcjdHdFExdnFQZ2FPSjYtZERQM0p5cUxpZzhibTM4S2pmUVM1OE05TkJ6YXF6QlBaOWhxTlN0X2VB?oc=5",
+    "title:jim cramer praises new ai kill switch says you should just go buy crowdstrike"
+   ],
+   "strength": 2
+  },
+  {
+   "at": "2026-11-04T12:18:12.943694+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMiqgFBVV95cUxQVHBHYWpjdWxPUUszcVo2UmdxQ0UzUWpLZlh6TFdlZXhwWDRCWDM1S1V2eW0xODY4bFN4bzNmM3REWTlYTmpZdm1MYWFlZTdkY2pFZXhncGRfR2x5WjlYdVZoRW9YbUJhV1RxODR5NHhGLVYySlRVa0QwZ0pKMU4yUHd2RkQwWm8zV2pDaFU4VzI3NXhYN0tsVHY3ejV4dmE4YTZrUkNZTDlEUQ?oc=5",
+    "title:exclusive crowdstrike to buy two ai security startups for 495 million"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-04T12:18:12.943694+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMizAFBVV95cUxQcDN1U09KS1BBSHFRRG01QnlCT0RMdnlQQnNCX3hZVF9VdG43VE1ZM0NFX0JJZ3dNb2Izd1NTSWcxTWxUaGRtYXZfZGtUVTZ5bzFMaEVSTFZLS2tNaGhGakowYVZKSmNNdWgwbmtVSGhCY1k5N3dYWE9RRnBNM2M2dTVjSThpLWFaa3oxM25fVFMxeV9nMkxsRXg5c1BqRVZnMjBSSDJXS1VDNjNmLVlpZXUxQnU5LXEyVFZqamlyUGFQdjRPc0Z1X21Sa2o?oc=5",
+    "title:crowdstrike to acquire fiddler dreadnode to extend ai security across agent lifecycle"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-04T12:18:12.943694+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMirAFBVV95cUxQQ2xUeGRGMUhiOTlvaVBybzl5dnBGUm5VOTR5eG95V3llYWtJX3pwbmdtdDhZd0l0cm4xQW1YbGVPQ2x1LThkVWxkektDd0Q2b1BCaFdFRElscF9uZEt4LXB4anhrX2tzSm9UeG1ydUx4QnB6a2VxbDRTWXhYWGxzUFE4YUJMdFF3M0xjZXdja3ZxcG9yaE5iZ0ZiOWFUTkFQTEcxSHRaSEg4X2Zu?oc=5",
+    "title:crowdstrike launches ai kill switch to shut down rogue agents"
    ],
    "strength": 1
   }
