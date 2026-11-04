@@ -14,30 +14,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-03T21:18:16.933158+00:00",
-   "keys": [
-    "simonwillison.net/2026/Nov/3/qwen-can-interpret-model-weights",
-    "title:qwen 3 8 27b on my laptop can interpret model weights too"
-   ],
-   "strength": 3
-  },
-  {
-   "at": "2026-11-03T21:18:16.933158+00:00",
-   "keys": [
-    "cnbc.com/2026/11/03/crowdstrike-ai-kill-switch-rogue-agents.html",
-    "title:crowdstrike debuts an ai kill switch in falcon guardian to stop internal ai agents that go rogue and announces a falcon guardian integration with claude cowork samantha subin cnbc"
-   ],
-   "strength": 0
-  },
-  {
-   "at": "2026-11-03T22:18:06.008443+00:00",
-   "keys": [
-    "github.com/postmanlabs/postman-app-support/issues/14370",
-    "title:postman silently auto installs ai plugins and attempts to share all api data"
-   ],
-   "strength": 8
-  },
-  {
    "at": "2026-11-04T00:18:07.724658+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMitgFBVV95cUxPTGk5Z3RYZDNLZmJIN2FraWVkTm9paXBOd0w0c0lTQ2p1Z2lXZjhzR0VnTjJCVk5UU1pGRG5sTElvY3hhYW5Ta19pN1dHNzcwZW9PSDFoLXlBcTBQVFlSbFZYQWxPaXE1WHFVOFZUTHZ0ZTlWLTBpNjE3cnRPWllZYlVDUjRmaVY0QXgzODRxLW1nSmw3VXBLV0EyZENMeDVkU24tR2VwTmZoYmJnOFI3QVp6am9md9IBuwFBVV95cUxNTmsxR1FYWlNubkpfbXhSNmZDcmlhWjBWb3ZETDRnOVd2VWp4bU11Rmg0Rnc4b2hnLUF5WEJtWE0tT0EwdGswZE54ODhRWl9EYWYzLW93S2ZhVDFOTWRXSFg5WWN4TS1IdGJ3YnNMb2JEdDU2cnlkb2JPVl9HcnNJdUNkLU9BaXdFWkxDMkRYNXBqSnBQNGlDd1gwQW5uZzhvLWJsTnZaR3otbEZSVUxjamNUdlhKN0poblR3?oc=5",
@@ -173,6 +149,22 @@
     "title:north korean fake job interview led to 6 3b binance heist"
    ],
    "strength": 4
+  },
+  {
+   "at": "2026-11-04T23:18:07.203446+00:00",
+   "keys": [
+    "layer3intel.com/blog/residential-proxies-white-house-network",
+    "title:residential proxies detected on white house network"
+   ],
+   "strength": 4
+  },
+  {
+   "at": "2026-11-04T23:18:07.203446+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMimwFBVV95cUxNdFFLaFhSLXJWMVZ6cUlVdmlnY0dVTzJvNFB6dVkzZjQ3R3hMcU1KZXJjUmdHX2RTcnFDTjJzSjZfb2VySVFZbllhMXJISEVKRGRINkhWNVZiNC12RFFmdlRQb3ZxUVJ3VnRNVjF4VlVQa3pEbWhTNEszNC1VOFIzYVBIVk9rZGVUS2VIRDBGVFhtUUFyYVc5MDMwRQ?oc=5",
+    "title:crowdstrike lets security teams kill rogue ai agents"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
