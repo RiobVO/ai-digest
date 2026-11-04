@@ -14,14 +14,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-03T00:18:08.642672+00:00",
-   "keys": [
-    "rikiyat.github.io/blog/weight-space-programming",
-    "title:researchers say llms can be good at natively reading and writing neural network weights gpt 6 astra edited qwen3 5 0 8b s weights to make it better at math rikiya takehi"
-   ],
-   "strength": 17
-  },
-  {
    "at": "2026-11-03T07:18:29.113698+00:00",
    "keys": [
     "blogs.nvidia.com/blog/cities-physical-agentic-ai-applications",
@@ -245,6 +237,22 @@
    "keys": [
     "news.google.com/rss/articles/CBMivgFBVV95cUxPSFFyR1hhNU5PZVpFeXBPdW4yQ2o0cFlUWEdvUmlLbGFmNUREQVlKelJQajBUVDBUOUVTQTJnWmM0UzdoaF9uR0kwUk51ODJqSjR6andPdGUtQ1pWVnh2dzQ0LU44R3JTSG52NkpvM2ZBX1FWdWpMZWZ0QzNRZ0tWYTdkRHNkU1I5SlB6My1MVTZhX3BOUFE0Y1NhdHNkM2ZTbHM5S0ZERWhqQm9SZVhqT1J5UHJSZmtXUWhORU9R?oc=5",
     "title:crowdstrike to acquire cybersecurity startups fiddler ai dreadnode for reported 495m"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-04T01:18:05.250172+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMiqAFBVV95cUxOZE01eXZOV284R3lJS21zckJQM3RuVFowa2hJcjluNUgyY2lFcExGSmtXRU5iVGwtczBPTHR0XzJoQkgtOW5wSWJ3TDlHcTY5V3ZCMzhhZ194YTMxSUFZVGs3TEZwYWhMSnNsa0d4NmxLemhVcTB5Z2Z1amtreVg4cndPWFo4NHR3b2oyNkNWd0xtWWdTUE9XYmw2SHh0WVZiN1N2NlhXMHM?oc=5",
+    "title:crowdstrike to acquire 2 firms to secure enterprise ai agents"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-04T01:18:05.250172+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMinAFBVV95cUxONmpwSE1vVVNZVDdxa25sYUItb19KX1JjS1JOT0oyWEFPazMyZGpOU3RoNjZkQndzclJIWGRzZzZRTnR0bmFuNE9HOVBzOHJXbmxNcnFvWkNSclVSellUd2JDVTE2RUtCXzJNbkg0RE9YbVc5MWFDaGw5dklvc0hMVDZrdWo5Q2duSm5BOXVyOWo0SXp2VlUxS2ZMNTc?oc=5",
+    "title:crowdstrike ceo george kurtz talks new ai kill switch"
    ],
    "strength": 1
   }
