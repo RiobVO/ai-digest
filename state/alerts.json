@@ -230,6 +230,30 @@
     "title:crowdstrike launches kill switch for ai agents and makes acquisitions"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-11-04T15:18:10.367295+00:00",
+   "keys": [
+    "spectrum.ieee.org/ai-in-cybersecurity-php2shell-vulnerability",
+    "title:ai is forcing us to pay off 40 years of technical debt"
+   ],
+   "strength": 3
+  },
+  {
+   "at": "2026-11-04T15:18:10.367295+00:00",
+   "keys": [
+    "news.ycombinator.com/item?id=50363461",
+    "title:tell hn gemini trains on chat history even for subscribers personal accounts"
+   ],
+   "strength": 3
+  },
+  {
+   "at": "2026-11-04T15:18:10.367295+00:00",
+   "keys": [
+    "openai.com/index/openai-to-acquire-pierre",
+    "title:openai to acquire pierre computer company inc"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
