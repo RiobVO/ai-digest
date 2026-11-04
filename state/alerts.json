@@ -146,14 +146,6 @@
   {
    "at": "2026-11-04T12:18:12.943694+00:00",
    "keys": [
-    "news.google.com/rss/articles/CBMiqgFBVV95cUxQVHBHYWpjdWxPUUszcVo2UmdxQ0UzUWpLZlh6TFdlZXhwWDRCWDM1S1V2eW0xODY4bFN4bzNmM3REWTlYTmpZdm1MYWFlZTdkY2pFZXhncGRfR2x5WjlYdVZoRW9YbUJhV1RxODR5NHhGLVYySlRVa0QwZ0pKMU4yUHd2RkQwWm8zV2pDaFU4VzI3NXhYN0tsVHY3ejV4dmE4YTZrUkNZTDlEUQ?oc=5",
-    "title:exclusive crowdstrike to buy two ai security startups for 495 million"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-04T12:18:12.943694+00:00",
-   "keys": [
     "news.google.com/rss/articles/CBMizAFBVV95cUxQcDN1U09KS1BBSHFRRG01QnlCT0RMdnlQQnNCX3hZVF9VdG43VE1ZM0NFX0JJZ3dNb2Izd1NTSWcxTWxUaGRtYXZfZGtUVTZ5bzFMaEVSTFZLS2tNaGhGakowYVZKSmNNdWgwbmtVSGhCY1k5N3dYWE9RRnBNM2M2dTVjSThpLWFaa3oxM25fVFMxeV9nMkxsRXg5c1BqRVZnMjBSSDJXS1VDNjNmLVlpZXUxQnU5LXEyVFZqamlyUGFQdjRPc0Z1X21Sa2o?oc=5",
     "title:crowdstrike to acquire fiddler dreadnode to extend ai security across agent lifecycle"
    ],
@@ -206,6 +198,22 @@
     "title:crowdstrike is spending 495 million to police ai agents"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-11-04T19:18:11.605962+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMiqgFBVV95cUxQVHBHYWpjdWxPUUszcVo2UmdxQ0UzUWpLZlh6TFdlZXhwWDRCWDM1S1V2eW0xODY4bFN4bzNmM3REWTlYTmpZdm1MYWFlZTdkY2pFZXhncGRfR2x5WjlYdVZoRW9YbUJhV1RxODR5NHhGLVYySlRVa0QwZ0pKMU4yUHd2RkQwWm8zV2pDaFU4VzI3NXhYN0tsVHY3ejV4dmE4YTZrUkNZTDlEUQ?oc=5",
+    "title:exclusive crowdstrike to buy two ai security startups for 495 million"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-04T19:18:11.605962+00:00",
+   "keys": [
+    "theregister.com/security/2026/11/03/north-korean-fake-job-interview-led-to-63b-binance-heist/5307398",
+    "title:north korean fake job interview led to 6 3b binance heist"
+   ],
+   "strength": 4
   }
  ],
  "undated": {
