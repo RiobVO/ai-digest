@@ -1,5 +1,121 @@
 [
  {
+  "date": "2026-11-04",
+  "slot": "morning",
+  "headline": "Взлом Binance на $6,3 млрд, Revolut уходит на GLM, Google спорит со школами из-за ИИ",
+  "page": "2026-11-04.html",
+  "entries": [
+   {
+    "id": "20261104-0",
+    "title": "Хроника взлома Binance на $6,3 млрд: фальшивое собеседование и троян в коде",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/binance-says-fake-job-interview-led-to-63-billion-crypto-heist/",
+    "story": "s174"
+   },
+   {
+    "id": "20261104-1",
+    "title": "Google пообещал отключить Поиск школам, которые откажутся от ИИ",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://www.cnbc.com/2026/11/03/google-responds-to-outrage-over-removing-search-in-schools-that-ban-ai.html",
+    "story": "s244"
+   },
+   {
+    "id": "20261104-2",
+    "title": "Revolut снизил затраты на ИИ-код на 90% благодаря переходу на самохостинг GLM",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.theregister.com/ai-and-ml/2026/11/03/british-fintech-revolut-slashes-ai-coding-costs-10x-by-cutting-out-claude-and-going-self-hosted/5307345",
+    "story": "s245"
+   },
+   {
+    "id": "20261104-3",
+    "title": "Google предупредил об LLMjacking-атаках с убытками до $1 млн в день",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/google-llmjacking-attacks-rack-up-1-million-in-cloud-ai-charges/",
+    "story": "s246"
+   },
+   {
+    "id": "20261104-4",
+    "title": "Выручка AMD в дата-центрах выросла на 97% благодаря спросу на чипы для ИИ",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.cnbc.com/2026/11/03/amd-amd-q3-earnings-report-2026-.html",
+    "story": "s247"
+   },
+   {
+    "id": "20261104-5",
+    "title": "Anthropic выкатила FlashProve для криптографической проверки моделей",
+    "section": "dev",
+    "source": "techmeme",
+    "url": "https://www.anthropic.com/research/provable-inference",
+    "story": "s248"
+   },
+   {
+    "id": "20261104-6",
+    "title": "Canva сократит 22% штата в рамках масштабной реструктуризации из-за ИИ",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.theage.com.au/technology/canva-unveils-mass-job-cuts-in-hardest-moment-of-its-history-20261104-p61b62.html",
+    "story": "s249"
+   },
+   {
+    "id": "20261104-7",
+    "title": "WorkOS сообщил об утечке после атаки с использованием ИИ-фреймворка ARTEX",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/workos-says-attacker-used-artex-ai-to-breach-internal-sales-app/",
+    "story": "s193"
+   },
+   {
+    "id": "20261104-8",
+    "title": "В Claude Code v2.1.318 добавили настройку effort для субагентов",
+    "section": "dev",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/hackers-hijack-cpguard-autoupdate-to-deploy-backdoor-steal-data/",
+    "story": "s88"
+   },
+   {
+    "id": "20261104-9",
+    "title": "Подключить Vercel Agent Desktop к Claude Code для управления программами в macOS",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xmpzuf/setting_up_vercel_agent_desktop_with_claude_code/",
+    "story": "",
+    "summary": "Установи глобальный пакет agent-desktop, запроси права системы, добавь скилл в Claude Code и запусти агент.",
+    "why": "Позволяет Claude Code управлять десктопными приложениями через дерево доступности macOS без захвата фокуса мыши.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Работает в фоновом режиме на macOS.",
+     "Некоторые тяжелые задачи, например работа с меню «Файл», могут потреблять до 550 тыс. входных токенов из-за крупных ответов в формате JSON.",
+     "Чтение и нажатие кнопок, а также заполнение полей работают стабильно, в то время как сохранение файлов или выбор стилей текста менее надежны и могут требовать флага --headed с перехватом мыши."
+    ]
+   },
+   {
+    "id": "20261104-10",
+    "title": "Генерировать ролик с демонстрацией сайта прямо через Claude Code с помощью Screenplay",
+    "section": "tips",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xmp6kt/i_built_an_opensource_tool_that_lets_claude_code/",
+    "story": "",
+    "summary": "Установи Screenplay и попроси Claude Code записать сценарий кликов и сформировать файл MP4 по указанному URL.",
+    "why": "Автоматизирует запись коротких промо-видео интерфейсов в Chromium без вызова браузера в GUI-режиме.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Claude пишет JSON-сценарий кликов и переходов, после чего Screenplay рендерит видео и правит возможные огрехи по сториборду.",
+     "Поддерживает генерацию роликов как для веб-сайтов, так и для десктопных приложений под Mac, Windows и Linux.",
+     "Не содержит встроенного ИИ и не требует сторонних API-ключей."
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-11-03",
   "slot": "evening",
   "headline": "Кризис памяти у Apple и Nvidia, уязвимость в ядре Linux и атаки на ИИ-инфраструктуру",
