@@ -14,38 +14,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-03T16:18:13.279451+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/ai-semiconductor-fabs",
-    "title:ai is changing how semiconductor fabs work and engineers are moving faster because of it"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-03T16:18:13.279451+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMif0FVX3lxTFBlMkVlRzFiRGM1enhnM0hGNWxUM2I4a0s0UlVsS1YxR09DSmpKQXVsYWZQWGpzbkNlTkRmWFhnN0tMb2JHbFdvc2NhN3VTTkRxV29sZmpsTHFVUlZNelRqODVGT3g1QzhwQ0RJb3hMdW5zbXdjZzNFbjY4a1RfVTA?oc=5",
-    "title:crowdstrike moves to acquire fiddler and dreadnode adding ai observability and testing to its security platform"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-03T17:18:08.786633+00:00",
-   "keys": [
-    "honnibal.dev/blog/astra-read-write-misleading",
-    "title:the astra can read and write weights to improve qwen post is misleading"
-   ],
-   "strength": 6
-  },
-  {
-   "at": "2026-11-03T17:18:08.786633+00:00",
-   "keys": [
-    "deepmind.google/blog/agentic-cheminformatics-with-google-antigravity",
-    "title:agentic cheminformatics with google antigravity"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-03T19:18:18.110949+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMi2gFBVV95cUxNckFpWnYtcGc5YWlIY09HN2YteHBDM2IxdzQzTmVlM1VxNjI3OTBYTjgyS3psVDQydE80QkVweVY4V0NiX0F3MUg3NHV2ODduaTBfSS1hN3FNZWtrR3J5MHYxZzMzekwyN1Yta2FDaUk4amEyTzdoLWV3VWdLYWpzb2FtQXpNNWtROE0weTFBRWRoQVduZmd1bW9nQ1pKbmpDbGtUNGhiaHhfRl8zQUVoSWdROG9iUzJEQVh0U1V2WjRWYWxXNzM3WkRmemhLMHl4Tm1UMEVwZFFMUQ?oc=5",
