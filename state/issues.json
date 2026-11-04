@@ -1,6 +1,146 @@
 [
  {
   "date": "2026-11-04",
+  "slot": "evening",
+  "headline": "Критический RCE в Android, гипервизорные дыры Xen и модель Tencent Hy4",
+  "page": "2026-11-04-evening.html",
+  "entries": [
+   {
+    "id": "20261104-11",
+    "title": "В гипервизоре Xen нашли критические дыры для чтения и записи памяти соседних VM",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/xen-hypervisor-flaws-let-one-malicious.html",
+    "story": "s250"
+   },
+   {
+    "id": "20261104-12",
+    "title": "Google закрыла критическую zero-click уязвимость выполнения кода в Android",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/google-patches-critical-android-flaw.html",
+    "story": "s251"
+   },
+   {
+    "id": "20261104-13",
+    "title": "Хостинг Beget потерял данные VPS и бэкапы клиентов из-за атаки с обнулением серверов",
+    "section": "security",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1103474/?utm_campaign=1103474&utm_source=habrahabr&utm_medium=rss",
+    "story": "s252"
+   },
+   {
+    "id": "20261104-14",
+    "title": "Tencent выкатила открытую мультимодальную модель Hy4 на 770 млрд параметров",
+    "section": "model",
+    "source": "scmp_tech",
+    "url": "https://www.scmp.com/tech/big-tech/article/3373227/tencent-unveils-hy4-open-weight-ai-race-deepseek-zai-alibaba-heats",
+    "story": "s253"
+   },
+   {
+    "id": "20261104-15",
+    "title": "CrowdStrike выкатила AI kill switch для принудительной остановки автономных агентов",
+    "section": "product",
+    "source": "CSO Online",
+    "url": "https://www.csoonline.com/article/4244509/crowdstrike-launches-ai-kill-switch-to-shut-down-rogue-agents.html",
+    "story": "s254"
+   },
+   {
+    "id": "20261104-16",
+    "title": "Ультиматум Google школам: отказ от ИИ лишит доступа к Поиску в 2027 году",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/schools-that-turn-off-googles-ai-will-lose-search-too-starting-in-2027/",
+    "story": "s244"
+   },
+   {
+    "id": "20261104-17",
+    "title": "В Messages API для Claude Code появился параметр thread для экономии токенов",
+    "section": "dev",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xnc4ew/anthropic_shipped_message_threads_beta_claude/",
+    "story": "s240"
+   },
+   {
+    "id": "20261104-18",
+    "title": "Google обучает модели на чатах Gemini даже у платных личных подписчиков",
+    "section": "product",
+    "source": "hn",
+    "url": "https://news.ycombinator.com/item?id=50363461",
+    "story": "s255"
+   },
+   {
+    "id": "20261104-19",
+    "title": "ByteDance запретила сотрудникам использовать Claude и Codex для рабочей разработки",
+    "section": "business",
+    "source": "technode",
+    "url": "https://technode.com/2026/11/04/bytedance-reportedly-tightens-access-to-claude-and-codex-even-for-employees-paying-out-of-pocket/",
+    "story": "s256"
+   },
+   {
+    "id": "20261104-20",
+    "title": "Зашифрованная прошивка Nvidia RTX Spark режет скорость инференса на Linux до 35%",
+    "section": "dev",
+    "source": "hn",
+    "url": "https://www.mindstudio.ai/blog/linux-nvidia-rtx-spark-laptop",
+    "story": "s257"
+   },
+   {
+    "id": "20261104-21",
+    "title": "Метод LoCo сокращает длинные цепочки рассуждений LLM без потери точности",
+    "section": "paper",
+    "source": "hf_papers",
+    "url": "https://arxiv.org/abs/2611.04814",
+    "story": "s258"
+   },
+   {
+    "id": "20261104-22",
+    "title": "OpenAI купила стартап Pierre Computer для интеграции хранилища кода в Codex",
+    "section": "dev",
+    "source": "techmeme",
+    "url": "https://www.axios.com/2026/11/04/openai-pierre-computer-github",
+    "story": "s259"
+   },
+   {
+    "id": "20261104-23",
+    "title": "Разработчики в Китае получили бета-доступ к Apple Intelligence с моделью Qwen",
+    "section": "product",
+    "source": "technode",
+    "url": "https://technode.com/2026/11/04/apple-intelligence-enters-developer-beta-in-china-with-qwen-integration/",
+    "story": "s202"
+   },
+   {
+    "id": "20261104-24",
+    "title": "Запустить автономное выполнение задач в Claude Code через свой MCP-сервер",
+    "section": "tips",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1103358/?utm_campaign=1103358&utm_source=habrahabr&utm_medium=rss",
+    "story": "",
+    "summary": "Подключить к Claude Code MCP-сервер личного задачника, настроить авторизацию по токену и запуск агента по расписанию для задач с тегом «Агенту».",
+    "why": "Пригодится для автоматизации рутины: агент сам забирает отмаркированные задачи, выполняет их на ПК и пишет отчёт.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": []
+   },
+   {
+    "id": "20261104-25",
+    "title": "Предотвратить обход правил UFW при пробросе портов в Docker Compose",
+    "section": "tips",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1103458/?utm_campaign=1103458&utm_source=habrahabr&utm_medium=rss",
+    "story": "",
+    "summary": "Проверять compose-файлы Python-скриптом на этапе CI/CD перед деплоем, блокируя директиву ports для чувствительных сервисов.",
+    "why": "Поможет избежать случайной публикации баз данных и внутренних сервисов в интернет при использовании Docker.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "security",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "date": "2026-11-04",
   "slot": "morning",
   "headline": "Взлом Binance на $6,3 млрд, Revolut уходит на GLM, Google спорит со школами из-за ИИ",
   "page": "2026-11-04.html",
