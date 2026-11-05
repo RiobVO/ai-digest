@@ -2,22 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-04T16:18:07.853702+00:00",
-   "keys": [
-    "spectrum.ieee.org/ai-in-cybersecurity-php2shell-vulnerability",
-    "title:ai is forcing us to pay off 40 years of technical debt"
-   ],
-   "strength": 5
-  },
-  {
-   "at": "2026-11-04T16:18:07.853702+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMioAFBVV95cUxPRHdJRGM1TWsyUVVvMUVrdE9uRU5ZN3BTR3FBbXFRWkh6N3V1ZXZvMFdRQ2lXWkxmZzd2Vi1iRFVHenhLWTVNM2ZqdWxQakNLMVNQazVaUUd4ekZBQ05BM05XeHo3Q09TTF9BSDNRbW1vMGdzdDQxaXhkTE9UdTluc0pZUDhXRmdQX3UtVVlrZzFORkpEOGExNUdrRTgxSThk?oc=5",
-    "title:crowdstrike is spending 495 million to police ai agents"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-04T19:18:11.605962+00:00",
    "keys": [
     "theregister.com/security/2026/11/03/north-korean-fake-job-interview-led-to-63b-binance-heist/5307398",
@@ -121,14 +105,6 @@
   {
    "at": "2026-11-05T16:18:07.702392+00:00",
    "keys": [
-    "sshhole.com",
-    "title:sshole"
-   ],
-   "strength": 10
-  },
-  {
-   "at": "2026-11-05T16:18:07.702392+00:00",
-   "keys": [
     "blogs.nvidia.com/blog/nvidia-life-chris-alexiuk",
     "title:the wizard of open weights chris alexiuk makes ai easy with open models"
    ],
@@ -147,6 +123,31 @@
    "keys": [
     "mistral.ai/news/build-with-studio",
     "title:le chonk brings the brains studio puts it to work"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-05T17:18:06.860424+00:00",
+   "keys": [
+    "sshhole.com",
+    "title:sshole"
+   ],
+   "strength": 13
+  },
+  {
+   "at": "2026-11-05T17:18:06.860424+00:00",
+   "keys": [
+    "blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-omni-1-2-flash",
+    "deepmind.google/blog/gemini-omni-12-flash-fast-and-cost-effective-with-longer-clips",
+    "title:gemini omni 1 2 flash fast and cost effective with longer clips"
+   ],
+   "strength": 2
+  },
+  {
+   "at": "2026-11-05T17:18:06.860424+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/developers-simulation-frontier-ai-agents",
+    "title:into the omniverse how developers turn ideas into simulations with frontier ai agents"
    ],
    "strength": 1
   }
