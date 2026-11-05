@@ -1,5 +1,109 @@
 [
  {
+  "date": "2026-11-05",
+  "slot": "morning",
+  "headline": "Итоги выборов в США ударили по ЦОД, OpenAI купила разработчика Git-инфраструктуры",
+  "page": "2026-11-05.html",
+  "entries": [
+   {
+    "id": "20261105-0",
+    "title": "Победа демократов на промежуточных выборах в США поставила под удар ИИ-датацентры",
+    "section": "business",
+    "source": "mit_tr_ai",
+    "url": "https://www.technologyreview.com/2026/11/04/1148043/texas-was-the-new-epicenter-of-the-ai-data-center-buildout-that-might-be-kaput/",
+    "story": "s260"
+   },
+   {
+    "id": "20261105-1",
+    "title": "OpenAI автоматически нашла и пропатчила почти тысячу уязвимостей в ядре Linux",
+    "section": "security",
+    "source": "openai",
+    "url": "https://openai.com/index/a-thousand-fewer-paths-to-root",
+    "story": "s261"
+   },
+   {
+    "id": "20261105-2",
+    "title": "OpenAI покупает стартап Pierre Computer для интеграции хранилища кода в Codex",
+    "section": "product",
+    "source": "openai",
+    "url": "https://openai.com/index/openai-to-acquire-pierre",
+    "story": "s259"
+   },
+   {
+    "id": "20261105-3",
+    "title": "GPT-6 Astra научилась напрямую править веса сторонних ИИ-моделей",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/gpt-6-astra-sees-the-matrix-and-reprograms-other-ai-models-directly-through-their-weights/",
+    "story": "s262"
+   },
+   {
+    "id": "20261105-4",
+    "title": "Критическая уязвимость в APT позволяет подменять пакеты Debian и Ubuntu",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/debian-and-ubuntu-apt-flaw-lets-mitm.html",
+    "story": "s263"
+   },
+   {
+    "id": "20261105-5",
+    "title": "OpenAI выкатила модель Images 2.6 с генерацией анимации и быстрым редактированием",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/1026474/openai-chatgpt-animated-gifs-images-2-6",
+    "story": "s264"
+   },
+   {
+    "id": "20261105-6",
+    "title": "Команда Kimi выложила веса модели K3.1 Pro",
+    "section": "model",
+    "source": "hn",
+    "url": "https://huggingface.co/moonshotai/Kimi-K3.1-Pro",
+    "story": "s265"
+   },
+   {
+    "id": "20261105-7",
+    "title": "Взломан ПК-лаунчер игры NIKKE для распространения стиллеров",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/nikke-pc-game-launcher-hacked-to-spread-remote-access-data-stealing-malware/",
+    "story": "s266"
+   },
+   {
+    "id": "20261105-8",
+    "title": "Продакт-лид Claude Code Кат Ву переходит в OpenAI",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.businessinsider.com/cat-wu-joins-openai-from-anthropic-product-lead-coup-2026-11",
+    "story": "s267"
+   },
+   {
+    "id": "20261105-9",
+    "title": "Apple урезала внутренние лимиты на ИИ-расходы инженеров на треть",
+    "section": "business",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/11/04/apple-is-reportedly-cutting-budgets-for-its-internal-ai-usage/",
+    "story": "s268"
+   },
+   {
+    "id": "20261105-10",
+    "title": "Anthropic показала протокол FlashProve для криптопроверки моделей",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/anthropics-new-prototype-proves-which-model-wrote-an-ai-response-without-exposing-its-weights/",
+    "story": "s248"
+   },
+   {
+    "id": "20261105-11",
+    "title": "Портирование Black Ops II на Apple Silicon с помощью Claude Code",
+    "section": "voices",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xnuufk/black_ops_ii_now_runs_natively_on_apple_silicon/",
+    "story": ""
+   }
+  ]
+ },
+ {
   "date": "2026-11-04",
   "slot": "evening",
   "headline": "Критический RCE в Android, гипервизорные дыры Xen и модель Tencent Hy4",
