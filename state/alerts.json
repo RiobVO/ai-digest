@@ -79,14 +79,6 @@
    "strength": 3
   },
   {
-   "at": "2026-11-05T12:18:07.186964+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMiqgFBVV95cUxQVHBHYWpjdWxPUUszcVo2UmdxQ0UzUWpLZlh6TFdlZXhwWDRCWDM1S1V2eW0xODY4bFN4bzNmM3REWTlYTmpZdm1MYWFlZTdkY2pFZXhncGRfR2x5WjlYdVZoRW9YbUJhV1RxODR5NHhGLVYySlRVa0QwZ0pKMU4yUHd2RkQwWm8zV2pDaFU4VzI3NXhYN0tsVHY3ejV4dmE4YTZrUkNZTDlEUQ?oc=5",
-    "title:exclusive crowdstrike to buy two ai security startups for 495 million"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-05T14:18:06.149307+00:00",
    "keys": [
     "blogs.nvidia.com/blog/geforce-now-thursday-hogwarts-legacy-dlss-5",
@@ -158,6 +150,14 @@
     "title:sshole"
    ],
    "strength": 15
+  },
+  {
+   "at": "2026-11-05T19:18:08.984428+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMiqgFBVV95cUxQVHBHYWpjdWxPUUszcVo2UmdxQ0UzUWpLZlh6TFdlZXhwWDRCWDM1S1V2eW0xODY4bFN4bzNmM3REWTlYTmpZdm1MYWFlZTdkY2pFZXhncGRfR2x5WjlYdVZoRW9YbUJhV1RxODR5NHhGLVYySlRVa0QwZ0pKMU4yUHd2RkQwWm8zV2pDaFU4VzI3NXhYN0tsVHY3ejV4dmE4YTZrUkNZTDlEUQ?oc=5",
+    "title:exclusive crowdstrike to buy two ai security startups for 495 million"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
