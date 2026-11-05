@@ -304,3 +304,16 @@ def test_rate_limited_feed_is_retried_once_after_a_pause(monkeypatch):
         items = fetch._fetch_one(client, {"name": "reddit_tips", "type": "rss", "category": "community",
                                           "url": "https://www.reddit.com/r/x/top/.rss"}, datetime.now(timezone.utc))
     assert len(calls) == 2 and pauses == [30] and items[0].title == "My Claude Code setup"
+
+
+def test_feed_entry_with_an_impossible_date_is_skipped_not_fatal():
+    # embracethered.com (05.11.2026) отдавал записи с датой 1 января 0001 года: на Windows fromtimestamp падает на ней
+    # с OSError и ронял весь сбор, на Linux запись проходила и отсекалась по возрасту. Мусорная запись — пропуск
+    rss = (b'<?xml version="1.0"?><rss version="2.0"><channel>'
+           b'<item><title></title><link>https://example.com/ghost</link>'
+           b'<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate></item>'
+           b'<item><title>Real post</title><link>https://example.com/real</link>'
+           b'<pubDate>Thu, 05 Nov 2026 08:00:00 GMT</pubDate></item>'
+           b'</channel></rss>')
+    items = parse_feed(rss, {"name": "blog", "category": "engineer"})
+    assert [i.title for i in items] == ["Real post"]
