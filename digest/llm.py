@@ -17,9 +17,6 @@ API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:gener
 # Очередь бесплатного тарифа к 3.8 Flash 21.10.2026 доходила до 80 с ещё до начала работы, а отбору нужна ещё
 # минута-полторы: при 180 с отбор трижды обрывался по таймауту, и каждый обрыв съедал запрос из 20 дневных
 TIMEOUT = 360
-# 503 «high demand» — сброс нагрузки: 21.10.2026 3.8 отказала отбору за 1,4 с и через 2 минуты ответила разборам.
-# Каждый 503 засчитывается в дневной лимит (сверено по счётчику AI Studio), поэтому повтор один и только у отбора
-OVERLOAD_WAIT = 60
 # Корпоративные финансы в «Ещё за день»: Lite правило промпта держит плохо — 21.10 половина строк была про раунды.
 # Финансовые слова — только в финансовом контексте: «оценка 9.2» у уязвимости, «подняла лимит», «убытки от атаки»
 # и «раунды TLS» остаются
@@ -756,33 +753,26 @@ def generate(prompt: str, schema: dict, model: str, api_key: str) -> dict:
     return raw
 
 
-def generate_first(prompt: str, schema: dict, models: list[str], api_key: str, overload_wait: float = 0,
-                   call: str = "") -> dict:
+def generate_first(prompt: str, schema: dict, models: list[str], api_key: str, call: str = "") -> dict:
     """Ответ первой модели цепочки, которая справилась. Квоты у моделей раздельные: исчерпанный лимит, перегрузка
-    или отключённая модель (404) одной не мешают следующей. overload_wait > 0 — один повтор первой модели после 503.
-    call — имя вызова для панели здоровья (select, extras…)."""
+    или отключённая модель (404) одной не мешают следующей. Повторов на той же модели нет: 503 бесплатного тарифа
+    держится часами (панель здоровья 22.10–05.11: повтор отбора через 60 с спас 2 выпуска из ~15, а стоил минуты
+    и запроса квоты каждый раз). call — имя вызова для панели здоровья (select, extras…)."""
     since = len(health.RUN.calls)
     try:
-        return _first(prompt, schema, models, api_key, overload_wait)
+        return _first(prompt, schema, models, api_key)
     finally:
         health.label_calls(since, call)
 
 
-def _first(prompt: str, schema: dict, models: list[str], api_key: str, overload_wait: float) -> dict:
+def _first(prompt: str, schema: dict, models: list[str], api_key: str) -> dict:
     error = LlmError("цепочка моделей пуста")
     # Одна и та же модель дважды (model = extras_model в настройках) — это повтор, а он съедает запрос квоты
-    for n, model in enumerate(dict.fromkeys(models)):
+    for model in dict.fromkeys(models):
         try:
             return generate(prompt, schema, model, api_key)
         except LlmError as exc:
             error = exc
-        if n == 0 and overload_wait and error.status == 503:
-            log.warning("%s — повтор через %.0f с", error, overload_wait)
-            time.sleep(overload_wait)
-            try:
-                return generate(prompt, schema, model, api_key)
-            except LlmError as exc:
-                error = exc
         log.warning("%s — перехожу к следующей модели", error)
     raise error
 
@@ -790,8 +780,7 @@ def _first(prompt: str, schema: dict, models: list[str], api_key: str, overload_
 def select(items: list[Item], audience: str, models: list[str], api_key: str,
            preferences: str = "", stories: list[dict] | None = None) -> Digest:
     prompt = build_prompt(items, audience, preferences, stories)
-    # Отбор решает качество выпуска: один повтор лучшей модели после перегрузки стоит запроса квоты
-    return parse_selection(generate_first(prompt, SCHEMA, models, api_key, overload_wait=OVERLOAD_WAIT, call="select"), items)
+    return parse_selection(generate_first(prompt, SCHEMA, models, api_key, call="select"), items)
 
 
 def extras(digest: Digest, items: list[Item], audience: str, models: list[str], api_key: str,

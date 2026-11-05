@@ -462,41 +462,17 @@ def _ok():
                                      "usageMetadata": {"totalTokenCount": 9, "thoughtsTokenCount": 4}})
 
 
-def test_selection_waits_once_on_overload_and_asks_the_same_model_again(monkeypatch):
-    # 21.10 3.8 отказала отбору «high demand» за 1,4 с и через 2 минуты ответила разборам. Каждый 503 съедает
-    # запрос квоты, поэтому повтор один и только у отбора
+def test_selection_goes_to_the_next_model_after_503_without_retrying(monkeypatch):
+    # Повтор 3.8 через 60 с после 503 за две недели спас 2 отбора из ~15 (панель здоровья 22.10–05.11): перегрузка
+    # бесплатного тарифа держится часами, а каждый повтор стоил минуты и запроса квоты. Повторов на той же модели нет
     import httpx
     calls, slept = [], []
     answers = iter([httpx.Response(503, text="high demand"), _ok()])
     monkeypatch.setattr(llm.httpx, "post", lambda url, **kw: calls.append(url.split("/models/")[1].split(":")[0])
                         or next(answers))
     monkeypatch.setattr(llm.time, "sleep", slept.append)
-    assert llm.generate_first("p", {}, ["flash", "side"], "k", overload_wait=60) == {"ok": 1}
-    assert calls == ["flash", "flash"] and slept == [60]
-
-
-def test_overload_retry_happens_once_and_never_for_other_errors(monkeypatch):
-    import httpx
-    import pytest
-    calls, slept = [], []
-
-    def post(url, **kw):
-        model = url.split("/models/")[1].split(":")[0]
-        calls.append(model)
-        return httpx.Response(429 if model == "limited" else 503, text="x")
-
-    monkeypatch.setattr(llm.httpx, "post", post)
-    monkeypatch.setattr(llm.time, "sleep", slept.append)
-    with pytest.raises(llm.LlmError):
-        llm.generate_first("p", {}, ["flash", "side"], "k", overload_wait=60)
-    assert calls == ["flash", "flash", "side"] and slept == [60]
-    calls.clear()
-    with pytest.raises(llm.LlmError):
-        llm.generate_first("p", {}, ["limited", "side"], "k", overload_wait=60)
-    # Без overload_wait (второй вызов, разборы) — сразу к следующей модели
-    with pytest.raises(llm.LlmError):
-        llm.generate_first("p", {}, ["flash"], "k")
-    assert calls == ["limited", "side", "flash"] and slept == [60]
+    assert llm.select([], "кто", ["flash", "side"], "k").entries == []
+    assert calls == ["flash", "side"] and slept == []
 
 
 def test_log_shows_latency_and_thinking_tokens(monkeypatch, caplog):

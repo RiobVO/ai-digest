@@ -43,15 +43,20 @@ Local runs read `.env` (`load_env` in `digest/__main__.py`; never overrides real
   `alert` triages on `lite_model` → `extras_model` and re-checks on `model` → `extras_model` only what Lite marked
   urgent (an alert can wake the reader at night — the best model writes it). `build` = 2 calls on 3.8 + 1 on 3.6, `weekly` = 1 → ≈5 calls/day on 3.8.
 - **503 counts against RPD** (verified 2026-10-21: AI Studio counters matched exactly, 3.6 = 6, 3.8 = 17, incl.
-  every 503). Free-tier 3.8/3.6 shed load with an instant 503 «high demand» (1–2 s) that clears within minutes.
+  every 503). Free-tier 3.8/3.6 shed load with a 503 «high demand» (usually within seconds, sometimes after minutes).
 - Logs before 2026-10-21 07:38 UTC show zero 503s: until then the key was by mistake in the billed «Default Gemini
-  Project». On the free key 3.8 fails ≈50% and 3.6 ≈85% of calls (Lite 0%) — that is the free tier, not a code bug.
+  Project». On the free key the 503 share of 3.8 grew from ≈45% (21–25 Oct) to ≈97% (3–5 Nov, 1 success in 33),
+  3.6 ≈70%, Lite ≈10% (`state/health/*.json`). Overload lasts for hours, not minutes: within one build the attempts
+  1–4 min apart all fail, and on bad days every hourly alert attempt fails too. That is the free tier, not a code bug.
+  In practice Lite writes most issues (select on Lite in 12 of 28 builds up to 5 Nov) — prompts must work on Lite.
 - `llm.generate` makes ONE attempt; `llm.generate_first` moves to the next model on any failure (429, 5xx, timeout,
-  404 of a retired model). The only same-model retry: `select` waits `llm.OVERLOAD_WAIT` (60 s) once after a 503.
-  Don't add more retries: every retry, timeout and 503 costs a request. Logs show latency and thinking tokens.
+  404 of a retired model). No same-model retry anywhere: the 60 s retry of `select` after a 503 (removed 2026-11-05)
+  rescued 2 selections out of ≈15 while costing a minute and a request each time. Don't add retries: every retry,
+  timeout and 503 costs a request. Logs show latency and thinking tokens.
   Only `select` failing on every model aborts the build; a failing `extras` or `explain` only logs.
 - Free-tier queue to 3.8 Flash reached 80 s before any work (2026-10-21), select needs another 1–2 min (≈44K tokens):
-  timeout is `llm.TIMEOUT` = 360 s.
+  timeout is `llm.TIMEOUT` = 360 s. A successful 3.8 answer takes a median 150 s (max 354 s); the connection is
+  sometimes dropped at ≈260 s (`RemoteProtocolError`) — those cost 4–6 minutes and a request each.
 - `eval` spends the same daily quota (2 calls on 3.8 + 1 on 3.6 per run): 1–2 runs a day, never right before the 08:07 / 18:07 builds.
 - `antigravity-*` models accept only the Interactions API (no JSON mode) — unusable with `llm.generate`.
 
