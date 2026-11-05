@@ -1,51 +1,6 @@
 {
- "sent": [
-  {
-   "at": "2026-11-02T13:18:06.402879+00:00",
-   "day": "2026-11-02",
-   "title": "Marvell покупает Lumentum за $115 млрд со ставкой на дата-центры для ИИ",
-   "keys": [
-    "news.google.com/rss/articles/CBMimgFBVV95cUxPWXp1eEU3THdoQkhFd01xQXFkM1BYU1hWZVhXZDFOQy1DS2hCNTlnUE9yR2ZWRlpkSzhtbEN4OFUtMURsQzh5czZ4Y1dvUlBzWmtkRDhDOXY5Q2ZyWjFjQmhjZmNVaGhTanNuSEU3SGRsRGh6UHJkMDhLYi1PTFlyTjdVbEpJcW1QV3ZkdDF0MFlhMU12aFdMU0Jn?oc=5",
-    "news.google.com/rss/articles/CBMipgFBVV95cUxNT0xteERmc1hPNzBXUDZEdXNvSDZvOHROVnVMbTJ5bmtUdEZZd1hXTWF2UTduakhfZ2VITXNQUVdkTzdXS0VVRXlBaU5WbVNyUEhfN25OQmNQT0FQNDBHZEk5UEhRSGptY3V1ekNJTlhBeW9OQnpKeTdzT2xQWk40Q3lvaEdiZmhFSVgwaDlNMTRJLWlJWVRzQ2dlMEl0cDFleHBYeURR0gGrAUFVX3lxTFB6dVdOVjRSTGtzTDN4T2R6T0Nral9ZX1JjUEdZalJPeE1TTFUwVm1TQThVQlJvakgyeG5QNW5nMl8ydUR2dnJFZ0wzdlNOdXpwd0FTM0NYaGxXenQtbUdadUJMelF6YUFGSVdpb0xMelZWbV9qVDJLemxKSzVxR05KVFlkMUdaRWNWck5jZlFoZHl6RUJOS1RDbHFEdXJ0R0ljQVdKR3QxZnctWQ?oc=5",
-    "news.google.com/rss/articles/CBMisgFBVV95cUxOelFpUlRuWUdrd3oyYkZTNkxFMW9mQlBTY01YTl9ERVRsYTc1VGNWQjR1VF90aEcwY01sTDNXN3NiWVBZNTY4aGVFSlR3WlBlb0laSkptRS1EMF9fMGlna1BXSVExN2dFVGlTNWMyQzYyM1RsYm5pMGxXOWxhbmp1UGRYVjk3RVA0b25WWVZPcFZMS05IOE1CTUgzY1BsQWY3MW5DbDF1bGs1M185UlM4cjlB?oc=5",
-    "title:marvell to buy lumentum in 115 billion deal in ai data center bet"
-   ]
-  }
- ],
+ "sent": [],
  "rejected": [
-  {
-   "at": "2026-11-04T12:18:12.943694+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMilAFBVV95cUxNdTh0bzJvbmIwendSeGNPQTBmWHQxT3BMMXE4ck9hU3JmUWlLdklEdFdycEdGb1lHRjg3cG91VER5TnpWRTJhVmtqOEYwRmEzTFNOcGlUY2tIc3o5NHdIR2h2U2UtbHpmb2xuZnBkZ1FEaENTR1RfUHI5eGpHbTh0emprSEJJS1NjdUdqUm04OUNaY2tx?oc=5",
-    "news.google.com/rss/articles/CBMivgFBVV95cUxNU3hqV1RYeFNyQ2Q0dDZBRWZVT3BlbEtjWUgxVTlmOXAwbG4td2xNR3B2MFdhYVRzWngtcFFQdWVPSmJiVmhLWEhscUFOTUs1Y3BGRzVKN1U5aklOa3JFcGk1QlI0dTU1ZGlOQzFEaFRPNkVzb3dVRExNd3plVEM1QTZxZkFmcjdHdFExdnFQZ2FPSjYtZERQM0p5cUxpZzhibTM4S2pmUVM1OE05TkJ6YXF6QlBaOWhxTlN0X2VB?oc=5",
-    "title:jim cramer praises new ai kill switch says you should just go buy crowdstrike"
-   ],
-   "strength": 2
-  },
-  {
-   "at": "2026-11-04T12:18:12.943694+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMizAFBVV95cUxQcDN1U09KS1BBSHFRRG01QnlCT0RMdnlQQnNCX3hZVF9VdG43VE1ZM0NFX0JJZ3dNb2Izd1NTSWcxTWxUaGRtYXZfZGtUVTZ5bzFMaEVSTFZLS2tNaGhGakowYVZKSmNNdWgwbmtVSGhCY1k5N3dYWE9RRnBNM2M2dTVjSThpLWFaa3oxM25fVFMxeV9nMkxsRXg5c1BqRVZnMjBSSDJXS1VDNjNmLVlpZXUxQnU5LXEyVFZqamlyUGFQdjRPc0Z1X21Sa2o?oc=5",
-    "title:crowdstrike to acquire fiddler dreadnode to extend ai security across agent lifecycle"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-04T12:18:12.943694+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMirAFBVV95cUxQQ2xUeGRGMUhiOTlvaVBybzl5dnBGUm5VOTR5eG95V3llYWtJX3pwbmdtdDhZd0l0cm4xQW1YbGVPQ2x1LThkVWxkektDd0Q2b1BCaFdFRElscF9uZEt4LXB4anhrX2tzSm9UeG1ydUx4QnB6a2VxbDRTWXhYWGxzUFE4YUJMdFF3M0xjZXdja3ZxcG9yaE5iZ0ZiOWFUTkFQTEcxSHRaSEg4X2Zu?oc=5",
-    "title:crowdstrike launches ai kill switch to shut down rogue agents"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-04T13:18:05.563062+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMitgFBVV95cUxPb2pxd3VpbEh2a1dwQkZmNGRlQTUwdWRkbEFwVzVVNEdTRkI5MGtsVEloQ3NFVllLVC1va0JxdU1MSzN1eVA2aURUMjhsbjVoV2JYejlQbWMzTm14bXhWRU5zVnNJYy00U1MtQ0ZNbkNHU2UtU2lDUGdRRXlqSlUzQTBnUENuRzhubmhMWVhWelBZbV9hVFo0NnNORnZyMzVydy1XNmtWZWZTRURGLXlrTmR5MVNCQQ?oc=5",
-    "title:crowdstrike launches kill switch for ai agents and makes acquisitions"
-   ],
-   "strength": 1
-  },
   {
    "at": "2026-11-04T15:18:10.367295+00:00",
    "keys": [
