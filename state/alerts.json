@@ -14,14 +14,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-04T09:18:07.198257+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMiuwFBVV95cUxOOVI1dkk3aDJ3LUlqZjRIYkdaZGZpa2ZEcC03c1V2OV9wcElYODJFUzNPZEQwREdFSV9PNGgza0tMbnhmdFlGOERXeW5DUHVEdDFxUTJuTFRXZFdqMy1wZGRsSUpwdF9VSlgyMFZ3eVFCZkYzYUJwbTRPYTl0eENodXNiUk1Qa2ZXUlBTRjFFOUxLbUlRNE5uVWU0dmpBbktFckxIdWsxLVZOOE5kUGVmYUkxNGJCVFducHpR?oc=5",
-    "title:crowdstrike s ai soc vision evolves as agentic uncertainty adds new twist"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-04T12:18:12.943694+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMilAFBVV95cUxNdTh0bzJvbmIwendSeGNPQTBmWHQxT3BMMXE4ck9hU3JmUWlLdklEdFdycEdGb1lHRjg3cG91VER5TnpWRTJhVmtqOEYwRmEzTFNOcGlUY2tIc3o5NHdIR2h2U2UtbHpmb2xuZnBkZ1FEaENTR1RfUHI5eGpHbTh0emprSEJJS1NjdUdqUm04OUNaY2tx?oc=5",
@@ -160,6 +152,16 @@
     "title:asian shares are mixed after us midterm elections as ai related stocks sink in japan and south korea"
    ],
    "strength": 4
+  },
+  {
+   "at": "2026-11-05T09:18:07.826837+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMijgJBVV95cUxQajZQRzRDb3d5Z2pXYmlJU2RQTnJHRjl2V1RWaU1JY3A3Yk9aamF5S0pxNE5YekRLNFJuSkF1NU1EVFVEeWRjZFp4V2VlcnBpNG5TdW1Zc3JTdnpOWlZWa1lkMnVxTGhqZE44cTZ2NHQwd19MN0ItWmRzTHhZR0NUUVRGbnpMeWkzaU53ZTNtMW9UZlYyWW9VdUZJczZRY09HZUhha1gzRGRPbTIxS3Y5Y21naDN3VFVqYWtzYWRMUGxuVkk1Ukd6aXA3RnpBVGJZejVJLUhQNk1IcmlPYUJvcUxhRTkxaS1lZDJ4S3hpZmtMMWQ1cFBqR3NsRlB4Zk5Ec1NhSVJSd2VBb3FydVE?oc=5",
+    "news.google.com/rss/articles/CBMipgJBVV95cUxNSEVVbm1Vcm1GbktyRzVyeFVYbXZEV0FzbzNoTjRJekQ4ZDdMTzh3ZEtaNmlmdnIxd0dPMS16clFZQm9IWmlJZm11WTBjMWJjNjhLNlF5M25uSzFXR0hDQ0pmZnp0SjZIUnpka2ZPZVE4Sm5KVzBSMmowN2l5R3gzWnNpeTdJTmlZYXpsN1Zvd0hzOGlONWEzNExxLUR4Tm5saFlLOUdHNXBWQmIwYVJYSmEtRnhhaDZCMGJua0paM3RtZzZadE1EQTJ1ZWQ4Z082MEVyM21jY1hJWXY2VURUTmExRFZ5RWF5WUpDbURLZW1vVjU0eUEtQ2dzcFJZa0lXYWMzQ1NsSjk0TmtDYnJPMUZ0ODdTZEVnZzg5WTh6LUc4RmRNd1E?oc=5",
+    "news.google.com/rss/articles/CBMizgFBVV95cUxOTjJRdzJwUmRPWWRRcXNZYnl6SVpIdGhtTXJHV19XX1RacklpZGQtdDJoaUZQRVo4SnhqTTVBaURRSVd0NWFtZ2NDalY0NlZQZ0t1aVVNdjFuZ0U2T0lHOGotNGE4OURtUnBoMmh0a3pnbEpFUGpQazlnWGJOOU1MRlp5d2sxUVhQZHdBN0hjTDMwNjlNSTU1LVBXVHdWUklkYzM5eEl5WFNFTXpXaTlodkVsNlVoT05kVlhnbTFYRzNSQ09fcWk3QnBldEk0QQ?oc=5",
+    "title:community colleges rush to expand semiconductor training as labor shortage looms us chip industry"
+   ],
+   "strength": 3
   }
  ],
  "undated": {
