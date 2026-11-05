@@ -14,22 +14,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-04T01:18:05.250172+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMiqAFBVV95cUxOZE01eXZOV284R3lJS21zckJQM3RuVFowa2hJcjluNUgyY2lFcExGSmtXRU5iVGwtczBPTHR0XzJoQkgtOW5wSWJ3TDlHcTY5V3ZCMzhhZ194YTMxSUFZVGs3TEZwYWhMSnNsa0d4NmxLemhVcTB5Z2Z1amtreVg4cndPWFo4NHR3b2oyNkNWd0xtWWdTUE9XYmw2SHh0WVZiN1N2NlhXMHM?oc=5",
-    "title:crowdstrike to acquire 2 firms to secure enterprise ai agents"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-04T01:18:05.250172+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMinAFBVV95cUxONmpwSE1vVVNZVDdxa25sYUItb19KX1JjS1JOT0oyWEFPazMyZGpOU3RoNjZkQndzclJIWGRzZzZRTnR0bmFuNE9HOVBzOHJXbmxNcnFvWkNSclVSellUd2JDVTE2RUtCXzJNbkg0RE9YbVc5MWFDaGw5dklvc0hMVDZrdWo5Q2duSm5BOXVyOWo0SXp2VlUxS2ZMNTc?oc=5",
-    "title:crowdstrike ceo george kurtz talks new ai kill switch"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-04T06:18:07.773877+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMi-wFBVV95cUxNX2pVVXFzelRtVGNtWmlNMXZxNjZ5Z3dXLU9DZjN5ckRmYUh1dThuTU45NF9mV1p0d2FON2pNQ3hPeGp0aTd4MmVCRjM3UXl4M01GZ3hITVNROEpGU3ktSUh6X3Rfa0paOFpLYktfMUdnTGNzeVYtbGRaWnotYng2NHdlb1daZi00aldaWmt0SFhKV0lxaE9hakpQN25NUnNuZmVJQlZ5YmJPZ1pYNlBvRThBZ2VmWDBDbFpDQmY2ajZqY1plQ01iVGVINm9jTUVuQVlEVjZ0WUpqR2JBWEZBTlVHNjhRZmJoejNZOHRMM2ZCZkkxWDFfejAtd9IBggJBVV95cUxNR0Q2Nmt5bXY1Y0ZOT0QyU3NKRmRGdUpCLTVNblVWTFdpVXV0R0lVcjBnLWVqbkpfS195WDJ0a0I2clVjMTlTNTNTWkJSUDNqUGtEeThXT3N3UUdLRHFlc0ViVWhYWXo2SkxydDk1UGpZbkIyLW9icXFwY0dhTmFHNXFRdjczcHZYbHlNaW5GWjViZHM1T29iU3lJTlBoekZleVhmZTdYR19RODNKWUU1RHpjTjdiM0hucXBPbFBVNWJfSy1hNTVuM1BudEZJanVPdTFYa01kUmVLaEtsbDFiYnRrLWpJVmlmWURSb0M2ekVlUTd3LVNDb1N0SE9uMDJ3UWc?oc=5",
@@ -129,14 +113,6 @@
   {
    "at": "2026-11-04T23:18:07.203446+00:00",
    "keys": [
-    "layer3intel.com/blog/residential-proxies-white-house-network",
-    "title:residential proxies detected on white house network"
-   ],
-   "strength": 4
-  },
-  {
-   "at": "2026-11-04T23:18:07.203446+00:00",
-   "keys": [
     "news.google.com/rss/articles/CBMimwFBVV95cUxNdFFLaFhSLXJWMVZ6cUlVdmlnY0dVTzJvNFB6dVkzZjQ3R3hMcU1KZXJjUmdHX2RTcnFDTjJzSjZfb2VySVFZbllhMXJISEVKRGRINkhWNVZiNC12RFFmdlRQb3ZxUVJ3VnRNVjF4VlVQa3pEbWhTNEszNC1VOFIzYVBIVk9rZGVUS2VIRDBGVFhtUUFyYVc5MDMwRQ?oc=5",
     "title:crowdstrike lets security teams kill rogue ai agents"
    ],
@@ -151,6 +127,14 @@
     "title:meta acquires ai coding startup conductor"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-11-05T01:18:05.651388+00:00",
+   "keys": [
+    "layer3intel.com/blog/residential-proxies-white-house-network",
+    "title:residential proxies detected on white house network"
+   ],
+   "strength": 6
   }
  ],
  "undated": {
