@@ -671,6 +671,24 @@ def test_security_events_beyond_the_cap_move_to_also_today():
     assert [m.title for m in digest.more] == ["Событие 4", "Событие 5", "Строка"]
 
 
+def test_importance_eight_and_up_stays_only_with_the_top_three_cards():
+    # Lite шкалу промпта не держит: в выпусках с отбором на Lite ≥8 получали 59% карточек против 24% у 3.8 Flash
+    # (28 выпусков до 05.11), и метка «горячо» теряла смысл. Порядок карточек модель уже задала — лишним снижаем оценку
+    def ev(n, section, importance):
+        return Entry(Item(source="x", title=f"t{n}", url=f"https://x.io/{n}", category="news"), section, importance,
+                     f"Событие {n}", "s", "")
+    entries = [ev(0, "security", 9.8), ev(1, "model", 9.5), ev(2, "business", 9.2), ev(3, "model", 8.8),
+               ev(4, "product", 8.6), ev(5, "dev", 7.5), ev(6, "tips", 8.4)]
+    digest = Digest("h", "l", entries)
+    llm.cap_hot(digest, 3)
+    assert [e.importance for e in digest.entries] == [9.8, 9.5, 9.2, 7.9, 7.9, 7.5, 7.9]
+    assert [e.title for e in digest.entries] == [f"Событие {n}" for n in range(7)]
+    # В обычный выпуск Flash лимит не вмешивается
+    calm = Digest("h", "l", [ev(0, "model", 8.5), ev(1, "dev", 7.2)])
+    llm.cap_hot(calm, 3)
+    assert [e.importance for e in calm.entries] == [8.5, 7.2]
+
+
 def test_selection_prompt_caps_security_and_puts_the_new_fact_first_in_a_continuing_story():
     assert "не больше 3" in llm.PROMPT
     assert "начинай title с нового" in llm.PROMPT

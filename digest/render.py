@@ -9,7 +9,7 @@ from urllib.parse import urlsplit
 
 from digest import health
 from digest.dedup import ARXIV_ID, coverage
-from digest.llm import EXTRA_SECTIONS, Digest, Entry, Mention
+from digest.llm import EXTRA_SECTIONS, HOT_IMPORTANCE, Digest, Entry, Mention
 from digest.models import Item
 from digest.mood import MOODS, mood
 
@@ -388,7 +388,7 @@ def _hero(entry: Entry, votes: bool, chip: str, day_mood: str = "calm") -> str:
 
 
 def _item(n: int, entry: Entry, votes: bool) -> str:
-    hot = " hot" if entry.importance >= 8 else ""
+    hot = " hot" if entry.importance >= HOT_IMPORTANCE else ""
     also = f'<span class="also">{_also(entry)}</span>' if entry.item.also else ""
     # Оценка важности нужна только отбору: читателю «8.6» ничего не говорит, главное видно по месту в выпуске
     copy = (_term([entry.copy], UNTRUSTED_LABEL if entry.copy_untrusted else "Команда или промпт", wrap=True)

@@ -509,6 +509,23 @@ def cap_section(digest: Digest, section: str, limit: int) -> None:
     digest.more[:0] = [Mention(e.item, e.title) for e in moved]
 
 
+# «Главное за день» по шкале промпта — важность от 8, у одного-трёх событий в обычный день. Lite шкалу не держит:
+# в выпусках с отбором на Lite ≥8 получали 59% карточек против 24% у 3.8 Flash (28 выпусков до 05.11.2026), и метка
+# «горячо» на странице теряла смысл. Порядок карточек модель уже задала, поэтому лишним только снижаем оценку
+HOT_IMPORTANCE = 8
+
+
+def cap_hot(digest: Digest, limit: int) -> None:
+    """Важность ≥HOT_IMPORTANCE остаётся не больше чем у limit первых карточек; у остальных она опускается под порог."""
+    hot = 0
+    for entry in digest.entries:
+        if entry.importance < HOT_IMPORTANCE:
+            continue
+        hot += 1
+        if hot > limit:
+            entry.importance = HOT_IMPORTANCE - 0.1
+
+
 def entry_rank(entry: Entry) -> tuple[bool, float]:
     """Порядок записей выпуска: авторский пост и лайфхак — не новость дня и идут после событий,
     иначе мнение или приём стали бы «Главным»."""
