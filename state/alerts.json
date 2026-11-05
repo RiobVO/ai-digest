@@ -2,22 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-04T15:18:10.367295+00:00",
-   "keys": [
-    "news.ycombinator.com/item?id=50363461",
-    "title:tell hn gemini trains on chat history even for subscribers personal accounts"
-   ],
-   "strength": 3
-  },
-  {
-   "at": "2026-11-04T15:18:10.367295+00:00",
-   "keys": [
-    "openai.com/index/openai-to-acquire-pierre",
-    "title:openai to acquire pierre computer company inc"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-04T16:18:07.853702+00:00",
    "keys": [
     "spectrum.ieee.org/ai-in-cybersecurity-php2shell-vulnerability",
@@ -127,12 +111,44 @@
    "strength": 1
   },
   {
-   "at": "2026-11-05T15:18:09.709968+00:00",
+   "at": "2026-11-05T16:18:07.702392+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMikgFBVV95cUxPYkRESG9DbWpRTjEyUTd4ZjBFTzBHakR6UjAtaUxrQld5ZG55cUdKcjh4TVJBVUNUczhyeS1DWGFZalVmbFJFYzNoV3FIdTlaTURCMGRhVktOM0p0ZDE3RmdxUlJBM3BBWGpHVXR3bWd3SklFN2VVUnNQaE1ITVZiM1BZMXhiYUswbGZnZGlhSkw0QQ?oc=5",
+    "title:crowdstrike tackles rogue ai with kill switch and fiddler"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-05T16:18:07.702392+00:00",
    "keys": [
     "sshhole.com",
     "title:sshole"
    ],
-   "strength": 8
+   "strength": 10
+  },
+  {
+   "at": "2026-11-05T16:18:07.702392+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/nvidia-life-chris-alexiuk",
+    "title:the wizard of open weights chris alexiuk makes ai easy with open models"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-05T16:18:07.702392+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/memory-full-stack-codesign",
+    "title:more performance from every byte how full stack codesign solves ai s memory challenge"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-05T16:18:07.702392+00:00",
+   "keys": [
+    "mistral.ai/news/build-with-studio",
+    "title:le chonk brings the brains studio puts it to work"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
