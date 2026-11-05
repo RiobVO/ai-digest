@@ -338,6 +338,8 @@ def test_alert_sends_what_flash_confirmed(env, monkeypatch):
 
 
 def test_eval_runs_see_the_same_input_and_never_rewrite_the_snapshot(tmp_path, monkeypatch):
+    # Пауза между прогонами нужна живому Lite (лимит токенов в минуту), тесту — нет
+    monkeypatch.setattr(main.time, "sleep", lambda seconds: None)
     # Отбор склеивает дубли прямо в объектах записей; без копии второй прогон видел уже склеенное,
     # а сохранение текстов записывало склейку в замороженный срез
     from digest import evaluate

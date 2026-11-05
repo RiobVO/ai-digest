@@ -3,6 +3,7 @@ import copy
 import json
 import logging
 import os
+import time
 import tomllib
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -251,6 +252,8 @@ def tip(args: argparse.Namespace) -> None:
 
 
 SNAPSHOTS = Path("eval/snapshots")
+# Прогон eval — три вызова по ≈40K токенов; два прогона подряд упираются в 250K токенов в минуту у Lite (429, 05.11)
+EVAL_RUN_PAUSE = 60
 
 
 def snapshot(args: argparse.Namespace) -> None:
@@ -275,6 +278,8 @@ def run_eval(args: argparse.Namespace) -> None:
     for path in paths:
         items, taken, texts = evaluate.load_snapshot(path)
         for run in range(1, args.runs + 1):
+            if run > 1:
+                time.sleep(EVAL_RUN_PAUSE)
             # Отбор склеивает дубли прямо в объектах записей: каждому прогону — своя копия, иначе следующий
             # прогон и сохранённый срез видели бы уже склеенные записи
             pool = copy.deepcopy(items)
