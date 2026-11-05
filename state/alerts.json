@@ -129,14 +129,6 @@
   {
    "at": "2026-11-05T17:18:06.860424+00:00",
    "keys": [
-    "sshhole.com",
-    "title:sshole"
-   ],
-   "strength": 13
-  },
-  {
-   "at": "2026-11-05T17:18:06.860424+00:00",
-   "keys": [
     "blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-omni-1-2-flash",
     "deepmind.google/blog/gemini-omni-12-flash-fast-and-cost-effective-with-longer-clips",
     "title:gemini omni 1 2 flash fast and cost effective with longer clips"
@@ -150,6 +142,22 @@
     "title:into the omniverse how developers turn ideas into simulations with frontier ai agents"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-11-05T18:18:06.701132+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMiyAFBVV95cUxPbXVTUDhnTlRWQ080Y0JTNVpocjdnXzlLVTlmQUtHTmhfaVFHdUlxakJfZDR5d01FWUlTaFpHdzkzSmgzbFF4NGZKRHFFd0prV2NSMzNkb29aSktqMm50UlpVOFRtVWhMMEZaZGxKYnNHOFJjUGNCZkJUaWJ3UkhqY0ZQclM3OWtOREFzY0dySFNHa0YyR3hYQ1RMcjg1NG1ZSmN2eGZJRFR2VXYyZkdmMFliWFpOUDBhajkyTXl3Z0QzZ2N0MXd1NQ?oc=5",
+    "title:palantir and crowdstrike stocks tumble as wall street dumps software s ai winners"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-05T18:18:06.701132+00:00",
+   "keys": [
+    "sshhole.com",
+    "title:sshole"
+   ],
+   "strength": 15
   }
  ],
  "undated": {
