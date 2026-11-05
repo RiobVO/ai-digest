@@ -67,14 +67,15 @@ def parse_feed(body: bytes, src: dict) -> list[Item]:
         full = _text(content[0].get("value", ""))[:ARTICLE_LIMIT] if src.get("body_from_feed") else ""
         if src.get("original_link"):
             url = _original_link(url, entry.get("summary", ""))
-        try:
-            published = datetime.fromtimestamp(timegm(stamp), timezone.utc) if stamp else None
-        except (OSError, OverflowError, ValueError):
-            # embracethered.com (05.11.2026) отдаёт записи с датой 1 января 0001 года: на Windows fromtimestamp
-            # падает на ней с OSError и ронял весь сбор. Такая запись — мусор, а не «без даты»: запись без даты
-            # у знакомого источника сошла бы за свежую
+        seconds = timegm(stamp) if stamp else None
+        if seconds is not None and seconds < 0:
+            # embracethered.com (05.11.2026) отдаёт записи с датой 1 января 0001 года. Время до 1970-го в ленте —
+            # мусор, а не «без даты»: запись без даты у знакомого источника сошла бы за свежую. Проверка явная,
+            # потому что платформы расходятся: на Windows fromtimestamp падал на ней с OSError и ронял весь сбор,
+            # на Linux запись проходила и отсеивалась позже по возрасту
             log.warning("%s: запись с невозможной датой пропущена: %r", src["name"], entry.get("published"))
             continue
+        published = datetime.fromtimestamp(seconds, timezone.utc) if seconds is not None else None
         items.append(Item(
             source=source,
             title=f"{prefix} {title}" if prefix else title,
