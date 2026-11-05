@@ -1,0 +1,38 @@
+name: ci
+
+# Проверка каждого коммита человека: сломанный push виден через минуты, а не через часы на ближайшей сборке
+# выпуска ценой самого выпуска. Коммиты бота (state/, site/) сюда не попадают дважды: push с GITHUB_TOKEN
+# не запускает workflow по push, а paths-ignore отсекает и ручные коммиты одних только состояния и срезов.
+# Без concurrency: отмена проверки при следующем push оставила бы сломанный коммит без красного чека
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["state/**", "site/**", "eval/snapshots/**"]
+  pull_request:
+    paths-ignore: ["state/**", "site/**", "eval/snapshots/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: pip install ".[dev]"
+
+      - name: Lint
+        run: ruff check digest tests && mypy
+
+      - name: Test
+        run: pytest -q
+
+      - name: Test feedback worker
+        run: node --test "worker/test/*.test.js"
