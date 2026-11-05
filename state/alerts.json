@@ -14,30 +14,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-04T00:18:07.724658+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMitgFBVV95cUxPTGk5Z3RYZDNLZmJIN2FraWVkTm9paXBOd0w0c0lTQ2p1Z2lXZjhzR0VnTjJCVk5UU1pGRG5sTElvY3hhYW5Ta19pN1dHNzcwZW9PSDFoLXlBcTBQVFlSbFZYQWxPaXE1WHFVOFZUTHZ0ZTlWLTBpNjE3cnRPWllZYlVDUjRmaVY0QXgzODRxLW1nSmw3VXBLV0EyZENMeDVkU24tR2VwTmZoYmJnOFI3QVp6am9md9IBuwFBVV95cUxNTmsxR1FYWlNubkpfbXhSNmZDcmlhWjBWb3ZETDRnOVd2VWp4bU11Rmg0Rnc4b2hnLUF5WEJtWE0tT0EwdGswZE54ODhRWl9EYWYzLW93S2ZhVDFOTWRXSFg5WWN4TS1IdGJ3YnNMb2JEdDU2cnlkb2JPVl9HcnNJdUNkLU9BaXdFWkxDMkRYNXBqSnBQNGlDd1gwQW5uZzhvLWJsTnZaR3otbEZSVUxjamNUdlhKN0poblR3?oc=5",
-    "title:crowdstrike s new kill switch can stop rogue ai agents in their tracks ceo says"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-04T00:18:07.724658+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMi7AFBVV95cUxPUTdqbkFGU1h0REtEWFNfdEpGcFBRd1BhNUYya2FNb1M4VTN0V1piYjlldnBPUTgxZG85SWlwYnFMc3lLUHNBNmk2YXpDXzM5UlJ0SGtIMTQ3T1VpYWw0M0xtWmtBVjRXUUs3V1BqNkRQUEwtYnE0NG5MYy1SYi1BWDJldmZhLS1qaG5YZjFqWjN6UTZ3U2s5YWJwZE5GdEU1VlNOckFEUENHN2o1d3FlOFplbVdVeTZ1UnhzOGVBcDNwSG1LOVVSYWZCZmRaOHlmT25NRVlSZ2U1UVRRbnl2MEZ6VmR3T2pfVktQbA?oc=5",
-    "title:crowdstrike announces kill switch for ai agents that go rogue"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-04T00:18:07.724658+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMivgFBVV95cUxPSFFyR1hhNU5PZVpFeXBPdW4yQ2o0cFlUWEdvUmlLbGFmNUREQVlKelJQajBUVDBUOUVTQTJnWmM0UzdoaF9uR0kwUk51ODJqSjR6andPdGUtQ1pWVnh2dzQ0LU44R3JTSG52NkpvM2ZBX1FWdWpMZWZ0QzNRZ0tWYTdkRHNkU1I5SlB6My1MVTZhX3BOUFE0Y1NhdHNkM2ZTbHM5S0ZERWhqQm9SZVhqT1J5UHJSZmtXUWhORU9R?oc=5",
-    "title:crowdstrike to acquire cybersecurity startups fiddler ai dreadnode for reported 495m"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-04T01:18:05.250172+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMiqAFBVV95cUxOZE01eXZOV284R3lJS21zckJQM3RuVFowa2hJcjluNUgyY2lFcExGSmtXRU5iVGwtczBPTHR0XzJoQkgtOW5wSWJ3TDlHcTY5V3ZCMzhhZ194YTMxSUFZVGs3TEZwYWhMSnNsa0d4NmxLemhVcTB5Z2Z1amtreVg4cndPWFo4NHR3b2oyNkNWd0xtWWdTUE9XYmw2SHh0WVZiN1N2NlhXMHM?oc=5",
@@ -165,6 +141,16 @@
     "title:crowdstrike lets security teams kill rogue ai agents"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-11-05T00:18:08.290025+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMiggFBVV95cUxNN19TcVZuaV9yaGFQME5CT1ZVWnlsa3VYY2xTOGRyNXMtcnUtU1o1ckdaTEI3MHlxemp3YTdMYmxHWTE5Wko0MEpNSThPVnBFWWZRZks0N3E3RzRXYnlIakJTR3BUbG9QT1kyMm9aUUMza19TSC1SU0o4N2RzY1lJdmFn?oc=5",
+    "news.google.com/rss/articles/CBMioAFBVV95cUxNWWlGMi1naFJoUFpMejc2M0g3ZGhBSmc1WWhkNnFzQ2Nsc2ZQWkVoZUxZOFdybXo1Nk5HeVloaHBSajdDZk1DaDdzazBxNDRIWUEyYUZxWWEwVlp2cTkyTWdfa1dtVGl6blFPMURFLU5wZkNkQTZxQms0NTdIREJaU296bDNzOUNKZVY3bHc1MXhzbVJLbUwxUjJvaS1OczM5?oc=5",
+    "techcrunch.com/2026/11/04/meta-acquires-ai-coding-startup-conductor",
+    "title:meta acquires ai coding startup conductor"
+   ],
+   "strength": 3
   }
  ],
  "undated": {
