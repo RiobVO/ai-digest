@@ -1,5 +1,154 @@
 [
  {
+  "date": "2026-11-06",
+  "slot": "morning",
+  "headline": "Обвал техсектора в США, уязвимость OpenSSH и релиз GPT-6 Cyber",
+  "page": "2026-11-06.html",
+  "entries": [
+   {
+    "id": "20261106-0",
+    "title": "После победы демократов Nasdaq потерял $2,3 трлн на страхах замедления ИИ",
+    "section": "business",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/business/2026/nov/05/nasdaq-heading-for-worst-day-in-18-months-as-wall-street-sustains-widespread-losses",
+    "story": "s260"
+   },
+   {
+    "id": "20261106-1",
+    "title": "OpenAI показала модель GPT-6 Cyber для автопоиска уязвимостей и эксплойтов",
+    "section": "security",
+    "source": "openai",
+    "url": "https://openai.com/index/introducing-gpt-6-cyber",
+    "story": "s261"
+   },
+   {
+    "id": "20261106-2",
+    "title": "Баг *sshole в OpenSSH дает обойти аутентификацию длинным паролем на Alpine",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/openssh-issues-emergency-fix-for-flaw.html",
+    "story": "s269"
+   },
+   {
+    "id": "20261106-3",
+    "title": "Китай заблокировал покупку подразделения робототехники ABB за $5,4 млрд",
+    "section": "business",
+    "source": "scmp_tech",
+    "url": "https://www.scmp.com/business/china-business/article/3373415/china-blocks-softbanks-us54-billion-takeover-abbs-robotics-division",
+    "story": "s270"
+   },
+   {
+    "id": "20261106-4",
+    "title": "Anthropic научила Claude подключаться напрямую к банковским счетам через Plaid",
+    "section": "product",
+    "source": "verge",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/1027652/anthropic-claude-plaid-personal-finance",
+    "story": "s271"
+   },
+   {
+    "id": "20261106-5",
+    "title": "Хакеры применили ИИ-фреймворк ARTEX для кражи секретов OAuth на GitHub",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/backdoored-docker-image-for-artex-ai.html",
+    "story": "s193"
+   },
+   {
+    "id": "20261106-6",
+    "title": "Meta покупает Conductor вслед за сделками OpenAI и Anthropic в сфере кодинга",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/meta-buys-ai-coding-startup-conductor-as-big-tech-races-to-lock-in-developers/",
+    "story": "s272"
+   },
+   {
+    "id": "20261106-7",
+    "title": "В Cursor появилась функция Build Live Apps для деплоя приложений из редактора",
+    "section": "dev",
+    "source": "cursor",
+    "url": "https://cursor.com/changelog/build-live-apps",
+    "story": "s273"
+   },
+   {
+    "id": "20261106-8",
+    "title": "Google выпустила Gemini Omni 1.2 Flash с роликами по 15 секунд и скидкой 30%",
+    "section": "product",
+    "source": "deepmind",
+    "url": "https://deepmind.google/blog/gemini-omni-12-flash-fast-and-cost-effective-with-longer-clips/",
+    "story": "s274"
+   },
+   {
+    "id": "20261106-9",
+    "title": "OpenAI отменила соглашения о неразглашении с властями при постройке ЦОД",
+    "section": "business",
+    "source": "verge",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/1028454/openai-data-center-nda",
+    "story": "s275"
+   },
+   {
+    "id": "20261106-10",
+    "title": "Meta бессрочно отложила сбор данных с сайтов бизнес-аккаунтов из-за исков",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.niemanlab.org/2026/11/meta-pulls-down-controversial-terms-of-service/",
+    "story": "s276"
+   },
+   {
+    "id": "20261106-11",
+    "title": "В Codex CLI 0.167.0 добавили центр управления агентами и переключение бэкендов",
+    "section": "dev",
+    "source": "gh_codex",
+    "url": "https://github.com/openai/codex/releases/tag/rust-v0.167.0",
+    "story": "s277"
+   },
+   {
+    "id": "20261106-12",
+    "title": "Baidu выложила 280B MoE-модель ERNIE 5.5 Flash Base без файнтюнинга",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/baidu-releases-ernie-5-5-flash-base-with-280-billion-parameters-as-an-open-source-foundation-model/",
+    "story": "s278"
+   },
+   {
+    "id": "20261106-13",
+    "title": "Переключи субагента Explore в Claude Code на Haiku для экономии лимитов",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xobgp2/claude_code_runs_its_builtin_explore_subagent_on/",
+    "story": "",
+    "summary": "Создай кастомный файл агента `.claude/agents/Explore` в проекте и переопредели модель на Haiku, чтобы изолированный поиск не наследовал старшую модель сессии.",
+    "why": "Позволит не жечь дорогую квоту Opus или Sonnet на простые файловые операции поиска по проекту вроде Glob и Grep.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Создай файл агента `.claude/agents/Explore.md` для конкретного репозитория или `~/.claude/agents/Explore.md` глобально для всех проектов.",
+     "Добавь в frontmatter файла метаданные с полем `model: haiku`.",
+     "Альтернативно можно переопределить модель для всех субагентов сразу через запуск CLI с переменной окружения."
+    ]
+   },
+   {
+    "id": "20261106-14",
+    "title": "Собери генератор черновиков Gmail в n8n без риска случайной отправки и зацикливания",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/n8n/comments/1xoj4s4/i_built_an_n8n_ai_agent_that_drafts_gmail_replies/",
+    "story": "",
+    "summary": "В Gmail-триггере n8n для непрочитанных писем добавь в поисковый фильтр строку `-from:me`, а также выключи тумблер Simplify, иначе ИИ получит лишь короткий сниппет вместо тела сообщения.",
+    "why": "Пригодится для безопасной автоматизации ответов клиентам: агент готовит текст только в черновики и не зацикливается на собственных письмах.",
+    "copy": "-from:me",
+    "copy_untrusted": true,
+    "topic": "automation",
+    "steps": [
+     "В ноде Gmail Trigger фильтр `-from:me` защищает от бесконечного цикла генерации на собственных черновиках.",
+     "Отключение тумблера Simplify в триггере передает агенту полное тело письма, а не его превью-сниппет.",
+     "В ноде Gmail tool (Create Draft) обязательно нужно переключить Thread ID из режима Fixed в Expression, иначе выражение с ID не сработает.",
+     "В системном промпте ИИ-агента задаются правила: отвечать на языке входящего письма и не придумывать факты."
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-11-05",
   "slot": "morning",
   "headline": "Итоги выборов в США ударили по ЦОД, OpenAI купила разработчика Git-инфраструктуры",
