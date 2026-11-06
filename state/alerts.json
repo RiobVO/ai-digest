@@ -2,32 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-05T20:18:07.819465+00:00",
-   "keys": [
-    "alpinelinux.org/posts/2026-11-05-openssh-password-authentication-bypass",
-    "title:alpine linux security advisory openssh server password authentication bypass"
-   ],
-   "strength": 4
-  },
-  {
-   "at": "2026-11-05T20:18:07.819465+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMiggFBVV95cUxQZUFHT3EtVVFzOWU4dl85MXVMVFJzdmEyNXl6cUxGUEMxZ1NLU2Zob0xfU0JjWXpVTEY1ZUNBREtFQU16ckM2Q2JsLXh5NlFzc0VFWVVqd20wRjBXTUFGczU1NjNDTlFVN2ZWT1A2NEF1b05VTXMyWklRdXFtWi1ZY053?oc=5",
-    "news.google.com/rss/articles/CBMingFBVV95cUxQeU5MeHUxWDhnY0d4UE9OUFVjSWpLVnd1UEw4a1ZiY2EzaU85b2Q0NHFlRkFGMk9OakM1VjVVTzB1NnktZ3RKaW9MQ3ZlOTItV21ZcUd6WU9zQVRyZmRvN0FPYXRFbEZ6aDBCdENjZHRoV3pFWUJoelZEN2xaNkFKZUYxVXFhUWtjTjEtbTdKMnBxRVBUMFUwMmo3Q0ZhZw?oc=5",
-    "news.google.com/rss/articles/CBMiygFBVV95cUxOWTVrQ2lwcUo5el9YYW5mMS0yMWVtME80YU9HZU1WWlZFUEVEVmE1OEJHMnM1cEk1d0VheGZJRVMxYXF2RmRfbmMwR1V3cEIybUdRZU05dy1pNVJYcURPc2NvZ1NKSmtJQUR0NFRaUnVKY25PQ2dJLXY5QTgxMWtzR0VXOGlTejFlWnA0dUl2M1ZZUnh6OEdqYU5JalNyempNN3dHR3UzSjlXd010cGFxRlphbHRWcnNLVGplbWY3MklfVWRILUFOdE9B?oc=5",
-    "title:anthropic is rapidly accelerating ai development amid slowdown calls outside research group says"
-   ],
-   "strength": 3
-  },
-  {
-   "at": "2026-11-05T20:18:07.819465+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/vera-cpu-highest-throughput-fastest-agents",
-    "title:vera delivers the best of both worlds highest throughput and fastest agents"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-06T00:18:07.592810+00:00",
    "keys": [
     "kagi.com/changelog",
@@ -60,14 +34,6 @@
    "strength": 5
   },
   {
-   "at": "2026-11-06T04:18:07.209240+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMiqgFBVV95cUxQVHBHYWpjdWxPUUszcVo2UmdxQ0UzUWpLZlh6TFdlZXhwWDRCWDM1S1V2eW0xODY4bFN4bzNmM3REWTlYTmpZdm1MYWFlZTdkY2pFZXhncGRfR2x5WjlYdVZoRW9YbUJhV1RxODR5NHhGLVYySlRVa0QwZ0pKMU4yUHd2RkQwWm8zV2pDaFU4VzI3NXhYN0tsVHY3ejV4dmE4YTZrUkNZTDlEUQ?oc=5",
-    "title:exclusive crowdstrike to buy two ai security startups for 495 million"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-06T15:18:12.650417+00:00",
    "keys": [
     "github.com/PrivSec-dev/banking-apps-compat-report/issues/105",
@@ -92,6 +58,14 @@
     "title:protesters break into microsoft data center site in amsterdam"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-11-06T20:18:12.283506+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMiqgFBVV95cUxQVHBHYWpjdWxPUUszcVo2UmdxQ0UzUWpLZlh6TFdlZXhwWDRCWDM1S1V2eW0xODY4bFN4bzNmM3REWTlYTmpZdm1MYWFlZTdkY2pFZXhncGRfR2x5WjlYdVZoRW9YbUJhV1RxODR5NHhGLVYySlRVa0QwZ0pKMU4yUHd2RkQwWm8zV2pDaFU4VzI3NXhYN0tsVHY3ejV4dmE4YTZrUkNZTDlEUQ?oc=5",
+    "title:exclusive crowdstrike to buy two ai security startups for 495 million"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
