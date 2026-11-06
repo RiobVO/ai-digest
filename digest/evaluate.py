@@ -192,6 +192,23 @@ def verify_numbers(entries: list[Entry], texts: dict[str, str], records: dict[st
         entry.title, entry.summary, entry.why = title, summary, why
 
 
+def verify_details(entries: list[Entry], texts: dict[str, str], records: dict[str, str]) -> None:
+    """Убирает из разборов числа не из записи и текста первоисточника — тот же эталон, что у карточек.
+    После защиты карточек остаток выдуманных чисел сидел в пунктах разбора (регрессия 06.11.2026). Разбор —
+    надстройка, читатель открывает его ради конкретики, и чужая цифра там выглядит самой достоверной. Пункт или
+    предложение с таким числом просто убираем: без него разбор живёт, а переписывать его вызовом модели не за что."""
+    for entry in entries:
+        d = entry.details
+        if d is None:
+            continue
+        source = _known_text(entry.item, texts, records)
+        points = [p for p in d.points if not invented_numbers(p, source)]
+        what, try_it, caveats = (_cut(t, source) or "" if t else "" for t in (d.what, d.try_it, d.caveats))
+        if (points, what, try_it, caveats) != (d.points, d.what, d.try_it, d.caveats):
+            log.warning("числа не из записи убраны из разбора: %s", entry.title)
+            d.points, d.what, d.try_it, d.caveats = points, what, try_it, caveats
+
+
 def _stems(text: str) -> set[str]:
     return {w[:STEM] for w in re.findall(r"\w{4,}", text.lower())}
 

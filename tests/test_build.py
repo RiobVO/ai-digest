@@ -525,3 +525,16 @@ def test_numbers_known_only_from_a_record_absorbed_by_dedupe_need_no_rewrite(env
     page = (args.site / "index.html").read_text(encoding="utf-8")
     assert "Модель на 14B параметров." in page
     assert evaluate.NUMBERS_SCHEMA not in schemas
+
+
+def test_detail_point_with_a_number_not_from_the_record_never_reaches_the_page(env, monkeypatch):
+    tmp, args = env
+    monkeypatch.setattr(llm, "generate", fake_generate())
+    explained = {"items": [{"id": 0, "what": "Контекст.", "points": ["Обучена за 30 часов", "Открытые веса"],
+                            "try_it": "", "caveats": "", "commands": []}]}
+    generate = llm.generate
+    monkeypatch.setattr(llm, "generate", lambda prompt, schema, model, api_key:
+                        explained if schema is llm.EXPLAIN_SCHEMA else generate(prompt, schema, model, api_key))
+    main.build(args)
+    page = (args.site / "index.html").read_text(encoding="utf-8")
+    assert "Открытые веса" in page and "30 часов" not in page

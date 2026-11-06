@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 
 from digest import evaluate
 from digest.evaluate import (forecast_hits, invented_numbers, load_snapshot, officialese_hits, repeats, report,
-                             save_snapshot, slop_hits, template_hits, verify_numbers)
+                             save_snapshot, slop_hits, template_hits, verify_details, verify_numbers)
 from digest.llm import Details, Digest, Entry, Mention
 from digest.models import Item
 
@@ -180,3 +180,28 @@ def test_report_counts_numbers_from_duplicate_records_as_known():
     records = {"https://verge.io/abb": "SoftBank's $5.4B ABB robotics deal blocked by China"}
     assert report(Digest("День", "Лид", [entry]), {})["invented_numbers"] == 1
     assert report(Digest("День", "Лид", [entry]), {}, records)["invented_numbers"] == 0
+
+
+def test_detail_points_and_sentences_with_invented_numbers_are_dropped():
+    # Регрессия 06.11.2026: после защиты карточек остаток выдуманных чисел («20, 70», «3000») сидел в пунктах разбора.
+    # Разбор — надстройка: пункт или предложение с чужим числом просто убираем, переписывать нечего
+    card = _card("Acme выпустила Orbit 2", "Модель 14B.", feed_title="Acme ships Orbit 2, a 14B model")
+    card.details = Details("Acme шла к этому давно. Обучение заняло 30 часов. Веса открыты.",
+                           ["Контекст 128K", "Берёт 71% на бенчмарке", "Лицензия Apache 2.0"],
+                           "Веса на Hugging Face, нужны 24 ГБ.", "Только английский.")
+    source = {"https://x.io/a": "Orbit 2 has a 128K context, is licensed under Apache 2.0 and ships in English only."}
+    verify_details([card], source, {})
+    assert card.details.what == "Acme шла к этому давно. Веса открыты."
+    assert card.details.points == ["Контекст 128K", "Лицензия Apache 2.0"]
+    assert card.details.try_it == ""
+    assert card.details.caveats == "Только английский."
+
+
+def test_clean_details_and_cards_without_details_are_left_alone():
+    clean = _card("Acme выпустила Orbit 2", "Модель 14B.", feed_title="Acme ships Orbit 2, a 14B model")
+    clean.details = Details("Контекст.", ["Модель 14B"], "", "", ["pip install orbit"], [("RCE", "удалённый запуск кода")])
+    bare = _card("Acme выпустила Orbit 2", "Модель 14B.", feed_title="Acme ships Orbit 2, a 14B model")
+    verify_details([clean, bare], {}, {})
+    assert clean.details == Details("Контекст.", ["Модель 14B"], "", "", ["pip install orbit"],
+                                    [("RCE", "удалённый запуск кода")])
+    assert bare.details is None

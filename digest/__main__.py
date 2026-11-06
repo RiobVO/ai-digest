@@ -10,7 +10,7 @@ from pathlib import Path
 
 from digest import alert as breaking
 from digest import evaluate, health
-from digest.evaluate import verify_numbers
+from digest.evaluate import verify_details, verify_numbers
 from digest import tip as tip_of_day
 from digest.cover import make_cover
 from digest.dedup import dedupe
@@ -124,13 +124,14 @@ def build(args: argparse.Namespace) -> None:
     verify_copies(digest.entries, texts)
     # Числа не из записи — до разборов: разбор опирается на карточку и повторил бы выдуманное. Записи — до склейки:
     # dedupe оставляет от дубля только адрес, а число из его описания всё равно из записи
-    verify_numbers(digest.entries, texts, {i.url: f"{i.title} {i.summary}" for i in new}, [settings["lite_model"]],
-                   api_key)
+    records = {i.url: f"{i.title} {i.summary}" for i in new}
+    verify_numbers(digest.entries, texts, records, [settings["lite_model"]], api_key)
     try:
         explain(digest.entries, texts, settings["audience"], main_models, api_key)
     except LlmError as exc:
         # Подробные разборы — надстройка: без них выпуск всё равно выходит, с кнопкой на первоисточник
         log.error("подробные разборы не сгенерированы: %s", exc)
+    verify_details(digest.entries, texts, records)
 
     # Утренний выпуск сохраняет прежнее имя страницы, вечерний — свою: ссылки на старые выпуски не ломаются
     page_name = f"{today:%Y-%m-%d}.html" if slot == "morning" else f"{today:%Y-%m-%d}-evening.html"
@@ -309,6 +310,7 @@ def run_eval(args: argparse.Namespace) -> None:
                 explain(digest.entries, texts, settings["audience"], main_models, api_key)
             except LlmError as exc:
                 log.error("разборы в прогоне %d не сгенерированы: %s", run, exc)
+            verify_details(digest.entries, texts, records)
             result = evaluate.report(digest, texts, records)
             print(f"{path.stem} | {run} | {result['entries']} | {result['more']} | {result['tips']} | "
                   f"{result['high_importance']} | {result['slop']} | {result['officialese']} | "

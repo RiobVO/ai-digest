@@ -52,7 +52,8 @@ Local runs read `.env` (`load_env` in `digest/__main__.py`; never overrides real
   Lite does not keep two prompt rules, so code enforces them: importance ≥8 on at most 3 cards (`llm.cap_hot`;
   Lite gave it to 59% of cards vs 24% on 3.8) and no numbers absent from the record (`evaluate.verify_numbers`,
   same metric as `eval`: cut the sentence, or one rewrite call on `lite_model` labelled `numbers`; 12 of 28 cards
-  on the 2026-11-05 snapshot had such numbers).
+  on the 2026-11-05 snapshot had such numbers). The same check runs on the breakdowns after `explain`
+  (`evaluate.verify_details`): a point or sentence with such a number is dropped, no model call.
 - `llm.generate` makes ONE attempt; `llm.generate_first` moves to the next model on any failure (429, 5xx, timeout,
   404 of a retired model). No same-model retry anywhere: the 60 s retry of `select` after a 503 (removed 2026-11-05)
   rescued 2 selections out of ≈15 while costing a minute and a request each time. Don't add retries: every retry,
@@ -87,8 +88,8 @@ All human-facing time is Tashkent, UTC+5 (`DISPLAY_TZ` in `render.py`); evening 
 `Digest.more` + 2–4 tricks in section `tips`, rest is noise; `llm.CORPORATE_MONEY` drops funding/revenue lines
 the model let through) → `resolve_gnews` (events and one-liners) →
 `attach_discussions` (HN) → `fetch_articles` → `evaluate.verify_numbers` (numbers absent from the record and article:
-sentence cut, else one Lite rewrite call `numbers`) → `llm.explain` (detailed breakdowns) → `record_issue` (ids → stories →
-archive) → cover → `render_page` + `archive.html`,
+sentence cut, else one Lite rewrite call `numbers`) → `llm.explain` (detailed breakdowns) → `evaluate.verify_details`
+(same check on the breakdowns, drop only) → `record_issue` (ids → stories → archive) → cover → `render_page` + `archive.html`,
 `tips.html`, `story-<id>.html` → `out/message.json` → save state.
 
 Site pages besides issues (all built with the `page.html` shell, rebuilt by every `build`): `health.html`
