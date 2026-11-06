@@ -38,8 +38,9 @@ Local runs read `.env` (`load_env` in `digest/__main__.py`; never overrides real
   (now 3.8 Flash): 5 RPM, 250K TPM, **20 requests/day**, reset at midnight Pacific (≈12–13 Tashkent). Lite models
   (`gemini-3.5-flash-lite`, `gemini-3.1-flash-lite`): 15 RPM, 500/day. Quotas are per model.
 - Model chains (`__main__.model_chains`, sources.toml): select and explain go `model` (3.8 Flash) → `extras_model`
-  (3.6 Flash, own 20/day) → `lite_model`; `extras` («Ещё за день» + tricks) goes `extras_model` → `model` → `lite_model`,
-  and Lite writes only «Ещё за день», never tricks (its tricks were weak);
+  (3.6 Flash, own 20/day) → `lite_model`; `extras` («Ещё за день» + tricks) goes `extras_model` → `model` → `lite_model`
+  (Lite writes tricks too since 2026-11-06: 2–3 per eval run on a snapshot with `reddit_tips`, most with a verbatim
+  command; the earlier ban left 11 of 17 evenings without tricks);
   `alert` triages on `lite_model` → `extras_model` and re-checks on `model` → `extras_model` only what Lite marked
   urgent (an alert can wake the reader at night — the best model writes it). `build` = 2 calls on 3.8 + 1 on 3.6, `weekly` = 1 → ≈5 calls/day on 3.8.
 - **503 counts against RPD** (verified 2026-10-21: AI Studio counters matched exactly, 3.6 = 6, 3.8 = 17, incl.

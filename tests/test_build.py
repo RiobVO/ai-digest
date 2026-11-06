@@ -472,7 +472,8 @@ def _extras_models_and_archive(env, monkeypatch, failing: set[str]):
             extras_models.append(model)
             if model in failing:
                 raise llm.LlmError(f"Gemini {model} ответил 503", status=503)
-            tip = {"ids": [4], "title": "Хук перед коммитом", "summary": "s", "why": "w", "copy": "", "topic": "claude_code",
+            # Запись не та, что у строки «Ещё за день»: иначе фишка забирает её первой, и строка отпадает как повтор
+            tip = {"ids": [3], "title": "Хук перед коммитом", "summary": "s", "why": "w", "copy": "", "topic": "claude_code",
                    "importance": 6}
             return {**EXTRAS, "tips": [tip]}
         return fake_generate()(prompt, schema, model, api_key)
@@ -489,10 +490,11 @@ def test_tips_fall_back_to_the_main_flash_when_the_side_one_is_down(env, monkeyp
     assert models == ["side-model", "test-model"] and "tips" in sections
 
 
-def test_lite_writes_also_today_but_never_tips(env, monkeypatch):
-    # Lite находит 0–1 фишку, и та слабая (замеры 22.10): лучше ни одной фишки, чем слабая
+def test_lite_writes_also_today_and_tips_when_both_flash_are_down(env, monkeypatch):
+    # Запрет фишек от Lite (22.10: 0–1 слабая) снят 06.11: на срезе с лентой reddit_tips Lite даёт 2–3 фишки за прогон,
+    # в 5 из 7 — с дословной командой из источника; а без него фишек не было в 11 вечерних выпусках из 17
     models, sections = _extras_models_and_archive(env, monkeypatch, {"side-model", "test-model"})
-    assert models == ["side-model", "test-model", "lite-model"] and "tips" not in sections
+    assert models == ["side-model", "test-model", "lite-model"] and "tips" in sections
     tmp, _ = env
     assert "Сеть магазинов" in json.loads((tmp / "out" / "message.json").read_text(encoding="utf-8"))["text"]
 

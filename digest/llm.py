@@ -802,17 +802,12 @@ def select(items: list[Item], audience: str, models: list[str], api_key: str,
 
 def extras(digest: Digest, items: list[Item], audience: str, models: list[str], api_key: str,
            stories: list[dict] | None = None) -> None:
-    """Второй вызов: «Ещё за день» и фишки по записям, которые не вошли в события выпуска. Последняя модель цепочки
-    (Lite) пишет только «Ещё за день»: фишек она находит 0–1 за прогон, и те слабые (замеры 22.10), а лучше ни одной
-    фишки, чем слабая."""
+    """Второй вызов: «Ещё за день» и фишки по записям, которые не вошли в события выпуска. Фишки пишет любая модель
+    цепочки, включая Lite: запрет 22.10 (Lite находила 0–1 слабую) снят 06.11 — на срезе с лентой reddit_tips Lite даёт
+    2–3 фишки за прогон, в 5 из 7 с дословной командой из источника, а с запретом фишек не было в 11 вечерних выпусках
+    из 17. Слабые формулировки summary Lite компенсирует разбор: шаги и команды берутся из текста."""
     prompt = build_extras_prompt(digest, items, audience, stories)
-    *flash, lite = models
-    try:
-        raw = generate_first(prompt, EXTRAS_SCHEMA, flash, api_key, call="extras")
-    except LlmError as exc:
-        log.warning("Flash не ответил, фишек в этом выпуске не будет: %s", exc)
-        raw = {**generate_first(prompt, EXTRAS_SCHEMA, [lite], api_key, call="extras"), "tips": []}
-    attach_extras(digest, raw, items)
+    attach_extras(digest, generate_first(prompt, EXTRAS_SCHEMA, models, api_key, call="extras"), items)
 
 
 def explain(entries: list[Entry], texts: dict[str, str], audience: str, models: list[str], api_key: str) -> None:
