@@ -168,6 +168,22 @@
     "title:vera delivers the best of both worlds highest throughput and fastest agents"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-11-06T00:18:07.592810+00:00",
+   "keys": [
+    "kagi.com/changelog",
+    "title:search for everyone"
+   ],
+   "strength": 4
+  },
+  {
+   "at": "2026-11-06T00:18:07.592810+00:00",
+   "keys": [
+    "github.com/anthropics/claude-code/issues/107757",
+    "title:claude code sends your email address to websites"
+   ],
+   "strength": 3
   }
  ],
  "undated": {
