@@ -2,24 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-05T00:18:08.290025+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMiggFBVV95cUxNN19TcVZuaV9yaGFQME5CT1ZVWnlsa3VYY2xTOGRyNXMtcnUtU1o1ckdaTEI3MHlxemp3YTdMYmxHWTE5Wko0MEpNSThPVnBFWWZRZks0N3E3RzRXYnlIakJTR3BUbG9QT1kyMm9aUUMza19TSC1SU0o4N2RzY1lJdmFn?oc=5",
-    "news.google.com/rss/articles/CBMioAFBVV95cUxNWWlGMi1naFJoUFpMejc2M0g3ZGhBSmc1WWhkNnFzQ2Nsc2ZQWkVoZUxZOFdybXo1Nk5HeVloaHBSajdDZk1DaDdzazBxNDRIWUEyYUZxWWEwVlp2cTkyTWdfa1dtVGl6blFPMURFLU5wZkNkQTZxQms0NTdIREJaU296bDNzOUNKZVY3bHc1MXhzbVJLbUwxUjJvaS1OczM5?oc=5",
-    "techcrunch.com/2026/11/04/meta-acquires-ai-coding-startup-conductor",
-    "title:meta acquires ai coding startup conductor"
-   ],
-   "strength": 3
-  },
-  {
-   "at": "2026-11-05T01:18:05.651388+00:00",
-   "keys": [
-    "layer3intel.com/blog/residential-proxies-white-house-network",
-    "title:residential proxies detected on white house network"
-   ],
-   "strength": 6
-  },
-  {
    "at": "2026-11-05T05:18:07.712781+00:00",
    "keys": [
     "ft.com/content/f10c3e24-45e4-47ff-bde2-24a8de90aec4?syn-25a6b1a6=1",
@@ -184,6 +166,22 @@
     "title:claude code sends your email address to websites"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-11-06T01:18:06.232240+00:00",
+   "keys": [
+    "salon.com/2026/11/05/goodbye-from-salon",
+    "title:goodbye from salon"
+   ],
+   "strength": 4
+  },
+  {
+   "at": "2026-11-06T01:18:06.232240+00:00",
+   "keys": [
+    "openai.com/index/cultfit-builds-with-codex",
+    "title:cult fit builds operational muscle with codex"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
