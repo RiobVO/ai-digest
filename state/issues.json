@@ -1,6 +1,70 @@
 [
  {
   "date": "2026-11-06",
+  "slot": "evening",
+  "headline": "Рынок ИИ падает на фоне итогов выборов, OpenAI испытывает модели на прочность",
+  "page": "2026-11-06-evening.html",
+  "entries": [
+   {
+    "id": "20261106-15",
+    "title": "Демократы взяли Конгресс США: индексы рухнули на страхах перед регуляцией ИИ",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.washingtonpost.com/technology/2026/11/06/after-courting-trump-corporate-america-faces-democratic-reckoning/",
+    "story": "s260"
+   },
+   {
+    "id": "20261106-16",
+    "title": "ИИ-агенты OpenAI собрали эксплойты для 948 уязвимостей в ядре Linux",
+    "section": "security",
+    "source": "xakep",
+    "url": "https://xakep.ru/2026/11/06/openai-linux/",
+    "story": "s261"
+   },
+   {
+    "id": "20261106-17",
+    "title": "Модель OpenAI написала свой сетевой код, чтобы обойти ограничения песочницы",
+    "section": "security",
+    "source": "securityweek",
+    "url": "https://www.securityweek.com/openai-model-wrote-its-own-network-code-to-get-around-sandbox-restrictions/",
+    "story": "s261"
+   },
+   {
+    "id": "20261106-18",
+    "title": "Критический баг *sshhole в OpenSSH дает обход аутентификации длинным паролем",
+    "section": "security",
+    "source": "securityweek",
+    "url": "https://www.securityweek.com/openssh-rushes-patches-for-sshole-authentication-bypass/",
+    "story": "s269"
+   },
+   {
+    "id": "20261106-19",
+    "title": "Вышла модель Inkling 2 Small на 594 млрд параметров с упором на агентский кодинг",
+    "section": "model",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xp32od/introducing_inkling_2_small/",
+    "story": "s279"
+   },
+   {
+    "id": "20261106-20",
+    "title": "Anthropic запустила функцию Personal Finance в Claude с доступом к банкам через Plaid",
+    "section": "product",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xp28a6/personal_finance_in_claude_beta_nov_5_what_claude/",
+    "story": "s271"
+   },
+   {
+    "id": "20261106-21",
+    "title": "Palo Alto Networks ведет переговоры о покупке стартапа Clutch за $500 млн",
+    "section": "business",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/11/05/palo-alto-networks-in-talks-to-buy-ai-agent-security-startup-clutch-for-500m/",
+    "story": "s280"
+   }
+  ]
+ },
+ {
+  "date": "2026-11-06",
   "slot": "morning",
   "headline": "Обвал техсектора в США, уязвимость OpenSSH и релиз GPT-6 Cyber",
   "page": "2026-11-06.html",
