@@ -160,14 +160,6 @@
    "strength": 4
   },
   {
-   "at": "2026-11-06T00:18:07.592810+00:00",
-   "keys": [
-    "github.com/anthropics/claude-code/issues/107757",
-    "title:claude code sends your email address to websites"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-11-06T01:18:06.232240+00:00",
    "keys": [
     "salon.com/2026/11/05/goodbye-from-salon",
@@ -182,6 +174,14 @@
     "title:cult fit builds operational muscle with codex"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-11-06T02:18:07.308463+00:00",
+   "keys": [
+    "github.com/anthropics/claude-code/issues/107757",
+    "title:claude code sends your email address to websites"
+   ],
+   "strength": 5
   }
  ],
  "undated": {
