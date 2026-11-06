@@ -49,6 +49,10 @@ Local runs read `.env` (`load_env` in `digest/__main__.py`; never overrides real
   3.6 ≈70%, Lite ≈10% (`state/health/*.json`). Overload lasts for hours, not minutes: within one build the attempts
   1–4 min apart all fail, and on bad days every hourly alert attempt fails too. That is the free tier, not a code bug.
   In practice Lite writes most issues (select on Lite in 12 of 28 builds up to 5 Nov) — prompts must work on Lite.
+  Lite does not keep two prompt rules, so code enforces them: importance ≥8 on at most 3 cards (`llm.cap_hot`;
+  Lite gave it to 59% of cards vs 24% on 3.8) and no numbers absent from the record (`evaluate.verify_numbers`,
+  same metric as `eval`: cut the sentence, or one rewrite call on `lite_model` labelled `numbers`; 12 of 28 cards
+  on the 2026-11-05 snapshot had such numbers).
 - `llm.generate` makes ONE attempt; `llm.generate_first` moves to the next model on any failure (429, 5xx, timeout,
   404 of a retired model). No same-model retry anywhere: the 60 s retry of `select` after a 503 (removed 2026-11-05)
   rescued 2 selections out of ≈15 while costing a minute and a request each time. Don't add retries: every retry,
@@ -82,7 +86,8 @@ All human-facing time is Tashkent, UTC+5 (`DISPLAY_TZ` in `render.py`); evening 
 (second call over the records `select` left in noise, original numbering kept: 10–15 «Ещё за день» one-liners in
 `Digest.more` + 2–4 tricks in section `tips`, rest is noise; `llm.CORPORATE_MONEY` drops funding/revenue lines
 the model let through) → `resolve_gnews` (events and one-liners) →
-`attach_discussions` (HN) → `fetch_articles` → `llm.explain` (detailed breakdowns) → `record_issue` (ids → stories →
+`attach_discussions` (HN) → `fetch_articles` → `evaluate.verify_numbers` (numbers absent from the record and article:
+sentence cut, else one Lite rewrite call `numbers`) → `llm.explain` (detailed breakdowns) → `record_issue` (ids → stories →
 archive) → cover → `render_page` + `archive.html`,
 `tips.html`, `story-<id>.html` → `out/message.json` → save state.
 
@@ -91,7 +96,7 @@ Site pages besides issues (all built with the `page.html` shell, rebuilt by ever
 ≥2 days, chronology from the archive, `render_story_pages`). Flat file names on purpose: the template's links are relative.
 
 - **Fail-soft is the design rule.** A failing source, HN lookup, Google News decoding, article fetch, `extras`, `explain`,
-  cover or feedback fetch logs `log.error` and the issue still ships. Only `select` (the LLM selection) failing aborts the build.
+  `verify_numbers` rewrite, cover or feedback fetch logs an error and the issue still ships. Only `select` (the LLM selection) failing aborts the build.
   `alert` raises only if *every* alert source failed (silent exit would hide a dead feature). If triage or the urgent
   re-check fails on every model, the candidates are shelved via `mark_rejected` and state is saved: crashing re-checked
   the same news hourly and burned the 3.8/3.6 quota the morning issue needs (2026-10-21).

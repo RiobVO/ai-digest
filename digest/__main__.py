@@ -10,6 +10,7 @@ from pathlib import Path
 
 from digest import alert as breaking
 from digest import evaluate, health
+from digest.evaluate import verify_numbers
 from digest import tip as tip_of_day
 from digest.cover import make_cover
 from digest.dedup import dedupe
@@ -121,6 +122,10 @@ def build(args: argparse.Namespace) -> None:
     texts = fetch_articles([e.item.url for e in digest.entries])
     fill_from_feed(texts, [e.item for e in digest.entries])
     verify_copies(digest.entries, texts)
+    # Числа не из записи — до разборов: разбор опирается на карточку и повторил бы выдуманное. Записи — до склейки:
+    # dedupe оставляет от дубля только адрес, а число из его описания всё равно из записи
+    verify_numbers(digest.entries, texts, {i.url: f"{i.title} {i.summary}" for i in new}, [settings["lite_model"]],
+                   api_key)
     try:
         explain(digest.entries, texts, settings["audience"], main_models, api_key)
     except LlmError as exc:
@@ -297,11 +302,14 @@ def run_eval(args: argparse.Namespace) -> None:
                 texts.update(fetch_articles(missing))
                 evaluate.save_snapshot(path, items, taken, texts)
             fill_from_feed(texts, [e.item for e in digest.entries])
+            # Срез хранит записи уже после склейки, полнее эталона в нём нет
+            records = {i.url: f"{i.title} {i.summary}" for i in pool}
+            verify_numbers(digest.entries, texts, records, [settings["lite_model"]], api_key)
             try:
                 explain(digest.entries, texts, settings["audience"], main_models, api_key)
             except LlmError as exc:
                 log.error("разборы в прогоне %d не сгенерированы: %s", run, exc)
-            result = evaluate.report(digest, texts)
+            result = evaluate.report(digest, texts, records)
             print(f"{path.stem} | {run} | {result['entries']} | {result['more']} | {result['tips']} | "
                   f"{result['high_importance']} | {result['slop']} | {result['officialese']} | "
                   f"{result['invented_numbers']} | {result['forecasts']} | {result['why_repeats']} | "

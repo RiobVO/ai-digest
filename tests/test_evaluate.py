@@ -1,7 +1,8 @@
 from datetime import datetime, timezone
 
+from digest import evaluate
 from digest.evaluate import (forecast_hits, invented_numbers, load_snapshot, officialese_hits, repeats, report,
-                             save_snapshot, slop_hits, template_hits)
+                             save_snapshot, slop_hits, template_hits, verify_numbers)
 from digest.llm import Details, Digest, Entry, Mention
 from digest.models import Item
 
@@ -88,3 +89,94 @@ def test_also_today_lines_are_checked_for_slop_and_invented_numbers():
     assert result["entries"] == 0 and result["more"] == 1
     assert result["slop"] >= 1 and result["officialese"] == 1 and result["invented_numbers"] == 1
     assert report(Digest("День", "Лид", [], more=[Mention(item, "Стартап привлёк $40 млн")]), {})["invented_numbers"] == 0
+
+
+def _card(title, summary, why="", url="https://x.io/a", feed_title="", feed_summary=""):
+    return Entry(Item(source="x", title=feed_title, url=url, category="news", summary=feed_summary), "model", 7,
+                 title, summary, why)
+
+
+def _no_model(*args, **kwargs):
+    raise AssertionError("модель не должна вызываться")
+
+
+def test_clean_cards_are_left_alone_without_a_model_call(monkeypatch):
+    monkeypatch.setattr(evaluate, "generate_first", _no_model)
+    card = _card("Acme выпустила Orbit 2", "Модель 14B берёт 71% на бенчмарке.", "Влезает в 24 ГБ.",
+                 feed_title="Acme ships Orbit 2, a 14B model", feed_summary="71% on the benchmark, runs on 24 GB")
+    verify_numbers([card], {}, {}, ["lite"], "k")
+    assert (card.title, card.summary, card.why) == ("Acme выпустила Orbit 2", "Модель 14B берёт 71% на бенчмарке.",
+                                                     "Влезает в 24 ГБ.")
+
+
+def test_sentence_with_an_invented_number_is_cut_when_another_sentence_remains(monkeypatch):
+    # Lite дописывает детали из памяти («770 млрд параметров», «за 30 часов» — 05.11.2026): предложение с таким
+    # числом убираем, если без него описание не пустеет; why — одно предложение, с чужим числом оно уходит целиком
+    monkeypatch.setattr(evaluate, "generate_first", _no_model)
+    card = _card("Tencent выпустила Hy4", "Tencent выпустила открытую модель Hy4. У неё 770 млрд параметров.",
+                 "Значит, через 2027 год локалка станет сильнее.", feed_title="Tencent releases Hy4 open model")
+    verify_numbers([card], {"https://x.io/a": "Tencent released Hy4, an open model for agents."}, {}, ["lite"], "k")
+    assert card.summary == "Tencent выпустила открытую модель Hy4."
+    assert card.why == ""
+
+
+def test_single_sentence_summary_is_rewritten_by_the_model(monkeypatch):
+    calls = []
+
+    def fake(prompt, schema, models, api_key, call=""):
+        calls.append((prompt, models, call))
+        return {"items": [{"id": 0, "title": "Хакеры украли у Binance $6,3 млрд",
+                           "summary": "Binance подтвердила кражу активов на $6,3 млрд после фишинга инженера.",
+                           "why": "Так что проверяй, кого нанимаешь."}]}
+
+    monkeypatch.setattr(evaluate, "generate_first", fake)
+    card = _card("Хакеры украли у Binance $6,34 млрд", "Binance подтвердила кражу активов на $6,34 млрд после фишинга инженера.",
+                 "Так что проверяй, кого нанимаешь.", feed_title="Fake job interview led to $6.3B Binance heist")
+    verify_numbers([card], {"https://x.io/a": "Binance said $6.3B was stolen after an engineer was phished."}, {},
+                   ["lite"], "k")
+    assert card.title == "Хакеры украли у Binance $6,3 млрд"
+    assert card.summary == "Binance подтвердила кражу активов на $6,3 млрд после фишинга инженера."
+    prompt, models, call = calls[0]
+    assert models == ["lite"] and call == "numbers"
+    assert "6.34" in prompt and "$6.3B" in prompt and "id=0" in prompt
+
+
+def test_rewrite_that_still_invents_or_fails_leaves_the_card_as_is(monkeypatch, caplog):
+    import logging
+    from digest.llm import LlmError
+    original = ("Zyxel закрыла дыру", "Патч вышел через 10 дней после первого.", "")
+    monkeypatch.setattr(evaluate, "generate_first", lambda *a, **kw: {"items": [
+        {"id": 0, "title": "Zyxel закрыла дыру", "summary": "Патч вышел через 12 дней после первого.", "why": ""}]})
+    card = _card(*original, feed_title="Zyxel fixes GS1900 zero-day after a failed first patch")
+    with caplog.at_level(logging.WARNING, logger="digest.evaluate"):
+        verify_numbers([card], {}, {}, ["lite"], "k")
+    assert (card.title, card.summary, card.why) == original and "осталось" in caplog.text
+
+    def down(*a, **kw):
+        raise LlmError("Gemini lite ответил 503", 503)
+
+    monkeypatch.setattr(evaluate, "generate_first", down)
+    card = _card(*original, feed_title="Zyxel fixes GS1900 zero-day after a failed first patch")
+    verify_numbers([card], {}, {}, ["lite"], "k")
+    assert (card.title, card.summary, card.why) == original
+
+
+def test_numbers_from_merged_duplicate_records_count_as_known(monkeypatch):
+    # Событие склеено из нескольких записей: число из описания дубля — тоже из записи, а не из памяти модели
+    monkeypatch.setattr(evaluate, "generate_first", _no_model)
+    card = _card("SoftBank не купит ABB за $5,4 млрд", "Китай заблокировал сделку на $5,4 млрд.",
+                 feed_title="China blocks SoftBank's purchase of ABB robotics")
+    card.item.also.append(("verge", "https://verge.io/abb"))
+    records = {"https://verge.io/abb": "SoftBank's $5.4B ABB robotics deal blocked by China"}
+    verify_numbers([card], {}, records, ["lite"], "k")
+    assert card.summary == "Китай заблокировал сделку на $5,4 млрд."
+
+
+def test_report_counts_numbers_from_duplicate_records_as_known():
+    # Эталон у метрики и у защиты один (ревью 06.11): иначе verify_numbers считает карточку чистой, а report — нет
+    item = Item(source="x", title="China blocks SoftBank's purchase of ABB robotics", url="https://x.io/abb", category="news",
+                also=[("verge", "https://verge.io/abb")])
+    entry = Entry(item, "business", 7, "SoftBank не купит ABB", "Китай заблокировал сделку на $5,4 млрд.", "")
+    records = {"https://verge.io/abb": "SoftBank's $5.4B ABB robotics deal blocked by China"}
+    assert report(Digest("День", "Лид", [entry]), {})["invented_numbers"] == 1
+    assert report(Digest("День", "Лид", [entry]), {}, records)["invented_numbers"] == 0

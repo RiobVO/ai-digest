@@ -1,7 +1,7 @@
 """Сквозная сборка выпуска: сеть, Gemini и Chrome подменены, всё остальное — настоящий пайплайн build()."""
 import argparse
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 import pytest
 
@@ -495,3 +495,33 @@ def test_lite_writes_also_today_but_never_tips(env, monkeypatch):
     assert models == ["side-model", "test-model", "lite-model"] and "tips" not in sections
     tmp, _ = env
     assert "Сеть магазинов" in json.loads((tmp / "out" / "message.json").read_text(encoding="utf-8"))["text"]
+
+
+def test_numbers_known_only_from_a_record_absorbed_by_dedupe_need_no_rewrite(env, monkeypatch):
+    # Склейка dedupe оставляет от дубля только (источник, адрес): число из его описания всё равно «из записи»
+    # (ревью 06.11), иначе верная цифра считалась бы выдуманной и уходила бы в лишний вызов Lite
+    from digest import evaluate
+    tmp, args = env
+    now = datetime(2026, 10, 17, 6, tzinfo=timezone.utc)
+    twin = Item(source="techmeme", title="OpenAI releases a new reasoning model", url="https://openai.com/news/model",
+                category="news", published=now, summary="The 14B model is open-weight.")
+    primary = raw_items(now)
+    primary[0].summary = "A new reasoning model."
+    monkeypatch.setattr(main, "fetch_all", lambda sources, now: (primary + [twin], []))
+    selection = json.loads(json.dumps(SELECTION))
+    selection["items"][0]["summary"] = "Модель на 14B параметров."
+    schemas = []
+
+    def generate(prompt, schema, model, api_key):
+        schemas.append(schema)
+        if schema is llm.SCHEMA:
+            return selection
+        if schema is llm.EXTRAS_SCHEMA:
+            return EXTRAS
+        return {"items": []}
+
+    monkeypatch.setattr(llm, "generate", generate)
+    main.build(args)
+    page = (args.site / "index.html").read_text(encoding="utf-8")
+    assert "Модель на 14B параметров." in page
+    assert evaluate.NUMBERS_SCHEMA not in schemas

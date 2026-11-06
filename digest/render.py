@@ -573,7 +573,7 @@ def render_archive(issues: list[dict], when: datetime) -> str:
 
 MODEL_NAME = re.compile(r"gemini-(\d+(?:\.\d+)*)-(flash|pro)(-lite)?")
 CALL_LABELS = {"select": "Отбор", "extras": "Ещё за день и фишки", "explain": "Разборы", "weekly": "Итог недели",
-               "triage": "Отсев срочных", "alert": "Текст срочной"}
+               "triage": "Отсев срочных", "alert": "Текст срочной", "numbers": "Проверка чисел"}
 # Квота израсходована на эту долю — полоса желтеет: до вечернего выпуска может не хватить
 QUOTA_WARN = 0.75
 
