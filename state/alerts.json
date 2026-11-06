@@ -2,38 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-05T16:18:07.702392+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMikgFBVV95cUxPYkRESG9DbWpRTjEyUTd4ZjBFTzBHakR6UjAtaUxrQld5ZG55cUdKcjh4TVJBVUNUczhyeS1DWGFZalVmbFJFYzNoV3FIdTlaTURCMGRhVktOM0p0ZDE3RmdxUlJBM3BBWGpHVXR3bWd3SklFN2VVUnNQaE1ITVZiM1BZMXhiYUswbGZnZGlhSkw0QQ?oc=5",
-    "title:crowdstrike tackles rogue ai with kill switch and fiddler"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-05T16:18:07.702392+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/nvidia-life-chris-alexiuk",
-    "title:the wizard of open weights chris alexiuk makes ai easy with open models"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-05T16:18:07.702392+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/memory-full-stack-codesign",
-    "title:more performance from every byte how full stack codesign solves ai s memory challenge"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-05T16:18:07.702392+00:00",
-   "keys": [
-    "mistral.ai/news/build-with-studio",
-    "title:le chonk brings the brains studio puts it to work"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-05T17:18:06.860424+00:00",
    "keys": [
     "blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-omni-1-2-flash",
@@ -139,6 +107,14 @@
     "title:dutch idealist bank asn blocks non google android including grapheneos"
    ],
    "strength": 4
+  },
+  {
+   "at": "2026-11-06T16:18:09.161377+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/telco-open-source-tools-research-6g-networks",
+    "title:how nvidia open source tools are helping researchers build next generation 6g networks"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
