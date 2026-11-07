@@ -2,14 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-06T00:18:07.592810+00:00",
-   "keys": [
-    "kagi.com/changelog",
-    "title:search for everyone"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-11-06T01:18:06.232240+00:00",
    "keys": [
     "salon.com/2026/11/05/goodbye-from-salon",
