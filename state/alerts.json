@@ -2,14 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-06T15:18:12.650417+00:00",
-   "keys": [
-    "github.com/PrivSec-dev/banking-apps-compat-report/issues/105",
-    "title:dutch idealist bank asn blocks non google android including grapheneos"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-11-06T16:18:09.161377+00:00",
    "keys": [
     "blogs.nvidia.com/blog/telco-open-source-tools-research-6g-networks",
