@@ -1,5 +1,107 @@
 [
  {
+  "date": "2026-11-07",
+  "slot": "morning",
+  "headline": "OpenAI поднимает $11 млрд, а демократы в США тормозят дата-центры",
+  "page": "2026-11-07.html",
+  "entries": [
+   {
+    "id": "20261107-0",
+    "title": "OpenAI подняла $11 млрд при оценке в $1,25 трлн",
+    "section": "business",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/11/06/openai-reportedly-raises-an-additional-11-billion-at-a-1-25-trillion-valuation/",
+    "story": "s281"
+   },
+   {
+    "id": "20261107-1",
+    "title": "OpenAI выкатила модель GPT-6 Cyber для поиска уязвимостей",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/openai-launches-gpt-6-cyber-after-ai.html",
+    "story": "s261"
+   },
+   {
+    "id": "20261107-2",
+    "title": "Anthropic готовится к IPO перед Днем благодарения при оценке до $1,75 трлн",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.ft.com/content/314e17df-e7af-4814-b208-70a0557cb452",
+    "story": "s282"
+   },
+   {
+    "id": "20261107-3",
+    "title": "США: победа демократов на выборах грозит дата-центрам ИИ",
+    "section": "business",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/podcast/how-a-blue-wave-midterm-might-reshape-the-ai-industry/",
+    "story": "s260"
+   },
+   {
+    "id": "20261107-4",
+    "title": "SonicWall закрыла критический бэкдор SSL-VPN для обхода MFA",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/sonicwall-warns-of-new-ssl-vpn-mfa-bypass-flaw-exploited-in-attacks/",
+    "story": "s283"
+   },
+   {
+    "id": "20261107-5",
+    "title": "Хакеры из группы Storm-3358 атакуют финансы с помощью ИИ-фреймворка ARTEX",
+    "section": "security",
+    "source": "ms_threat_intel",
+    "url": "https://www.microsoft.com/en-us/security/blog/2026/11/06/artex-abuse-expands-as-cybercriminals-target-financial-sector/",
+    "story": "s193"
+   },
+   {
+    "id": "20261107-6",
+    "title": "Thinking Machines выкатила Inkling 2 Small на 594 млрд параметров",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/thinking-machines-inkling-2-small-claims-top-spot-among-western-open-weight-models/",
+    "story": "s279"
+   },
+   {
+    "id": "20261107-7",
+    "title": "Ripple-65B Preview: открытая модель под Apache 2.0 для кодинга",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/ripple-65b-preview-delivers-strong-agentic-coding-results-as-a-fully-apache-2-0-open-us-model/",
+    "story": "s284"
+   },
+   {
+    "id": "20261107-8",
+    "title": "Meta добавила в Muse Active Memory и настраиваемые spaces",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://thenewstack.io/meta-muse-specialized-models/",
+    "story": "s285"
+   },
+   {
+    "id": "20261107-9",
+    "title": "Claude Code сливает почту пользователей во внешние User-Agent заголовки",
+    "section": "voices",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xpcyt5/psa_claude_code_can_put_your_account_email_in_the/",
+    "story": ""
+   },
+   {
+    "id": "20261107-10",
+    "title": "Настройка фронтматтера для кастомных подпунктов в Claude Code",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xpl54k/custom_subagents_in_claudeagents_reload_your/",
+    "story": "",
+    "summary": "Добавь три обязательных поля в YAML-фронтмате файлов в директории .claude/agents/*.md перед запуском задач.",
+    "why": "Помогает кастомным подагентам в Claude Code не терять контекст основного файла CLAUDE.md и не перегружать системные лимиты.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": []
+   }
+  ]
+ },
+ {
   "date": "2026-11-06",
   "slot": "evening",
   "headline": "Рынок ИИ падает на фоне итогов выборов, OpenAI испытывает модели на прочность",
