@@ -2,14 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-06T02:18:07.308463+00:00",
-   "keys": [
-    "github.com/anthropics/claude-code/issues/107757",
-    "title:claude code sends your email address to websites"
-   ],
-   "strength": 5
-  },
-  {
    "at": "2026-11-06T15:18:12.650417+00:00",
    "keys": [
     "github.com/PrivSec-dev/banking-apps-compat-report/issues/105",
