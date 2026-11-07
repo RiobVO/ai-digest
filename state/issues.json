@@ -1,6 +1,102 @@
 [
  {
   "date": "2026-11-07",
+  "slot": "evening",
+  "headline": "Утечки ключей в Claude Code и тонкий слой пропаганды в Qwen",
+  "page": "2026-11-07-evening.html",
+  "entries": [
+   {
+    "id": "20261107-11",
+    "title": "Файл настроек Claude Code слил пароли и API-ключи в 1122 репозитория на GitHub",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/claude-codes-dont-ask-again-file.html",
+    "story": "s286"
+   },
+   {
+    "id": "20261107-12",
+    "title": "SonicWall закрыла уязвимость обхода SAML-MFA в SonicOS, которую уже эксплуатируют",
+    "section": "security",
+    "source": "securityweek",
+    "url": "https://www.securityweek.com/sonicwall-patches-exploited-sonicos-bug-that-weakens-vpn-logins/",
+    "story": "s283"
+   },
+   {
+    "id": "20261107-13",
+    "title": "METR: Anthropic удвоила темп улучшения моделей за счет автогенерации ИИ через ИИ",
+    "section": "product",
+    "source": "verge",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/1029126/anthropic-metr-report-accelerating-ai-development",
+    "story": "s287"
+   },
+   {
+    "id": "20261107-14",
+    "title": "Nous Research смыла госпропаганду из Qwen3.8-27B файнтюнингом на 53 млн токенов",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/state-propaganda-in-some-chinese-ai-models-is-only-a-thin-layer-that-fine-tuning-can-strip-away/",
+    "story": "s226"
+   },
+   {
+    "id": "20261107-15",
+    "title": "В бенчмарке Into the Unknown ни один из ИИ-агентов не справился с задачами нацлабораторий",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/nine-ai-agents-tried-autonomous-research-on-open-questions-from-us-national-labs-and-none-passed-the-experts-bar/",
+    "story": "s288"
+   },
+   {
+    "id": "20261107-16",
+    "title": "В Стэнфорде создали память для LLM, сжимающую контекст бесед в 16 токенов",
+    "section": "model",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xpvvg3/stanford_researchers_develop_a_new_ai_memory/",
+    "story": "s289"
+   },
+   {
+    "id": "20261107-17",
+    "title": "Росстат парализован после кибератаки: публикация отчетов отложена до 13 ноября",
+    "section": "security",
+    "source": "bloomberg_tech",
+    "url": "https://www.bloomberg.com/news/articles/2026-11-07/russia-s-rosstat-struggles-to-restore-systems-after-major-cyberattack",
+    "story": "s290"
+   },
+   {
+    "id": "20261107-18",
+    "title": "Microsoft сворачивает аренду ИИ-мощностей у Oracle и сокращает работу с неооблаками",
+    "section": "business",
+    "source": "hn",
+    "url": "https://www.reuters.com/business/microsoft-is-winding-down-oracle-deal-rent-ai-cloud-capacity-bloomberg-news-2026-11-06/",
+    "story": "s291"
+   },
+   {
+    "id": "20261107-19",
+    "title": "Google встроила в часы замер давления без манжеты с точностью 65,8%",
+    "section": "product",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/googles-ai-detects-high-blood-pressure-from-a-regular-smartwatch-without-a-cuff/",
+    "story": "s292"
+   },
+   {
+    "id": "20261107-20",
+    "title": "SoftBank и ABB готовят исключение китайского бизнеса, чтобы спасти сделку",
+    "section": "business",
+    "source": "bloomberg_tech",
+    "url": "https://www.bloomberg.com/news/articles/2026-11-07/softbank-abb-weigh-china-carve-out-to-salvage-robotics-deal",
+    "story": "s270"
+   },
+   {
+    "id": "20261107-21",
+    "title": "Связка дешевой модели Jev с вызовом Opus дает топовое качество вчетверо дешевле",
+    "section": "voices",
+    "source": "hn_top",
+    "url": "https://hightouch.com/blog/llm-judges-identity-resolution",
+    "story": ""
+   }
+  ]
+ },
+ {
+  "date": "2026-11-07",
   "slot": "morning",
   "headline": "OpenAI поднимает $11 млрд, а демократы в США тормозят дата-центры",
   "page": "2026-11-07.html",
