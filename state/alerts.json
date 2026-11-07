@@ -2,14 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-06T16:18:09.161377+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/telco-open-source-tools-research-6g-networks",
-    "title:how nvidia open source tools are helping researchers build next generation 6g networks"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-06T17:18:06.118894+00:00",
    "keys": [
     "bloomberg.com/news/articles/2026-11-06/protesters-break-into-microsoft-data-center-site-in-amsterdam",
