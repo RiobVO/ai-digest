@@ -2,22 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-06T01:18:06.232240+00:00",
-   "keys": [
-    "salon.com/2026/11/05/goodbye-from-salon",
-    "title:goodbye from salon"
-   ],
-   "strength": 4
-  },
-  {
-   "at": "2026-11-06T01:18:06.232240+00:00",
-   "keys": [
-    "openai.com/index/cultfit-builds-with-codex",
-    "title:cult fit builds operational muscle with codex"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-06T02:18:07.308463+00:00",
    "keys": [
     "github.com/anthropics/claude-code/issues/107757",
