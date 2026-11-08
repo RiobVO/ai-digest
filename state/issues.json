@@ -1,5 +1,184 @@
 [
  {
+  "date": "2026-11-08",
+  "slot": "morning",
+  "headline": "Взлом банка на $133 млн, открытые LLM для атак и выборы в США",
+  "page": "2026-11-08.html",
+  "entries": [
+   {
+    "id": "20261108-0",
+    "title": "Соавтор гипотезы ETH назвал её опровержение в OpenAI шокирующей новостью",
+    "section": "model",
+    "source": "techmeme",
+    "url": "https://www.nytimes.com/2026/11/06/science/ai-exponential-time-hypothesis.html?unlocked_article_code=1.OlE.47kX.eivz6u8UMHXN&smid=url-share",
+    "story": "s293"
+   },
+   {
+    "id": "20261108-1",
+    "title": "Хакеры увели $133 млн у французского банка Crédit Mutuel Arkéa через подрядчика",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/hackers-pull-off-133-million-french-bank-heist-via-service-provider/",
+    "story": "s294"
+   },
+   {
+    "id": "20261108-2",
+    "title": "Vals AI: открытые модели догоняют закрытые во взломе корпоративных сетей",
+    "section": "security",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/the-gap-between-open-and-closed-ai-models-in-cyber-capabilities-keeps-shrinking/",
+    "story": "s295"
+   },
+   {
+    "id": "20261108-3",
+    "title": "Комитет Public First при поддержке Anthropic победил на выборах",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.politico.com/news/magazine/2026/11/06/ai-big-tech-2026-midterms-anthropic-openai-01152312",
+    "story": "s296"
+   },
+   {
+    "id": "20261108-4",
+    "title": "Минторг США одобрил поставки чипов Nvidia H200 китайским компаниям-пустышкам",
+    "section": "business",
+    "source": "verge",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/1029483/nvidia-ai-chips-china-blacklist-government",
+    "story": "s297"
+   },
+   {
+    "id": "20261108-5",
+    "title": "Наследники Элвиса Пресли и издатель Эминема подали масштабные иски к Suno",
+    "section": "business",
+    "source": "Variety",
+    "url": "https://variety.com/2026/music/news/elvis-eminem-sue-suno-ai-music-generator-1236941798/",
+    "story": "s298"
+   },
+   {
+    "id": "20261108-6",
+    "title": "Победа демократов и протесты в Европе грозят затормозить стройку дата-центров ИИ",
+    "section": "business",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/11/07/after-the-midterms-things-are-looking-rocky-for-elon-musk-and-data-centers/",
+    "story": "s260"
+   },
+   {
+    "id": "20261108-7",
+    "title": "В macOS обнаружили недокументированный граф семейных связей владельца",
+    "section": "security",
+    "source": "hn_top",
+    "url": "https://8rank.ai/game/apple-intelligence-personal-knowledge-graph",
+    "story": "s299"
+   },
+   {
+    "id": "20261108-8",
+    "title": "Microsoft закрыла исследовательскую группу AI Frontiers",
+    "section": "business",
+    "source": "hn",
+    "url": "https://hunch.net/?p=13764006",
+    "story": "s300"
+   },
+   {
+    "id": "20261108-9",
+    "title": "В Claude Code 2.1.319 добавили тихий отказ от прав и фоновые MCP-задачи",
+    "section": "dev",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xqnp0x/claude_code_21319_new_denyinsteadofprompting/",
+    "story": "s88"
+   },
+   {
+    "id": "20261108-10",
+    "title": "Модель Inkling 2 Small выругалась 316 раз во время бенчмарков",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/thinking-machines-inkling-2-small-drops-316-f-bombs-across-benchmark-runs/",
+    "story": "s279"
+   },
+   {
+    "id": "20261108-11",
+    "title": "Итог года с обязательным ИИ-кодингом: раздутая кодовая база и потеря контроля",
+    "section": "voices",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xq2n3t/a_year_after_the_100_ai_mandate_nobody/",
+    "story": ""
+   },
+   {
+    "id": "20261108-12",
+    "title": "Команда /dreamstate для временной смены правил в Claude Code",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xqdgnn/dreamstate_a_claude_code_command_that_swaps_your/",
+    "story": "",
+    "summary": "Вызови команду /dreamstate в терминале Claude Code, чтобы перезапустить сессию с набором правил для брейншторма вместо строгого инженерного CLAUDE.md.",
+    "why": "Позволяет переключить режим работы Claude Code на генерирование идей без ручной правки CLAUDE.md.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Шаг Deepen заставляет модель переформулировать запрос с позиции топового эксперта и дождаться подтверждения пользователя.",
+     "Шаг Dream генерирует от 3 до 5 скрытых потребностей и 10 идей, минимум три из которых должны быть нестандартными.",
+     "Шаг Tenth Man ставит под сомнение фаворита и предлагает три альтернативных архитектурных подхода.",
+     "Команда /dreamstate off возвращает сессию к исходным правилам."
+    ]
+   },
+   {
+    "id": "20261108-13",
+    "title": "Автоматический перенос контекста сессии в Claude Code через tk",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xq6cyv/made_a_sessionstart_hook_cli_so_a_fresh_claude/",
+    "story": "",
+    "summary": "Запусти команду tk init, чтобы добавить хук SessionStart в файл настройки .claude/settings.local.json для автоматического восстановления контекста.",
+    "why": "Экономит токены и ускоряет работу при сбросе контекста или достижении лимита сессии.",
+    "copy": "tk init",
+    "copy_untrusted": true,
+    "topic": "claude_code",
+    "steps": [
+     "Команда tk init добавляет проектный хук SessionStart в файл .claude/settings.local.json.",
+     "Перед очисткой сессии вызывается tk handoff с коротким описанием сделанного, остатка задач и зашедших в тупик гипотез.",
+     "Расход токенов на передачу контекста составляет 42–45k против 63k–141k при использовании стандартных MCP-серверов GitHub/Linear.",
+     "Инструмент считывает затраты на сессию из логов JSONL и выводит расход по задачам через tk receipt."
+    ]
+   },
+   {
+    "id": "20261108-14",
+    "title": "MCP-сервер flownav для эффективного анализа воркфлоу n8n",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/n8n/comments/1xqdeea/my_ai_agent_kept_reading_giant_n8n_json_exports/",
+    "story": "",
+    "summary": "Подключи open-source MCP-сервер flownav к агенту, чтобы он анализировал экспорт n8n в виде типизированного графа вместо полного JSON.",
+    "why": "Сокращает расход токенов агента при исследовании связей и узлов в сценариях n8n.",
+    "copy": "flownav",
+    "copy_untrusted": true,
+    "topic": "automation",
+    "steps": [
+     "Инструмент flownav_affected проверяет ссылки на узлы перед их переименованием или удалением, включая код внутри блоков Code.",
+     "При наличии нескольких узлов с похожими именами инструмент блокирует автовыбор и просит агента уточнить конкретный ID.",
+     "Инструмент flownav_check находит висячие ссылки, изолированные узлы, циклы и отсутствующую обработку ошибок."
+    ]
+   },
+   {
+    "id": "20261108-15",
+    "title": "Экономия токенов в длинных сессиях Claude Code через handoff summary",
+    "section": "tips",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xqjb21/i_built_a_mac_app_with_claude_code_that_coaches/",
+    "story": "",
+    "summary": "Попроси Claude Code составить краткую выжимку пройденных шагов (handoff summary), скопируй её и сбрось сессию, чтобы продолжить в чистом контексте.",
+    "why": "Предотвращает кратный рост стоимости сообщений из-за повторного чтения огромной истории.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Каждое сообщение в сессии на 400K токенов обходится примерно в 7 раз дороже, чем в чистом контексте.",
+     "Переопределение модели субагентов на Haiku с помощью переменной CLAUDE_CODE_SUBAGENT_MODEL в файле ~/.claude/settings.json сократило недельные затраты с $129 до $22.",
+     "Управление порогом автокомпакции контекста настраивается через переменную CLAUDE_CODE_AUTO_COMPACT_WINDOW.",
+     "Локальные инструкции, которые не должны попадать в систему контроля версий, можно хранить в файле CLAUDE.local.md в корне проекта."
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-11-07",
   "slot": "evening",
   "headline": "Утечки ключей в Claude Code и тонкий слой пропаганды в Qwen",

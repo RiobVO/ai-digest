@@ -1,4 +1,5 @@
 [
 {"at": "2026-10-25T03:12:32Z", "kind": "weekly", "slot": "", "outcome": "ok", "calls": [{"at": "2026-10-25T03:11:59Z", "call": "weekly", "asked": "gemini-flash-latest", "served": "gemini-3.8-flash", "status": 200, "seconds": 31.9, "thinking": 0, "error": ""}], "failed": {}, "sources": {}, "events": {}},
-{"at": "2026-11-01T03:11:51Z", "kind": "weekly", "slot": "", "outcome": "ok", "calls": [{"at": "2026-11-01T03:10:16Z", "call": "weekly", "asked": "gemini-flash-latest", "served": "gemini-3.8-flash", "status": 200, "seconds": 94.8, "thinking": 10317, "error": ""}], "failed": {}, "sources": {}, "events": {}}
+{"at": "2026-11-01T03:11:51Z", "kind": "weekly", "slot": "", "outcome": "ok", "calls": [{"at": "2026-11-01T03:10:16Z", "call": "weekly", "asked": "gemini-flash-latest", "served": "gemini-3.8-flash", "status": 200, "seconds": 94.8, "thinking": 10317, "error": ""}], "failed": {}, "sources": {}, "events": {}},
+{"at": "2026-11-08T03:14:53Z", "kind": "weekly", "slot": "", "outcome": "ok", "calls": [{"at": "2026-11-08T03:12:50Z", "call": "weekly", "asked": "gemini-flash-latest", "served": "gemini-3.8-flash", "status": 200, "seconds": 121.5, "thinking": 6723, "error": ""}], "failed": {}, "sources": {}, "events": {}}
 ]
