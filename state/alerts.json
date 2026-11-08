@@ -2,28 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-07T14:18:09.787227+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMi-wFBVV95cUxPb2hYenppczRiRkpzTkwxZTRYSDd2NUxnWmpIRXV1RHFsTnFScTAydzVUSGljNjhlbmJxVldNNnhZVlVwb2ZzQ1htV0pfRHJJRWVETFl3RUNWY2Y4UXdiVEtZcTRKRk1Sdm1nT0dFcS1ZWjQ1TE5vbkN3MHBaQ3NuLUlGV2ozNEZKVm92dUlyLThoZnM3QTdiNUxYX2dOc1I3Wk84MjJpTFZCR19PTHJtU2g4QlhENnpaLVg2TWtVV2I3NENfS2hKcnRfMUtWN3dCQ0piTEIweGpEYmlQVEl1VnMyWXZMMzhiV3c5cVNPZnk3SnQ2dHFpbXVxYw?oc=5",
-    "news.google.com/rss/articles/CBMiiwFBVV95cUxPZG9ZcElNdWItc3FBRzFFbWpjZGxOVGYwei03akpvbXpnblhaNWdydDdoWV9SX2wxWEtZdDRoQWxLV3hZRGFlSngtVFZMLVRpTUxKWDFTWlRVNjBQTzROYXlhelBpS3o1Z3ZwQzUxbld2TTJ6LWxVaVpVQ2tnUkRudGFrRm9Qb0k2MjFZ?oc=5",
-    "news.google.com/rss/articles/CBMikwJBVV95cUxPZXFQbFd2VUhVZU5hUzJ0Tl80bTRVTnc0OXZZZVJjX2NxZk45Nks3aTM4TkxHakZCWXhrTFNFdE00aUNnQnp4Y3JCbWV4QWlZcnZRYWJKYW85ZmNWZm1jQ1Ffa0RUbjhjWTlaU3RmVmM1a2RER2lQak9VVEozbF94V2lWWXgyR1ZLeTBOclF4SzRyUjhhdXhpRmVxaktMSTd1bkJkdzhjbDZhNXU4VW9XOFBMRmJvS0FkTUNTR1djT0hUUklDSmU5ajJPNXVCVnIta1ZIaDdpOTRha3NuTVBtR3NtQ05oT3hZM0Y3bGZfM08zUEJnclh6UjNPdk1DeHVIbGJmbWVvR2lBR19vNWJOSHNfbw?oc=5",
-    "news.google.com/rss/articles/CBMilgJBVV95cUxNbDV1MHFQOE5JdkRadFVPUEU5aFpNRGt5UlRTYmhaQ3Y2VmVEd1IzcEZkamhBaXJFU1laNzVXaXFiZHhwa1hDeXk0UlltTzZubm1NdTBPcWtPdUx3Z2Zkb014QnRyb2IzMmViZm9LNTJqNGxwaE1ValpaS3pLakhHWjUwQmw2aU93Vl9EMUtibWRpOC1uWjk2LUl2bVJDbDdBMzNWVVpBY0lIZ05nN3pUb1ZoX0FhX0Z5ZVRzcWpUa0k4QWR0ODFJSHhCVmJ0Ny1kcUpTT1ltQ18xN04yNS1fenZaVkZwbTFVQVhmSXZOU2JEOHBZWXRlODU2TTY2a2pQckgzNjBIZGhnbmJDMHVDS0U3OFA1Zw?oc=5",
-    "news.google.com/rss/articles/CBMiywFBVV95cUxQSGhIWlFWRDN2S2lETld0STExQjVpMmdBT2lWLThZTjkxVFItSEtleFlLMmU1bnpxMUlPcUFMZlJzTTJkMmoyRkJfRmozLWZGZ2c1c1FZNkJMdXRSSFBJRFJZRUpTNnBRTHpKQ1oxX3J4M0RqM29RSVROT0hEZHRkZlhRUjhrUlQzbThkRncxLVg5ZmFpdlZ3NXZ1MEk2OGc5eVFHQU9VcGhlQlBLbkZCdDJVT29NaDMzX1ZVaEZaVkJ6UHExY21ZRWM0aw?oc=5",
-    "title:from high flying ai stocks to tariff hit alcohol companies the midterms shook up wall street"
-   ],
-   "strength": 5
-  },
-  {
-   "at": "2026-11-07T14:18:09.787227+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMigAFBVV95cUxOd2loaHRVSHBCRDJoMDk0NnBLSVFlVVpubTlwa2ozcTFaYl9WZ1J2RTJZNTRDRmdfVDFvZzAyZlc2Q25NWUE5X0gyVVdRZW5FQWpGZ3huS3d0b2NWTjdnR21ZMVRsUU1QUHVkbVYwZGJzQ0liQTVyb0laYmYtY0hJeg?oc=5",
-    "news.google.com/rss/articles/CBMinAFBVV95cUxPUG9mWW9KTnNsWDNxc1VwWEhYcVpGWXpSdDA1V0RkdGo3eUNuRzNqUDJmWmtEQ0RjVkYyRGk1aVNPQU1JaFVvWEcyR2tDNDE1bF8tWFkzVmRUQjc2Y3c1UEZBbHNyU2lRNmlHNzdkMEh3eUdFR1NkNHd5cGlqSGpaNGNnWG5Vc0MzRktLSE9XU2U2emJXUTdGY1BUR1g?oc=5",
-    "news.google.com/rss/articles/CBMirgFBVV95cUxNWE9CZkVrVExnZGNEcWx0ZWJoQ0xlbTkwV09FZWlEaVFDaGNraXlhakhWQWQ3dnNCR0xibXpiUnpDTGloVm92SzZkOTVieEhBVmU0ZVk4dUFSMTZTcm1UbkJoaU9Wa0JsOU94anFoSmNtcGZqZktHU0FBOFRXcUNlVlZqa0hCNEExWjV2UHJ1UzljajNHQmRhQjlNbUFYQ2dQSlcxdnFsb3I2eE1FRVE?oc=5",
-    "title:consumers are now worried about an ai bubble michigan survey says"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-11-07T23:18:08.107344+00:00",
    "keys": [
     "hunch.net?p=13764006",
