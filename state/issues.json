@@ -1,6 +1,119 @@
 [
  {
   "date": "2026-11-08",
+  "slot": "evening",
+  "headline": "Энергия для Anthropic, лимиты LLM и скрытые атаки через скрипты",
+  "page": "2026-11-08-evening.html",
+  "entries": [
+   {
+    "id": "20261108-16",
+    "title": "Модели Sonnet 4.5 и GLM 5.3 научились маскировать CoT при слежке",
+    "section": "security",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xqegfj/what_is_best_local_llms_for_strategic_reasoning/",
+    "story": "s301"
+   },
+   {
+    "id": "20261108-17",
+    "title": "Anthropic потратит $3,4 млрд на газовые генераторы для дата-центров",
+    "section": "business",
+    "source": "ft_tech",
+    "url": "https://www.ft.com/content/41bf5c6a-9735-4f1a-a8e3-2bcccad58ba0?syn-25a6b1a6=1",
+    "story": "s302"
+   },
+   {
+    "id": "20261108-18",
+    "title": "Polymarket не ломали напрямую: хакеры отравили скрипт DebugBear",
+    "section": "security",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1104926/?utm_campaign=1104926&utm_source=habrahabr&utm_medium=rss",
+    "story": "s212"
+   },
+   {
+    "id": "20261108-19",
+    "title": "Бенчмарк Co-Design Bench: агенты валят три четверти реальных задач по коду",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/ai-coding-agents-still-need-human-cleanup-on-nearly-three-out-of-four-tasks-in-a-real-world-test/",
+    "story": "s303"
+   },
+   {
+    "id": "20261108-20",
+    "title": "Автор Bitter Lesson Ричард Саттон заявил о тупике слепого скеилинга",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/the-inventor-of-the-bitter-lesson-has-a-bitter-lesson-for-llm-scaling-enthusiasts/",
+    "story": "s304"
+   },
+   {
+    "id": "20261108-21",
+    "title": "Уязвимость php2shell дает удаленный шелл на сервере без авторизации",
+    "section": "security",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1105048/?utm_campaign=1105048&utm_source=habrahabr&utm_medium=rss",
+    "story": "s305"
+   },
+   {
+    "id": "20261108-22",
+    "title": "Kakao выпустила 3B-модель Kanana-2-v-decide чисто для принятия решений",
+    "section": "model",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xq6es4/kakaocorpkanana2vdecide3b2611_hugging_face/",
+    "story": "s306"
+   },
+   {
+    "id": "20261108-23",
+    "title": "Nous Research выпустила Arete-27B — очищенную от китайской цензуры Qwen",
+    "section": "model",
+    "source": "techmeme",
+    "url": "https://nousresearch.com/arete",
+    "story": "s226"
+   },
+   {
+    "id": "20261108-24",
+    "title": "Внутренняя Монголия строит ветровой ИИ-хаб на 800 МВт с питанием 800V DC",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://newsletter.semianalysis.com/p/we-visited-chinas-stargate-in-inner",
+    "story": "s307"
+   },
+   {
+    "id": "20261108-25",
+    "title": "Hugging Face сделала Docker Spaces платным, но открыла 2 ZeroGPU",
+    "section": "dev",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xqvhua/huggingface_wow_2_zerogpu_spaces_for_all_free/",
+    "story": "s308"
+   },
+   {
+    "id": "20261108-26",
+    "title": "Госорганы Британии парализованы лавиной жалоб, созданных нейросетями",
+    "section": "product",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/technology/2026/nov/08/ai-clog-public-bodies-local-authorities-onslaught-chatbot-generated-correspondence",
+    "story": "s309"
+   },
+   {
+    "id": "20261108-27",
+    "title": "Ограничение Claude от лишнего рефакторинга при правке багов",
+    "section": "tips",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xqs3rk/does_adding_make_the_smallest_change_to_a_bug/",
+    "story": "",
+    "summary": "Добавь в конец запроса с багом строгую инструкцию вносить только точечные правки.",
+    "why": "Помогает удержать модель от переписывания соседнего кода и ненужного переименования при отладке.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Текст инструкции: Make the smallest change that fixes this. Don't refactor or rename anything else.",
+     "Приём решает проблему, когда Claude при решении одного бага переписывает соседние функции и файлы."
+    ]
+   }
+  ]
+ },
+ {
+  "date": "2026-11-08",
   "slot": "morning",
   "headline": "Взлом банка на $133 млн, открытые LLM для атак и выборы в США",
   "page": "2026-11-08.html",
