@@ -2,16 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-07T10:18:06.457281+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMihAFBVV95cUxOTlhvZVU2aTBpUzRWTlRIbmU0ZHJJUm1QUURkeXFtMVZfQUJxZjc4NklDaGhHWnpnTnI4UEFkd2s2UFBaSkFQalFPSjVBazA4Tk5rN0E0WGNYakRPeXJiaWFGMks3ZHpHN3VRMzRtbU1ET0YyaFNIYWlYV1BDTW9XOGFwdTU?oc=5",
-    "news.google.com/rss/articles/CBMioAFBVV95cUxNZUs5b0ZPVmxpN0dvaXhzUXFBejRUemtueFFtME1pampjX3AwZV9ONGo2YlJ6ZDUyQk9WOE9Mbks3Q3cxRHNkaEo2WWlkUmtsNnlPc29mc1pPcTk5dWZJRjB4cDFmd0oxeHNyTG9OMXNDVWhkQXpEMGVXc0hFc0RaeHF2RXk5T05TWW9pZzZVaTVQNkgza2tBRFZXaG81MkJh?oc=5",
-    "news.google.com/rss/articles/CBMiuAFBVV95cUxPeHEzSjNuY3VqTFJzZmpiVkNoTm9wbThYdW1nUmh2R21ibGN6UF9Ycy11UXdLNWVpY1hTNmN2SzVXRVlJRzJJcTlqRnpRYU9uZFllQjNXaEo4VmFpS21TMWxudTdjSnBtY0U1dG1JRk1IZmpzMUxlbE5tUXdFVmxyQWVObm44YWZnS05JOEQxYlNmQjR1ZFMtQUJvVGlCRXJLYlhjLUtjNTliSEluRmRKVkdlMDNMUjll?oc=5",
-    "title:amazon s ai spending is pressuring free cash flow is the stock still a buy"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-11-07T12:18:05.511035+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMilgFBVV95cUxQd29JYkdFdWMxSEplVVhFTUtHeDFuSkZNaTFQU2hSdlFnak0yN0ZsVWFhR3cwSG9CMnRfWm51dnpLNEpuWDR5TDAyS0Q0ak5NeVZyWnNCSW85azItRmR3UldGUXNXVURSZFpKSFJZd3MzRFNlSl9Za1RGX0JsQ0tkWFMwM3VVdTZQMDlzRTlxbmZ5TXBjSUE?oc=5",
@@ -56,6 +46,16 @@
     "news.google.com/rss/articles/CBMijwJBVV95cUxOMmdFcU10LXZXdlZwQzFKNWZkNXJmT0pwb3hQaXVTTUxPY1ZIa0I5WEZwNHh0Y1FXLXN6VjhuTDVtOVBSUkg4N3hLaGZJNXRxZUlQRE5hSFlfNTFEdkVCVGlaQ2pITTJHQXRUbGlZZ2QyX2FXRUd0Q1doaUhuUW1qc3hPVS1wR28yUXZJZ3dodjBTMENqRURUMFQ0Q3dhS0IxQmdSNFZNTHJyVTFEd2JFc005dloya3EwZFBsQ29wa2pJaWdJYUQwejYtNkplVGJ6WlJ2TVVwYmJQOFhMSVRsNG9JeHlLUUVZZ0IzZFBJVnVVb2dYQk1hMFFHeXJwa2c4RW1jMklSV3JXd05DU25V?oc=5",
     "news.google.com/rss/articles/CBMiygFBVV95cUxPZFBRS1lKakN3SkdhRHFfbGEydHo2czQ2SUlFazlEU3dzdk9WU1NfTXJNTjA3UlQxbk15VUtTYjZXWUlfN2hYaGhqTjVtYWYxalR4ZXB5Qk1DZW5wZEFXNGdSSVliVk43dWRPSXQyWlVQc1BVTGhLQ3VoMlpLMUJwM3lsWDQ2UWZHblVndjBFVmVIc091dzRLMjJvVTBkVVgzVVc5RlRvUk5KTHVXVldMY2FVVm01Wm9Gc0lFVTJ5eGc1RFFxWHVZRnp3?oc=5",
     "title:staff at the us center for ai safety are reporting to the white house raising independence concerns"
+   ],
+   "strength": 3
+  },
+  {
+   "at": "2026-11-08T11:18:06.135648+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMi_wFBVV95cUxNZkNtZXZyV0xyLWJDaHZvNW9GMmdLTU93VHBHaXY1cEF1ZVl2RUpOSWlETWl5WFRrLTRwc3MzZjNNX3lIaDlianNrRTRSczZHcVRBalNsZXUtX3owa3pzV01RckZ0SExUMGtMcEtYSVJUZFB5MWVoRm95WVpaLWFhcWF6Y25GM0RpSlNkblZHRjRMcHhJS0Zob1U4ZnpTMHMxR1JqMzlkRDdhQnJRcTRxdEw3RnFzRlJQMmN1b3lPOThzUlo4S1VDczBMS2EyaDFsb1V3OXNDUUFiVU9PMUhFWklJaHl1LW5VMkVIX3ZnbFF0ZWlHVmUyS1B3UUpiZUU?oc=5",
+    "news.google.com/rss/articles/CBMiigFBVV95cUxNZFNoNVUwVHF2QVBHTW51c1MySXlrR2ZjNk1panpUcFJhSzg2VzJkYVRjM1djOWptQThzZGFpdVJOcTJxdTRvUEI4RVhaMF9uemY5ckcxc0hrTmFWRjkzU2VYQTZRUklXUEpoenYwZzk0OUIzY0stRXVTNFlpQmNGcHl1aUxoRHdmbVE?oc=5",
+    "news.google.com/rss/articles/CBMimAFBVV95cUxQWF96TUtjYnVnRXpMQ0NoanM2b3Z0UHNFMlJNdWJGVWRRdDN1Y2F1Y2duQ1NmTUVZMzlsZXlPSHl6TE1yMjhBM3ZQTzlPbU9lQzlYUTdBQ0dWQkhuVy1KLURHMmNTU3B5c1lIVkRQc25QejBEeGlMWG85bTlmN0RSdVZva2U0VXEwSlFPUkJreTNtRHBxME1EdQ?oc=5",
+    "title:got 5 000 2 growth stocks building the software backbone of artificial intelligence ai"
    ],
    "strength": 3
   }
