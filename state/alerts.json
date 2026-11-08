@@ -2,14 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-07T23:18:08.107344+00:00",
-   "keys": [
-    "hunch.net?p=13764006",
-    "title:the end of microsoft research s ai frontiers group"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-11-08T08:18:06.897552+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMi_gFBVV95cUxNaTlpWE01UEV6MXIxYlhHdUprV0JkU0xMdnNySU5xUWJ3V0xfY05DVW0yWFVCakRtM0c3aEtVNnp2My1KTGtkaTlBVWQ4NTBCY1QzTFppTnAxVmdzd05Lb0h3eG0xaTVEdEdvNGVDRy1ELU95RlBSSFZCVmxaMC1MYUg2U0p2bVlmaThvTWx4aEl5czVqSWVLWEFCaWN5aTZYN2NGY2Q4bDZ4VmZUMEhmTTRsTVd5bjBWcGZGcWJPMjFZRGU3a18waVRxU3lFb0dVcnZGMTdHX1dWVThicVk0YjNNcC1yWDY3dG5aTmMxWjV6WkFVaHZtbW9QbjljUQ?oc=5",
@@ -38,12 +30,12 @@
    "strength": 1
   },
   {
-   "at": "2026-11-08T21:18:06.932197+00:00",
+   "at": "2026-11-08T23:18:08.882322+00:00",
    "keys": [
     "thestateofai.com/news/goldman-sachs-claude-code-traders-bankers",
     "title:goldman sachs is pulling claude code from its bankers and traders"
    ],
-   "strength": 3
+   "strength": 5
   }
  ],
  "undated": {
