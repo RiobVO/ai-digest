@@ -69,14 +69,6 @@
    "strength": 2
   },
   {
-   "at": "2026-11-09T05:18:05.683376+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMiqgFBVV95cUxQVHBHYWpjdWxPUUszcVo2UmdxQ0UzUWpLZlh6TFdlZXhwWDRCWDM1S1V2eW0xODY4bFN4bzNmM3REWTlYTmpZdm1MYWFlZTdkY2pFZXhncGRfR2x5WjlYdVZoRW9YbUJhV1RxODR5NHhGLVYySlRVa0QwZ0pKMU4yUHd2RkQwWm8zV2pDaFU4VzI3NXhYN0tsVHY3ejV4dmE4YTZrUkNZTDlEUQ?oc=5",
-    "title:exclusive crowdstrike to buy two ai security startups for 495 million"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-09T06:18:05.554794+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMidEFVX3lxTE1wYlJ1dnEtOVJVMmNUYUdFLXVfZnR2eThUeFlfVHhkQmZ2cFZqSjVKME51aTZPNHhHMklRS2N4UXBlWGVoNElPYmZQQkxLSE9FcDhSVDdla3poNHpjRnJYQ1VXVFR4SUdfSmQ4dUdKOWlsUU5H?oc=5",
@@ -182,6 +174,22 @@
     "title:chatgpt enterprise now available in aws marketplace"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-11-09T20:18:09.001855+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMiqgFBVV95cUxQVHBHYWpjdWxPUUszcVo2UmdxQ0UzUWpLZlh6TFdlZXhwWDRCWDM1S1V2eW0xODY4bFN4bzNmM3REWTlYTmpZdm1MYWFlZTdkY2pFZXhncGRfR2x5WjlYdVZoRW9YbUJhV1RxODR5NHhGLVYySlRVa0QwZ0pKMU4yUHd2RkQwWm8zV2pDaFU4VzI3NXhYN0tsVHY3ejV4dmE4YTZrUkNZTDlEUQ?oc=5",
+    "title:exclusive crowdstrike to buy two ai security startups for 495 million"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-09T20:18:09.001855+00:00",
+   "keys": [
+    "anthropic.com/claude-fable-and-mythos-5-2",
+    "title:anthropic releases mythos 5 2 and fable 5 2 saying they are best for the most ambitious open ended technical work with outputs up to 30 faster than 5 1 anthropic"
+   ],
+   "strength": 4
   }
  ],
  "undated": {
