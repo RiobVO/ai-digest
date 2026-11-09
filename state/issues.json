@@ -1,5 +1,165 @@
 [
  {
+  "date": "2026-11-09",
+  "slot": "morning",
+  "headline": "Шпионский скандал в Nvidia и запрет Claude Code в Goldman Sachs",
+  "page": "2026-11-09.html",
+  "entries": [
+   {
+    "id": "20261109-0",
+    "title": "Совет директоров Nvidia начал расследование связи Дженсена Хуанга со шпионкой КНР",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.axios.com/2026/11/08/nvidia-ceo-jensen-huang-admits-affair-board-to-launch-investigation",
+    "story": "s310"
+   },
+   {
+    "id": "20261109-1",
+    "title": "Хонипоты SANS фиксируют волну сканирований на уязвимость *sshole в OpenSSH",
+    "section": "security",
+    "source": "sans_isc",
+    "url": "https://isc.sans.edu/diary/rss/33498",
+    "story": "s269"
+   },
+   {
+    "id": "20261109-2",
+    "title": "THORChain начал отмывать украденные у Binance средства вопреки требованиям ФБР",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://www.wsj.com/finance/currencies/the-shadowy-crypto-services-helping-the-binance-hackers-launder-stolen-billions-28641737?st=3WgKBC&reflink=desktopwebshare_permalink",
+    "story": "s174"
+   },
+   {
+    "id": "20261109-3",
+    "title": "Goldman Sachs запретил банкирам и трейдерам использовать Claude Code",
+    "section": "business",
+    "source": "hn",
+    "url": "https://www.thestateofai.com/news/goldman-sachs-claude-code-traders-bankers",
+    "story": "s311"
+   },
+   {
+    "id": "20261109-4",
+    "title": "Платформа DeepSeek Harness набрала 1,54 млн DAU и сжигает 92 трлн токенов в день",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://www.bloomberg.com/news/articles/2026-11-08/deepseek-s-ai-agent-platform-hits-1-54-million-daily-users",
+    "story": "s312"
+   },
+   {
+    "id": "20261109-5",
+    "title": "Глава Apple Джон Тернус требует ускорить превращение Siri в автономного ИИ-агента",
+    "section": "product",
+    "source": "verge",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/1029552/apple-siri-ai-agentic",
+    "story": "s313"
+   },
+   {
+    "id": "20261109-6",
+    "title": "Утечка в облаке ритейлера Iris Ohyama скомпрометировала данные 7,7 млн клиентов",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/iris-ohyama-data-cloud-breach-exposes-info-of-77-million-customers/",
+    "story": "s314"
+   },
+   {
+    "id": "20261109-7",
+    "title": "Андрей Карпатый за уикенд собрал платформу рекомендаций видео с помощью Claude",
+    "section": "dev",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/andrej-karpathy-built-a-curated-video-platform-in-a-weekend-using-claude-and-20-years-of-hacker-news/",
+    "story": "s315"
+   },
+   {
+    "id": "20261109-8",
+    "title": "Проект Llama-modchip запустил 284B-модель DeepSeek на 64 ГБ системного RAM без GPU",
+    "section": "dev",
+    "source": "hn",
+    "url": "https://github.com/synchopate/llama-modchip",
+    "story": "s316"
+   },
+   {
+    "id": "20261109-9",
+    "title": "Tencent ускорила генерацию Qwen 27B в три раза с помощью спекулятивного метода DSpine",
+    "section": "model",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xr2aaa/tencentqwen3827bdspineb16_hugging_face/",
+    "story": "s317"
+   },
+   {
+    "id": "20261109-10",
+    "title": "Amazon готовит нового домашнего робота на замену непопулярному Astro",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://www.cnbc.com/2026/11/08/amazon-home-robot-fauna-sprout.html",
+    "story": "s318"
+   },
+   {
+    "id": "20261109-11",
+    "title": "Подъем n8n с публичным HTTPS и Cloudflare Tunnel одной командой",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/n8n/comments/1xqon0l/selfhosting_n8n_on_your_own_machine_with_a_public/",
+    "story": "",
+    "summary": "Установи утилиту hoist и запусти шаблон n8n. Инструмент автоматически поднимет Docker-контейнер и пробросит зашифрованный туннель Cloudflare с готовой URL-ссылкой.",
+    "why": "Пригодится для быстрой отладки внешних вебхуков без проброса портов на роутере.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "automation",
+    "steps": [
+     "Команда hoist template n8n разворачивает контейнер в Docker и связывает его с Cloudflare Tunnel.",
+     "Инструмент берет на себя логирование, перезапуск, выставление лимитов CPU/RAM и резервное копирование.",
+     "Управление запущенным сервисом доступно через встроенный локальный дашборд."
+    ]
+   },
+   {
+    "id": "20261109-12",
+    "title": "Михаил Эрик о курсе Stanford CS146S: чему учить, когда ИИ решает домашку за один промпт",
+    "section": "voices",
+    "source": "latent_space",
+    "url": "https://latent.space/p/cs146s/",
+    "story": ""
+   },
+   {
+    "id": "20261109-13",
+    "title": "Промпт для пошаговой разбивки сложных проектов на 30-минутные таски",
+    "section": "tips",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xr0drc/whats_the_one_prompt_you_keep_coming_back_to/",
+    "story": "",
+    "summary": "Отправь модели системный промпт для декомпозиции. Она создаст артефакт с чекбоксами, а при затыках на конкретном шаге разобьет его на еще более мелкие подзадачи.",
+    "why": "Помогает превратить объемную задачу в понятный чек-лист и доводить проекты до финала без зависаний.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "prompts",
+    "steps": [
+     "Отправь промпт с требованием декомпозировать проект по порядку на шаги длительностью строго до 30 минут с четким критерием завершения (done-check).",
+     "Запроси вывод в формате единого интерактивного артефакта со списком задач и чекбоксами для фиксации прогресса.",
+     "Если на каком-то шаге возникает затык, отправь этот пункт обратно в модель с просьбой расщепить его на микрошаги (например, 23a, 23b)."
+    ]
+   },
+   {
+    "id": "20261109-14",
+    "title": "Отключение молчаливых A/B-тестов Anthropic при работе через шлюз",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xr66pd/i_dont_think_opus_55_was_nerfed_theyre_just/",
+    "story": "",
+    "summary": "Сбрось переменную окружения _CLAUDE_CODE_ASSUME_FIRST_PARTY_BASE_URL при использовании собственного прокси. Это запретит Anthropic затягивать сессию в удаленные эксперименты.",
+    "why": "Позволяет зафиксировать стабильное поведение Claude Code и избежать скрытого изменения качества рассуждений.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Сбрось переменную _CLAUDE_CODE_ASSUME_FIRST_PARTY_BASE_URL в окружении при маршрутизации через собственный шлюз.",
+     "В экспериментальных сборках (идентификаторы dba, 34e, 763, eab) длина Bash-команд возрастала втрое (до 24 947 символов против 8 069), а ответы с несколькими tool calls учащались.",
+     "Скорость генерации токенов остается неизменной (104–112 токенов/с), но расход 5-часового лимита может вырастать примерно на 30%.",
+     "Идентификаторы экспериментов хранятся локально в файле ~/.claude.json и привязываются к аккаунту.",
+     "Проверить наличие экспериментов на аккаунте можно командой с использованием утилиты jq."
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-11-08",
   "slot": "evening",
   "headline": "Энергия для Anthropic, лимиты LLM и скрытые атаки через скрипты",
