@@ -1,6 +1,126 @@
 [
  {
   "date": "2026-11-09",
+  "slot": "evening",
+  "headline": "Скандал с Дженсеном Хуангом, новые TPU от Google и атаки агентов",
+  "page": "2026-11-09-evening.html",
+  "entries": [
+   {
+    "id": "20261109-15",
+    "title": "Совет директоров Nvidia начал расследование против Дженсена Хуанга из-за связей со шпионкой КНР",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://x.com/niubi",
+    "story": "s310"
+   },
+   {
+    "id": "20261109-16",
+    "title": "Google анонсировала два новых чипа TPU 8tx и TPU 8i Max",
+    "section": "product",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/google-ships-four-tpu-variants-in-one-year-as-it-ramps-up-competition-with-nvidia/",
+    "story": "s319"
+   },
+   {
+    "id": "20261109-17",
+    "title": "Хакер применил ИИ-агенты BOSSAI для кражи данных экстренных служб Тайбэя",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/taiwan-based-hacker-used-bossai-ai.html",
+    "story": "s320"
+   },
+   {
+    "id": "20261109-18",
+    "title": "CISA добавила обход MFA в SonicOS в каталог активно эксплуатируемых уязвимостей",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/cisa-flags-sonicwall-sonicos-mfa-bypass.html",
+    "story": "s283"
+   },
+   {
+    "id": "20261109-19",
+    "title": "Платформа DeepSeek Harness набрала 1,54 млн активных пользователей за три месяца",
+    "section": "product",
+    "source": "scmp_tech",
+    "url": "https://www.scmp.com/tech/big-tech/article/3373757/can-deepseek-challenge-openai-anthropic-ai-agents-harness-adoption-takes",
+    "story": "s312"
+   },
+   {
+    "id": "20261109-20",
+    "title": "Уязвимость в Web3Auth позволила злоумышленникам похитить средства пользователей Keplr",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/web3auth-flaw-exploited-to-steal-keplr.html",
+    "story": "s321"
+   },
+   {
+    "id": "20261109-21",
+    "title": "Настройка Claude Code: выноси критические запреты из CLAUDE.md в хуки и разрешения",
+    "section": "tips",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1105196/?utm_campaign=1105196&utm_source=habrahabr&utm_medium=rss",
+    "story": "",
+    "summary": "Оставь в CLAUDE.md правила стиля и форматирования, а опасные действия (удаление файлов, системные команды) блокируй через встроенные разрешения и проверочные хуки.",
+    "why": "Инструкции в CLAUDE.md не гарантируют полную защиту от случайного удаления данных агентом.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "На бенчмарке StateTrack-Bench 88,6% сбоев в длинных сессиях вызваны дрейфом поведения, а Microsoft Research зафиксировала падение качества моделей в диалогах в среднем на 39%.",
+     "Для запрета вызова опасных MCP-команд внести их в список deny объекта permissions в .claude/settings.json.",
+     "Для хука проверки завершения добавить JSON-конфигурацию события Stop в файл настроек Claude Code и положить исполняемый скрипт в корень проекта.",
+     "Скрипт проверки должен завершаться с кодом exit 2, чтобы заблокировать остановку агента и передать текст из stderr в контекст."
+    ]
+   },
+   {
+    "id": "20261109-22",
+    "title": "Саймон Уиллисон о том, как Claude Code и Codex засыпают репозитории избыточными описаниями PR",
+    "section": "voices",
+    "source": "simon_willison",
+    "url": "https://simonwillison.net/2026/Nov/9/details-summary/",
+    "story": ""
+   },
+   {
+    "id": "20261109-23",
+    "title": "Устранение RCE в Windows Paint: установи патч CVE-2026-83844 вручную через Store",
+    "section": "tips",
+    "source": "xakep",
+    "url": "https://xakep.ru/2026/11/09/paint-rce/",
+    "story": "",
+    "summary": "Открой Microsoft Store в целевой системе Windows, перейди в библиотеку обновлений и установи последнюю версию Paint.",
+    "why": "Windows Update не обновляет приложения Microsoft Store, оставляя Paint уязвимым к RCE.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "security",
+    "steps": [
+     "Уязвимость CVE-2026-83844 получила 8,1 балла CVSS и связана с чтением за пределами буфера (out-of-bounds read).",
+     "Обновление через Windows Update не пропатчит Paint, так как UWP-приложения устанавливаются отдельно для каждой учетной записи.",
+     "Исправленная версия 11.2609.401.0 распространяется через Microsoft Store, хотя базы CVE и NVD ошибочно указывают старый порог 11.2605.91.0.",
+     "Администраторам нужно проверить версию у всех пользователей и в предустановленном образе (provisioned-копии)."
+    ]
+   },
+   {
+    "id": "20261109-24",
+    "title": "Оптимизация работы с Claude: генерируй скрипты для локальной обработки массивов данных",
+    "section": "tips",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xrmgl3/be_a_smart_monkey_build_use_tools/",
+    "story": "",
+    "summary": "Попроси модель написать локальный Python-скрипт для парсинга или симуляций, вместо того чтобы передавать массив входных данных прямо в чат.",
+    "why": "Избавляет от перегрузки контекста и перерасхода токенов при пакетном анализе файлов.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "prompts",
+    "steps": [
+     "Попросить Claude написать скрипт для локальной обработки со шкалой прогресса, возможностью возобновления работы и автотестами.",
+     "Скачать Ollama и запустить .bat-файл по указанию модели.",
+     "Запустить сгенерированный Python-скрипт для локальной обработки файлов."
+    ]
+   }
+  ]
+ },
+ {
+  "date": "2026-11-09",
   "slot": "morning",
   "headline": "Шпионский скандал в Nvidia и запрет Claude Code в Goldman Sachs",
   "page": "2026-11-09.html",
