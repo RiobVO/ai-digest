@@ -21,22 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-09T16:18:09.486273+00:00",
-   "keys": [
-    "foldableflight.com",
-    "title:fold epic paper airplanes"
-   ],
-   "strength": 4
-  },
-  {
-   "at": "2026-11-09T17:18:05.897457+00:00",
-   "keys": [
-    "economist.com/culture/2026/10/29/humans-will-never-again-create-a-project-quite-like-wikipedia",
-    "title:humans will never again create a project like wikipedia"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-11-09T19:18:09.297146+00:00",
    "keys": [
     "openai.com/index/chatgpt-enterprise-aws-marketplace",
