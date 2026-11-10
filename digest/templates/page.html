@@ -120,7 +120,9 @@ a.buzz:hover{text-decoration:underline}
 .more summary:hover{background:var(--hover)}
 .more[open] summary:hover{background:#2c2a29}
 /* Разбор без вложенных коробок: разделитель сверху и секции с подписями, как в документации */
-.more-body{margin-top:14px;padding-top:16px;border-top:1px dashed var(--border-3);display:grid;gap:18px;color:var(--ink)}
+/* overflow-wrap: неразрывный URL в заметке (ссылка на релиз, 397px) распирал колонку секции шире карточки,
+   и на телефоне весь разбор обрезался справа (выпуск 2026-11-10) */
+.more-body{margin-top:14px;padding-top:16px;border-top:1px dashed var(--border-3);display:grid;gap:18px;color:var(--ink);overflow-wrap:anywhere}
 .more-body section{display:grid;gap:8px}
 .more-lead{margin:0;font-size:1.02rem;line-height:1.65;color:var(--ink)}
 .more-label{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
