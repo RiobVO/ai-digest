@@ -2,14 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-09T08:18:05.268525+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/korean-startup-investments-msit",
-    "title:nvidia announces new planned investments in korean startups at the msit nvidia ai startup partnership forum"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-09T10:18:06.242318+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMi-gFBVV95cUxORlNDR1JVX2JEc0hZOWZSdnR3VXRjMTN5NkxXN1lBeWFLRGpnTDc3VXdlM3Y3WUVnbDhOQTJwd1doNjBSV1JVZW9JR1lxZHBfX2pvdF9jbU9aeHVqNjd1YVJiNHBuTFVuNGFTUWJxcG1uWnQwWFFSQTlmXzdQcUJFeWc1TTAtVG9mM045ZVppeTl3TkJQMkU0RXhoM2dkaEpfTmh2ekZYZ2NkNHhTZXd1SkxXbmMxWmQ3M2M3WFZ3MENtbjAzTHJWaDZuZUNuYWFVbk9Vc2RvVl8wUTN0WU9Ta19ZYmpTNGktZ1dIbDN4UU00WS10NzI3dUlR?oc=5",
@@ -105,6 +97,16 @@
     "title:australia to launch ai safety regulator after openai s breach of a government portal"
    ],
    "strength": 4
+  },
+  {
+   "at": "2026-11-10T08:18:06.361566+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMikgFBVV95cUxOQ2dnM2FTQzdWZWEtMDRxaWdDbno4c2VmQnlCdDBfWUhQU3FUdlprb3Rid0VJdjFaLWJEWkpndi1zX1oxUjFPbkhfYl9IOWdQaHJiZzAtS29CTGF5SC1NUElIQktFTE1uTGhpMzJWcTlzLU1icUxsOTJXZGVsdHlVVm1SVGZ4a0dveEtGSFZNbTBIZw?oc=5",
+    "news.google.com/rss/articles/CBMipgFBVV95cUxPaHpmQ004SnRvTzRmXzFseXp4THJEWWJFeXNlVUY3eEUxVDdfbVpTUTMxNTdZVm14VmJyQkZOaUh0QTRCb0Zjc3VwRzJkY0pseG5idk5BQ0hBME5STDBwTlJCZmpHb0xhVEUwd29FRHRyWm1yQXY3bFNWNDh3c2xiSFJzUFdRWlRQdWJzWVBGS3hSYm8tUl9GS1JNZ3pWdWJpdXoweTFn?oc=5",
+    "news.google.com/rss/articles/CBMiwwFBVV95cUxOSkdyZ0hqUllXMmZjUVB1QnBoMXFCYWdEUldHN3hPWVo3MFNNbWlGX2dmWWVtdVVnTU5icUpXRGl3a09jSWpEN0x3VXJQQnNOZkxCbVhnREhXdWFoa25HbXIzUlZqVXVaVXd3T19HcmdxWGxHbjl5WC0zeDB5S3Q0SUxTNUREYm9lTE5IU0JJdXBSd1h5Q21uNHFfNGtqSi1tMkFmY1FDTWxEUmJ1enE3TUZSTWhYWVdjVHhoM2t0SmU4dVU?oc=5",
+    "title:china s trade surplus soars past 1 trillion as ai boom powers exports"
+   ],
+   "strength": 3
   }
  ],
  "undated": {
