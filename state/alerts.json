@@ -8,6 +8,15 @@
     "anthropic.com/news/roadshow-launch",
     "title:today anthropic pbc launched the roadshow for its proposed initial public offering of its class a common stock"
    ]
+  },
+  {
+   "at": "2026-11-10T16:18:08.485563+00:00",
+   "day": "2026-11-10",
+   "title": "Google DeepMind выкатила флагманскую модель Gemini 4 Carbon",
+   "keys": [
+    "deepmind.google/blog/gemini-4-carbon-is-now-available",
+    "title:gemini 4 carbon is now available"
+   ]
   }
  ],
  "rejected": [
@@ -135,6 +144,14 @@
    "keys": [
     "blog.google/company-news/inside-google/company-announcements/adobe-google-partnership-integration",
     "title:we re bringing adobe s creative and productivity tools closer to your everyday google apps"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-10T16:18:08.485563+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/open-source-openshell-infrastructure",
+    "title:nvidia expands open source commitment with openshell donation and new ai infrastructure"
    ],
    "strength": 1
   }
