@@ -21,14 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-09T19:18:09.297146+00:00",
-   "keys": [
-    "openai.com/index/chatgpt-enterprise-aws-marketplace",
-    "title:chatgpt enterprise now available in aws marketplace"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-09T20:18:09.001855+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMiqgFBVV95cUxQVHBHYWpjdWxPUUszcVo2UmdxQ0UzUWpLZlh6TFdlZXhwWDRCWDM1S1V2eW0xODY4bFN4bzNmM3REWTlYTmpZdm1MYWFlZTdkY2pFZXhncGRfR2x5WjlYdVZoRW9YbUJhV1RxODR5NHhGLVYySlRVa0QwZ0pKMU4yUHd2RkQwWm8zV2pDaFU4VzI3NXhYN0tsVHY3ejV4dmE4YTZrUkNZTDlEUQ?oc=5",
@@ -169,6 +161,14 @@
     "title:gemini intelligence new features on more devices"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-11-10T20:18:08.212900+00:00",
+   "keys": [
+    "neil.fraser.name/news/2026/11/10",
+    "title:name grandfathered"
+   ],
+   "strength": 4
   }
  ],
  "undated": {
