@@ -1,5 +1,15 @@
 {
- "sent": [],
+ "sent": [
+  {
+   "at": "2026-11-10T12:18:07.677763+00:00",
+   "day": "2026-11-10",
+   "title": "Anthropic запустила роуд-шоу IPO с ценой $70–$78 за акцию на Nasdaq",
+   "keys": [
+    "anthropic.com/news/roadshow-launch",
+    "title:today anthropic pbc launched the roadshow for its proposed initial public offering of its class a common stock"
+   ]
+  }
+ ],
  "rejected": [
   {
    "at": "2026-11-09T14:18:10.401527+00:00",
@@ -113,6 +123,14 @@
     "title:japanese investor softbank group sinks into losses as company s ai hopes falter"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-11-10T12:18:07.677763+00:00",
+   "keys": [
+    "deepmind.google/blog/introducing-alphaproof-code",
+    "title:introducing alphaproof code a breakthrough in verifying complex software at depth"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
@@ -155,7 +173,8 @@
   "https://www.anthropic.com/news/open-call-guest-investigators-life-sciences": "2026-10-22T22:18:13.057956+00:00",
   "https://www.anthropic.com/news/s1-sec": "2026-10-26T13:18:10.211953+00:00",
   "https://www.anthropic.com/news/expanding-partnership-gsa": "2026-10-27T23:18:08.306944+00:00",
-  "https://www.anthropic.com/news/ai-for-science-expands-foundations-research-institutions": "2026-10-28T20:18:07.269753+00:00"
+  "https://www.anthropic.com/news/ai-for-science-expands-foundations-research-institutions": "2026-10-28T20:18:07.269753+00:00",
+  "https://www.anthropic.com/news/roadshow-launch": "2026-11-10T12:18:07.677763+00:00"
  },
  "primed": true
 }
