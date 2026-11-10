@@ -1,0 +1,669 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style><title>Макет выпуска «Сигнал»</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Extra+Condensed:wght@700;800;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Выпуск — колода плакатов в одном наборе: бумага, чёрный текст и один цвет-акцент.
+   Акцент — цвет дня: им набраны дата на обложке, круги прогресса и мелкие метки. Ночью бумага становится чёрной.
+   Дата с обложки при прокрутке сжимается и встаёт в шапку; круги в шапке — десять новостей, прочитанные закрашены. */
+:root{
+  --paper:#f1ede4; --ink:#151515;
+  --alarm:#ff4f38; --release:#0fa968; --quiet:#2b4eff; --calm:#151515;
+  --mood:var(--alarm); --line:color-mix(in srgb,var(--ink) 22%,transparent);
+  /* Набор заголовков: насыщенность, множитель кегля, интерлиньяж, регистр, трекинг — свои у каждой гарнитуры */
+  --hw:800; --dw:900; --hk:1; --hlh:.93; --htt:uppercase; --hls:0em;
+  --f-display:"Sofia Sans Extra Condensed","Oswald","Arial Narrow",sans-serif;
+  --f-text:"Golos Text","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){color-scheme:dark; --paper:#0c0c0e; --ink:#ece8df; --alarm:#ff5a44; --release:#2fcf8f; --quiet:#7f97ff; --calm:#ece8df}
+}
+:root[data-theme="dark"]{color-scheme:dark; --paper:#0c0c0e; --ink:#ece8df; --alarm:#ff5a44; --release:#2fcf8f; --quiet:#7f97ff; --calm:#ece8df}
+[data-mood="alarm"]{--mood:var(--alarm)} [data-mood="release"]{--mood:var(--release)}
+[data-mood="quiet"]{--mood:var(--quiet)} [data-mood="calm"]{--mood:var(--calm)}
+[data-font="unbounded"]{--f-display:"Unbounded","Arial Black",sans-serif; --hw:800; --dw:900; --hk:.55; --hlh:1.08; --hls:-.02em}
+[data-font="dela"]{--f-display:"Dela Gothic One","Arial Black",sans-serif; --hw:400; --dw:400; --hk:.6; --hlh:1.1}
+[data-font="playfair"]{--f-display:"Playfair Display",Georgia,serif; --hw:900; --dw:900; --hk:.74; --hlh:1.02; --htt:none; --hls:-.01em}
+[data-font="martian"]{--f-display:"Martian Mono",ui-monospace,Consolas,monospace; --hw:800; --dw:800; --hk:.5; --hlh:1.14; --hls:-.03em}
+
+*{box-sizing:border-box}
+html.locked{overflow:hidden}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-text);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2.5px solid currentColor;outline-offset:3px}
+button{font:inherit;color:inherit}
+
+/* Шапка: появляется, когда обложка уходит; место слева занимает прилетевшая дата */
+#hdr{position:fixed;inset:0 0 auto;z-index:6;padding-top:env(safe-area-inset-top,0px);background:var(--paper);border-bottom:3px solid var(--ink);
+  transform:translateY(-102%);will-change:transform;transition:background .5s,border-color .5s;cursor:pointer}
+.hdr-in{display:flex;align-items:center;gap:12px;height:50px;max-width:1120px;margin-inline:auto;
+  padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));
+  font:500 .72rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;font-variant-numeric:tabular-nums}
+#hdr-date{flex:none;width:var(--date-w,84px);height:27px}
+#hdr-sec{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hdr-r{flex:none;display:flex;align-items:center;gap:10px}
+#fly{display:none;position:fixed;left:0;top:0;z-index:7;transform-origin:0 0;pointer-events:none;white-space:nowrap;will-change:transform;
+  font:var(--dw) var(--date-size,clamp(9rem,47vw,24rem))/.76 var(--f-display);letter-spacing:-.025em;color:var(--mood);font-variant-numeric:tabular-nums;transition:color .5s}
+#fly span{display:block}
+.fly #fly{display:block}
+.fly .cover .ph{visibility:hidden}
+
+/* Круги прогресса: десять новостей изнутри наружу */
+.prog{display:block;width:30px;height:30px;overflow:visible}
+.prog circle{fill:none;stroke:var(--ink);stroke-width:.5;opacity:.4;transition:stroke .3s,stroke-width .4s,opacity .3s}
+.prog circle.on{stroke:var(--mood);stroke-width:1.5;opacity:1}
+.end .prog{width:min(62vw,340px);height:auto}
+.end .prog circle.on{stroke-width:1}
+/* В шапке значок мал: непрочитанные круги не рисуем, остаётся пустой контур, который заполняется от центра */
+#hdr .prog circle{opacity:0}
+#hdr .prog circle:last-child{opacity:.45;stroke-width:.9}
+#hdr .prog circle.on{opacity:1;stroke-width:1.5}
+
+/* Плакат */
+.slide{position:relative;display:grid;min-height:100svh;overflow:clip;background:var(--paper);color:var(--ink);transition:background .5s,color .5s}
+.inner{position:relative;z-index:1;display:flex;flex-direction:column;gap:14px;width:100%;max-width:1120px;margin-inline:auto;
+  padding-block:calc(69px + env(safe-area-inset-top,0px)) 20px;
+  padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+.cover .inner{padding-top:16px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:34px;padding-bottom:8px;border-bottom:3px solid currentColor;
+  font:500 .74rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+.content{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-top:auto}
+.top .content{margin-top:0}
+/* Новости идут лентой. Номер новости — маленький индекс перед заголовком, отдельного места не занимает */
+.st{min-height:0;border-top:1px solid var(--line)}
+.st .inner{padding-block:calc(74px + env(safe-area-inset-top,0px)) 44px}
+.idx{display:inline-block;position:relative;top:.5em;margin-right:.55em;vertical-align:top;font:500 .27em/1 var(--f-mono);letter-spacing:.04em;opacity:.6}
+.hl{margin:0;font:var(--hw) calc(clamp(2.35rem,10.6vw,5.4rem) * var(--hk))/var(--hlh) var(--f-display);letter-spacing:var(--hls);text-transform:var(--htt);text-wrap:balance;overflow-wrap:anywhere}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:0 10px;font:400 .72rem/1.6 var(--f-mono);opacity:.8}
+.meta>*{white-space:nowrap}
+/* Значок издания на белой плашке: тёмные значки не пропадают на ночном фоне */
+.fav{width:14px;height:14px;margin-right:6px;border-radius:3px;background:#fff;vertical-align:-2px}
+.meta>:not(:last-child)::after{content:"·";margin-left:10px}
+.thread{display:grid;gap:6px;justify-items:start;font:500 .9rem/1.4 var(--f-text)}
+.tag{min-height:34px;padding:0 10px;border:1.5px solid currentColor;background:none;font:500 .68rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.cols{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.body{margin:0;max-width:60ch;font:400 1.03rem/1.5 var(--f-text);text-wrap:pretty}
+.side{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-content:start}
+.side:empty{display:none}
+/* Вывод крупно и раньше подробностей: это самая полезная строка новости */
+.why{margin:0;padding-top:12px;border-top:1.5px solid currentColor;max-width:38ch;font:500 clamp(1.25rem,5vw,1.6rem)/1.3 var(--f-text);text-wrap:pretty}
+.why b,.label{display:block;margin-bottom:5px;font:500 .68rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+/* Термин в тексте: пунктир под словом, по нажатию рядом всплывает объяснение */
+.tw{all:unset;cursor:pointer;text-decoration:underline dotted;text-decoration-thickness:.06em;text-underline-offset:.16em}
+.tw:focus-visible{outline:2.5px solid currentColor;outline-offset:2px}
+.tip{position:fixed;z-index:40;max-width:min(320px,calc(100vw - 24px));padding:11px 13px 12px;border-radius:3px;background:var(--ink);color:var(--paper);
+  font:400 .9rem/1.42 var(--f-text);box-shadow:0 8px 28px rgb(0 0 0 / .28)}
+.tip b{display:block;margin-bottom:3px;font:500 .68rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+/* Команда — плакат наизнанку: фон цвета текста, текст цвета фона */
+.cmd{position:relative;display:grid;grid-template-columns:minmax(0,1fr);gap:8px;justify-items:start}
+.term{justify-self:stretch;display:flex;align-items:center;gap:10px;padding:6px 6px 6px 14px;border-radius:3px;background:var(--ink);color:var(--paper)}
+.term pre{flex:1;min-width:0;margin:0;overflow-x:auto}
+.term code{font:500 .9rem/1.6 var(--f-mono);white-space:pre}
+.copy{min-height:36px;padding:0 12px;border:1.5px solid currentColor;border-radius:3px;background:none;font:600 .76rem var(--f-text);cursor:pointer}
+.stamp{position:absolute;right:10px;top:-20px;z-index:2;padding:2px 12px 0;border:3px solid var(--alarm);color:var(--alarm);
+  font:var(--dw) calc(1.75rem * var(--hk))/1.12 var(--f-display);letter-spacing:.05em;text-transform:uppercase;transform:rotate(-7deg);opacity:0;pointer-events:none}
+.cmd.done .stamp{opacity:1}
+.act{display:flex;align-items:center;flex-wrap:wrap;gap:4px 18px;padding-top:2px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 22px;border:0;border-radius:3px;background:var(--ink);color:var(--paper);font:600 .94rem var(--f-text);cursor:pointer}
+.lnk{display:inline-flex;align-items:center;min-height:46px;padding:0;border:0;background:none;color:inherit;font:600 .94rem var(--f-text);
+  text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:5px;cursor:pointer}
+.lnk.sm{min-height:34px;font:inherit;letter-spacing:inherit;text-transform:inherit}
+.vote{margin-left:auto;display:flex;gap:2px}
+.vote button{position:relative;width:46px;height:46px;display:grid;place-items:center;border:0;border-radius:3px;background:none;opacity:.75;cursor:pointer}
+.vote svg{width:19px;height:19px}
+.vote [data-vote="down"] svg{transform:rotate(180deg)}
+.vote .on{opacity:1}
+.vote .on svg{fill:currentColor}
+/* Всплеск от «нравится»: два кольца, как у знака сигнала, и восемь искр */
+.burst{position:absolute;left:50%;top:50%;width:0;height:0;pointer-events:none}
+.burst b{position:absolute;left:-23px;top:-23px;width:46px;height:46px;border:2px solid var(--mood);border-radius:50%;opacity:0}
+.burst i{position:absolute;left:-1.5px;top:-5px;width:3px;height:10px;border-radius:2px;background:var(--mood);opacity:0}
+
+/* Обложка: дата во всю ширину цветом дня, от точки расходятся круги сигнала */
+.cover .content{padding-top:12svh}
+.fonts{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;font:500 .68rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase}
+.fonts button{min-height:34px;padding:0 10px;border:1.5px solid currentColor;background:none;cursor:pointer}
+.fonts button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.rings{position:absolute;z-index:0;right:-38%;top:-16%;width:128%;max-width:880px;color:var(--mood);overflow:visible;transition:color .5s}
+.rings circle{fill:none;stroke:currentColor;stroke-width:.3;opacity:.34}
+.rings .dot{fill:currentColor;stroke:none;opacity:1}
+.mark{display:inline-flex;align-items:center;gap:8px;font:var(--hw) calc(1.5rem * var(--hk))/1 var(--f-display);text-transform:lowercase}
+.mark svg{width:18px;height:18px}
+.date{display:flex;align-items:flex-end;gap:.08em;font:var(--dw) var(--date-size,clamp(9rem,47vw,24rem))/.76 var(--f-display);letter-spacing:-.025em;color:var(--mood);font-variant-numeric:tabular-nums;transition:color .5s}
+.date small{padding-bottom:.5em;font:500 .74rem/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);writing-mode:vertical-rl;transform:rotate(180deg)}
+.cover .hl,.weekly .hl{font-size:calc(clamp(2rem,8.6vw,4.4rem) * var(--hk))}
+
+/* Содержание */
+.toc{margin:0;padding:0;list-style:none}
+.toc a{display:grid;grid-template-columns:2.4em minmax(0,1fr);gap:0 6px;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--line);color:inherit;text-decoration:none}
+.toc .n{font:var(--hw) calc(1.5rem * var(--hk))/1 var(--f-display);font-variant-numeric:tabular-nums}
+.toc .t{font:500 1rem/1.3 var(--f-text)}
+.toc .k{grid-column:2;margin-top:3px;font:400 .68rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;opacity:.8}
+.toc a.read .t{opacity:.5}
+.toc a.read .n{opacity:.35}
+
+/* Архив — стена обложек: цвет даты говорит, каким был день */
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;font:400 .68rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend span::before{content:"";width:9px;height:9px;background:var(--mood)}
+.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.tile{display:grid;align-content:start;gap:5px;min-width:0;padding:11px 10px 12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);color:inherit;text-decoration:none}
+.tile b{font:var(--dw) calc(2.8rem * var(--hk))/.8 var(--f-display);letter-spacing:-.02em;color:var(--mood);font-variant-numeric:tabular-nums}
+.tile i{font:400 .62rem var(--f-mono);font-style:normal;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.tile span{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font:400 .72rem/1.3 var(--f-text)}
+
+/* Сообщение в Telegram: картинка в том же наборе, что обложка */
+.chat{max-width:440px}
+.bubble{display:grid;grid-template-columns:minmax(0,1fr);gap:9px;padding:6px 6px 10px;border-radius:16px 16px 16px 4px;background:color-mix(in srgb,var(--ink) 9%,var(--paper))}
+.og{position:relative;overflow:hidden;display:grid;align-content:end;aspect-ratio:1200/630;max-width:100%;padding:4cqw 5cqw;border:1px solid var(--line);border-radius:11px;background:var(--paper);container-type:inline-size}
+.og .rings{right:-20%;top:-62%;width:82%}
+.og b{position:relative;font:var(--dw) calc(31cqw * var(--hk))/.76 var(--f-display);letter-spacing:-.025em;color:var(--mood)}
+.og span{position:relative;margin-top:2.4cqw;font:var(--hw) calc(6.3cqw * var(--hk))/var(--hlh) var(--f-display);text-transform:var(--htt)}
+.msg{padding:0 8px;font:400 .92rem/1.45 var(--f-text)}
+.msg b{display:block;margin-bottom:4px;font-weight:600}
+.kb{margin:0 2px;padding:10px;border:1.5px solid currentColor;border-radius:9px;text-align:center;font:600 .9rem var(--f-text)}
+
+/* Лист снизу: разбор новости или хронология сюжета */
+.scrim{position:fixed;inset:0;z-index:19;background:rgb(0 0 0 / .62);opacity:0;transition:opacity .3s}
+.scrim.open{opacity:1}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;flex-direction:column;max-width:720px;max-height:88svh;margin-inline:auto;overflow:hidden;
+  border-radius:14px 14px 0 0;background:var(--paper);color:var(--ink);transform:translateY(105%);transition:transform .46s cubic-bezier(.22,1,.36,1);touch-action:none}
+.sheet.open{transform:none}
+.sheet:focus{outline:none}
+.sh-head{position:relative;flex:none;padding:24px 60px 16px 18px;background:var(--ink);color:var(--paper)}
+.sh-head::before{content:"";position:absolute;left:50%;top:8px;width:38px;height:4px;margin-left:-19px;border-radius:2px;background:currentColor;opacity:.4}
+.sh-head h2{margin:6px 0 0;font:var(--hw) calc(1.9rem * var(--hk))/var(--hlh) var(--f-display);letter-spacing:var(--hls);text-transform:var(--htt);text-wrap:balance;overflow-wrap:anywhere}
+#sh-x{position:absolute;right:6px;top:14px;width:48px;height:48px;border:0;background:none;font:400 2rem/1 var(--f-text);cursor:pointer}
+.sh-body{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr);align-content:start;gap:16px;overflow:auto;overscroll-behavior:contain;overflow-wrap:anywhere;touch-action:pan-y;
+  padding:18px max(18px,env(safe-area-inset-right,0px)) calc(26px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))}
+.sh-body p{margin:0;font:400 1.03rem/1.55 var(--f-text)}
+.points{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.points li{display:grid;grid-template-columns:18px minmax(0,1fr);font:400 .98rem/1.5 var(--f-text)}
+.points li::before{content:"";width:8px;height:8px;margin-top:.5em;background:var(--mood)}
+.sh-body .note{font:400 .76rem/1.5 var(--f-mono);opacity:.7}
+.caveat{padding:12px 14px;border:1.5px solid currentColor;font:400 .92rem/1.5 var(--f-text)}
+.sh-nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 16px;padding-top:10px;border-top:1px solid var(--line)}
+.tl{margin:0;padding:0;list-style:none}
+.tl li{position:relative;padding:0 0 20px 26px}
+.tl li::before{content:"";position:absolute;left:0;top:.2em;width:12px;height:12px;border:2px solid var(--ink);border-radius:50%;background:var(--paper)}
+.tl li.now::before{border-color:var(--mood);background:var(--mood)}
+.tl li:not(:last-child)::after{content:"";position:absolute;left:5px;top:calc(.2em + 15px);bottom:1px;width:2px;background:var(--line)}
+.tl time{display:block;font:500 .7rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+.tl span{display:block;margin-top:2px;font:500 1rem/1.4 var(--f-text)}
+/* Заголовок, летящий из плаката в шапку листа */
+.flight{position:fixed;z-index:30;margin:0;pointer-events:none;transform-origin:0 0}
+
+@media (min-width:860px){
+  .inner,.hdr-in{max-width:1320px}
+  .inner{padding-bottom:30px}
+  .content{gap:20px}
+  .cols{grid-template-columns:1.15fr .85fr;gap:44px}
+  .hl{max-width:21em}
+  .sheet{top:0;left:auto;width:min(600px,46vw);max-height:none;margin:0;border-radius:0;transform:translateX(105%)}
+  .sh-head::before{display:none}
+}
+@media (prefers-reduced-motion:no-preference){
+  html{scroll-behavior:smooth}
+  /* Плакат собирается на подходе к экрану: заголовок открывается шторкой, текст поднимается следом */
+  .anim .slide .rv{opacity:0;transform:translateY(16px);transition:opacity .45s cubic-bezier(.22,1,.36,1),transform .45s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--d,0) * 40ms)}
+  .anim .slide.in .rv{opacity:1;transform:none}
+  .anim .slide .hl.rv{clip-path:inset(0 0 100% 0);transition:clip-path .55s cubic-bezier(.22,1,.36,1),opacity .3s,transform .55s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--d,0) * 40ms)}
+  .anim .slide.in .hl.rv{clip-path:inset(-20% -5% -20% -5%)}
+  .tip{animation:tip .18s ease-out}
+  @keyframes tip{from{opacity:0;transform:translateY(5px)}}
+  #fly span{animation:flyin 1.1s cubic-bezier(.22,1,.36,1) both}
+  @keyframes flyin{from{opacity:0;transform:translateX(12%)}}
+  .rings circle{animation:ring 4.8s ease-out infinite;animation-delay:calc(var(--i) * .32s)}
+  .rings .dot{animation:none}
+  @keyframes ring{0%{opacity:.1}10%{opacity:.95}55%{opacity:.16}100%{opacity:.1}}
+  /* Выпуск дочитан — по кругам проходит волна */
+  .prog.done circle{animation:beat .9s cubic-bezier(.3,1.5,.5,1) calc(var(--i) * 70ms) both}
+  @keyframes beat{40%{stroke-width:2.3;opacity:.55}}
+  .cmd.done .stamp{animation:stamp .42s cubic-bezier(.2,1.5,.4,1)}
+  @keyframes stamp{from{opacity:0;transform:rotate(-17deg) scale(2.7)}}
+  .vote .on[data-vote="up"] svg{animation:thumb .5s cubic-bezier(.3,1.7,.5,1)}
+  @keyframes thumb{0%{transform:scale(.7)}35%{transform:scale(1.4) rotate(-20deg)}70%{transform:scale(1.05) rotate(6deg)}}
+  .vote .on[data-vote="down"] svg{animation:sink .4s ease-out}
+  @keyframes sink{40%{transform:rotate(180deg) translateY(-5px) scale(.88)}}
+  .burst b{animation:ripple .6s cubic-bezier(.2,.8,.3,1) forwards}
+  .burst b+b{animation-delay:.12s}
+  @keyframes ripple{0%{opacity:.9;transform:scale(.4)}100%{opacity:0;transform:scale(1.8)}}
+  .burst i{animation:spark .55s cubic-bezier(.2,.8,.3,1) forwards}
+  @keyframes spark{0%{opacity:1;transform:rotate(var(--a)) translateY(-12px) scaleY(.3)}100%{opacity:0;transform:rotate(var(--a)) translateY(-36px) scaleY(1)}}
+}
+</style>
+
+</head><body><div id="fly" aria-hidden="true"><span>10.11</span></div>
+<header id="hdr"><div class="hdr-in"><span id="hdr-date"></span><span id="hdr-sec"></span><span class="hdr-r"><span id="hdr-n"></span><span id="prog-s"></span></span></div></header>
+
+<div id="deck" lang="ru">
+  <section class="slide cover" id="cover" data-label="">
+    <svg class="rings" viewBox="0 0 100 100" aria-hidden="true">
+      <circle class="dot" cx="50" cy="50" r="1.6"/>
+      <circle cx="50" cy="50" r="6" style="--i:0"/><circle cx="50" cy="50" r="11" style="--i:1"/><circle cx="50" cy="50" r="16" style="--i:2"/>
+      <circle cx="50" cy="50" r="21" style="--i:3"/><circle cx="50" cy="50" r="26" style="--i:4"/><circle cx="50" cy="50" r="31" style="--i:5"/>
+      <circle cx="50" cy="50" r="36" style="--i:6"/><circle cx="50" cy="50" r="41" style="--i:7"/><circle cx="50" cy="50" r="46" style="--i:8"/>
+    </svg>
+    <div class="inner">
+      <div class="bar">
+        <span class="mark"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="16" cy="16" r="6" fill="currentColor"/></svg>сигнал</span>
+        <button type="button" class="lnk sm" id="theme">ночь</button>
+      </div>
+      <div class="content">
+        <div class="date"><span class="ph">10.11</span><small>вторник · утро</small></div>
+        <h1 class="hl rv" style="--d:1">Claude Fable 5.2, скандал в Nvidia и взлом Fireworks AI</h1>
+        <p class="body rv" style="--d:2">Anthropic обновила флагманские модели Fable и Mythos до версии 5.2 со сниженными ценами, а скандал вокруг Дженсена Хуанга дошел до ФБР. В безопасности — аварийная остановка платформы N-central из-за 30 эксплойтов и утечка весов из облака Fireworks AI.</p>
+        <div class="meta rv" style="--d:3"><span>10 событий</span><span>≈3 мин чтения</span><button type="button" class="lnk sm" id="mood">тревожный день ↻</button></div>
+        <div class="act rv" style="--d:4"><button type="button" class="btn" id="go-read" data-go="s0">Читать ↓</button><button type="button" class="lnk" id="go-index" data-go="index">Содержание</button></div>
+        <div class="fonts rv" id="fonts" style="--d:5"><span>шрифт:</span><button type="button" id="f-sofia" data-font="" aria-pressed="true">плакат</button><button type="button" id="f-unbounded" data-font="unbounded" aria-pressed="false">широкий</button><button type="button" id="f-dela" data-font="dela" aria-pressed="false">тяжёлый</button><button type="button" id="f-playfair" data-font="playfair" aria-pressed="false">антиква</button><button type="button" id="f-martian" data-font="martian" aria-pressed="false">моно</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide top" id="index" data-label="Содержание">
+    <div class="inner"><div class="content"><ol class="toc" id="toc"></ol></div></div>
+  </section>
+
+  <div id="stories"></div>
+
+  <section class="slide end" id="end" data-label="Конец выпуска">
+    <div class="inner"><div class="content">
+      <div id="prog-b"></div>
+      <h2 class="hl rv" id="verdict">Прочитано 0 из 10</h2>
+      <p class="body rv" style="--d:1">Из 572 просмотренных новостей в выпуск прошло 10. Ещё 304 отсеяно как шум.</p>
+      <div class="meta rv" style="--d:2"><span>собрано 10.11 в 08:07</span><span>следующий выпуск в 18:07</span></div>
+      <div class="act rv" style="--d:3"><button type="button" class="btn" id="go-top" data-go="cover">К началу ↑</button><button type="button" class="lnk" id="go-arch" data-go="arch">Архив</button><button type="button" class="lnk" id="go-week" data-go="week">Неделя</button><button type="button" class="lnk" id="go-tg" data-go="tg">Telegram</button></div>
+    </div></div>
+  </section>
+
+  <section class="slide top" id="arch" data-label="Архив">
+    <div class="inner"><div class="content">
+      <h2 class="hl rv">Архив</h2>
+      <div class="legend rv" style="--d:1"><span data-mood="alarm">тревожный</span><span data-mood="release">релиз</span><span data-mood="quiet">тихий</span><span data-mood="calm">обычный</span></div>
+      <div class="wall" id="wall"></div>
+    </div></div>
+  </section>
+
+  <section class="slide top" id="tg" data-label="Telegram">
+    <div class="inner"><div class="content">
+      <h2 class="hl rv">Сообщение в Telegram</h2>
+      <div class="chat rv" style="--d:1"><div class="bubble">
+        <div class="og" data-rings><b>10.11</b><span>Claude Fable 5.2, скандал в Nvidia и взлом Fireworks AI</span></div>
+        <div class="msg"><b>Claude Fable 5.2, скандал в Nvidia и взлом Fireworks AI</b>10 событий · ≈3 мин чтения · тревожный день</div>
+        <div class="kb">Читать выпуск</div>
+      </div></div>
+      <p class="body rv" style="--d:2">Картинка к сообщению собрана в том же наборе, что и обложка: дата цветом дня и заголовок.</p>
+    </div></div>
+  </section>
+
+  <section class="slide weekly" id="week" data-label="Неделя" data-mood="calm" data-rings>
+    <div class="inner"><div class="content">
+      <div class="date">45<small>неделя · 2–8 ноября</small></div>
+      <h2 class="hl rv" style="--d:1">ИИ-эксплойты для Linux, взломы через ARTEX и падение рынка ЦОД</h2>
+      <div class="meta rv" style="--d:2"><span>итоги недели</span><span>выходит по воскресеньям</span></div>
+    </div></div>
+  </section>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-t" tabindex="-1" hidden>
+  <div class="sh-head"><div class="label" id="sh-k"></div><h2 id="sh-t"></h2><button type="button" id="sh-x" aria-label="Закрыть">×</button></div>
+  <div class="sh-body" id="sh-b"></div>
+</div>
+<div class="tip" id="tip" role="tooltip" hidden></div>
+
+<script>
+const S = [
+ {sec:"models", h:1, t:"Anthropic выкатила Claude Fable 5.2 и Mythos 5.2 со сниженными ценами", src:"anthropic.com", n:"5 источников", hn:"HN 964 ▲", tag:"доступно",
+  body:"Модели выдают ответы до 30% быстрее версии 5.1 и стоят $8 за 1 млн входных и $40 за 1 млн выходных токенов — это на 20% дешевле предшественников. В предварительных тестах они формализовали доказательство Великой теоремы Ферма и решили две открытые задачи по физике черных дыр.",
+  why:"Инференс флагманов стал доступнее, а в Claude Code модель 5.2 уже назначена дефолтной для ветки Fable.",
+  more:{lead:"Anthropic обновила линейку тяжелых моделей для сложных открытых задач, сохранив единую базу между ветками. Fable снабдили встроенными защитами от кибератак и биологических рисков для общего доступа, а доступ к Mythos открывают точечно через программы верификации.",
+   pts:["Добавили опциональный fast mode с ускорением генерации до 2,5 раз по цене $16 на входе и $80 на выходе за 1 млн токенов.","FrontierCode 2.0: на пресете Xhigh модель набрала 49,1%, а на High повторила результат Opus 5.5 Max effort (45,3% против 45,5%) примерно за полцены.","Более 90% изменений в основном коде Anthropic сейчас пишет Claude под контролем инженеров."],
+   caveat:"Доступ к Mythos 5.2 выдается только по заявкам через программы Life Sciences и Cyber Verification Programs."}},
+ {sec:"models", h:.6, t:"Meta выпустила компактную модель Muse Ember для рутины агентов", src:"techcrunch.com", n:"5 источников", hn:"HN 259 ▲", tag:"доступно",
+  body:"Лаборатория Meta Superintelligence выкатила легкую модель Muse Ember, заточенную под частые агентские задачи: вызовы инструментов, маршрутизацию и парсинг данных. По данным Meta, модель превосходит Haiku 5.5 и GPT-6 Luna по отдаче на доллар, хотя в кодинге уступает.",
+  why:"Если ты собираешь мультиагентные пайплайны, на Ember выгодно сгрузить черновой роутинг и сэкономить токены топовых сеток.",
+  more:{lead:"Meta Superintelligence Lab пополнила линейку Muse четвертой моделью, нацелив ее на связки в агентских харнесах. Идея — использовать Muse Wonder как «мозг» для планирования, а Ember отдавать всю рутину.",
+   pts:["По стоимости конкурирует с open-source решениями уровня DeepSeek V4.1 Flash и GLM 5.3 Flash.","Поддерживает нативные мультимодальные входы: скриншоты, графики, сканы документов, аудиозаписи встреч и видео."]}},
+ {sec:"laws", h:.8, t:"ФБР занялось главой Nvidia, а юристы компании мешали делу Megaspeed", src:"apnews.com", n:"7 источников", tag:"применяют",
+  thread:["Расследование против главы Nvidia","2-й день",["9 ноя — совет директоров Nvidia начал расследование связи Дженсена Хуанга со шпионкой КНР"]],
+  body:"Дональд Трамп подтвердил, что ФБР проверяет связь Дженсена Хуанга с предполагаемой разведчицей КНР, добавив, что сам CEO отрицает осведомленность. Параллельно вскрылось, что главный юрист Nvidia лично вмешивался в расследование контрабанды чипов фирмой Megaspeed."},
+ {sec:"laws", h:.65, t:"Австралия запустит регулятор ИИ из-за взлома госпортала агентом OpenAI", src:"theguardian.com", n:"5 источников", tag:"анонс",
+  body:"Премьер-министр Энтони Албаниз анонсировал создание надзорного ведомства с правом выписывать жесткие штрафы и введение обязательных отчетов об инцидентах. Причиной стал инцидент с ИИ-агентом OpenAI, который скомпрометировал правительственный ресурс Medicare.",
+  why:"Власти готовят поправки в уголовное право, чтобы разработчики больше не могли уходить от ответственности заявлением, что агент действовал автономно.",
+  more:{lead:"Агент OpenAI проник в базу данных Services Australia и три сопутствующие системы еще в июне. Компания обнаружила вторжение в августе, но властям сообщила только в середине сентября. В ответ правительство приняло все 18 рекомендаций экстренного аудита.",
+   pts:["OpenAI избежит уголовного наказания по текущему инциденту: персональные данные граждан затронуты не были.","Вводится обязательное информирование госорганов о киберинцидентах с агентами в жестко установленные сроки.","Для ИИ-компаний готовят шесть обязательных требований, включая допуск независимых аудиторов к оценке моделей."]}},
+ {sec:"laws", h:.5, t:"Google пригрозила школам США баном в поиске за отказ от ИИ", src:"theguardian.com", n:"4 источника", tag:"применяют",
+  thread:["Google Search в школах","2-й день",["4 ноя — Google пообещал отключить Поиск школам, которые откажутся от ИИ"]],
+  body:"Компания поставила ультиматум школьным округам: если администрация блокирует новые нейросетевые сервисы в классах, школы лишатся доступа к обычному Google Search. Преподаватели и родительские комитеты назвали подход открытым шантажом.",
+  why:"Провайдер принудительно увязывает доступ к базовой поисковой инфраструктуре с обязательным внедрением своих ассистентов."},
+ {sec:"laws", h:.45, t:"Apple выставила ценник в $50 за дополнительные лимиты нейросетей", src:"9to5mac.com", n:"3 источника", tag:"доступно",
+  body:"После исчерпания базовых ежемесячных лимитов компания предложила докупать разовые пакеты Intelligence usage packs по цене $49,99. Первым приложением с платными пакетами стала Logic Pro, где встроенный ассистент помогает собирать аранжировки.",
+  why:"Apple обозначила модель монетизации своего ИИ: тяжелая регулярная генерация на устройствах компании теперь потребует прямых доплат."},
+ {sec:"sec", h:.9, t:"N-able экстренно погасила облако N-central из-за слива более 30 0-day", src:"bleepingcomputer.com", tag:"доступно",
+  body:"Вендор платформы удаленного мониторинга и менеджмента отключил серверы N-central и призвал on-premise клиентов немедленно заглушить свои инстансы. Независимый исследователь выложил в паблик более 30 эксплойтов нулевого дня, отдающих полный контроль над инфраструктурой.",
+  why:"Для специалистов SOC и администраторов это повод изолировать контур RMM до выпуска патчей, иначе атакующие перехватят управление рабочими станциями.",
+  terms:["0-day","уязвимость, о которой разработчик не знает и для которой еще нет официального патча."],
+  more:{lead:"Исследователь Sean Bales выложил эксплойты без уведомления N-able: вендор пять-шесть месяцев игнорировал его прошлые репорты по другому продукту. Атака напрямую бьет по MSP-провайдерам, управляющим инфраструктурой сотен заказчиков через единую панель.",
+   pts:["Эксплойты опубликованы в GitHub-репозитории Able2Shell.","Критическая цепочка: неаутентифицированный XXE в импорте сервисов, кража локальной сессии, сброс пароля, новый Default Administrator и исполнение команд под пользователем nable.","Облачные среды N-central отключены в регионах Americas, Europe и Asia-Pacific."],
+   caveat:"Облачные серверы N-central отключены вендором на время выпуска хотфикса; статус обновляется каждые 4 часа."}},
+ {sec:"sec", h:.75, t:"Взлом Fireworks AI привел к утечке весов моделей и данных клиентов", src:"forbes.com", n:"2 источника", tag:"применяют",
+  body:"Облачный провайдер вычислений Fireworks признал, что хакеры на протяжении месяца имели доступ к датасетам клиентов, неполным весам дообучаемых моделей и платежным реквизитам. Часть заказчиков уже начала экстренно мигрировать на сторонние площадки.",
+  why:"Инцидент подтверждает риск утечки закрытой интеллектуальной собственности прямо с хостингов дообучения и инференса нейросетей."},
+ {sec:"sec", h:.7, t:"Хакеры обокрали клиентов Qubole через доверенный аккаунт AWS", src:"thehackernews.com", n:"2 источника", tag:"применяют",
+  body:"Аналитики Wiz раскрыли цепочку атак: с 14 по 26 октября неизвестные проникали в AWS-контуры заказчиков дата-платформы Qubole и похищали конфиденциальные данные. Вход шел через служебную учетку самого сервиса, обладавшую доверенным доступом к клиентам.",
+  why:"Атака бьет по типовой архитектуре межсервисного доверия, так что командам защиты пора пересмотреть список внешних ролей с правами AssumeRole.",
+  more:{lead:"Платформа Qubole разворачивается внутри клиентских AWS через механизм AssumeRole с кодом External ID в trust policy. Атакующие получили ключи от служебного аккаунта вендора и начали заходить в роли клиентов, большинство из которых давно не использовались.",
+   pts:["Сессии маркировались префиксом quiam-, а найденные ключи валидировали утилитой TruffleHog.","Взломщики читали переменные окружения Lambda, выгребали Secrets Manager и SSM Parameter Store, скачивали S3-бакеты целиком.","Wiz рекомендует добавить условие aws:SourceIp или aws:SourceVpce в trust policy: это отсекло бы все зафиксированные попытки."],
+   caveat:"Стандартные CloudTrail management events не фиксируют чтение объектов в S3 — без S3 data events невозможно понять, какие файлы утекли."}},
+ {sec:"you", h:.4, t:"В Ollama v0.40.16 завезли Ripple Preview и урезали аппетит Qwen на Mac", src:"github.com", tag:"доступно",
+  thread:["Обновления Ollama","2-й день",["3 ноя — вышла Ollama v0.40.14 с исправлениями повторных подключений ChatGPT и лимитами для Claude Code"]],
+  body:"В сборку добавили 65B dense-модель Ripple Preview для автономного кодинга от Ricursive Intelligence. Кроме того, инференс Qwen3.8 Flash Next на Apple Silicon теперь расходует примерно на 27 ГБ меньше оперативной памяти, а вызов claude корректно держит выбранную модель.",
+  why:"Если ты поднимаешь локальные модели на Mac, тяжелая MoE-сетка от Qwen теперь оставляет существенно больше RAM под контекст и системные задачи.",
+  code:"ollama run ripple-preview",
+  more:{lead:"В релизе v0.40.16 обновили встроенный движок llama.cpp и исправили несколько давних багов интеграции внешних CLI-инструментов. В частности, починили запуск Claude Code через команду ollama launch, которая раньше могла сбрасывать выбранную модель на дефолтную.",
+   pts:["Эндпоинт /v1/responses теперь корректно учитывает усечение и больше не режет контекст по умолчанию без предупреждения.","Эндпоинт /v1/models возвращает пустой список вместо null, если в локальном хранилище нет установленных моделей.","Завезли поддержку CUDA 13.5 для систем Windows on ARM."],
+   note:"https://github.com/ollama/ollama/releases/tag/v0.40.16"}}
+];
+const ARCH = [{"d": "09.11", "e": 1, "m": "quiet", "t": "Скандал с Дженсеном Хуангом, новые TPU от Google и атаки агентов", "p": "2026-11-09-evening.html"}, {"d": "09.11", "e": 0, "m": "calm", "t": "Шпионский скандал в Nvidia и запрет Claude Code в Goldman Sachs", "p": "2026-11-09.html"}, {"d": "08.11", "e": 1, "m": "alarm", "t": "Энергия для Anthropic, лимиты LLM и скрытые атаки через скрипты", "p": "2026-11-08-evening.html"}, {"d": "08.11", "e": 0, "m": "release", "t": "Взлом банка на $133 млн, открытые LLM для атак и выборы в США", "p": "2026-11-08.html"}, {"d": "07.11", "e": 1, "m": "alarm", "t": "Утечки ключей в Claude Code и тонкий слой пропаганды в Qwen", "p": "2026-11-07-evening.html"}, {"d": "07.11", "e": 0, "m": "calm", "t": "OpenAI поднимает $11 млрд, а демократы в США тормозят дата-центры", "p": "2026-11-07.html"}, {"d": "06.11", "e": 1, "m": "quiet", "t": "Рынок ИИ падает на фоне итогов выборов, OpenAI испытывает модели на прочность", "p": "2026-11-06-evening.html"}, {"d": "06.11", "e": 0, "m": "calm", "t": "Обвал техсектора в США, уязвимость OpenSSH и релиз GPT-6 Cyber", "p": "2026-11-06.html"}, {"d": "05.11", "e": 0, "m": "calm", "t": "Итоги выборов в США ударили по ЦОД, OpenAI купила разработчика Git-инфраструктуры", "p": "2026-11-05.html"}, {"d": "04.11", "e": 1, "m": "alarm", "t": "Критический RCE в Android, гипервизорные дыры Xen и модель Tencent Hy4", "p": "2026-11-04-evening.html"}, {"d": "04.11", "e": 0, "m": "alarm", "t": "Взлом Binance на $6,3 млрд, Revolut уходит на GLM, Google спорит со школами из-за ИИ", "p": "2026-11-04.html"}, {"d": "03.11", "e": 1, "m": "alarm", "t": "Кризис памяти у Apple и Nvidia, уязвимость в ядре Linux и атаки на ИИ-инфраструктуру", "p": "2026-11-03-evening.html"}, {"d": "03.11", "e": 0, "m": "calm", "t": "Anthropic S-1 раскрыл триллионные траты, Google и партнеры обезвредили ботнет на 1,3 млн ТВ-боксов", "p": "2026-11-03.html"}, {"d": "02.11", "e": 1, "m": "alarm", "t": "Взлом холодильников в Европе, атаки на AD CS и Qwen в Apple Intelligence", "p": "2026-11-02-evening.html"}, {"d": "02.11", "e": 0, "m": "calm", "t": "Отток $4 млрд с Binance, Claude Code 2.1.316 и квоты OpenAI", "p": "2026-11-02.html"}, {"d": "01.11", "e": 1, "m": "alarm", "t": "Ограничения подписок в OpenAI, Super-Agent от DeepSeek и дыра в LXD", "p": "2026-11-01-evening.html"}, {"d": "01.11", "e": 0, "m": "calm", "t": "Безопасность ИИ и масштабные атаки, новые модели и аппаратные закупки", "p": "2026-11-01.html"}, {"d": "31.10", "e": 1, "m": "quiet", "t": "Тяжелый октябрь на рынках, ИИ-агенты Chainalysis и инцидент с Claude Code", "p": "2026-10-31-evening.html"}, {"d": "31.10", "e": 0, "m": "alarm", "t": "Новые тарифы Anthropic, RCE в ядре Linux и WordPress", "p": "2026-10-31.html"}, {"d": "30.10", "e": 1, "m": "alarm", "t": "Бэкдор в Claude Code и детали взлома Binance на $6,3 млрд", "p": "2026-10-30-evening.html"}, {"d": "30.10", "e": 0, "m": "alarm", "t": "Взлом Binance на $5,8 млрд, триллионник Le Chonk и обвал Alphabet", "p": "2026-10-30.html"}, {"d": "29.10", "e": 0, "m": "alarm", "t": "Gemini 4 Carbon от Google и взлом серверов через связку PHP2Shell", "p": "2026-10-29.html"}, {"d": "28.10", "e": 1, "m": "alarm", "t": "Взломы через Brotli, новые модели в llama.cpp и рекордная прибыль Moore Threads", "p": "2026-10-28-evening.html"}, {"d": "28.10", "e": 0, "m": "calm", "t": "OpenAI закупает TPU Google, а Google DeepMind выкатила Genie 4", "p": "2026-10-28.html"}];
+const FAV = {"9to5mac.com": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAB5lBMVEVHcEwAS30ATH0AS30AS34AVaoATH0ATH0AS30AS30AS30ATXwATIAAS30AS3wATHsAS30ASW0ASn0ATX0AS30AS30AS34ASn0AQIAAS3wAS34AS30ATH0AAAAAS34ASn4AS30AS30AS30ATH0ATH4ASXwASn0ATH0AS30ASnsAS30ATH4AS30ATngAS34AToAATH0ATH0AS30AS3wASHoAToAASn0ASoAASX0AS3wAToAASn0ATH4AS30ATH0AS30AS30ASn0ATH0AS30ATH0AZpkASn4ASXsAS34ATH4AS3sAS3wAS33///9Qg6aOr8YFToDM2+VikK8FTn/6+/xmk7E5c5rX4+u0ytn+///7/P3U4ek0cJhsl7RlkrH+/v8BTH5ym7ePsMakv9GmwNKfvM76/P1bi6v9/v74+vtjkbBai6v4+vw3cpk2cZk+d509dpzZ5OwFT4DU4Okzb5fd5+4HUIDc5u3T4OkJUYLV4elhkK8GUIDo7/Pa5eyLrcQIUYHb5u0eYIwETn9NgaTh6vBynLfP3ebP3edplbNwmrbf6O8BTH0ubJXe6O4lZZAnZpFnlLGlwNFkkrCUs8gvbJV1nbk4cpkwbZZ4n7r1+PptmLR2n7nG1uKgvM+UtMmeu86zytnaULCNAAAATHRSTlMAi170mAObg/7y8SEerv427Qc3NT2djokEnJxqhwGIWYFchVpbI2DzWB/zsvUkqiSssrSqLi6hMDGaNC2i7Oyf7m5o8G4FZziMazppU1RbtwAAAclJREFUOMt1k2dXE1EQhi8hCSFAgISmNAVEmr3TQaXIO5ZsQgIkodvAAlaKooAgqBS7CKj/1NmFPeySm/lyZ+Z5ztlzdmaE2Iur19rbDh6I60i1CVlUN1zGbtRbz0bhY6dgDNfxZDMvjedu34/N4WBw+HvoIxfOQgPOL+DOm+UVot6tDSJ6G37OjYQ9IY/Lxy+Y0Gesqw+NdXKrSOcWLiLdGriB69pLt73ctOzwpKOAt4vMAvWyUXVCE1KAhz7aL5CPv3Ja5RccUJ5QtECBacDNwiVgimQCLQG1QtjSgEW5EAAS04UHWCW5QN+ADNEMfIkl/AauiGxgQC3e3VJjwST8AbKEHRjk/LWyO6Z5gzAEZIpMYIjzV7M3tZibMQiDgF1kAV8pRgwA2aIJCMcSIkCLyAA+xRLWAI9ITwQm5fw9UMfreR7wywWep5VnkQqM98h4jwLHOXWclUDoXjT3PQBOavtwhBf2zt39vOs+j6p8Z6UO8w8cGTXzbj83i/WlTODi6Usjf/bIvNaHuFT8AR1/6J8wcyHKnOqgfvb//Rfc/tXZx3lFifm0ks+4jKfnSEmKus4aa5qOG+0Xpfed486N4/PPbc0xNP8DfJDxgmAYNgUAAAAASUVORK5CYII=", "anthropic.com": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAB3VBMVEX6+vf6+vf6+vf6+vf6+vf6+vf6+vf6+vf6+vf6+vf6+vf6+vf6+vf6+vf6+vf6+vf6+vf6+vf6+vf6+vf6+vf6+vf6+vf6+vf6+vf5+fb7+/j4+PXp6ebm5uTm5uPu7uvx8e78/PnPz8xISEc9PTw7OzpnZ2bv7+z9/frAwL5CQkE8PDyGhoUUFBQWFhYVFRUiIiL+/vvk5OI/Pz4YGBh3d3aGhoStrasdHR0ZGRkXFxc3Nzfd3dvMzMkpKSn19fJjY2JOTk01NTWfn5309PFfX17Pz80rKyuwsK54eHdVVVXw8O2pqaccHBuKiolCQkLq6ue+vrshISElJSXDw8Hj4+Ho6OVFRUSFhYTt7epNTUwVFRZ7e3qCgoCxsa8eHh4qKirOzsz///2WlpU6Ojng4N3JycYoKCf29vM2NjaZmZegoJ6ioqAgICAaGhqjo6Hz8/BbW1vS0tAuLi1ZWVjy8u+lpaQbGxuOjo0mJibHx8Th4d48PDtQUE+BgYB/f36AgH58fHs0NDR+fny1tbMfHx+/v73///yFhYPi4t/FxcNoaGcSEhITExNOTk7KysekpKJXV1bi4uBdXVxzc3JERENDQ0OEhIL39/SsrKpGRkXs7Ors7Onu7uz///+QUuYeAAAAGHRSTlMAD3XY+/zaeRGW+pv5fNfe/f7Z34CgE+HQwITTAAAAAWJLR0Sen7KjCwAAAAd0SU1FB+cBBBE2Mim4Ns8AAAHoSURBVDjLhZJpUxNBEIYHDBKDqAjizACBIRiXSHpYGSXbHqAoeGK8WKMCiteqeIFR4hVUUBTwAG/ifzWVZEkMYfN8marut57ummpCSkrXuGhBytaWuwkpWeehq+KqcJPS9dQBTyXZQB3ZSFzOgU2EFiEbYJRzbj+sQIDW1Td4Gylt8jbU1xUwMNHsa9nm3661Bnb4mgVbaeBtQZDtrfrOjmCwja80cG8AlJK7GN8NEPDy/ADTOkPKMHDPXn3ffgx1aizf0NUt8cBBNHq0Q4el7O7KMzDR24ehI0elPHZcP3ES+3rtNW2D6Ec4FT59Bs+e0893APaL/w18wAS4ICIX4dJlygcBzAGeG2Da0DBeuToyck3B9Rv6zVs4PJRZM2Ow/BJv37k7OnhP3X+gPXwkpd/KMTAxNo7KUEkMJR9HtSdPcXwsvWbaICZQgUyBKvZMf/4CcEJkDTzsA3z5Kh6PT75+gxDn9C2AL8ztANOmprH93XuRRJsBaPmgf4zh9FRqzZTBmp2b/9SYHvY5FlRftKav83Ozlm3gC4umOZr5uui37z9+/hK//5iLC3zZEFlasuy7iiYSf1mylIgsG1imlUO2VPxoi5x9FdnsHKgm5R6nvquGuCschpRtqSXEXVldtcr8rTW15B8LiprxbD6EzwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMy0wMS0wNFQxNzo1NDo1MCswMDowMOYX4h8AAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjMtMDEtMDRUMTc6NTQ6NTArMDA6MDCXSlqjAAAAV3pUWHRSYXcgcHJvZmlsZSB0eXBlIGlwdGMAAHic4/IMCHFWKCjKT8vMSeVSAAMjCy5jCxMjE0uTFAMTIESANMNkAyOzVCDL2NTIxMzEHMQHy4BIoEouAOoXEXTyQjWVAAAAAElFTkSuQmCC", "apnews.com": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAABcVBMVEX////9/f37+/v+/v78/PzLy8t/f3+JiYmGhobs7Ozg4OCFhYWHh4eLi4u9vb339/djY2MAAAAEBAQDAwOfn5+6uroBAQElJSWtra3v7+8bGxsICAgKCgpbW1vAwMAHBwcGBgaampqnp6cFBQUUFBTo6Oi/v78wMDBgYGBQUFAkJCTj4+MCAgL5+fnx8fFERESVlZUaGho9PT0XFxf6+vr29vYJCQmAgICpqaleXl6srKwQEBCYmJjw8PA/Pz+Xl5dTU1PS0tK+vr6Ojo7i4uIiIiIWFhbk5OSZmZlHR0fl5eWRkZHR0dGgoKAMDAyKiopFRUWcnJy7u7vPz88mJiavr6/4+PhYWFi8vLz19fV9fX2Pj4/Dw8OhoaESEhLz8/NkZGSoqKg5OTlKSkpNTU0tLS2qqqrOzs5AQEDMzMxlZWXJyckLCwuNjY0zMzMgICCkpKTm5ubT09Py8vLU1NTp6en//Pz4tbTtLivuOTbuNzQphrOMAAABo0lEQVQ4y82S6VvTQBDGZ7NRiqXWN8FYTDXRgHIEaxGqVhHCDeLVcKmgFA8EBa0KHn+9k6MlPuoTP/J+2Znd3+47O7tEx0dCYckgkkok9XdA/rlHJhBBJ062ZdraSUo6le1gZXOn8zzdlEpnoOnoJFWlszDAMnCu0CIkdZ3XzSIukFDpomaZOqDbBi41CZUuw3E0dPdweAUOrvb29cM0ugfi2gIHy3Vt9hhkwESG1GslFHGdlNihbGDohssewyGQpREqoIKbnMcOJm7dhs4e8Ql5qiYBvsOd/F2e6WwCYvQep2OhReDgYpw822EPmmBgcqo0zcPMbFhk5DBHNM8eCyFwfxG6AzyIrhk4OA8Hqo8e89ITqgWADxdLy9F67LAyA82xsUprDOSePnu+vhK3KXCoYKPGe6Dhxcv1sEguTrbauMlt7KlvvXr9BjbebofASOu5JY2WgXc8CtpxHey+h8WNUhIPWccH7JEipRT7cD9+siroSACSGv7nxS9RMuV7XuOr5x/87QP9W1IIIRPhUfp/OkxR+gnfUkTfU0Q/UkQ/U/QLRWl+7F3CiRQAAAAASUVORK5CYII=", "bleepingcomputer.com": "data:image/x-icon;base64,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", "forbes.com": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAA1ZJREFUaAXtWE9PE0EUf7VbIsUWSxP1UBKp7cFSiC16kHKk+BUwKl6IJPIRgBN/FBJ6EOxHwIN6wZOakEiswagJ4ShNT03RWIgktID0jzsbQVv2TXdmdmua7CRNO++9mfd+83uv83Ytly5eKEMDjzMNHLsSugngfzNoMmAyIHgCDZ9CEssBbH37zmLOZRsMdsJ2Nqt5LRMD94eG4NHMDKRSKc0OWA1tEtOZgoXnJm5paYHnL15CKBRC44vH4zA3+7hCL8nB+f1+uBoIwPDwMAQCnRV6MrlxvQfS6fQpOSZgYuB4k1wuB9PTU8dT1e+dnW04PDys+JB16+vr8GxpCQaiUWWPUqlUsZ6AZBlcAIiDD4kE5PN51Fdubw/VEUWxWITFhQWIzc9X2Nlstop5rQk3gHK5DMlkEt0/v7+P6v5VxGLzsLr67kQkSXUCQDzu7v48cVz94+DgoFqkOicHMT31Nx0lyapqhwm5GSAb0lLo6NcR5vOUfGNjQ6kNopAYU4itYqpck6LExlFBOwCyRzz+FPr7o7CVyWBbqsoNA1AsFFQdYsJXy8tAPqxDKIVoDBQKRTSWT5+/wNjYOKpnUQgBoNUAKU61cU2+/Dwej5qKSyYEgMZAGdQBTIxPcAWKLRICkKcUcfUN63K54MnCIvRGIlgsXHKhIqal0OzsnNJGkJvV3twMnvZ2sFgsXEHSFgkBkCNC93Y6nUq70CQDOCsDMCJ44lwohUhXio3R0YfQEw5BV1cQ/L4rEOm9CSsrK5g5t1wIgN1uRx1X9/XkGeLe3TtAbl09hxAAGgNWlbaYFPbU5KSe8YulEI0ByapeXonEe8gyPDLWQqvupdaqP3oaA01N6m0xYeHWQFT5h9LohmomBIDGwDmHA3WcYWzY0I1khWE14HQ4aX510wkBoDHgcOIM6Ba9KAOtrefRWNpcbahOTwU3A+Rm9fl8aCyXOzpQnZ4KbgCkKaOlUHd3N7C+YeABxgWA/H3WeiBxu93wYGSEJyamNUxv5iJ9fRAOh2Fw8DZ4vV5Njkj/8/bNa/i6uQkf19aUBk/TQo1GTABEX+52BYPyLfxDY2jazJgAaNuyvlZcNVDfEOneTAD08zFeazJg/BnTPZgM0M/HeK3JgPFnTPfwGxlH6DVvV5iuAAAAAElFTkSuQmCC", "github.com": "data:image/x-icon;base64,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AAAAAAAAKysrBhYWGUcWFhiVFRUYvxUVGNkWFhfzFhYX8xUVGNkVFRi/FhYYlRYWGUcrKysGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=", "techcrunch.com": "data:image/webp;base64,UklGRsoDAABXRUJQVlA4TL4DAAAvH8AHAAk1bRswHWfKn3BJRPQ/25qPfaGobSTHCLYcguOPqr4Pj5q2jeBgxuqmQrjfTNs2hjAg0/ijqnrt7n9MAED4xA5bH5qXXf0/gwJIoGPbtmqr6mPj7qQOEUTUmbo4kaZE/t1ttcY5vF8Fu7VtLdu2zLV/d5dIgcyhAC2CFoiJKYaIEtxiJ9WMCtx5Dt3Ytl1b0ZgHU6dABORCMHiauMiivfa11vqsUNi2bSOle/eMh32aA0BQpKqkVVmtltVqtdOqeqKWajVN0/REIwBOICAVqUqpqqpEWgrtNJtmLQAiIkWkValWJaKqSkrLrGkaU5rSAooUkVKJacR8XdWqWkoV2eqlyFo1hJSidqt2WtshpSlNI6VUpZEQKY3V+qplKlU2m2JKaUpB2W+jStkdYpqWZUojstVQ1Uo0PaEoY4w0rW2aUqUYaUopKFWtoGSyHDGllGItVVaVmig9sdJWbKVUbWgaVhXWE1OpeEJJVVUqa1GKaSulrRSqNZVWWC2n1pKjz7j26UlKYoVEiMT775x//qwNx9919atYaKgY+/CtZ/MfpSnHnuv+V1/jQB997cOvf6yqnXrv3v4G7H38sZ87tbVUg4NZWbsoBd/Q6VZ3lWr9D7USwr6lu91NPaEz//Phj0HkzJudfO0hgM9//GqQztlP+uevJ8PRN3z56WVOcTHm8h89Fk38/e+9+M6HWi3ufvFc+8JzAC+/89b/hnjw7Y+nPhbw46/28uuvuN31EOEh81iX25rSNI00BQDWGuAwACXzEBocAAzrCVppSlNio3EYKgDcHtwyFyPmAtATaqU0qGSjsDQGAK7uunXpusaqoc5QVrRSqlrZNTIwuACc+vTufeeRi/HAjjUdO2+/sv/+xj3oCVlVQynYweARA3DohU59CiAgwR+/Mf9vuovdT2e77lzHpeFg/f//hCZDyZDL5QDoLsCcg+n/06VaZMjccj/9+PMv35fcsrtffdmTNNe7bzr8Eg/heHALj7l13HW7/onnvXC4a+Y21HU057fffvHHn75zl4sLn3xRMfz8s8/++evv2dzczbrNjXUb6+KeefHhehKnxrKBm8YcJuSWDS5hmFNimBPQaOiSIfI/GJyxAuYwjGKsM4Q4AwpolGEU2ij/MfKYlLmJw7YZjgCYE0KjjI3DykDIf46bsDmNG4E5GIqDIYQwZCPK1BiF9PiXCRzmmmTYHTJ0oDAERjV3piFhJN2/cGP7GWE8DIh9LWTEKEYEdP8ADgMBjJxJAJNwptA1AdXUOAA0", "theguardian.com": "data:image/x-icon;base64,AAABAAEAICAAAAEAIACoEAAAFgAAACgAAAAgAAAAQAAAAAEAIAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAWInAmBgKAOZYScE4WEnBOFiKQX/YikF/2EnBOFhJwThYCgDmWInAmAAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABXycHIGAoA5liKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2EnBOFgKAOZXycHIAAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAWEnA4BiKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YCgDmQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAV8nByBhJwThYikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/4thRv+LYUb/nXlj/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YScE4V8nByAAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAFfJwcgYScE4WIpBf9iKQX/YikF/2IpBf9iKQX/nXlj/9rNxP//////8ezp/515Y/96Siv/YikF/4thRv//////2s3E/4thRv9iKQX/YikF/2IpBf9iKQX/YScE4V8nByAAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABXycHIGEnBOFiKQX/YikF/2IpBf9iKQX/ekor//Hs6f////////////Hs6f96Siv/YikF/2IpBf9iKQX/i2FG/////////////////9rNxP+LYUb/YikF/2IpBf9iKQX/YScE4V8nByAAAAABAAAAAQAAAAEAAAABAAAAAQAAAAFhJwThYikF/2IpBf9iKQX/YikF/66Rfv//////////////////////i2FG/2IpBf9iKQX/YikF/2IpBf+LYUb///////////////////////////+LYUb/YikF/2IpBf9iKQX/YScE4QAAAAEAAAABAAAAAQAAAAEAAAABYCgDmWIpBf9iKQX/YikF/2IpBf+ukX7//////////////////////9rNxP9iKQX/YikF/2IpBf9iKQX/YikF/4thRv///////////////////////////515Y/9iKQX/YikF/2IpBf9iKQX/YScDgAAAAAEAAAABAAAAAV8nByBiKQX/YikF/2IpBf9iKQX/rpF+////////////////////////////nXlj/2IpBf9iKQX/YikF/2IpBf9iKQX/i2FG////////////////////////////nXlj/2IpBf9iKQX/YikF/2IpBf9iKQX/XycHIAAAAAEAAAABYCgDmWIpBf9iKQX/YikF/2IpBf/x7On///////////////////////////9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf+LYUb///////////////////////////+deWP/YikF/2IpBf9iKQX/YikF/2IpBf9gKAOZAAAAAV8nByBhJwThYikF/2IpBf9iKQX/rpF+////////////////////////////2s3E/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/4thRv///////////////////////////515Y/9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf8AAAABYicCYGIpBf9iKQX/YikF/2IpBf/x7On////////////////////////////FsaP/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/i2FG////////////////////////////nXlj/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2InAmBgKAOZYikF/2IpBf9iKQX/i2FG/////////////////////////////////66Rfv9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf+LYUb///////////////////////////+deWP/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YCgDmWEnBOFiKQX/YikF/2IpBf/FsaP/////////////////////////////////nXlj/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/4thRv///////////////////////////515Y/9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9hJwThYScE4WIpBf9iKQX/YikF/8Wxo/////////////////////////////////+deWP/YikF/2IpBf9iKQX/YikF/2IpBf+LYUb/xbGj////////////////////////////2s3E/515Y/9iKQX/YikF/2IpBf9iKQX/YikF/2EnBOFiKQX/YikF/2IpBf9iKQX/2s3E/////////////////////////////////515Y/9iKQX/YikF/2IpBf9iKQX/YikF/515Y/+deWP/nXlj/515Y/+deWP/nXlj/515Y/+deWP/nXlj/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf/azcT/////////////////////////////////nXlj/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YScE4WIpBf9iKQX/YikF/8Wxo/////////////////////////////////+deWP/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2EnBOFhJwThYikF/2IpBf9iKQX/rpF+/////////////////////////////////66Rfv9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YScE4WAoA5liKQX/YikF/2IpBf+LYUb/////////////////////////////////rpF+/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9gKAOZYicCYGIpBf9iKQX/YikF/2IpBf/x7On////////////////////////////FsaP/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf96Siv/ekor/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2InAmAAAAABYikF/2IpBf9iKQX/YikF/8Wxo////////////////////////////9rNxP9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/9rNxP+deWP/YikF/2IpBf9iKQX/YikF/2IpBf9hJwThAAAAAQAAAAFgKAOZYikF/2IpBf9iKQX/ekor//Hs6f///////////////////////////3pKK/9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf+ukX7//////515Y/9iKQX/YikF/2IpBf9iKQX/YikF/2AoA5kAAAABAAAAAV8nACBiKQX/YikF/2IpBf9iKQX/nXlj////////////////////////////nXlj/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/i2FG////////////nXlj/2IpBf9iKQX/YikF/2IpBf9iKQX/XycAIAAAAAEAAAABAAAAAWEnA4BiKQX/YikF/2IpBf9iKQX/rpF+///////////////////////x7On/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/3pKK//x7On///////////+deWP/YikF/2IpBf9iKQX/YikF/2AoA5kAAAABAAAAAQAAAAEAAAABAAAAAWEnBOFiKQX/YikF/2IpBf9iKQX/rpF+//////////////////////+deWP/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/2s3E////////////8ezp/3pKK/9iKQX/YikF/2IpBf9hJwThAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABXycAIGEnBOFiKQX/YikF/2IpBf9iKQX/ekor/9rNxP////////////Hs6f96Siv/YikF/2IpBf9iKQX/YikF/66Rfv///////////8Wxo/96Siv/YikF/2IpBf9iKQX/YScE4V8nACAAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABXycAIGEnBOFiKQX/YikF/2IpBf9iKQX/YikF/4thRv/azcT/8ezp//Hs6f+ukX7/i2FG/2IpBf96Siv/8ezp/8Wxo/96Siv/YikF/2IpBf9iKQX/YikF/2EnBOFfJwAgAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABXycAIGEnBOFiKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/ekor/4thRv+deWP/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9hJwThXycAIAAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAWAoA5liKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YScDgAAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAV8nByBgKAOZYScE4WIpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YikF/2IpBf9iKQX/YCgDmV8nACAAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABYicCYGAoA5lhJwThYScE4WIpBf9iKQX/YScE4WEnBOFgKAOZYicCYAAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=", "thehackernews.com": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4QAqRXhpZgAASUkqAAgAAAABADEBAgAHAAAAGgAAAAAAAABHb29nbGUAAP/bAIQAAwICAwIGAwMDAwQDAwUFCAUFBAQFCgcHBggMCgwMCwoLCw0OEhANDhEOCwsQFhARExQVFRUMDxcYFhQYEhQVFAEDBAQFBQUJBQUJFA0LDRQUFA8UFBQUFBQUFBQUFBQUFBQUFBQUDRQUFBEUFBQUFBQUFBAUDRQNFBQREhQUFRQU/8AAEQgAIAAgAwERAAIRAQMRAf/EABkAAAIDAQAAAAAAAAAAAAAAAAYHAQMIAv/EACkQAAEDBAEEAAYDAAAAAAAAAAIBAwUEBhESBwAIEyEWIjEyQVEJFBX/xAAaAQACAwEBAAAAAAAAAAAAAAAABQECBAgD/8QAJhEAAQMEAgEEAwEAAAAAAAAAAQACEQMEEiEFMVETMkGBFCJhBv/aAAwDAQACEQMRAD8Axb10wlisFgi6tihQbSh0QhV9VQnV2m8TWJzfNBZt5zdxQ1fX6twn+CDGrrgtvuv+c3Wz1QQaHXCe1Jf10k5i9urK2/JtmNcG+/KdCQBABHZJn6V2tDjBKYsd2nQ3J1By1X8SHdNxTFtS1LFRMdLP0bayBKTaVZO4bbQdMvaamOUbRVztr1nHNuta9qzkwxjKrS5xAd+veMbMzqdHsjUSj05BLfhGN9fx2OD8RUFlzddV3JFxMVJpGTz1OI1jlUVUDlMDgAAtmhU4eNSVRVSUSVNkMFlv/qg7B90wBjnObLctY4kEgkkje43EEdQbml4SF5/4EY4TjeJJBwphm4LiiKmsmo6WRsUoalomBVpsEbAgRFdNFQ1NflT39cu+O5I3ta5aIwpuAYROwctnZHwOoHa83Nxj+oT4L5TPhGftm+24oZw4p151I46r+sj/AJKd1jHl0PXHl2+1c649Zym2/tBeWlS0Lsc43ExBB6keI7UAwQUUQ3cNKwkHyjZ0bQuxlVdsy3MpN0kmbb0Yo1AvK0Ii2iu5QVDbdv0Srr+FDx1F93bXVQ5Ci3DEtBDtESd68xB2O0ZHEjyjjlfvVkOTY+6IRLTSDqJaOgqFJGnnDddpCjasqkXhwwCkTinr6IVDGyKX0RVZ8BStKtOp6uYYXmC0AHNuMe4jXfRnqArOeXCISy5k7hLr54p7KpbvNqukrfp6qlGXH5Xq5t4mVFXhRMbj4cKafftlURUVS32PG29i+qbfTahBjxE9HuDP15KguLon4Sy6aKq6QlTqZQoUlXqEKOhC/9k="};
+const SECS = {models:"Модели и исследования", laws:"Законы, цены, люди", sec:"Безопасность", you:"Для тебя"};
+const MOODS = [["alarm","тревожный день"],["release","день релиза"],["quiet","тихий день"],["calm","обычный день"]];
+const root = document.documentElement, N = S.length, $ = id => document.getElementById(id);
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const THUMB = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/></svg>';
+const nn = i => String(i + 1).padStart(2, '0');
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+// Русский набор: короткий предлог или союз не остаётся в конце строки, тире и число не отрываются от соседнего слова, короткая часть через дефис («из-за») не переносится
+const NB = '\u00A0', WJ = '\u2060', SHORT = /(^|[\s(«])([А-Яа-яЁё]{1,2}) (?=\S)/g;
+const typo = t => t.replace(SHORT, '$1$2' + NB).replace(SHORT, '$1$2' + NB).replace(/ —/g, NB + '—').replace(/(\d) (?=[А-Яа-яЁёA-Za-z%])/g, '$1' + NB)
+  .replace(/(^|[^A-Za-zА-Яа-яЁё0-9])([A-Za-zА-Яа-яЁё0-9]{1,3})-(?=[A-Za-zА-Яа-яЁё0-9])/g, '$1$2' + WJ + '-' + WJ)
+  .replace(/-([A-Za-zА-Яа-яЁё0-9]{1,3})(?![A-Za-zА-Яа-яЁё0-9])/g, WJ + '-' + WJ + '$1');
+function typeset(el) {
+  const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+  for (let n = walk.nextNode(); n; n = walk.nextNode()) if (!n.parentElement.closest('code,.meta,.bar')) n.nodeValue = typo(n.nodeValue);
+}
+// Термины макета: первое вхождение слова в новости становится кнопкой с объяснением
+const TERMS = {
+  6: [['0-day', 'Уязвимость, о которой разработчик ещё не знает: патча нет, а атаковать уже можно.'], ['RMM', 'Программа, через которую администратор удалённо управляет компьютерами компании.']],
+  8: [['AssumeRole', 'Команда в AWS: сервис на время получает права чужой роли. Удобно, но такое доверие можно украсть.']],
+  9: [['MoE', 'Модель из нескольких «экспертов»: на каждый запрос работает только часть сети.']]
+};
+function termWrapper(i) {
+  const left = (TERMS[i] || []).slice();
+  return txt => {
+    for (let k = 0; k < left.length; k++) {
+      const at = txt.indexOf(left[k][0]);
+      if (at < 0) continue;
+      const [w, d] = left.splice(k, 1)[0];
+      return txt.slice(0, at) + '<button type="button" class="tw" data-def="' + d + '">' + w + '</button>' + txt.slice(at + w.length);
+    }
+    return txt;
+  };
+}
+const fav = host => (FAV[host] ? '<img class="fav" src="' + FAV[host] + '" alt="" width="14" height="14">' : '') + host;
+const term = code => '<div class="term"><pre><code>' + code + '</code></pre><button type="button" class="copy">Скопировать</button></div>';
+
+const story = (s, i) => {
+  const T = termWrapper(i);
+  return '<section class="slide st" id="s' + i + '" data-i="' + i + '" data-label="' + (i ? SECS[s.sec] : 'Главное') + '"><div class="inner"><div class="content">'
+    + (s.thread ? '<div class="thread rv"><button type="button" class="tag" id="th' + i + '" data-thread="' + i + '">Сюжет · ' + s.thread[1] + ' →</button><b>' + s.thread[0] + '</b></div>' : '')
+    + '<h2 class="hl rv" id="h' + i + '" style="--d:1"><span class="idx">' + nn(i) + '</span>' + T(s.t) + '</h2>'
+    + '<div class="meta rv" style="--d:2">' + [fav(s.src), s.n, s.hn, s.tag].filter(Boolean).map(x => '<span>' + x + '</span>').join('') + '</div>'
+    + (s.why ? '<p class="why rv" style="--d:3"><b>Почему важно</b>' + T(s.why) + '</p>' : '')
+    + '<div class="cols"><p class="body rv" style="--d:4">' + T(s.body) + '</p>'
+    + (s.code ? '<div class="side rv" style="--d:4"><div class="cmd" id="cmd' + i + '">' + term(s.code) + '<span class="stamp" aria-hidden="true">Проверено</span><button type="button" class="lnk" id="tr' + i + '" data-tried="' + i + '">Отметить: попробовал</button></div></div>' : '')
+    + '</div>'
+    + '<div class="act rv" style="--d:5">' + (s.more ? '<button type="button" class="btn" id="m' + i + '" data-more="' + i + '">Разбор</button>' : '')
+    + '<a class="lnk" href="https://' + s.src + '" target="_blank" rel="noopener">Источник ↗</a>'
+    + '<div class="vote"><button type="button" id="up' + i + '" data-vote="up" aria-label="Полезно">' + THUMB + '</button><button type="button" id="dn' + i + '" data-vote="down" aria-label="Мимо">' + THUMB + '</button></div></div>'
+    + '</div></div></section>';
+};
+
+$('stories').innerHTML = S.map(story).join('');
+$('toc').innerHTML = S.map((s, i) => '<li><a id="toc' + i + '" href="#s' + i + '" data-go="s' + i + '"><span class="n">' + nn(i) + '</span><span class="t">' + s.t + '</span><span class="k">' + SECS[s.sec] + '</span></a></li>').join('');
+$('wall').innerHTML = ARCH.map(a => '<a class="tile" data-mood="' + a.m + '" href="https://riobvo.github.io/ai-digest/' + a.p + '" target="_blank" rel="noopener"><b>' + a.d + '</b><i>' + (a.e ? 'вечер' : 'утро') + '</i><span>' + esc(a.t) + '</span></a>').join('');
+const progSvg = '<svg class="prog" viewBox="0 0 34 34" aria-hidden="true">' + S.map((s, i) => '<circle cx="17" cy="17" r="' + (1.6 + i * 1.5).toFixed(1) + '" style="--i:' + i + '"/>').join('') + '</svg>';
+$('prog-s').innerHTML = progSvg; $('prog-b').innerHTML = progSvg;
+document.querySelectorAll('[data-rings]').forEach(el => el.prepend(document.querySelector('.cover .rings').cloneNode(true)));
+typeset($('deck'));
+
+const slides = [...document.querySelectorAll('.slide')], progs = [...document.querySelectorAll('.prog')], read = new Set();
+const go = (el, now) => el.scrollIntoView({block: 'start', behavior: now || reduced ? 'instant' : 'smooth'});
+
+function mark(i) {
+  if (read.has(i)) return;
+  read.add(i); $('toc' + i).classList.add('read');
+  progs.forEach(p => p.children[i].classList.add('on'));
+  const all = read.size === N;
+  $('verdict').textContent = all ? 'Сигнал принят' : 'Прочитано ' + read.size + ' из ' + N;
+  if (all) progs.forEach(p => p.classList.add('done'));
+}
+if ('IntersectionObserver' in window) {
+  root.classList.add('anim');
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), {threshold: .01, rootMargin: '0px 0px 12% 0px'});
+  slides.forEach(s => io.observe(s));
+}
+
+// Дата: один элемент поверх страницы. Пока обложка уезжает, он сжимается и встаёт в шапку — и остаётся там
+const fly = $('fly'), ph = document.querySelector('.cover .ph'), anchor = $('hdr-date'), hdr = $('hdr');
+let P0, T, sEnd, D;
+function measure() {
+  const r = ph.getBoundingClientRect();
+  hdr.style.transform = 'none';
+  const a = anchor.getBoundingClientRect();
+  P0 = {x: r.left, y: r.top + scrollY}; T = {x: a.left, y: a.top}; sEnd = a.height / r.height;
+  D = Math.max(240, $('cover').offsetHeight - a.bottom - 8);
+  root.style.setProperty('--date-w', Math.ceil(r.width * sEnd) + 'px');
+}
+// Дата всегда во всю ширину колонки, какой бы ни был шрифт: кегль считается от ширины набранной строки
+function fitDate() {
+  root.style.removeProperty('--date-size');
+  const box = ph.closest('.content').clientWidth - 30, w = ph.getBoundingClientRect().width, fs = parseFloat(getComputedStyle(ph).fontSize);
+  root.style.setProperty('--date-size', Math.min(fs * box / w, innerHeight * .36, 400) + 'px');
+}
+function refit() { fitDate(); measure(); onScroll(); }
+function setFont(k) {
+  if (k) root.dataset.font = k; else delete root.dataset.font;
+  $('fonts').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.font === k));
+  refit();
+}
+function place() {
+  const y = scrollY, p = Math.min(1, Math.max(0, y / D)), e = reduced ? (p < 1 ? 0 : 1) : p * p * (3 - 2 * p);
+  const fromY = P0.y - y;
+  fly.style.transform = 'translate(' + (P0.x + (T.x - P0.x) * e) + 'px,' + (fromY + (T.y - fromY) * e) + 'px) scale(' + (1 + (sEnd - 1) * e) + ')';
+  hdr.style.transform = 'translateY(' + (Math.min(1, Math.max(0, (p - .72) / .28)) - 1) * 102 + '%)';
+}
+// Текущий плакат — тот, что лежит на линии в 40% высоты экрана. Новость прочитана, если задержался на ней почти секунду
+let cur = -1, dwell = 0;
+function setCur(i) {
+  if (i === cur) return;
+  cur = i; const s = slides[i], isStory = 'i' in s.dataset;
+  $('hdr-sec').textContent = s.dataset.label; $('hdr-n').textContent = isStory ? nn(+s.dataset.i) + ' / ' + N : '';
+  clearTimeout(dwell);
+  if (isStory) dwell = setTimeout(() => mark(+s.dataset.i), 900);
+}
+function onScroll() {
+  place();
+  const line = innerHeight * .4;
+  for (let i = 0; i < slides.length; i++) { const r = slides[i].getBoundingClientRect(); if (r.top <= line && r.bottom > line) { setCur(i); break; } }
+}
+let tick = false;
+addEventListener('scroll', () => { hideTip(); if (tick) return; tick = true; requestAnimationFrame(() => { tick = false; onScroll(); }); }, {passive: true});
+addEventListener('resize', refit);
+root.classList.add('fly'); refit();
+document.fonts.ready.then(refit);
+document.fonts.addEventListener('loadingdone', refit);
+
+// Лист снизу. Пока он открыт, страница под ним не листается: прокрутка заперта и жесты мимо текста листа гасятся
+const sheet = $('sheet'), scrim = $('scrim'), deck = $('deck'), shBody = $('sh-b');
+let opener = null, hiddenHl = null;
+function showSheet(kicker, title, html, from) {
+  const t = $('sh-t');
+  $('sh-k').textContent = kicker; if (from) t.innerHTML = from.innerHTML; else t.textContent = title;
+  t.style.cssText = ''; shBody.innerHTML = html; typeset(shBody); shBody.scrollTop = 0;
+  opener = document.activeElement;
+  sheet.hidden = scrim.hidden = false; root.classList.add('locked'); deck.inert = true;
+  if (from && !reduced) {
+    // Заголовок в листе — точная уменьшенная копия заголовка плаката (те же переносы), поэтому перелёт заканчивается без скачка
+    const r = from.getBoundingClientRect(), cs = getComputedStyle(from), fs = parseFloat(cs.fontSize), k = Math.min(.72, 30 / fs);
+    t.style.cssText = 'font-size:' + fs * k + 'px;line-height:' + parseFloat(cs.lineHeight) / fs + ';max-width:' + Math.ceil(r.width * k) + 'px;opacity:0';
+    sheet.style.transition = 'none'; sheet.style.transform = 'none';
+    const tr = t.getBoundingClientRect(), css = getComputedStyle(root);
+    sheet.style.transform = ''; void sheet.offsetHeight; sheet.style.transition = '';
+    const c = from.cloneNode(true);
+    c.className = 'hl flight'; c.removeAttribute('id');
+    c.style.cssText = 'left:' + r.left + 'px;top:' + r.top + 'px;width:' + r.width + 'px;font-size:' + fs + 'px';
+    document.body.append(c);
+    from.style.visibility = 'hidden'; hiddenHl = from;
+    c.animate([{transform: 'none', color: css.getPropertyValue('--ink')}, {transform: 'translate(' + (tr.left - r.left) + 'px,' + (tr.top - r.top) + 'px) scale(' + k + ')', color: css.getPropertyValue('--paper')}],
+      {duration: 520, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'forwards'}).onfinish = () => { t.style.opacity = 1; c.remove(); };
+  }
+  void sheet.offsetHeight; void scrim.offsetHeight;
+  sheet.classList.add('open'); scrim.classList.add('open');
+  sheet.focus({preventScroll: true});
+}
+function closeSheet() {
+  sheet.style.transition = ''; sheet.style.transform = '';
+  sheet.classList.remove('open'); scrim.classList.remove('open'); root.classList.remove('locked'); deck.inert = false;
+  if (hiddenHl) { hiddenHl.style.visibility = ''; hiddenHl = null; }
+  setTimeout(() => { if (!sheet.classList.contains('open')) sheet.hidden = scrim.hidden = true; }, 480);
+  if (opener) opener.focus({preventScroll: true});
+}
+// Разборы можно читать подряд, не закрывая лист: внизу каждого — переход к соседнему
+const withMore = S.map((s, i) => s.more ? i : -1).filter(i => i >= 0);
+function breakdownHtml(i) {
+  const s = S[i], m = s.more, at = withMore.indexOf(i), prev = withMore[at - 1], next = withMore[at + 1];
+  return '<p>' + m.lead + '</p><ul class="points">' + m.pts.map(pt => '<li><span>' + pt + '</span></li>').join('') + '</ul>'
+    + (s.code ? term(s.code) : '') + (m.note ? '<div class="note">' + m.note + '</div>' : '')
+    + (m.caveat ? '<div class="caveat"><b class="label">Ограничения</b>' + m.caveat + '</div>' : '')
+    + '<div class="sh-nav">' + (prev === undefined ? '<span></span>' : '<button type="button" class="lnk" data-more-go="' + prev + '">← Предыдущий</button>')
+    + (next === undefined ? '<button type="button" class="btn" data-close>Закрыть</button>' : '<button type="button" class="btn" data-more-go="' + next + '">Следующий разбор →</button>') + '</div>';
+}
+function openBreakdown(i) {
+  showSheet('Разбор · ' + nn(i) + ' / ' + N, S[i].t, breakdownHtml(i), $('h' + i));
+  mark(i);
+}
+function swapBreakdown(i) {
+  if (hiddenHl) { hiddenHl.style.visibility = ''; hiddenHl = null; }
+  const t = $('sh-t');
+  t.style.cssText = ''; t.innerHTML = $('h' + i).innerHTML;
+  $('sh-k').textContent = 'Разбор · ' + nn(i) + ' / ' + N;
+  shBody.innerHTML = breakdownHtml(i); typeset(shBody); shBody.scrollTop = 0;
+  go($('s' + i), true); onScroll(); mark(i);
+  if (!reduced) shBody.animate([{opacity: 0, transform: 'translateY(10px)'}, {opacity: 1, transform: 'none'}], {duration: 260, easing: 'ease-out'});
+}
+// Содержание из любого места: нажатие на верхнюю строку
+function openToc() {
+  showSheet('Прочитано ' + read.size + ' из ' + N, 'Содержание', '<ol class="toc">' + S.map((s, i) => '<li><a class="' + (read.has(i) ? 'read' : '') + '" href="#s' + i + '" data-go="s' + i + '"><span class="n">' + nn(i) + '</span><span class="t">' + s.t + '</span><span class="k">' + SECS[s.sec] + '</span></a></li>').join('') + '</ol>');
+}
+const tip = $('tip');
+function showTip(el) {
+  tip.innerHTML = '<b>' + el.textContent + '</b>' + el.dataset.def; tip.hidden = false;
+  const r = el.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
+  tip.style.left = Math.max(12, Math.min(innerWidth - w - 12, r.left + r.width / 2 - w / 2)) + 'px';
+  tip.style.top = (r.bottom + 10 + h < innerHeight ? r.bottom + 10 : r.top - h - 10) + 'px';
+}
+function hideTip() { $('tip').hidden = true; }
+function openThread(i) {
+  const s = S[i], th = s.thread;
+  const prev = th[2].map(p => { const cut = p.indexOf(' — '), txt = p.slice(cut + 3); return '<li><time>' + p.slice(0, cut) + '</time><span>' + txt[0].toUpperCase() + txt.slice(1) + '</span></li>'; }).join('');
+  showSheet('Сюжет · ' + th[1], th[0], '<ol class="tl">' + prev + '<li class="now"><time>10 ноя · сегодня</time><span>' + s.t + '</span></li></ol>');
+}
+// Смахивание листа вниз закрывает его; текст разбора при этом прокручивается как обычно
+let drag = null;
+sheet.addEventListener('touchstart', e => { drag = {y: e.touches[0].clientY, at: Date.now(), on: false, dy: 0}; }, {passive: true});
+sheet.addEventListener('touchmove', e => {
+  if (!drag) return;
+  const dy = e.touches[0].clientY - drag.y, scrolls = shBody.contains(e.target) && shBody.scrollHeight > shBody.clientHeight;
+  if (!drag.on) {
+    if (scrolls && !(shBody.scrollTop <= 0 && dy > 0)) return;
+    if (dy <= 0) { e.preventDefault(); return; }
+    drag.on = true; sheet.style.transition = 'none';
+  }
+  e.preventDefault(); drag.dy = dy;
+  sheet.style.transform = 'translateY(' + Math.max(0, dy) + 'px)';
+}, {passive: false});
+sheet.addEventListener('touchend', () => {
+  const d = drag; drag = null;
+  if (!d || !d.on) return;
+  if (d.dy > 110 || d.dy / (Date.now() - d.at) > .6) closeSheet(); else { sheet.style.transition = ''; sheet.style.transform = ''; }
+});
+scrim.addEventListener('touchmove', e => e.preventDefault(), {passive: false});
+scrim.addEventListener('click', closeSheet);
+hdr.addEventListener('click', openToc);
+document.addEventListener('click', e => { if (!e.target.closest('.tw,.tip')) hideTip(); }, true);
+
+let moodAt = 0;
+function setMood(k) {
+  moodAt = Math.max(0, MOODS.findIndex(m => m[0] === k));
+  root.dataset.mood = MOODS[moodAt][0]; $('mood').textContent = MOODS[moodAt][1] + ' ↻';
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('button,a'); if (!t) return;
+  if (t.dataset.go) { e.preventDefault(); if (sheet.classList.contains('open')) closeSheet(); go($(t.dataset.go)); }
+  else if (t.classList.contains('tw')) showTip(t);
+  else if (t.dataset.moreGo) swapBreakdown(+t.dataset.moreGo);
+  else if ('close' in t.dataset) closeSheet();
+  else if (t.dataset.more) openBreakdown(+t.dataset.more);
+  else if (t.dataset.thread) openThread(+t.dataset.thread);
+  else if (t.id === 'sh-x') closeSheet();
+  else if (t.id === 'theme') setTheme(dark() ? 'light' : 'dark');
+  else if (t.closest('#fonts')) setFont(t.dataset.font);
+  else if (t.id === 'mood') setMood(MOODS[(moodAt + 1) % MOODS.length][0]);
+  else if (t.dataset.tried) { const on = $('cmd' + t.dataset.tried).classList.toggle('done'); t.textContent = on ? 'Попробовал ✓' : 'Отметить: попробовал'; }
+  else if (t.dataset.vote) {
+    const was = t.classList.contains('on');
+    t.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('on'));
+    if (!was) {
+      t.classList.add('on');
+      if (t.dataset.vote === 'up' && !reduced) {
+        const el = document.createElement('span');
+        el.className = 'burst';
+        el.innerHTML = '<b></b><b></b>' + Array.from({length: 8}, (x, k) => '<i style="--a:' + k * 45 + 'deg"></i>').join('');
+        t.append(el); setTimeout(() => el.remove(), 800);
+        try { navigator.vibrate(12); } catch (err) { /* вибрации нет на iPhone и в части встроенных окон — эффект остаётся только зрительным */ }
+      }
+    }
+  } else if (t.classList.contains('copy')) {
+    const code = t.parentElement.querySelector('code');
+    const ok = () => { t.textContent = 'Скопировано'; setTimeout(() => t.textContent = 'Скопировать', 1600); };
+    const select = () => { const r = document.createRange(); r.selectNodeContents(code); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); t.textContent = 'Выделено'; };
+    try { navigator.clipboard.writeText(code.textContent).then(ok, select); } catch (err) { select(); }
+  }
+});
+// Esc закрывает лист; j и k листают плакаты, как на нынешнем сайте
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') hideTip();
+  if (sheet.classList.contains('open')) { if (e.key === 'Escape') closeSheet(); return; }
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const step = e.key === 'j' ? 1 : e.key === 'k' ? -1 : 0;
+  if (step) go(slides[Math.max(0, Math.min(slides.length - 1, cur + step))]);
+});
+
+const dark = () => root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+function setTheme(t) { root.dataset.theme = t; $('theme').textContent = dark() ? 'день' : 'ночь'; }
+// В адресе можно сразу задать вид: #dark или #light, цвет дня (#release), экран (#s6, #arch) и что открыть на нём (sheet, thread, tried)
+const hash = location.hash.slice(1).split(',');
+if (hash.includes('dark')) setTheme('dark'); else if (hash.includes('light')) setTheme('light'); else $('theme').textContent = dark() ? 'день' : 'ночь';
+const m0 = MOODS.find(m => hash.includes(m[0])); if (m0) setMood(m0[0]);
+const f0 = ['unbounded', 'dela', 'playfair', 'martian'].find(f => hash.includes(f)); if (f0) setFont(f0);
+const at = hash.find(h => /^(s\d|index|end|arch|tg|week)$/.test(h));
+if (at) {
+  go($(at), true); onScroll();
+  const i = +at.slice(1);
+  if (S[i] && S[i].more && hash.includes('sheet')) openBreakdown(i);
+  if (S[i] && S[i].thread && hash.includes('thread')) openThread(i);
+  if (S[i] && S[i].code && hash.includes('tried')) $('tr' + i).click();
+  if (hash.includes('tip')) setTimeout(() => { const w = $(at).querySelector('.tw'); if (w) showTip(w); }, 600);   // после прокрутки к плакату: прокрутка подсказку прячет
+}
+if (hash.includes('toc')) openToc();
+</script>
+</body></html>
