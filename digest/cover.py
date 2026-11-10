@@ -30,7 +30,7 @@ CHROME_NAMES = ("google-chrome", "google-chrome-stable", "chromium", "chromium-b
 
 
 def cover_html(headline: str, date_label: str, sub: str, mood: str = "calm") -> str:
-    return TEMPLATE.substitute(landscape=LANDSCAPE, sky=MOODS[mood].sky, headline=escape(headline), date=escape(date_label),
+    return TEMPLATE.substitute(landscape=LANDSCAPE, mood=MOODS[mood].color, headline=escape(headline), date=escape(date_label),
                                sub=escape(sub))
 
 

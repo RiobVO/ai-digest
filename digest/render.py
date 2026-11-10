@@ -375,7 +375,7 @@ def _hero(entry: Entry, votes: bool, chip: str, day_mood: str = "calm") -> str:
     also = f'<span class="also">{_also(entry)}</span>' if entry.item.also else ""
     return (
         f'        <section class="card hero" id="main-story"{_entry_attr(entry)} data-mood="{day_mood}"'
-        f' style="--sky:{MOODS[day_mood].sky}">\n'
+        f' style="--mood:{MOODS[day_mood].color}">\n'
         f'          <div class="hero-top"><span class="chip">{chip}</span>'
         f'<a class="btn" href="{_href(entry.item.url)}">Первоисточник {ARROW}</a></div>\n'
         f'          <h2{_anchor(entry)}>{escape(entry.title)}</h2>\n          {_story(entry)}\n          <p>{escape(entry.summary)}</p>\n'

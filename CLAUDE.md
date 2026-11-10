@@ -134,8 +134,9 @@ Site pages besides issues (all built with the `page.html` shell, rebuilt by ever
 - **«Ещё за день»** (`Digest.more`, `llm.Mention`) has no entry id: not in the archive, votes, stories or the weekly.
 - **Tricks** carry `topic` from `llm.TIP_TOPICS` (enum in the extras schema) ↔ `render.TIP_TOPIC_LABELS`; the archive
   stores summary/why/copy/topic for tips only. Tips and voices never start stories (`Stories.apply`).
-- **Mood** (`digest/mood.py`) is computed from sections and rendered as a translucent sky layer (`--sky`) on the page
-  hero and the cover; the landscape SVG itself is untouched so `cover.py` can keep extracting it.
+- **Mood** (`digest/mood.py`) is computed from sections and gives the colour of the day (`MOODS[name].color` /
+  `.night`), rendered as `--mood` on the page hero and on the cover. `alarm` only when the hero is a security story:
+  the count of security cards is not a signal (there are almost always three, `SECURITY_CAP`).
 - **Pre-releases**: `fetch.PRERELEASE` matches a suffix right after the version digit (`v1.2.3-rc1`, `-nightly.`,
   `-preview.`), not a word in the title.
 - **Templates** are `string.Template` (`digest/templates/page.html`, `cover.html`): a literal `$` must be `$$`.
