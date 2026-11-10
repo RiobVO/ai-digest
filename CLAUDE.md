@@ -25,12 +25,22 @@ python -m digest eval [--runs N] [snap.json]     # run current prompts on snapsh
 cd worker && npx wrangler deploy                 # deploy feedback/scheduler worker; secrets via `wrangler secret put`
 ```
 
+With the repo venv on Windows (Git Bash has no `uv`): `.venv/Scripts/python -m pytest -q`, same for `-m ruff` / `-m mypy`.
 Without a local 3.12 venv: `uv run --no-project --python 3.12 --with httpx --with feedparser --with pytest pytest -q`
 (`--no-project` matters: otherwise uv rewrites `.venv` and creates `uv.lock`).
 
 Local runs read `.env` (`load_env` in `digest/__main__.py`; never overrides real env). `build` needs `GEMINI_API_KEY`, `SITE_URL`;
-`FEEDBACK_URL`/`FEEDBACK_TOKEN` optional. `--dry-run` only skips saving `state/` — it still overwrites `site/index.html`,
-`site/archive.html` and the issue page. Covers need Chrome (`CHROME_PATH` locally); missing Chrome just skips the cover.
+`FEEDBACK_URL`/`FEEDBACK_TOKEN` optional. `--dry-run` only skips saving `state/` — it still calls Gemini (daily quota)
+and overwrites `site/index.html`, `site/archive.html` and the issue page. Covers need Chrome (`CHROME_PATH` locally);
+missing Chrome just skips the cover.
+
+**Looking at a page change — never through `build`.** Call the render functions directly: `render_page` with a
+hand-made `Digest` (as in `tests/test_render.py`), `render_archive` / `render_tips` / `render_story_pages` /
+`render_health` with the real `state/issues.json`, `state/stories.json`, `state/health/` — real data finds what
+fixtures miss (a long unbreakable name widened the arsenal past a phone screen, 2026-11-10). Screenshot with headless
+Chrome at 390 and 1400 px in both themes. On Windows a Chrome window is never narrower than ≈500 px, so
+`--window-size=390,…` crops the picture instead of narrowing the layout: set the width through DevTools
+(`Emulation.setDeviceMetricsOverride`) and check `innerWidth` equals what was asked — a wider value means overflow.
 
 ## Gemini budget (free tier — stay within it)
 
@@ -147,6 +157,11 @@ Site pages besides issues (all built with the `page.html` shell via `render._she
   A story is read after `DWELL_MS` on screen, on opening its breakdown or its source link. Text goes through
   `render._rich` (escape + `typo` + terms as buttons); commands only through `_term`. `render.BASE_SCRIPT` (theme,
   copy buttons) is on every page; the arsenal adds `TIPS_SCRIPT` (tried state from the worker → «Проверено» stamp).
+- **Page ↔ worker**: page scripts send `POST /vote?e=<id>&v=up|down`, `POST /read?e=<id>` (with `keepalive`),
+  `GET /tried` and `POST /tried?e=<id>&v=0|1`, and remember the answer in `localStorage` under `v:<id>`, `r:<id>`,
+  `t:<id>`. Read marks feed «Утром ты пропустил» in the evening issue (`memory.missed_in_morning`).
+- **Anchors** `id="e-<entry id>"` on story cards are linked from the arsenal, story pages, «Утром ты пропустил» and
+  the Telegram messages (`telegram.py`, `tip.py`) — keep them when the card markup changes.
 - **Pre-releases**: `fetch.PRERELEASE` matches a suffix right after the version digit (`v1.2.3-rc1`, `-nightly.`,
   `-preview.`), not a word in the title.
 - **Templates** are `string.Template` (`digest/templates/page.html`, `cover.html`): a literal `$`
@@ -184,4 +199,6 @@ Site pages besides issues (all built with the `page.html` shell via `render._she
 
 - Comments, docstrings and log messages are in Russian; comments explain *why*, often citing the incident that caused the code.
 - Tests are pure-function, inline fixtures, no network; the worker tests use an in-memory KV mock (`memoryKV`).
+  Page text is typeset (`render.typo` puts no-break spaces and word joiners into it), so a test that looks for a
+  phrase on a page strips them first — `plain()` and the wrapped `render_page` in `tests/test_render.py`.
 - Commits: `feat|fix|chore(<scope>): …` in English, scopes seen: `digest`, `site`, `page`, `worker`, `alert`, `ci`, `sources`.
