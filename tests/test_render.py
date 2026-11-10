@@ -3,17 +3,31 @@ from datetime import datetime, timezone
 
 from digest.llm import Digest, Entry
 from digest.models import Item
-from digest.render import NBSP, WJ, render_archive, render_story_pages, render_tips, typo
+from digest.render import NBSP, WJ, render_archive, typo
 from digest.render import render_page as typeset_page
+from digest.render import render_story_pages as typeset_story_pages
+from digest.render import render_tips as typeset_tips
 from digest.telegram import TG_LIMIT, build_message
 
 WHEN = datetime(2026, 10, 16, 3, tzinfo=timezone.utc)
 STATS = {"raw": 138, "new": 118, "merged": 118}
 
 
-def render_page(*args, **kwargs) -> str:
+def plain(page: str) -> str:
     """Страница без знаков русского набора: тесты ищут текст с обычными пробелами. Сам набор проверяют test_typo_*."""
-    return typeset_page(*args, **kwargs).replace(NBSP, " ").replace(WJ, "")
+    return page.replace(NBSP, " ").replace(WJ, "")
+
+
+def render_page(*args, **kwargs) -> str:
+    return plain(typeset_page(*args, **kwargs))
+
+
+def render_tips(*args, **kwargs) -> str:
+    return plain(typeset_tips(*args, **kwargs))
+
+
+def render_story_pages(*args, **kwargs) -> dict[str, str]:
+    return {name: plain(page) for name, page in typeset_story_pages(*args, **kwargs).items()}
 
 
 def sample() -> Digest:
@@ -151,6 +165,42 @@ def test_issue_links_the_previous_one_and_archive_page_lists_all():
     assert "Прошлый выпуск" not in render_page(sample(), STATS, WHEN, failures=[], issues=issues, page_name="week-x.html")
     archive = render_archive(issues, WHEN)
     assert 'href="2026-10-16.html"' in archive and "Вчера &lt;b&gt;" in archive and "2 события" in archive
+
+
+def test_archive_is_a_wall_of_covers_coloured_by_the_mood_of_each_issue():
+    def issue(day, slot, sections):
+        return {"date": day, "slot": slot, "headline": f"Выпуск {day} {slot}", "page": f"{day}-{slot}.html",
+                "entries": [{"section": section} for section in sections]}
+
+    issues = [issue("2026-11-09", "evening", ["security", "business"]), issue("2026-11-09", "morning", ["model", "security"]),
+              issue("2026-11-08", "evening", ["business"] * 3), issue("2026-11-08", "morning", ["business"] * 9)]
+    page = render_archive(issues, WHEN)
+    tiles = re.findall(r'<a class="tile" data-mood="([a-z]+)" href="([^"]+)" title="([^"]+)"><b>([0-9.]+)</b><i>([а-я]+)</i>', page)
+    # Настроение считается из разделов записей архива: главная про безопасность — тревожный, модель — релиз,
+    # мало событий — тихий, иначе обычный
+    assert tiles == [("alarm", "2026-11-09-evening.html", "2 события", "09.11", "вечер"),
+                     ("release", "2026-11-09-morning.html", "2 события", "09.11", "утро"),
+                     ("quiet", "2026-11-08-evening.html", "3 события", "08.11", "вечер"),
+                     ("calm", "2026-11-08-morning.html", "9 событий", "08.11", "утро")]
+    for name, label in (("alarm", "тревожный"), ("release", "релиз"), ("quiet", "тихий"), ("calm", "обычный")):
+        assert f'<span data-mood="{name}">{label}</span>' in page
+    assert "<span>4 выпуска</span><span>16 событий</span>" in page
+
+
+def test_service_pages_share_the_shell_but_not_the_issue_header():
+    from digest.render import render_health
+    pages = [render_archive([], WHEN), render_tips(TIP_ISSUES, WHEN), render_health([], {"model": "gemini-flash-latest", "extras_model": "gemini-3.5-flash",
+                                                                              "lite_model": "gemini-3.5-flash-lite"}, WHEN),
+             *render_story_pages(STORY_ISSUES, STORIES, WHEN).values()]
+    assert len(pages) == 4
+    for page in pages:
+        # Та же бумага, шрифты и тема, что у выпуска; дата-перелёт, шапка с кругами и скрипт выпуска — только у него
+        assert "Sofia+Sans+Extra+Condensed" in page and '<button type="button" class="lnk sm" id="theme" hidden>' in page
+        assert 'localStorage.setItem("theme"' in page and '<a class="mark" href="index.html">' in page
+        assert 'id="hdr"' not in page and 'id="fly"' not in page and "DWELL_MS" not in page
+        assert 'href="archive.html"' in page and 'href="tips.html"' in page and 'href="health.html"' in page
+        # Прежняя оболочка ушла целиком: ни боковой колонки, ни шрифта Inter
+        assert 'class="side"' not in page and "Inter" not in page
 
 
 def test_telegram_numbers_items_and_keyboard_maps_numbers_to_entry_ids():
@@ -468,6 +518,16 @@ def test_arsenal_checkbox_needs_the_worker_and_empty_archive_is_honest():
     assert "Новые фишки появятся с выпусками" in empty and "data-tip" not in empty
 
 
+def test_tried_tip_gets_a_stamp_that_the_worker_state_switches_on():
+    page = render_tips(TIP_ISSUES, WHEN, feedback_url="https://fb.dev")
+    # Штамп лежит в разметке каждой фишки; виден он по классу done, который ставит скрипт по ответу воркера
+    assert page.count('<span class="stamp" aria-hidden="true">Проверено</span>') == 3
+    assert '.tip.done .stamp{opacity:1}' in page and 'b.closest(".tip").classList.toggle("done", on)' in page
+    assert 'fetch(FB + "/tried")' in page and '"/tried?e="' in page
+    # Без воркера отмечать нечем — штампа нет
+    assert 'class="stamp"' not in render_tips(TIP_ISSUES, WHEN)
+
+
 STORY_ISSUES = [
     {"date": "2026-10-19", "slot": "evening", "headline": "h3", "page": "2026-10-19-evening.html", "entries": [
         {"id": "20261019-14", "title": "Character.AI передаёт команду Disney", "section": "business", "source": "verge",
@@ -497,12 +557,16 @@ def test_story_page_chronology_matches_the_archive():
                             ("2026-10-19-evening.html", "20261019-14")):
         assert f'href="{issue}#e-{entry_id}"' in page
     assert "Однодневка" not in page
+    # Последнее событие — нынешнее состояние сюжета: закрашена только его точка
+    assert page.count('<li class="now">') == 1
+    assert page.index('<li class="now">') > page.index("Character.AI подал на банкротство")
+    assert "<span>2 дня</span><span>3 события</span><span>18 окт — 19 окт</span>" in page
 
 
 def test_nameless_story_page_is_titled_by_its_first_event():
     stories = {"s39": {"name": "", "events": []}}
     page = render_story_pages(STORY_ISSUES, stories, WHEN)["story-s39.html"]
-    assert "<h1>Disney забирает &lt;команду&gt; Character.AI</h1>" in page
+    assert '<h1 class="hl">Disney забирает &lt;команду&gt; Character.AI</h1>' in page
 
 
 
@@ -662,7 +726,8 @@ def test_theme_follows_the_system_and_remembers_the_manual_choice():
     head = page[:page.index("</head>")]
     # Выбор применяется до отрисовки (в <head>), сама кнопка появляется только со скриптом
     assert 'localStorage.getItem("theme")' in head and "prefers-color-scheme:dark" in head
-    assert '<button type="button" class="lnk sm" id="theme" hidden>' in page and 'remember("theme", root.dataset.theme)' in page
+    assert '<button type="button" class="lnk sm" id="theme" hidden>' in page
+    assert 'localStorage.setItem("theme", root.dataset.theme)' in page
 
 
 def test_issue_page_has_no_rejected_or_mockup_only_parts():
@@ -670,5 +735,7 @@ def test_issue_page_has_no_rejected_or_mockup_only_parts():
     # Отвергнуто владельцем: пейзаж с небом, защёлкивающаяся прокрутка; только в макете: выбор шрифта, смена цвета дня
     for gone in ("viewBox='0 0 800 320'", "scroll-snap", 'id="fonts"', 'id="mood"', "data-font"):
         assert gone not in page
+    # Длинное неразрывное имя в тексте не должно распирать колонку шире экрана телефона (арсенал, 2026-11-10)
+    assert re.search(r"\.content\{[^}]*overflow-wrap:anywhere", page)
     assert "__FB__" not in page and 'const FB = "https://fb.example";' in page
     assert 'const FB = "";' in render_page(sample(), STATS, WHEN, failures=[])

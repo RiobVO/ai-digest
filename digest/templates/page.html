@@ -85,7 +85,9 @@ img{max-width:100%}
 .cover .inner{padding-top:16px}
 .bar{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:34px;padding-bottom:8px;border-bottom:3px solid currentColor;
   font:500 .74rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
-.content{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-top:auto}
+/* overflow-wrap: длинное неразрывное имя или адрес в тексте (_CLAUDE_CODE_ASSUME_FIRST_PARTY…, ссылка на релиз)
+   распирало колонку шире экрана телефона — так уже ломался разбор в выпуске 2026-11-10 */
+.content{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-top:auto;overflow-wrap:anywhere}
 /* Новости идут лентой. Номер новости — маленький индекс перед заголовком, отдельного места не занимает */
 .st,.blk{min-height:0;border-top:1px solid var(--line)}
 .st .inner,.blk .inner{padding-block:calc(74px + env(safe-area-inset-top,0px)) 44px}
@@ -194,6 +196,68 @@ html:not(.js) .tw:focus::after{content:attr(data-def);position:absolute;left:0;t
 html:not(.js) .grp::before{content:attr(data-label);display:block;max-width:1120px;margin-inline:auto;padding:26px 18px 0;
   font:500 .72rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
 
+/* Служебные страницы (архив, сюжет, арсенал, здоровье): верх без обложки и разделы без высоты экрана */
+.head{min-height:0}
+.head .inner{padding-top:16px;padding-bottom:28px}
+.head .content{margin-top:0;padding-top:34px}
+.sec{border-top:1px solid var(--line)}
+.sec .inner{padding-block:30px 38px}
+.sec .content{margin-top:0}
+.sec .hl{font-size:clamp(1.7rem,6.4vw,2.8rem)}
+output{font:inherit}
+/* Архив — стена обложек: цвет даты говорит, каким был день */
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;font:400 .68rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend span::before{content:"";width:9px;height:9px;background:var(--mood)}
+.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.tile{display:grid;align-content:start;gap:5px;min-width:0;padding:11px 10px 12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);color:inherit;text-decoration:none}
+.tile b{font:900 2.8rem/.8 var(--f-display);letter-spacing:-.02em;color:var(--mood);font-variant-numeric:tabular-nums}
+.tile i{font:400 .62rem var(--f-mono);font-style:normal;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.tile span{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font:400 .72rem/1.3 var(--f-text)}
+.tile:hover span{text-decoration:underline}
+/* Страница сюжета: та же хронология, что в листе сюжета, но событие — ссылка в свой выпуск */
+.tl a{display:block;margin-top:2px;font:500 1rem/1.4 var(--f-text);text-decoration:none}
+.tl a:hover{text-decoration:underline}
+.tl .meta{margin-top:4px}
+/* Арсенал: фишки списком по темам; на отмеченной «попробовал» — штамп поверх команды */
+.tip{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;padding:24px 0;border-bottom:1px solid var(--line)}
+.tip:last-child{border-bottom:0;padding-bottom:0}
+.tip h3{margin:0;font:800 clamp(1.5rem,5.6vw,2.1rem)/.96 var(--f-display);text-transform:uppercase;text-wrap:balance;overflow-wrap:anywhere}
+.tip .why{max-width:60ch;font-size:1.08rem}
+.tip-note{margin:0;font:400 .86rem/1.5 var(--f-text);opacity:.75}
+.cmd{position:relative;display:grid;grid-template-columns:minmax(0,1fr);gap:8px;justify-items:start}
+.cmd .term{justify-self:stretch}
+.stamp{position:absolute;right:10px;top:-20px;z-index:2;padding:2px 12px 0;border:3px solid var(--alarm);color:var(--alarm);
+  font:900 1.75rem/1.12 var(--f-display);letter-spacing:.05em;text-transform:uppercase;transform:rotate(-7deg);opacity:0;pointer-events:none}
+.tip.done .stamp{opacity:1}
+/* У фишки без команды штамп ложится на строку-примечание: текст уступает ему место */
+.tip.done .tip-note{padding-right:150px}
+.tried{display:inline-flex;align-items:center;gap:9px;min-height:46px;margin-right:auto;font:600 .94rem var(--f-text);cursor:pointer;user-select:none}
+.tried input{width:20px;height:20px;margin:0;accent-color:var(--ink);cursor:pointer}
+.tried.err{color:var(--alarm)}
+/* Здоровье: расход квоты полосой и цепочка попыток — какую модель просили и на какой закончилось */
+.quota{display:grid;gap:12px}
+.quota-row{display:grid;grid-template-columns:118px minmax(40px,1fr) 52px;gap:4px 12px;align-items:center;font:500 .95rem/1.3 var(--f-text)}
+.quota-row small{display:block;font:400 .68rem var(--f-mono);opacity:.75}
+.quota-row .fail{grid-column:2/-1;font:400 .72rem var(--f-mono)}
+.quota-num{text-align:right;font:500 .8rem var(--f-mono);font-variant-numeric:tabular-nums}
+.meter{height:8px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--ink)}
+.meter.warn i,.meter.full i{background:var(--alarm)}
+.run{padding:14px 0;border-bottom:1px solid var(--line)}
+.run .meta b{font-weight:500}
+.chains{display:grid;gap:8px;margin-top:8px}
+.chain{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;font:400 .9rem/1.4 var(--f-text)}
+.chain b{font-weight:600}
+.atts{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.atts i{font-style:normal;opacity:.6}
+.att{padding:1px 7px;border:1.5px solid currentColor;font:500 .72rem/1.6 var(--f-mono);white-space:nowrap;font-variant-numeric:tabular-nums}
+.att.bad{border-color:var(--alarm);background:color-mix(in srgb,var(--alarm) 16%,transparent)}
+.run-note{margin:8px 0 0;font:400 .86rem/1.5 var(--f-text)}
+.run-note.quiet{opacity:.75}
+.sources{margin-top:8px}
+.sources summary{width:fit-content;cursor:pointer;font:500 .86rem var(--f-text);text-decoration:underline;text-underline-offset:4px}
+
 /* Лист снизу: разбор новости, хронология сюжета или содержание */
 .scrim{position:fixed;inset:0;z-index:19;background:rgb(0 0 0 / .62);opacity:0;transition:opacity .3s}
 .scrim.open{opacity:1}
@@ -219,7 +283,7 @@ html:not(.js) .grp::before{content:attr(data-label);display:block;max-width:1120
 .tl li.now::before{border-color:var(--mood);background:var(--mood)}
 .tl li:not(:last-child)::after{content:"";position:absolute;left:5px;top:calc(.2em + 15px);bottom:1px;width:2px;background:var(--line)}
 .tl time{display:block;font:500 .7rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;opacity:.75}
-.tl span{display:block;margin-top:2px;font:500 1rem/1.4 var(--f-text)}
+.tl li>span{display:block;margin-top:2px;font:500 1rem/1.4 var(--f-text)}
 /* Заголовок, летящий из плаката в шапку листа */
 .flight{position:fixed;z-index:30;margin:0;pointer-events:none;transform-origin:0 0}
 
@@ -229,7 +293,7 @@ html:not(.js) .grp::before{content:attr(data-label);display:block;max-width:1120
   .content{gap:20px}
   .cols{grid-template-columns:1.15fr .85fr;gap:44px}
   .hl{max-width:21em}
-  .toc,.list,.try{max-width:860px}
+  .toc,.list,.try,.tip,.quota,.run,.run-note.quiet,.tl{max-width:860px}
   .sheet{top:0;left:auto;width:min(600px,46vw);max-height:none;margin:0;border-radius:0;transform:translateX(105%)}
   .sh-head::before{display:none}
   html:not(.js) .grp::before{max-width:1320px}
@@ -264,8 +328,7 @@ html:not(.js) .grp::before{content:attr(data-label);display:block;max-width:1120
 </style>
 </head>
 <body>
-<div id="fly" aria-hidden="true"><span>$date</span></div>
-<header id="hdr" hidden><button type="button" class="hdr-in" id="hdr-btn" aria-label="Содержание выпуска"><span id="hdr-date"></span><span id="hdr-sec"></span><span class="hdr-r"><span id="hdr-n"></span>$rings</span></button></header>
+$top
 <main id="deck">
 $body
 </main>

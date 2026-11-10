@@ -14,9 +14,6 @@ from digest.models import Item
 from digest.mood import MOODS, mood
 
 TEMPLATE = Template((Path(__file__).parent / "templates" / "page.html").read_text(encoding="utf-8"))
-# Прежняя оболочка: на ней остаются архив, арсенал, сюжеты и здоровье, пока не переедут на новую
-# (design/REDESIGN.md, этап 3)
-LEGACY = Template((Path(__file__).parent / "templates" / "legacy.html").read_text(encoding="utf-8"))
 # Читатель в Ташкенте: даты на странице — по его времени, а не по UTC раннера
 DISPLAY_TZ = timezone(timedelta(hours=5))
 MONTHS = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля",
@@ -37,7 +34,6 @@ ROW_SECTIONS = [("product", "products", "Компании и продукты", 
                 ("tips", "tips", "Фишки", "Фишки"),
                 ("voices", "voices", "Что пишут инженеры", "Инженеры")]
 BRIEF_LABELS = {section: short for section, _, _, short in ROW_SECTIONS} | {"paper": "Статья"}
-ARCHIVE_IN_SIDEBAR = 7
 ALSO_SHOWN = 4
 # Читаемые имена служебных id источников из sources.toml; у Google News источник уже равен названию издания
 SOURCE_LABELS = {
@@ -71,9 +67,6 @@ WORDS_PER_MINUTE = 180
 
 _SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{}</svg>'
 ICONS = {
-    "archive": _SVG.format('<path d="M3 5h18v4H3zM5 9v10h14V9M10 13h4"/>'),
-    "health": _SVG.format('<path d="M3 12h4l3-8 4 16 3-8h4"/>'),
-    "tips": _SVG.format('<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/>'),
     "up": _SVG.format('<path d="M7 10v11M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9z"/>'),
     "terminal": _SVG.format('<path d="M4 17l6-6-6-6M12 19h8"/>'),
     "down": _SVG.format('<path d="M17 14V3M9 18.1 10 14H4.2a2 2 0 0 1-1.9-2.6l2.3-7A2 2 0 0 1 6.5 3H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-2.8a2 2 0 0 0-1.8 1.1L12 22a3.1 3.1 0 0 1-3-3.9z"/>'),
@@ -81,57 +74,34 @@ ICONS = {
 TRY_TODAY_MAX = 4
 # Тот же предел, что модели задан в промпте для имени сюжета (digest/llm.py)
 STORY_TAG_NAME_MAX = 40
-# Скрипт прежней оболочки (legacy.html): листание карточек с клавиатуры и копирование команд
-LEGACY_SCRIPT = """<script>
+ARROW = "→"
+
+# Общий скрипт всех страниц: тема (системная, пока читатель не выбрал сам; выбор применяет скрипт в <head>)
+# и копирование команд. Класс js на <html> включает оформление, рассчитанное на скрипт
+BASE_SCRIPT = """<script>
 (() => {
-  document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => {
-    const code = b.closest(".term").querySelector("code").textContent;
-    navigator.clipboard.writeText(code).then(() => {
-      b.textContent = "Скопировано";
-      setTimeout(() => { b.textContent = "Скопировать"; }, 1500);
-    }, () => { b.textContent = "Не вышло"; });
-  }));
-})();
-(() => {
-  const cards = [...document.querySelectorAll(".hero, .item, .paper")];
-  let at = -1;
-  const go = (i) => {
-    cards[at]?.classList.remove("kb");
-    at = Math.max(0, Math.min(cards.length - 1, i));
-    cards[at].classList.add("kb");
-    cards[at].scrollIntoView({block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
-  };
-  document.addEventListener("keydown", (e) => {
-    if (e.ctrlKey || e.metaKey || e.altKey || /input|textarea/i.test(e.target.tagName) || !cards.length) return;
-    if (e.key === "j") go(at + 1);
-    else if (e.key === "k") go(at - 1);
-    else if (e.key === "o" && at >= 0) { const d = cards[at].querySelector("details.more"); if (d) d.open = !d.open; }
+  const root = document.documentElement, themeBtn = document.getElementById("theme");
+  root.classList.add("js");
+  const dark = () => root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  const paintTheme = () => { themeBtn.textContent = dark() ? "день" : "ночь"; };
+  if (themeBtn) {
+    themeBtn.hidden = false; paintTheme();
+    themeBtn.addEventListener("click", () => {
+      root.dataset.theme = dark() ? "light" : "dark"; paintTheme();
+      // Хранилище браузера бывает закрыто (частный режим): тема сменится, но в следующий раз вернётся системная
+      try { localStorage.setItem("theme", root.dataset.theme); } catch (e) { return; }
+    });
+  }
+  document.addEventListener("click", e => {
+    const b = e.target.closest(".copy"); if (!b) return;
+    const code = b.closest(".term").querySelector("code");
+    const ok = () => { b.textContent = "Скопировано"; setTimeout(() => { b.textContent = "Скопировать"; }, 1600); };
+    // Буфер обмена закрыт (встроенный браузер, нет разрешения): выделяем текст, чтобы его можно было скопировать руками
+    const select = () => { const r = document.createRange(); r.selectNodeContents(code); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); b.textContent = "Выделено"; };
+    try { navigator.clipboard.writeText(code.textContent).then(ok, select); } catch (err) { select(); }
   });
 })();
-(() => {
-  // Подсветка раздела, который сейчас читают: верхний из разделов, пересекающих полосу у верха экрана
-  const nav = document.querySelector("nav");
-  const links = [...document.querySelectorAll('nav a[href^="#"]')];
-  const sections = links.map(a => document.getElementById(a.getAttribute("href").slice(1))).filter(Boolean);
-  if (!nav || !sections.length || !("IntersectionObserver" in window)) return;
-  const inBand = new Set();
-  const pick = () => {
-    const current = sections.find(s => inBand.has(s));
-    if (!current) return;
-    const on = links.find(a => a.getAttribute("href") === "#" + current.id);
-    links.forEach(a => a.classList.toggle("on", a === on));
-    // На телефоне лента разделов прокручивается вбок: подсвеченный раздел подтягиваем в кадр
-    const r = on.getBoundingClientRect(), n = nav.getBoundingClientRect();
-    if (r.left < n.left || r.right > n.right) nav.scrollBy({left: r.left - n.left - 16});
-  };
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => e.isIntersecting ? inBand.add(e.target) : inBand.delete(e.target));
-    pick();
-  }, {rootMargin: "-80px 0px -55% 0px"});
-  sections.forEach(s => io.observe(s));
-})();
 </script>"""
-ARROW = "→"
 
 # Скрипт страницы выпуска: шапка с датой и кругами прогресса, лист разбора и сюжета, содержание, термины,
 # оценки и отметки чтения (POST в воркер обратной связи). Адрес воркера подставляется вместо __FB__; без него
@@ -149,15 +119,7 @@ PAGE_SCRIPT = """<script>
   const recall = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
   const remember = (k, v) => { try { localStorage.setItem(k, v); } catch (e) { return; } };
   const go = (el, now) => el.scrollIntoView({block: "start", behavior: now || reduced ? "instant" : "smooth"});
-  root.classList.add("js");
   hdr.hidden = false;
-
-  // Тема: системная, пока читатель не выбрал сам; выбор помнится в браузере (его применяет скрипт в <head>)
-  const themeBtn = $("theme");
-  const dark = () => root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
-  const paintTheme = () => { if (themeBtn) themeBtn.textContent = dark() ? "день" : "ночь"; };
-  if (themeBtn) themeBtn.hidden = false;
-  paintTheme();
 
   // Прочитано: задержался на новости, открыл разбор или ушёл к первоисточнику. Круг закрашивается сразу,
   // а в браузере отметка запоминается только после ответа воркера: при сбое сети следующий раз отправит её снова
@@ -372,13 +334,6 @@ PAGE_SCRIPT = """<script>
       .then(r => { if (!r.ok) throw new Error(r.status); remember("v:" + id, v); })
       .catch(() => { setVote(box, was); box.classList.add("err"); });
   }
-  function copy(b) {
-    const code = b.closest(".term").querySelector("code");
-    const ok = () => { b.textContent = "Скопировано"; setTimeout(() => { b.textContent = "Скопировать"; }, 1600); };
-    // Буфер обмена закрыт (встроенный браузер, нет разрешения): выделяем текст, чтобы его можно было скопировать руками
-    const select = () => { const r = document.createRange(); r.selectNodeContents(code); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); b.textContent = "Выделено"; };
-    try { navigator.clipboard.writeText(code.textContent).then(ok, select); } catch (err) { select(); }
-  }
 
   document.addEventListener("click", e => {
     const t = e.target.closest("button,a,summary"); if (!t) return;
@@ -388,10 +343,8 @@ PAGE_SCRIPT = """<script>
     else if (t.dataset.moreGo) swapBreakdown(stories[+t.dataset.moreGo]);
     else if ("close" in t.dataset || t.id === "sh-x") closeSheet();
     else if (t.matches(".thread .tag") && t.parentElement.querySelector(".tl")) { e.preventDefault(); openThread(t); }
-    else if (t === themeBtn) { root.dataset.theme = dark() ? "light" : "dark"; remember("theme", root.dataset.theme); paintTheme(); }
     else if (t.id === "hdr-btn") openToc();
     else if (t.matches(".vote button")) vote(t);
-    else if (t.classList.contains("copy")) copy(t);
     else if (t.matches('a[href^="#"]')) {
       const to = $(decodeURIComponent(t.getAttribute("href").slice(1)));
       if (!to) return;
@@ -672,32 +625,10 @@ def _also_today(more: list[Mention]) -> str:
     return _block("also-today", "Ещё за день", f'<ol class="list">{rows}</ol>')
 
 
-def _issue_day(issue: dict) -> str:
-    return short_day(issue["date"]) + (" веч." if issue.get("slot") == "evening" else "")
-
-
 def _missed(missed: list[dict], morning_page: str) -> str:
     links = "".join(f'<li><a href="{escape(morning_page)}#e-{escape(m["id"])}">{_rich(m["title"])}</a></li>'
                     for m in missed)
     return _block("missed", "Утром ты пропустил", f'<ul class="list">{links}</ul>')
-
-
-def _archive_sidebar(issues: list[dict] | None, current: str = "") -> str:
-    if not issues:
-        return ""
-    links = "".join(
-        f'<a href="{escape(i["page"])}"{" class=\"on\"" if i["page"] == current else ""}>'
-        f'<b>{_issue_day(i)}</b><span>{escape(i["headline"])}</span></a>'
-        for i in issues[:ARCHIVE_IN_SIDEBAR])
-    return (f'<div class="arch"><div class="arch-title">Архив</div>{links}'
-            f'<a class="arch-all" href="archive.html">Все выпуски {ARROW}</a></div>')
-
-
-def _summary(title: str, sub: str, lead: str, cards: list[tuple[int | str, str]]) -> str:
-    tiles = "".join(f'<div class="stat"><b>{value}</b><span>{label}</span></div>' for value, label in cards)
-    lead_html = f'<p class="lead">{escape(lead)}</p>' if lead else ""
-    return (f'        <section class="card">\n          <div class="card-head"><h3>{title}</h3><small>{sub}</small></div>\n'
-            f'          {lead_html}\n          <div class="stats">{tiles}</div>\n        </section>')
 
 
 def issue_summary(entries: list[Entry], kind: str = "day") -> str:
@@ -736,15 +667,17 @@ MARK = ('<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="
         'stroke-width="2.4"/><circle cx="16" cy="16" r="6" fill="currentColor"/></svg>')
 
 
+BAR = (f'<div class="bar"><a class="mark" href="index.html">{MARK}сигнал</a>'
+       '<button type="button" class="lnk sm" id="theme" hidden>ночь</button></div>')
+
+
 def _cover(headline: str, lead: str, date: str, small: str, spoken: str, meta: list[str], first: str, toc: bool) -> str:
     """Обложка выпуска: дата во всю ширину цветом дня. spoken — дата словами для чтения вслух («10.11» там невнятно)."""
     body = f'<p class="body rv" style="--d:2">{_rich(lead)}</p>' if lead else ""
     spans = "".join(f"<span>{m}</span>" for m in meta if m)
     read = f'<a class="btn" href="#{first}">Читать ↓</a>' if first else ""
     index = '<a class="lnk" href="#index">Содержание</a>' if toc else ""
-    return (f'<section class="slide cover" id="cover" data-label="">{RINGS}<div class="inner">'
-            f'<div class="bar"><a class="mark" href="index.html">{MARK}сигнал</a>'
-            f'<button type="button" class="lnk sm" id="theme" hidden>ночь</button></div>'
+    return (f'<section class="slide cover" id="cover" data-label="">{RINGS}<div class="inner">{BAR}'
             f'<div class="content"><div class="date" role="img" aria-label="{escape(spoken)}"><span class="ph">{date}</span>'
             f'<small>{escape(small)}</small></div>'
             f'<h1 class="hl rv" style="--d:1">{_rich(headline)}</h1>{body}'
@@ -851,38 +784,76 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
         f'<a class="lnk" href="health.html">Здоровье</a></div></div></div></section>')
 
     description = f"{count} событий. {digest.lead}"
-    return TEMPLATE.substitute(
-        headline=escape(digest.headline), description=escape(description[:300]), og_image=_og_image(og_image),
-        mood=day_mood, mood_css=MOOD_CSS, date=date, rings=_progress(len(numbers)),
-        body="\n".join(block for block in body if block),
-        script=PAGE_SCRIPT.replace("__FB__", json.dumps(feedback_url)),
-    )
+    # Дата, перелетающая с обложки в шапку, и сама шапка с кругами прогресса — только у страницы выпуска
+    chrome = (f'<div id="fly" aria-hidden="true"><span>{date}</span></div>'
+              f'<header id="hdr" hidden><button type="button" class="hdr-in" id="hdr-btn" aria-label="Содержание выпуска">'
+              f'<span id="hdr-date"></span><span id="hdr-sec"></span><span class="hdr-r"><span id="hdr-n"></span>'
+              f'{_progress(len(numbers))}</span></button></header>')
+    return _shell(escape(digest.headline), escape(description[:300]), "\n".join(block for block in body if block),
+                  PAGE_SCRIPT.replace("__FB__", json.dumps(feedback_url)), day_mood=day_mood, top=chrome, og_image=og_image)
+
+
+
+
+def _shell(headline: str, description: str, body: str, script: str = "", *, day_mood: str = "calm", top: str = "",
+           og_image: str = "") -> str:
+    """Общая оболочка всех страниц сайта. headline и description — уже экранированные."""
+    return TEMPLATE.substitute(headline=headline, description=description, og_image=_og_image(og_image), mood=day_mood,
+                               mood_css=MOOD_CSS, top=top, body=body, script=BASE_SCRIPT + script)
+
+
+def _head(title: str, meta: list[str], kicker: str = "") -> str:
+    """Верх служебной страницы (архив, сюжет, арсенал, здоровье): строка со знаком, заголовок и подпись.
+    title и meta — готовая разметка."""
+    label = f'<div class="label">{kicker}</div>' if kicker else ""
+    spans = "".join(f"<span>{m}</span>" for m in meta if m)
+    return (f'<section class="slide head" id="cover"><div class="inner">{BAR}<div class="content">{label}'
+            f'<h1 class="hl">{title}</h1><div class="meta">{spans}</div></div></div></section>')
+
+
+def _sec(anchor: str, title: str, body: str, sub: str = "") -> str:
+    small = f'<div class="meta"><span>{sub}</span></div>' if sub else ""
+    return (f'<section class="sec" id="{anchor}"><div class="inner"><div class="content">'
+            f'<h2 class="hl">{title}</h2>{small}{body}</div></div></section>')
+
+
+def _foot(when: datetime) -> str:
+    local = when.astimezone(DISPLAY_TZ)
+    return (f'<section class="sec" id="end"><div class="inner"><div class="content">'
+            f'<div class="meta"><span>обновлено {local:%d.%m} в {local:%H:%M}</span><span>стоимость 0 ₽</span></div>'
+            f'<div class="act"><a class="btn" href="index.html">К выпуску</a><a class="lnk" href="archive.html">Архив</a>'
+            f'<a class="lnk" href="tips.html">Арсенал фишек</a><a class="lnk" href="health.html">Здоровье</a></div>'
+            f'</div></div></section>')
+
+
+# Подписи цвета дня для легенды архива: у обычного дня своей подписи на обложке нет (MOODS["calm"].label пуст)
+MOOD_LEGEND = {"alarm": "тревожный", "release": "релиз", "quiet": "тихий", "calm": "обычный"}
 
 
 def render_archive(issues: list[dict], when: datetime) -> str:
-    cards = "".join(
-        f'<a class="item issue-link" href="{escape(i["page"])}"><span class="num">{short_day(i["date"]).split()[0]}</span>'
-        f'<div><h4>{escape(i["headline"])}</h4><div class="meta"><span class="tag">{_issue_day(i)}</span>'
-        f'<span>{plural(len(i["entries"]), "событие", "события", "событий")}</span></div></div></a>'
-        for i in issues)
-    main = (f'        <section class="card" id="main-story">\n          <div class="card-head"><h3>Все выпуски</h3>'
-            f'<small>{len(issues)}</small></div>\n          <div class="card-body">{cards}</div>\n        </section>')
-    local = when.astimezone(DISPLAY_TZ)
-    return LEGACY.substitute(
-        headline="Архив выпусков", description=f"{len(issues)} выпусков ИИ-дайджеста", crumbs="Дайджест<span>/</span>Архив",
-        og_image="",
-        sub=plural(len(issues), "выпуск", "выпуска", "выпусков"), lead="",
-        short_date=f"{local:%d.%m}", weekday="Архив", nav=f'<a class="on" href="#main-story">{ICONS["archive"]}Все выпуски</a>',
-        archive=_archive_sidebar(issues), main=main,
-        summary=_summary("Архив", "", "", [(len(issues), "выпусков"), (sum(len(i["entries"]) for i in issues), "событий")]),
-        aside="", footer="<span>Стоимость 0 ₽</span>", script="",
-    )
+    """Архив — стена обложек: плитка на выпуск, дата цветом дня. Настроение считается из разделов записей архива
+    по нынешнему правилу — так же раскрашены и выпуски, вышедшие до него."""
+    tiles = []
+    for issue in issues:
+        day = date.fromisoformat(issue["date"])
+        day_mood = mood([e.get("section", "") for e in issue["entries"]])
+        events = plural(len(issue["entries"]), "событие", "события", "событий")
+        tiles.append(f'<a class="tile" data-mood="{day_mood}" href="{escape(issue["page"])}" title="{events}">'
+                     f'<b>{day:%d.%m}</b><i>{"вечер" if issue.get("slot") == "evening" else "утро"}</i>'
+                     f'<span>{escape(typo(issue["headline"]))}</span></a>')
+    legend = "".join(f'<span data-mood="{name}">{label}</span>' for name, label in MOOD_LEGEND.items())
+    wall = (f'<section class="sec" id="wall"><div class="inner"><div class="content">'
+            f'<div class="legend">{legend}</div><div class="wall">{"".join(tiles)}</div></div></div></section>')
+    total = sum(len(i["entries"]) for i in issues)
+    head = _head("Архив", [plural(len(issues), "выпуск", "выпуска", "выпусков"),
+                           plural(total, "событие", "события", "событий")])
+    return _shell("Архив выпусков", f"{len(issues)} выпусков ИИ-дайджеста", head + wall + _foot(when))
 
 
 MODEL_NAME = re.compile(r"gemini-(\d+(?:\.\d+)*)-(flash|pro)(-lite)?")
 CALL_LABELS = {"select": "Отбор", "extras": "Ещё за день и фишки", "explain": "Разборы", "weekly": "Итог недели",
                "triage": "Отсев срочных", "alert": "Текст срочной", "numbers": "Проверка чисел"}
-# Квота израсходована на эту долю — полоса желтеет: до вечернего выпуска может не хватить
+# Квота израсходована на эту долю — полоса краснеет: до вечернего выпуска может не хватить
 QUOTA_WARN = 0.75
 
 
@@ -929,7 +900,7 @@ def _run(run: dict) -> str:
     if run["outcome"] != "ok":
         outcome = f'<span class="fail">сбой: {escape(run["outcome"][:120])}</span>'
     else:
-        outcome = '<span class="tag green">вышел</span>' if run["kind"] != "alert" else ""
+        outcome = "<span>вышел</span>" if run["kind"] != "alert" else ""
     parts = [_chains(run.get("calls", []))]
     if run.get("failed"):
         failed = ", ".join(f"{escape(source_label(s))} ({escape(e)})" for s, e in run["failed"].items())
@@ -944,8 +915,8 @@ def _run(run: dict) -> str:
         total = sum(run["sources"].values())
         parts.append(f'<details class="sources"><summary>Записей из источников: {total}</summary>'
                      f'<p class="run-note">{counts}</p></details>')
-    return (f'<div class="item run"><div><div class="meta"><b>{local:%H:%M}</b>'
-            f'<span>{_run_title(run)}</span>{outcome}</div>{"".join(parts)}</div></div>')
+    return (f'<div class="run"><div class="meta"><b>{local:%H:%M}</b>'
+            f'<span>{_run_title(run)}</span>{outcome}</div>{"".join(parts)}</div>')
 
 
 def _quota(runs: list[dict], settings: dict, now: datetime, aliases: dict[str, str]) -> str:
@@ -969,11 +940,9 @@ def _quota(runs: list[dict], settings: dict, now: datetime, aliases: dict[str, s
                     f'<span class="meter{level}" role="img" aria-label="{row["used"]} из {limit}">'
                     f'<i style="width:{share * 100:.0f}%"></i></span>'
                     f'<span class="quota-num">{row["used"]}/{limit}</span>{failed}</div>')
-    return (f'        <section class="card" id="quota">\n          <div class="card-head"><h3>Квота Gemini</h3>'
-            f'<small>сброс в {reset_at:%H:%M}, через {f"{hours} ч" if hours else f"{minutes} мин"}</small></div>\n'
-            f'          <div class="quota">{"".join(rows)}</div>\n'
-            f'          <p class="lead">Каждая попытка списывает запрос, даже 503 и таймаут. Локальные прогоны eval '
-            f'здесь не видны.</p>\n        </section>')
+    note = '<p class="body">Каждая попытка списывает запрос, даже 503 и таймаут. Локальные прогоны eval здесь не видны.</p>'
+    return _sec("quota", "Квота Gemini", f'<div class="quota">{"".join(rows)}</div>{note}',
+                f'сброс в {reset_at:%H:%M}, через {f"{hours} ч" if hours else f"{minutes} мин"}')
 
 
 def _health_day(day: str, runs: list[dict]) -> str:
@@ -990,8 +959,7 @@ def _health_day(day: str, runs: list[dict]) -> str:
     if quiet:
         body += f'<p class="run-note quiet">{plural(len(quiet), "проверка", "проверки", "проверок")} срочных без вызовов модели</p>'
     d = date.fromisoformat(day)
-    return (f'        <section class="card" id="d-{day}">\n          <div class="card-head"><h3>{d.day} {MONTHS[d.month - 1]}</h3>'
-            f'<small>{" · ".join(summary)}</small></div>\n          <div class="card-body">{body}</div>\n        </section>')
+    return _sec(f"d-{day}", f"{d.day} {MONTHS[d.month - 1]}", body, " · ".join(summary))
 
 
 def render_health(runs: list[dict], settings: dict, now: datetime) -> str:
@@ -1002,33 +970,22 @@ def render_health(runs: list[dict], settings: dict, now: datetime) -> str:
         days.setdefault(local.date().isoformat(), []).append(run)
     # Какая модель отвечала на алиас последней — только для подписи квоты, не для отдельных попыток
     aliases = {c["asked"]: c["served"] for r in runs for c in r.get("calls", []) if c["served"]}
-    main = [_quota(runs, settings, now, aliases)]
-    nav = [f'<a class="on" href="#quota">{ICONS["health"]}Квота</a>']
-    for day in sorted(days, reverse=True):
-        main.append(_health_day(day, days[day]))
-        nav.append(f'<a href="#d-{day}">{ICONS["archive"]}{short_day(day)}</a>')
-    if not runs:
-        main.append('        <section class="card noise"><h3>Запусков пока нет</h3>'
-                    '<p>Панель заполнится после первого выпуска или проверки срочных.</p></section>')
     calls = [c for r in runs for c in r.get("calls", [])]
     refused = sum(1 for c in calls if c["status"] != 200 or c["error"])
+    body = [_head("Здоровье дайджеста", [f"{plural(len(runs), 'запуск', 'запуска', 'запусков')} за {health.RETENTION_DAYS} дней",
+                                          plural(len(calls), "вызов", "вызова", "вызовов"), f"отказов {refused}"]),
+            _quota(runs, settings, now, aliases)]
     failed_sources = Counter(s for r in runs for s in r.get("failed", {}))
-    aside = ""
     if failed_sources:
-        rows = "".join(f'<li>{escape(source_label(s))}<span class="src-name">{plural(n, "раз", "раза", "раз")}</span></li>'
+        rows = "".join(f'<li>{escape(source_label(s))}<span class="k">{plural(n, "раз", "раза", "раз")}</span></li>'
                        for s, n in failed_sources.most_common(8))
-        aside = (f'        <section class="card also-today">\n          <div class="card-head"><h3>Падали чаще всего</h3>'
-                 f'<small>за {health.RETENTION_DAYS} дней</small></div>\n          <ol>{rows}</ol>\n        </section>')
-    local = now.astimezone(DISPLAY_TZ)
-    return LEGACY.substitute(
-        headline="Здоровье дайджеста", description="Вызовы Gemini, квота и источники за 30 дней", og_image="",
-        crumbs="Дайджест<span>/</span>Здоровье", lead="",
-        sub=f"{plural(len(runs), 'запуск', 'запуска', 'запусков')} за {health.RETENTION_DAYS} дней",
-        short_date=f"{local:%d.%m}", weekday="Здоровье", nav="".join(nav), archive="",
-        main="\n".join(main),
-        summary=_summary("30 дней", "", "", [(len(runs), "запусков"), (len(calls), "вызовов"), (refused, "отказов")]),
-        aside=aside, footer=f"<span>Обновлено {local:%d.%m} в {local:%H:%M}</span>", script=LEGACY_SCRIPT,
-    )
+        body.append(_sec("failed", "Падали чаще всего", f'<ol class="list">{rows}</ol>', f"за {health.RETENTION_DAYS} дней"))
+    body += [_health_day(day, days[day]) for day in sorted(days, reverse=True)]
+    if not runs:
+        body.append(_sec("empty", "Запусков пока нет",
+                         '<p class="body">Панель заполнится после первого выпуска или проверки срочных.</p>'))
+    body.append(_foot(now))
+    return _shell("Здоровье дайджеста", "Вызовы Gemini, квота и источники за 30 дней", "".join(body))
 
 
 # Темы фишек — в том же порядке, что в llm.TIP_TOPICS; «Разное» — для фишек без темы (архив до арсенала, ошибка модели)
@@ -1038,7 +995,8 @@ TIP_TOPIC_LABELS = {"claude_code": "Claude Code", "agents": "Агенты и IDE
                     "api": "API и SDK", "workflow": "Рабочий процесс", "other": "Разное"}
 
 # Галочка «попробовал»: состояние живёт в воркере (страница статичная и пересобирается дважды в день), браузер помнит
-# последний выбор на случай, если воркер не ответил. Снять галочку можно повторным нажатием
+# последний выбор на случай, если воркер не ответил. Снять галочку можно повторным нажатием. Отмеченная фишка
+# получает класс done — по нему на ней появляется штамп «Проверено»
 TIPS_SCRIPT = """<script>
 (() => {
   const FB = %s;
@@ -1080,23 +1038,26 @@ TIPS_SCRIPT = """<script>
 
 
 def _tip(tip: dict, page: str, tried: bool) -> str:
-    copy = (_term([tip["copy"]], UNTRUSTED_LABEL if tip.get("copy_untrusted") else "Команда или промпт", wrap=True)
+    copy = (_term([tip["copy"]], UNTRUSTED_LABEL if tip.get("copy_untrusted") else "Команда или промпт", wrap=True,
+                  warn=bool(tip.get("copy_untrusted")))
             if tip.get("copy")
             else '<p class="tip-note">Команда не подтверждена источником — шаги в первоисточнике</p>')
-    why = f'<div class="why"><b>Зачем:</b> {escape(tip["why"])}</div>' if tip.get("why") else ""
-    summary = f'<p>{escape(tip["summary"])}</p>' if tip.get("summary") else ""
+    why = f'<p class="why"><b>Зачем</b>{_rich(tip["why"])}</p>' if tip.get("why") else ""
+    summary = f'<p class="body">{_rich(tip["summary"])}</p>' if tip.get("summary") else ""
     # Шаги из разбора полного текста — то же, что «Подробности» в Telegram; у фишек до 22.10 их нет
-    steps = "".join(f"<li>{escape(step)}</li>" for step in tip.get("steps", [])[:5])
-    details = (f'<section><div class="more-label">Подробности</div><ol class="points">{steps}</ol></section>'
-               if steps else "")
+    steps = "".join(f"<li>{_rich(step)}</li>" for step in tip.get("steps", [])[:5])
+    details = f'<ol class="points">{steps}</ol>' if steps else ""
+    # Штамп лежит в разметке каждой фишки и виден только у отмеченной «попробовал» (класс done ставит TIPS_SCRIPT)
+    stamp = '<span class="stamp" aria-hidden="true">Проверено</span>' if tried else ""
     check = (f'<label class="tried"><input type="checkbox" data-id="{escape(tip["id"])}">попробовал</label>'
              if tried else "")
-    return (f'<div class="item tip" data-tip="{escape(tip["id"])}"><div>'
-            f'<div class="meta"><span class="tag">{short_day(tip["date"])}</span>'
+    return (f'<article class="tip" data-tip="{escape(tip["id"])}">'
+            f'<h3>{_rich(tip["title"])}</h3>'
+            f'<div class="meta"><span>{short_day(tip["date"])}</span>'
             f'<span>{escape(source_label(tip["source"]))}</span></div>'
-            f'<h4>{escape(tip["title"])}</h4>{summary}{why}{details}{copy}'
-            f'<div class="tip-foot">{check}<a class="pill" href="{escape(page)}#e-{escape(tip["id"])}">В выпуске</a>'
-            f'<a class="pill" href="{_href(tip["url"])}">Первоисточник {ARROW}</a></div></div></div>')
+            f'{why}{summary}{details}<div class="cmd">{copy}{stamp}</div>'
+            f'<div class="act">{check}<a class="lnk" href="{escape(page)}#e-{escape(tip["id"])}">В выпуске</a>'
+            f'<a class="lnk" href="{_href(tip["url"])}">Первоисточник ↗</a></div></article>')
 
 
 def render_tips(issues: list[dict], when: datetime, feedback_url: str = "") -> str:
@@ -1109,34 +1070,26 @@ def render_tips(issues: list[dict], when: datetime, feedback_url: str = "") -> s
                 topic = e.get("topic") if e.get("topic") in TIP_TOPIC_LABELS else "other"
                 groups[topic].append(({**e, "date": issue["date"]}, issue["page"]))
     total = sum(map(len, groups.values()))
-    main: list[str] = []
-    nav: list[str] = []
-    for topic, tips in groups.items():
-        if not tips:
-            continue
-        cards = "".join(_tip(tip, page, tried) for tip, page in tips)
-        main.append(f'        <section class="card" id="t-{topic}">\n          <div class="card-head"><h3>{TIP_TOPIC_LABELS[topic]}</h3>'
-                    f'<small>{len(tips)}</small></div>\n          <div class="card-body">{cards}</div>\n        </section>')
-        nav.append(f'<a{" class=\"on\"" if not nav else ""} href="#t-{topic}">{ICONS["tips"]}{TIP_TOPIC_LABELS[topic]}'
-                   f'<span class="count">{len(tips)}</span></a>')
-    main.append('        <section class="card noise"><h3>Новые фишки появятся с выпусками</h3>'
-                '<p>Каждый выпуск добавляет 2–4 приёма из релизов, блогов инженеров, Reddit и HN.</p></section>')
     with_copy = sum(1 for tips in groups.values() for tip, _ in tips if tip.get("copy"))
-    tiles: list[tuple[int | str, str]] = [(total, "фишек"), (with_copy, "с командой")]
+    meta = [plural(total, "фишка", "фишки", "фишек"), f"{with_copy} с командой"]
     if tried:
         # Сколько попробовано, знает только воркер: число подставит скрипт страницы
-        tiles.append(('<output data-tried-count>0</output>', "попробовано"))
-    summary = _summary("Арсенал", "", "", tiles)
-    local = when.astimezone(DISPLAY_TZ)
-    return LEGACY.substitute(
-        headline="Арсенал фишек", description=f"{plural(total, 'фишка', 'фишки', 'фишек')} из выпусков ИИ-дайджеста",
-        og_image="", crumbs="Дайджест<span>/</span>Арсенал", lead="",
-        sub=f"{plural(total, 'фишка', 'фишки', 'фишек')} из архива",
-        short_date=f"{local:%d.%m}", weekday="Арсенал", nav="".join(nav), archive=_archive_sidebar(issues),
-        main="\n".join(main), summary=summary, aside="",
-        footer=f"<span>Обновлено {local:%d.%m} в {local:%H:%M}</span>",
-        script=(TIPS_SCRIPT % json.dumps(feedback_url) if tried else "") + LEGACY_SCRIPT,
-    )
+        meta.append("попробовано <output data-tried-count>0</output>")
+    body = [_head("Арсенал фишек", meta)]
+    topics = [(topic, tips) for topic, tips in groups.items() if tips]
+    if topics:
+        links = "".join(f'<li><a href="#t-{topic}"><span class="n">{len(tips)}</span>'
+                        f'<span class="t">{TIP_TOPIC_LABELS[topic]}</span></a></li>' for topic, tips in topics)
+        body.append(f'<section class="sec" id="index"><div class="inner"><div class="content">'
+                    f'<ol class="toc">{links}</ol></div></div></section>')
+    for topic, tips in topics:
+        cards = "".join(_tip(tip, page, tried) for tip, page in tips)
+        body.append(_sec(f"t-{topic}", TIP_TOPIC_LABELS[topic], cards, plural(len(tips), "фишка", "фишки", "фишек")))
+    body.append(_sec("soon", "Новые фишки появятся с выпусками",
+                     '<p class="body">Каждый выпуск добавляет 2–4 приёма из релизов, блогов инженеров, Reddit и HN.</p>'))
+    body.append(_foot(when))
+    return _shell("Арсенал фишек", f"{plural(total, 'фишка', 'фишки', 'фишек')} из выпусков ИИ-дайджеста",
+                  "".join(body), TIPS_SCRIPT % json.dumps(feedback_url) if tried else "")
 
 
 def story_page(story_id: str) -> str:
@@ -1156,29 +1109,24 @@ def render_story_pages(issues: list[dict], stories: dict[str, dict], when: datet
             if e.get("story"):
                 events.setdefault(e["story"], []).append((issue, e))
     pages = {}
-    local = when.astimezone(DISPLAY_TZ)
     for sid, rows in events.items():
         days = sorted({issue["date"] for issue, _ in rows})
         if len(days) < 2:
             continue
         name = stories.get(sid, {}).get("name", "")
         title = name or rows[0][1]["title"]
+        # Последнее событие — нынешнее состояние сюжета: его точка закрашена
         items = "".join(
-            f'<li><time>{short_day(issue["date"])}{" · вечер" if issue.get("slot") == "evening" else ""}</time>'
-            f'<a href="{escape(issue["page"])}#e-{escape(e["id"])}">{escape(e["title"])}</a>'
-            f'<div class="meta"><span class="tag">{SECTION_LABELS.get(e["section"], "Событие")}</span>'
+            f'<li{" class=\"now\"" if n == len(rows) - 1 else ""}>'
+            f'<time>{short_day(issue["date"])}{" · вечер" if issue.get("slot") == "evening" else ""}</time>'
+            f'<a href="{escape(issue["page"])}#e-{escape(e["id"])}">{_rich(e["title"])}</a>'
+            f'<div class="meta"><span>{SECTION_LABELS.get(e["section"], "Событие")}</span>'
             f'<span>{escape(source_label(e["source"]))}</span></div></li>'
-            for issue, e in rows)
-        main = (f'        <section class="card" id="main-story">\n          <div class="card-head"><h3>Хронология</h3>'
-                f'<small>{short_day(days[0])} — {short_day(days[-1])}</small></div>\n'
-                f'          <ol class="timeline">{items}</ol>\n        </section>')
-        pages[story_page(sid)] = LEGACY.substitute(
-            headline=escape(title), description=escape(f"Сюжет: {title}"), og_image="",
-            crumbs="Дайджест<span>/</span>Сюжет", lead="",
-            sub=f"{plural(len(days), 'день', 'дня', 'дней')} · {plural(len(rows), 'событие', 'события', 'событий')}",
-            short_date=f"{local:%d.%m}", weekday="Сюжет",
-            nav=f'<a class="on" href="#main-story">{ICONS["archive"]}Хронология</a>', archive=_archive_sidebar(issues),
-            main=main, summary=_summary("Сюжет", "", "", [(len(days), "дней"), (len(rows), "событий")]),
-            aside="", footer=f"<span>Обновлено {local:%d.%m} в {local:%H:%M}</span>", script=LEGACY_SCRIPT,
-        )
+            for n, (issue, e) in enumerate(rows))
+        head = _head(_rich(title), [plural(len(days), "день", "дня", "дней"),
+                                    plural(len(rows), "событие", "события", "событий"),
+                                    f"{short_day(days[0])} — {short_day(days[-1])}"], "Сюжет")
+        chronology = (f'<section class="sec" id="main-story"><div class="inner"><div class="content">'
+                      f'<ol class="tl">{items}</ol></div></div></section>')
+        pages[story_page(sid)] = _shell(escape(title), escape(f"Сюжет: {title}"), head + chronology + _foot(when))
     return pages
