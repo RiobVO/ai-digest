@@ -1,4 +1,4 @@
-"""Обложка выпуска для превью ссылки в Telegram: HTML-карточка в стиле страницы, снятая headless Chrome."""
+"""Картинка выпуска для превью ссылки в Telegram: дата цветом дня и заголовок в наборе страницы, снятые headless Chrome."""
 import logging
 import os
 import shutil
@@ -9,30 +9,31 @@ from pathlib import Path
 from string import Template
 
 from digest.mood import MOODS
+from digest.render import typo
 
 log = logging.getLogger(__name__)
 
 TEMPLATES = Path(__file__).parent / "templates"
 TEMPLATE = Template((TEMPLATES / "cover.html").read_text(encoding="utf-8"))
 WIDTH, HEIGHT = 1200, 630
-# Chrome снимает кадр по событию load, а Inter с Google Fonts к этому моменту может ещё не примениться:
-# виртуальное время даёт шрифту догрузиться
+# Chrome снимает кадр по событию load, а шрифт с Google Fonts к этому моменту может ещё не примениться:
+# виртуальное время даёт ему догрузиться
 FONT_WAIT_MS = 8000
 CHROME_TIMEOUT_S = 60
 # На раннерах GitHub (ubuntu-latest) Chrome предустановлен как google-chrome; локально путь задаёт CHROME_PATH
 CHROME_NAMES = ("google-chrome", "google-chrome-stable", "chromium", "chromium-browser")
 
 
-def cover_html(headline: str, date_label: str, sub: str, mood: str = "calm") -> str:
-    return TEMPLATE.substitute(mood=MOODS[mood].color, headline=escape(headline), date=escape(date_label),
-                               sub=escape(sub))
+def cover_html(headline: str, date: str, mood: str = "calm") -> str:
+    """date — то же, что крупно на обложке страницы (render.cover_date): число выпуска или номер недели."""
+    return TEMPLATE.substitute(mood=MOODS[mood].color, headline=escape(typo(headline)), date=escape(date))
 
 
 def find_chrome() -> str | None:
     return os.environ.get("CHROME_PATH") or next(filter(None, map(shutil.which, CHROME_NAMES)), None)
 
 
-def make_cover(headline: str, date_label: str, sub: str, out: Path, mood: str = "calm") -> bool:
+def make_cover(headline: str, date: str, out: Path, mood: str = "calm") -> bool:
     """Снимает обложку в out. Обложка — украшение: без неё выпуск выходит как раньше, поэтому сбой не роняет сборку."""
     chrome = find_chrome()
     if not chrome:
@@ -45,7 +46,7 @@ def make_cover(headline: str, date_label: str, sub: str, out: Path, mood: str = 
         out.unlink(missing_ok=True)
         with tempfile.TemporaryDirectory() as tmp:
             page = Path(tmp) / "cover.html"
-            page.write_text(cover_html(headline, date_label, sub, mood), encoding="utf-8")
+            page.write_text(cover_html(headline, date, mood), encoding="utf-8")
             # --no-sandbox: на ubuntu 24.04 AppArmor запрещает песочнице Chrome user namespaces; страница своя,
             # чужой в ней только заголовок, и он экранирован
             command = [chrome, "--headless=new", "--no-sandbox", "--disable-gpu", "--hide-scrollbars",

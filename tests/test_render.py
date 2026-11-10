@@ -701,6 +701,14 @@ def test_cover_shows_the_date_weekday_slot_and_mood():
     assert '<html lang="ru" data-mood="release">' in page and "<span>день релиза</span>" in cover
 
 
+def test_cover_date_is_the_same_on_the_page_and_on_the_telegram_picture():
+    from digest.render import cover_date
+    # Дата — по времени читателя (Ташкент): выпуск, собранный в 21:00 UTC, выходит уже завтрашним числом
+    assert cover_date(datetime(2026, 11, 9, 21, tzinfo=timezone.utc)) == "10.11"
+    assert cover_date(datetime(2026, 11, 8, 4, tzinfo=timezone.utc), "week") == "45"
+    assert '<span class="ph">16.10</span>' in render_page(sample(), STATS, WHEN, failures=[])
+
+
 def test_week_cover_shows_the_week_number_instead_of_a_date():
     page = render_page(sample(), {"issues": 14, "events": 140}, datetime(2026, 11, 8, 4, tzinfo=timezone.utc), failures=[],
                        kind="week", period="2–8 ноября")

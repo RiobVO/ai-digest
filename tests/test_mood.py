@@ -46,7 +46,7 @@ def test_three_archive_issues_get_three_different_moods_on_page_and_cover():
         name = mood(sections)
         assert f'data-mood="{name}"' in page and MOODS[name].label in page and MOODS[name].color in page
         pages.add(name)
-        html = cover.cover_html("H", "21 октября", "9 событий", name)
+        html = cover.cover_html("H", "21.10", name)
         assert MOODS[name].color in html
         covers.add(html)
     assert len(pages) == 3 and len(covers) == 3
@@ -65,7 +65,7 @@ def test_sky_tint_and_landscape_are_gone_from_the_page_and_the_cover():
     # Пейзаж с небом отвергнут владельцем: настроение — цвет дня, обложка от разметки страницы больше не зависит
     for template in (TEMPLATE.template, cover.TEMPLATE.template):
         assert "--sky" not in template and "$sky" not in template and "viewBox='0 0 800 320'" not in template
-    assert MOODS["alarm"].color in cover.cover_html("H", "d", "s", "alarm")
+    assert MOODS["alarm"].color in cover.cover_html("H", "21.10", "alarm")
 
 
 def test_weekly_summary_has_no_daily_mood():

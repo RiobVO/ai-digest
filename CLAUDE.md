@@ -136,8 +136,9 @@ Site pages besides issues (all built with the `page.html` shell via `render._she
 - **Tricks** carry `topic` from `llm.TIP_TOPICS` (enum in the extras schema) ↔ `render.TIP_TOPIC_LABELS`; the archive
   stores summary/why/copy/topic for tips only. Tips and voices never start stories (`Stories.apply`).
 - **Mood** (`digest/mood.py`) is computed from sections and gives the colour of the day (`MOODS[name].color` /
-  `.night`): `data-mood` on `<html>` picks `--mood` from the CSS that `render.MOOD_CSS` generates, the cover gets the
-  colour directly. `alarm` only when the hero is a security story: the count of security cards is not a signal
+  `.night`): `data-mood` on `<html>` picks `--mood` from the CSS that `render.MOOD_CSS` generates, the Telegram
+  picture (`cover.html`: the date in that colour + the headline, `render.cover_date` gives the same date as the page)
+  gets the colour directly. `alarm` only when the hero is a security story: the count of security cards is not a signal
   (there are almost always three, `SECURITY_CAP`).
 - **Issue page** (`render_page` + `templates/page.html`, design decisions in `design/REDESIGN.md`): all markup is
   static and readable without scripts — the breakdown lies in a closed `<details class="more">`, past days of a

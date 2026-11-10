@@ -20,7 +20,7 @@ from digest.memory import (Archive, Stories, fetch_feedback, issue_slot, missed_
                            record_issue, resolve_votes)
 from digest.models import Item
 from digest.mood import mood
-from digest.render import (DISPLAY_TZ, MONTHS, human_date, issue_summary, render_archive, render_health, render_page,
+from digest.render import (DISPLAY_TZ, MONTHS, cover_date, render_archive, render_health, render_page,
                            render_story_pages, render_tips)
 from digest.state import SeenStore
 from digest.telegram import build_keyboard, build_message, send
@@ -61,10 +61,10 @@ def _write_message(name: str, text: str, url: str, keyboard: dict | None) -> Non
                             encoding="utf-8")
 
 
-def _cover(site: Path, page_name: str, headline: str, date_label: str, sub: str, day_mood: str = "calm") -> str:
+def _cover(site: Path, page_name: str, headline: str, date: str, day_mood: str = "calm") -> str:
     """Снимает обложку выпуска в site/og/ и возвращает её адрес для og:image; без обложки — пустая строка."""
     cover = site / "og" / f"{Path(page_name).stem}.png"
-    if not make_cover(headline, date_label, sub, cover, day_mood):
+    if not make_cover(headline, date, cover, day_mood):
         return ""
     return f"{os.environ['SITE_URL'].rstrip('/')}/og/{cover.name}"
 
@@ -142,9 +142,7 @@ def build(args: argparse.Namespace) -> None:
     record_issue(archive, stories, today, digest.headline, page_name, digest.entries, slot)
     health.record_events([e.item.source for e in digest.entries])
 
-    date_label = f"{human_date(now)}{' · вечер' if slot == 'evening' else ''}"
-    og_image = _cover(args.site, page_name, digest.headline, date_label, issue_summary(digest.entries),
-                      mood([e.section for e in digest.entries]))
+    og_image = _cover(args.site, page_name, digest.headline, cover_date(now), mood([e.section for e in digest.entries]))
     page = render_page(digest, stats, now, failures, feedback_url=feedback_url, issues=archive.issues, page_name=page_name,
                        slot=slot, missed=missed, morning_page=morning_page, og_image=og_image)
     args.site.mkdir(parents=True, exist_ok=True)
@@ -180,7 +178,7 @@ def weekly(args: argparse.Namespace) -> None:
     period = (f"{start.day}–{today.day} {MONTHS[today.month - 1]}" if start.month == today.month
               else f"{start.day} {MONTHS[start.month - 1]} – {today.day} {MONTHS[today.month - 1]}")
     page_name = f"week-{today:%Y-%m-%d}.html"
-    og_image = _cover(args.site, page_name, digest.headline, f"Итог недели · {period}", issue_summary(digest.entries, "week"))
+    og_image = _cover(args.site, page_name, digest.headline, cover_date(now, "week"))
     page = render_page(digest, stats, now, [], issues=archive.issues, kind="week", period=period, page_name=page_name,
                        og_image=og_image)
     args.site.mkdir(parents=True, exist_ok=True)

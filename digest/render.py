@@ -671,6 +671,13 @@ BAR = (f'<div class="bar"><a class="mark" href="index.html">{MARK}сигнал</
        '<button type="button" class="lnk sm" id="theme" hidden>ночь</button></div>')
 
 
+def cover_date(when: datetime, kind: str = "day") -> str:
+    """Крупная дата обложки — одна и та же на странице и на картинке для Telegram: число выпуска по времени
+    читателя, у итога недели — номер недели (дата у него не одна)."""
+    local = when.astimezone(DISPLAY_TZ)
+    return str(local.isocalendar().week) if kind == "week" else f"{local:%d.%m}"
+
+
 def _cover(headline: str, lead: str, date: str, small: str, spoken: str, meta: list[str], first: str, toc: bool) -> str:
     """Обложка выпуска: дата во всю ширину цветом дня. spoken — дата словами для чтения вслух («10.11» там невнятно)."""
     body = f'<p class="body rv" style="--d:2">{_rich(lead)}</p>' if lead else ""
@@ -745,10 +752,10 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
             feed.append(f'<section class="grp" id="{anchor}" data-label="{label}">{"".join(cards)}</section>')
 
     local = when.astimezone(DISPLAY_TZ)
+    date = cover_date(when, kind)
     count = len(digest.entries)
     if kind == "week":
-        # Обложка недели — крупно её номер (решение владельца): дата у итога недели не одна
-        date, small, spoken = str(local.isocalendar().week), f"неделя · {period}", f"Итог недели, {period}"
+        small, spoken = f"неделя · {period}", f"Итог недели, {period}"
         meta = ["итоги недели", *(plural(n, *forms) for n, forms in (
             (stats["issues"], ("выпуск", "выпуска", "выпусков")), (stats["events"], ("событие", "события", "событий")),
             (count, ("сюжет", "сюжета", "сюжетов"))))]
@@ -756,7 +763,7 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
                   f"{plural(stats['events'], 'событие', 'события', 'событий')}; в итог прошло {count}.")
     else:
         evening = slot == "evening"
-        date, small = f"{local:%d.%m}", f"{WEEKDAYS[local.weekday()].lower()} · {'вечер' if evening else 'утро'}"
+        small = f"{WEEKDAYS[local.weekday()].lower()} · {'вечер' if evening else 'утро'}"
         spoken = f"{human_date(when)}{' · вечер' if evening else ''}"
         meta = [issue_summary(digest.entries), MOODS[day_mood].label]
         funnel = (f"Из {stats['raw']} просмотренных новостей новых {stats['merged']}, в выпуск прошло {count}."
