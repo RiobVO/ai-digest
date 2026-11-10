@@ -1,5 +1,93 @@
 [
  {
+  "date": "2026-11-10",
+  "slot": "morning",
+  "headline": "Claude Fable 5.2, скандал в Nvidia и взлом Fireworks AI",
+  "page": "2026-11-10.html",
+  "entries": [
+   {
+    "id": "20261110-0",
+    "title": "Anthropic выкатила Claude Fable 5.2 и Mythos 5.2 со сниженными ценами",
+    "section": "model",
+    "source": "techmeme",
+    "url": "https://www.anthropic.com/claude-fable-and-mythos-5-2",
+    "story": "s322"
+   },
+   {
+    "id": "20261110-1",
+    "title": "N-able экстренно погасила облако N-central из-за слива более 30 0-day",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/n-able-takes-cloud-platform-offline-after-30-plus-zero-days-published/",
+    "story": "s323"
+   },
+   {
+    "id": "20261110-2",
+    "title": "ФБР занялось главой Nvidia, а юристы компании мешали делу Megaspeed",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://apnews.com/article/china-denies-spy-jensen-huang-nvidia-3345b9f05c54d58909e88f6dcb9c1cd8",
+    "story": "s310"
+   },
+   {
+    "id": "20261110-3",
+    "title": "Взлом Fireworks AI привел к утечке весов моделей и данных клиентов",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://www.forbes.com/sites/annatong/2026/11/09/fireworks-cyberattack-exposes-customer-data-and-ai-models-as-fallout-widens/",
+    "story": "s324"
+   },
+   {
+    "id": "20261110-4",
+    "title": "Хакеры обокрали клиентов Qubole через доверенный аккаунт AWS",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/hackers-exploit-quboles-trusted-aws.html",
+    "story": "s325"
+   },
+   {
+    "id": "20261110-5",
+    "title": "Австралия запустит регулятор ИИ из-за взлома госпортала агентом OpenAI",
+    "section": "business",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/technology/2026/nov/10/australia-manadatory-reporting-openai-medicare-hack",
+    "story": "s326"
+   },
+   {
+    "id": "20261110-6",
+    "title": "Meta выпустила компактную модель Muse Ember для рутины агентов",
+    "section": "model",
+    "source": "techmeme",
+    "url": "https://techcrunch.com/2026/11/09/meta-releases-muse-ember-a-new-lightweight-model-for-agent-execution/",
+    "story": "s327"
+   },
+   {
+    "id": "20261110-7",
+    "title": "Google пригрозила школам США баном в поиске за отказ от ИИ",
+    "section": "business",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/us-news/2026/nov/09/parents-teachers-google-search-schools-ai",
+    "story": "s244"
+   },
+   {
+    "id": "20261110-8",
+    "title": "Apple выставила ценник в $50 за дополнительные лимиты нейросетей",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://9to5mac.com/2026/11/09/apple-launches-50-intelligence-usage-packs-for-select-ai-features/",
+    "story": "s328"
+   },
+   {
+    "id": "20261110-9",
+    "title": "В Ollama v0.40.16 завезли Ripple Preview и урезали аппетит Qwen на Mac",
+    "section": "dev",
+    "source": "gh_ollama",
+    "url": "https://github.com/ollama/ollama/releases/tag/v0.40.16",
+    "story": "s237"
+   }
+  ]
+ },
+ {
   "date": "2026-11-09",
   "slot": "evening",
   "headline": "Скандал с Дженсеном Хуангом, новые TPU от Google и атаки агентов",
