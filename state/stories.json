@@ -1,5 +1,5 @@
 {
- "next": 329,
+ "next": 335,
  "stories": {
   "s9": {
    "name": "Финансы и IPO Anthropic",
@@ -3683,6 +3683,12 @@
      "title": "Anthropic готовится к IPO перед Днем благодарения при оценке до $1,75 трлн",
      "entry": "20261107-2",
      "issue": "2026-11-07.html"
+    },
+    {
+     "date": "2026-11-10",
+     "title": "Anthropic объявила параметры IPO с оценкой до $1,4 трлн",
+     "entry": "20261110-10",
+     "issue": "2026-11-10-evening.html"
     }
    ]
   },
@@ -4153,6 +4159,12 @@
      "title": "Anthropic выкатила Claude Fable 5.2 и Mythos 5.2 со сниженными ценами",
      "entry": "20261110-0",
      "issue": "2026-11-10.html"
+    },
+    {
+     "date": "2026-11-10",
+     "title": "Anthropic выпустила модели Claude Fable 5.2 и Mythos 5.2 со сниженными ценами",
+     "entry": "20261110-11",
+     "issue": "2026-11-10-evening.html"
     }
    ]
   },
@@ -4164,6 +4176,12 @@
      "title": "N-able экстренно погасила облако N-central из-за слива более 30 0-day",
      "entry": "20261110-1",
      "issue": "2026-11-10.html"
+    },
+    {
+     "date": "2026-11-10",
+     "title": "N-able отключила облако N-central после публикации 33 zero-day уязвимостей",
+     "entry": "20261110-13",
+     "issue": "2026-11-10-evening.html"
     }
    ]
   },
@@ -4219,6 +4237,72 @@
      "title": "Apple выставила ценник в $50 за дополнительные лимиты нейросетей",
      "entry": "20261110-8",
      "issue": "2026-11-10.html"
+    }
+   ]
+  },
+  "s329": {
+   "name": "Zero-day в Chrome",
+   "events": [
+    {
+     "date": "2026-11-10",
+     "title": "Google экстренно пропатчила восьмую zero-day уязвимость в Chrome за год",
+     "entry": "20261110-12",
+     "issue": "2026-11-10-evening.html"
+    }
+   ]
+  },
+  "s330": {
+   "name": "Атака на IoT во Франции",
+   "events": [
+    {
+     "date": "2026-11-10",
+     "title": "Франция обвинила Иран в кибератаке на контроллеры холодильного оборудования",
+     "entry": "20261110-14",
+     "issue": "2026-11-10-evening.html"
+    }
+   ]
+  },
+  "s331": {
+   "name": "AlphaProof Code для Signal",
+   "events": [
+    {
+     "date": "2026-11-10",
+     "title": "Google DeepMind применила AlphaProof Code для верификации протокола Signal",
+     "entry": "20261110-15",
+     "issue": "2026-11-10-evening.html"
+    }
+   ]
+  },
+  "s332": {
+   "name": "Модель LongCat-2.5",
+   "events": [
+    {
+     "date": "2026-11-10",
+     "title": "Meituan выложила веса модели LongCat-2.5 с 1,6 трлн параметров под MIT",
+     "entry": "20261110-16",
+     "issue": "2026-11-10-evening.html"
+    }
+   ]
+  },
+  "s333": {
+   "name": "Claude в Copilot",
+   "events": [
+    {
+     "date": "2026-11-10",
+     "title": "Microsoft включила доступ к Claude в корпоративных тенантах Copilot по умолчанию",
+     "entry": "20261110-17",
+     "issue": "2026-11-10-evening.html"
+    }
+   ]
+  },
+  "s334": {
+   "name": "Агент Nod от n8n",
+   "events": [
+    {
+     "date": "2026-11-10",
+     "title": "n8n выпустила автономного локального агента Nod для десктопа",
+     "entry": "20261110-18",
+     "issue": "2026-11-10-evening.html"
     }
    ]
   }

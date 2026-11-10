@@ -1,6 +1,94 @@
 [
  {
   "date": "2026-11-10",
+  "slot": "evening",
+  "headline": "Релиз Anthropic IPO и моделей Fable/Mythos 5.2, новый zero-day в Chrome",
+  "page": "2026-11-10-evening.html",
+  "entries": [
+   {
+    "id": "20261110-10",
+    "title": "Anthropic объявила параметры IPO с оценкой до $1,4 трлн",
+    "section": "business",
+    "source": "anthropic",
+    "url": "https://www.anthropic.com/news/roadshow-launch",
+    "story": "s282"
+   },
+   {
+    "id": "20261110-11",
+    "title": "Anthropic выпустила модели Claude Fable 5.2 и Mythos 5.2 со сниженными ценами",
+    "section": "model",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/anthropics-claude-fable-52-beats-gpt-6.html",
+    "story": "s322"
+   },
+   {
+    "id": "20261110-12",
+    "title": "Google экстренно пропатчила восьмую zero-day уязвимость в Chrome за год",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/google-patches-eighth-chrome-zero-day-exploited-in-attacks-this-year/",
+    "story": "s329"
+   },
+   {
+    "id": "20261110-13",
+    "title": "N-able отключила облако N-central после публикации 33 zero-day уязвимостей",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/n-able-takes-hosted-n-central-offline.html",
+    "story": "s323"
+   },
+   {
+    "id": "20261110-14",
+    "title": "Франция обвинила Иран в кибератаке на контроллеры холодильного оборудования",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/france-blames-iran-for-sabotage-attack.html",
+    "story": "s330"
+   },
+   {
+    "id": "20261110-15",
+    "title": "Google DeepMind применила AlphaProof Code для верификации протокола Signal",
+    "section": "model",
+    "source": "deepmind",
+    "url": "https://deepmind.google/blog/introducing-alphaproof-code/",
+    "story": "s331"
+   },
+   {
+    "id": "20261110-16",
+    "title": "Meituan выложила веса модели LongCat-2.5 с 1,6 трлн параметров под MIT",
+    "section": "model",
+    "source": "techmeme",
+    "url": "https://venturebeat.com/technology/meituan-releases-the-open-weights-of-its-longcat-2-5-llm-with-vision-under-a-permissive-mit-license",
+    "story": "s332"
+   },
+   {
+    "id": "20261110-17",
+    "title": "Microsoft включила доступ к Claude в корпоративных тенантах Copilot по умолчанию",
+    "section": "business",
+    "source": "the_register",
+    "url": "https://www.theregister.com/ai-and-ml/2026/11/10/microsoft-is-giving-claude-the-keys-to-uk-copilot-tenants-by-default/5308693",
+    "story": "s333"
+   },
+   {
+    "id": "20261110-18",
+    "title": "n8n выпустила автономного локального агента Nod для десктопа",
+    "section": "dev",
+    "source": "n8n_blog",
+    "url": "https://blog.n8n.io/meet-nod/",
+    "story": "s334"
+   },
+   {
+    "id": "20261110-19",
+    "title": "Meta выкатила компактную модель Muse Ember для рутинных задач агентов",
+    "section": "voices",
+    "source": "simon_willison",
+    "url": "https://simonwillison.net/2026/Nov/10/muse-ember/",
+    "story": ""
+   }
+  ]
+ },
+ {
+  "date": "2026-11-10",
   "slot": "morning",
   "headline": "Claude Fable 5.2, скандал в Nvidia и взлом Fireworks AI",
   "page": "2026-11-10.html",
