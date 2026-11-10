@@ -2,14 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-08T23:18:08.882322+00:00",
-   "keys": [
-    "thestateofai.com/news/goldman-sachs-claude-code-traders-bankers",
-    "title:goldman sachs is pulling claude code from its bankers and traders"
-   ],
-   "strength": 5
-  },
-  {
    "at": "2026-11-09T04:18:07.322338+00:00",
    "keys": [
     "nvidianews.nvidia.com/news/a-message-to-our-company",
@@ -190,6 +182,22 @@
     "title:anthropic releases mythos 5 2 and fable 5 2 saying they are best for the most ambitious open ended technical work with outputs up to 30 faster than 5 1 anthropic"
    ],
    "strength": 8
+  },
+  {
+   "at": "2026-11-10T00:18:05.426054+00:00",
+   "keys": [
+    "postalpro.usps.com/zcb",
+    "title:usps now offers official zip code boundary polygons"
+   ],
+   "strength": 4
+  },
+  {
+   "at": "2026-11-10T00:18:05.426054+00:00",
+   "keys": [
+    "github.com/thisisme6598/gemini_files",
+    "title:google gemini routes personal drive files and emails to human annotators"
+   ],
+   "strength": 3
   }
  ],
  "undated": {
