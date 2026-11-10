@@ -21,14 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-09T20:18:09.001855+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMiqgFBVV95cUxQVHBHYWpjdWxPUUszcVo2UmdxQ0UzUWpLZlh6TFdlZXhwWDRCWDM1S1V2eW0xODY4bFN4bzNmM3REWTlYTmpZdm1MYWFlZTdkY2pFZXhncGRfR2x5WjlYdVZoRW9YbUJhV1RxODR5NHhGLVYySlRVa0QwZ0pKMU4yUHd2RkQwWm8zV2pDaFU4VzI3NXhYN0tsVHY3ejV4dmE4YTZrUkNZTDlEUQ?oc=5",
-    "title:exclusive crowdstrike to buy two ai security startups for 495 million"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-09T23:18:08.205491+00:00",
    "keys": [
     "anthropic.com/claude-fable-and-mythos-5-2",
@@ -167,6 +159,14 @@
    "keys": [
     "neil.fraser.name/news/2026/11/10",
     "title:name grandfathered"
+   ],
+   "strength": 4
+  },
+  {
+   "at": "2026-11-10T21:18:10.344139+00:00",
+   "keys": [
+    "docodethatmatters.com/home-automation-overnight-success",
+    "title:smart home devices should work without the internet"
    ],
    "strength": 4
   }
