@@ -4,13 +4,12 @@
 <meta charset="utf-8">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=block">
 <style>
-/* Обложка 1200×630 для превью ссылки: палитра, знак и пейзаж — те же, что у страницы выпуска; знак — цветом дня */
-:root{--bg:#fefcf5;--ink:#2f2d2c;--ink-2:#4f4b47;--muted:#6e6963;--chip:#ece7dd}
+/* Обложка 1200×630 для превью ссылки: бумага и знак цветом дня; пейзажа нет — он отвергнут вместе с небом */
+:root{--bg:#f1ede4;--ink:#2f2d2c;--ink-2:#4f4b47;--muted:#6e6963;--chip:#ece7dd}
 html,body{margin:0}
 body{width:1200px;height:630px;overflow:hidden;color:var(--ink);-webkit-font-smoothing:antialiased;
   font-family:"Inter",-apple-system,"Segoe UI",sans-serif;
-  background:linear-gradient(100deg,rgba(254,252,245,.97) 0%,rgba(254,252,245,.8) 45%,rgba(254,252,245,0) 80%),
-    $landscape center/cover no-repeat,var(--bg)}
+  background:var(--bg)}
 .card{box-sizing:border-box;height:630px;padding:60px 72px 56px;display:grid;grid-template-rows:auto 1fr auto;gap:24px}
 /* Правый верхний угол крупного превью Telegram закрывает своей кнопкой-лупой: дата живёт внизу, рядом с охватом */
 .foot{display:flex;justify-content:space-between;align-items:center;gap:24px}

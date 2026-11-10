@@ -3,11 +3,17 @@ from datetime import datetime, timezone
 
 from digest.llm import Digest, Entry
 from digest.models import Item
-from digest.render import render_archive, render_page, render_story_pages, render_tips
+from digest.render import NBSP, WJ, render_archive, render_story_pages, render_tips, typo
+from digest.render import render_page as typeset_page
 from digest.telegram import TG_LIMIT, build_message
 
 WHEN = datetime(2026, 10, 16, 3, tzinfo=timezone.utc)
 STATS = {"raw": 138, "new": 118, "merged": 118}
+
+
+def render_page(*args, **kwargs) -> str:
+    """Страница без знаков русского набора: тесты ищут текст с обычными пробелами. Сам набор проверяют test_typo_*."""
+    return typeset_page(*args, **kwargs).replace(NBSP, " ").replace(WJ, "")
 
 
 def sample() -> Digest:
@@ -51,9 +57,19 @@ def test_pages_link_the_home_screen_icon_and_manifest():
         assert '<link rel="apple-touch-icon" href="icon-180.png">' in page
 
 
-def test_reading_progress_slot_sits_in_the_header_line():
+def test_progress_rings_in_the_header_and_at_the_end_have_a_ring_per_story():
     page = render_page(sample(), STATS, WHEN, failures=[], feedback_url="https://fb.example")
-    assert '<span class="progress" hidden></span>' in page and "прочитано" in page
+    rings = re.findall(r'<svg class="prog".*?</svg>', page)
+    # Кругов столько, сколько новостей на странице (в макете их было ровно десять)
+    assert [ring.count("<circle") for ring in rings] == [2, 2]
+    assert page.index('id="hdr"') < page.index(rings[0]) < page.index('id="deck"') < page.index('id="end"') < page.rindex(rings[1])
+    assert "Прочитано " in page
+
+
+def test_story_counts_as_read_after_a_long_pause_not_a_glance():
+    page = render_page(sample(), STATS, WHEN, failures=[], feedback_url="https://fb.example")
+    # Решение владельца 2026-11-10: прочитано — если задержался на новости дольше 6–7 секунд
+    assert "const DWELL_MS = 6500;" in page and "markRead(s); }, DWELL_MS);" in page
 
 
 def test_telegram_message_is_escaped_linked_and_short():
@@ -63,7 +79,7 @@ def test_telegram_message_is_escaped_linked_and_short():
     assert len(text) <= TG_LIMIT
 
 
-def test_read_more_expands_inline_with_source_link():
+def test_breakdown_lies_in_the_page_closed_with_source_link():
     from digest.llm import Details
     digest = sample()
     digest.entries[1].details = Details("Суть <b>статьи</b>.", ["Пункт 1"], "Код на GitHub.", "Только английский.",
@@ -71,7 +87,8 @@ def test_read_more_expands_inline_with_source_link():
     page = render_page(digest, STATS, WHEN, failures=[])
     block = page[page.index("Суть"):]
     assert "Суть &lt;b&gt;статьи&lt;/b&gt;." in page
-    assert "<summary" in page[:page.index("Суть")]
+    # Текст разбора — в статической разметке: скрипт показывает его листом, без скрипта он раскрывается на месте
+    assert '<details class="more"><summary class="btn">Разбор</summary><div class="more-body">' in page[:page.index("Суть")]
     assert "Пункт 1" in block and "Только английский." in block
     assert 'class="term"' in block and "pip install x" in block and "Код на GitHub." in block
     assert 'href="https://arxiv.org/abs/2610.1"' in block
@@ -117,15 +134,21 @@ def test_headline_long_story_name_is_left_out_of_the_tag():
     top.story, top.story_name, top.story_day = "s1", "Disney забирает более 60 сотрудников Character.AI за $180…", 2
     top.story_prev = [("2026-10-18", "Disney забирает более 60 сотрудников Character.AI за $180 млн")]
     page = render_page(digest, STATS, WHEN, failures=[])
-    assert '<a class="tag story-tag" href="story-s1.html">Сюжет · <span class="story-day">2-й день</span></a>' in page
+    thread = page[page.index('<div class="thread'):page.index("<h2", page.index('<div class="thread'))]
+    assert '<a class="tag" href="story-s1.html">Сюжет · 2-й день →</a>' in thread and "<b>" not in thread
+    # Прошлые дни сюжета лежат в разметке — лист хронологии показывает их, а не строит
+    assert '<ol class="tl"><li><time>18 окт</time><span>Disney забирает более 60 сотрудников' in thread
 
 
-def test_sidebar_lists_recent_issues_and_archive_page_lists_all():
+def test_issue_links_the_previous_one_and_archive_page_lists_all():
     from digest.render import render_archive
     issues = [{"date": "2026-10-16", "headline": "Сегодня", "page": "2026-10-16.html", "entries": [{}, {}]},
               {"date": "2026-10-15", "headline": "Вчера <b>", "page": "2026-10-15.html", "entries": [{}]}]
-    page = render_page(sample(), STATS, WHEN, failures=[], issues=issues)
-    assert 'href="2026-10-15.html"' in page and 'href="archive.html"' in page
+    page = render_page(sample(), STATS, WHEN, failures=[], issues=issues, page_name="2026-10-16.html")
+    assert '<a class="lnk" href="2026-10-15.html">← Прошлый выпуск</a>' in page and 'href="archive.html"' in page
+    # У самого раннего выпуска и у итога недели (его страницы нет среди выпусков) прошлого выпуска нет
+    assert "Прошлый выпуск" not in render_page(sample(), STATS, WHEN, failures=[], issues=issues, page_name="2026-10-15.html")
+    assert "Прошлый выпуск" not in render_page(sample(), STATS, WHEN, failures=[], issues=issues, page_name="week-x.html")
     archive = render_archive(issues, WHEN)
     assert 'href="2026-10-16.html"' in archive and "Вчера &lt;b&gt;" in archive and "2 события" in archive
 
@@ -182,14 +205,14 @@ def test_try_today_skips_commands_already_shown():
         entry.id = f"20261016-{n}"
         entry.details = Details("Суть.", [], "", "", ["pip install -U diffusers"])
     page = render_page(digest, STATS, WHEN, failures=[])
-    block = page[page.index("Попробовать сегодня"):page.index('id="papers"')]
+    block = page[page.index('id="try"'):page.index('id="end"')]
     assert block.count("pip install -U diffusers") == 1
 
 
 def test_week_summary_uses_correct_plural_forms():
     page = render_page(sample(), {"issues": 1, "events": 3}, WHEN, failures=[], kind="week", period="10–16 октября")
-    assert "<b>1</b><span>выпуск</span>" in page and "<b>3</b><span>события</span>" in page
-    assert "<b>2</b><span>сюжета</span>" in page
+    cover = page[page.index('id="cover"'):page.index("</section>", page.index('id="cover"'))]
+    assert "<span>1 выпуск</span><span>3 события</span><span>2 сюжета</span>" in cover
 
 
 def test_buzz_badge_shows_coverage_and_links_hn_thread():
@@ -252,16 +275,18 @@ def test_telegram_evening_message_mentions_missed_morning_news():
     assert '<a href="https://x.io/2026-10-17.html#e-20261017-1">Пропущенное</a>' in text
 
 
-def test_brief_lists_every_entry_with_a_link_to_its_card():
+def test_contents_list_every_entry_with_a_link_to_its_card():
     digest = sample()
     digest.entries[0].id, digest.entries[1].id = "20261016-0", "20261016-1"
     page = render_page(digest, STATS, WHEN, failures=[])
-    block = page[page.index('id="brief"'):]
+    block = page[page.index('id="index"'):]
     block = block[:block.index("</section>")]
     assert block.index('href="#e-20261016-0"') < block.index('href="#e-20261016-1"')
     assert "Meta выпустила &lt;Muse&gt; &amp; co" in block
-    # Без id записей ссылаться не на что — блока нет (итог недели)
-    assert 'id="brief"' not in render_page(sample(), STATS, WHEN, failures=[])
+    assert 'id="e-20261016-0"' in page and 'id="e-20261016-1"' in page
+    # У записей без id (итог недели) якорем служит номер новости на странице
+    week = render_page(sample(), STATS, WHEN, failures=[])
+    assert 'href="#s-1"' in week and 'href="#s-2"' in week and 'id="s-2"' in week
 
 
 def test_engineer_posts_render_as_their_own_section_with_nav():
@@ -271,7 +296,8 @@ def test_engineer_posts_render_as_their_own_section_with_nav():
     page = render_page(digest, STATS, WHEN, failures=[])
     block = page[page.index('id="voices"'):]
     assert "Что пишут инженеры" in block and "Ронахер о вкусе агентов" in block
-    assert 'href="#voices"' in page
+    # Раздел поста виден в содержании и в шапке страницы (data-label)
+    assert '<span class="k">Инженеры</span>' in page and 'data-label="Что пишут инженеры"' in block
 
 
 def test_empty_explanation_shows_only_the_source_link():
@@ -294,15 +320,15 @@ def test_engineer_post_never_becomes_the_lead_story():
     assert "Ронахер о вкусе агентов" in page[page.index('id="voices"'):]
 
 
-def test_every_model_section_has_a_label_a_row_and_an_icon():
+def test_every_model_section_has_a_label_and_a_row():
     # Разделы — контракт между схемой Gemini и вёрсткой: раздел без строки в ROW_SECTIONS молча пропал бы со страницы
     from digest.llm import SECTIONS
-    from digest.render import ICONS, ROW_SECTIONS, SECTION_LABELS
-    rows = {section: anchor for section, anchor, _, _ in ROW_SECTIONS}
+    from digest.render import BRIEF_LABELS, ROW_SECTIONS, SECTION_LABELS
+    rows = {section for section, _, _, _ in ROW_SECTIONS}
     for section in SECTIONS:
-        assert section in SECTION_LABELS
-        if section != "paper":  # статьи идут отдельной колонкой
-            assert section in rows and rows[section] in ICONS
+        assert section in SECTION_LABELS and section in BRIEF_LABELS
+        if section != "paper":  # статьи идут своим разделом после остальных
+            assert section in rows
 
 
 def test_security_news_get_their_own_section():
@@ -499,11 +525,29 @@ def test_security_card_explains_its_terms_in_plain_sight():
     digest.entries.insert(1, Entry(bug, "security", 7, "Две RCE в ядре PHP", "Патч вышел.", ""))
     digest.entries[1].details = Details("", [], "", "", [], [("RCE", "удалённое выполнение <кода>")])
     page = render_page(digest, STATS, WHEN, failures=[])
-    card = page[page.index("Две RCE в ядре PHP"):]
-    card = card[:card.index("Подробнее") if "Подробнее" in card else len(card)]
-    # Термин виден сразу под карточкой, а не спрятан в «Подробнее»
-    assert '<dl class="terms">' in card and "<dt>RCE</dt>" in card and "<dd>удалённое выполнение &lt;кода&gt;</dd>" in card
-    assert '<dl class="terms">' not in render_page(sample(), STATS, WHEN, failures=[])
+    card = page[page.index('<article class="slide st" id="s-2"'):]
+    card = card[:card.index("</article>")]
+    # Термин объяснён прямо в тексте новости: слово в заголовке — кнопка с объяснением, а не строка в разборе
+    assert ('<span class="idx">02</span>Две <button type="button" class="tw" '
+            'data-def="удалённое выполнение &lt;кода&gt;">RCE</button> в ядре PHP</h2>') in card
+    assert '<dl class="terms' not in page
+
+
+def test_term_absent_from_the_visible_text_stays_as_a_line():
+    from digest.llm import Details
+    bug = Item(source="thehackernews", title="PHP2Shell", url="https://thn/php", category="security")
+    digest = sample()
+    digest.entries.insert(1, Entry(bug, "security", 7, "Две RCE в ядре PHP", "Патч вышел для RCE.", ""))
+    # «RCE» есть в тексте дважды — кнопкой становится только первое вхождение; «SOURCE» термином не считается
+    digest.entries[1].details = Details("", [], "", "", [], [("RCE", "удалённое выполнение кода"),
+                                                              ("XXE", "чтение <чужих> файлов через XML")])
+    digest.entries[1].why = "SOURCE не при чём."
+    page = render_page(digest, STATS, WHEN, failures=[])
+    card = page[page.index('<article class="slide st" id="s-2"'):]
+    card = card[:card.index("</article>")]
+    assert card.count('class="tw"') == 1 and "Патч вышел для RCE." in card and "SOURCE не при чём." in card
+    # Слова в тексте нет — объяснение остаётся строкой, а не пропадает
+    assert "<dt>XXE</dt><dd>чтение &lt;чужих&gt; файлов через XML</dd>" in card and "<dt>RCE</dt>" not in card
 
 
 def test_hero_from_security_shows_terms_too():
@@ -513,7 +557,7 @@ def test_hero_from_security_shows_terms_too():
     hero.details = Details("", [], "", "", [], [("буткит", "вредонос, который загружается раньше ОС")])
     page = render_page(Digest("h", "l", [hero]), STATS, WHEN, failures=[])
     block = page[page.index('id="main-story"'):page.index("</section>", page.index('id="main-story"'))]
-    assert "<dt>буткит</dt>" in block
+    assert 'data-def="вредонос, который загружается раньше ОС">буткит</button>' in block
 
 
 def test_untrusted_prompt_on_the_page_carries_a_warning():
@@ -525,7 +569,9 @@ def test_untrusted_prompt_on_the_page_carries_a_warning():
     tip.copy, tip.copy_untrusted = "Prove to me this works", True
     digest.entries.append(tip)
     page = render_page(digest, STATS, WHEN, failures=[])
-    assert "Непроверенный промпт — прочитай перед вставкой" in page
+    # Подпись-предупреждение на странице выпуска видна только у непроверенного промпта (класс warn)
+    assert '<div class="term-bar warn">' in page and "Непроверенный промпт — прочитай перед вставкой" in page
+    assert '<div class="term-bar warn">' not in render_page(sample(), STATS, WHEN, failures=[])
     # Промпт — текст, а не команда: переносится, а не уезжает за край экрана телефона (23.10)
     assert '<div class="term wrap">' in page
 
@@ -541,3 +587,88 @@ def test_arsenal_shows_the_tip_steps_and_the_untrusted_prompt():
     # Шаги из разбора уже в архиве — в Telegram они есть, в арсенале их не было (23.10)
     assert '<ol class="points"><li>Добавь фразу в &lt;правила&gt;</li><li>Описывай задачу своими словами</li></ol>' in card
     assert "Непроверенный промпт" in card and "you&#x27;re describing" in card and '<div class="term wrap">' in card
+
+
+def test_typo_keeps_short_words_dashes_and_numbers_with_their_neighbours():
+    assert typo("и в доме у реки") == f"и{NBSP}в{NBSP}доме у{NBSP}реки"
+    assert typo("Цена — это 20 млн, а не 5%") == f"Цена{NBSP}— это 20{NBSP}млн, а{NBSP}не{NBSP}5%"
+    assert typo("(в облаке) «с нуля»") == f"(в{NBSP}облаке) «с{NBSP}нуля»"
+    # Латинские слова в две буквы — не предлоги: имена и команды не склеиваем
+    assert typo("AI is on") == "AI is on"
+
+
+def test_typo_does_not_break_short_hyphenated_parts():
+    assert typo("из-за слива 0-day") == f"из{WJ}-{WJ}за слива 0{WJ}-{WJ}day"
+    assert typo("что-то по-новому, 3-й день") == f"что{WJ}-{WJ}то по{WJ}-{WJ}новому, 3{WJ}-{WJ}й день"
+    assert typo("почему-то") == f"почему{WJ}-{WJ}то"
+
+
+def test_typo_leaves_identifiers_and_addresses_copyable():
+    # Невидимый знак внутри имени или адреса сломал бы поиск и команду, вставленную из текста
+    for text in ("CVE-2026-1234", "gpt-4o", "claude-code", "pip install -U x", "x-api-key", "2026-11-10",
+                 "https://github.com/ollama/ollama/releases/tag/v0.40.16", "N-central"):
+        assert typo(text) == text
+    assert typo("см. в https://x.io/a-b и далее") == f"см. в https://x.io/a-b и{NBSP}далее"
+
+
+def test_page_text_is_typeset_but_titles_for_previews_and_commands_are_not():
+    from digest.llm import Details
+    digest = sample()
+    digest.headline = "Слив 0-day и в облаке"
+    digest.entries[0].summary = "Модель в облаке — из-за цены."
+    digest.entries[0].details = Details("Суть.", [], "", "", ["ollama run x -v в папке"])
+    page = typeset_page(digest, STATS, WHEN, failures=[])
+    assert f"Модель в{NBSP}облаке{NBSP}— из{WJ}-{WJ}за цены." in page
+    assert f"Слив 0{WJ}-{WJ}day и{NBSP}в{NBSP}облаке</h1>" in page
+    # Заголовок вкладки и превью ссылки — обычный текст; команда копируется как есть
+    assert "<title>Слив 0-day и в облаке · ИИ-дайджест</title>" in page
+    assert '<meta property="og:title" content="Слив 0-day и в облаке">' in page
+    assert "<code>ollama run x -v в папке</code>" in page
+
+
+def test_cover_shows_the_date_weekday_slot_and_mood():
+    page = render_page(sample(), STATS, WHEN, failures=[], slot="evening")
+    cover = page[page.index('id="cover"'):page.index("</section>", page.index('id="cover"'))]
+    assert '<span class="ph">16.10</span><small>пятница · вечер</small>' in cover
+    assert '<div id="fly" aria-hidden="true"><span>16.10</span></div>' in page
+    assert "<h1" in cover and "Открытые веса &lt;день&gt;" in cover and "Главное за сутки." in cover
+    assert '<a class="btn" href="#main-story">Читать ↓</a><a class="lnk" href="#index">Содержание</a>' in cover
+    # Герой — модель: день релиза, его цвет берёт вся страница
+    assert '<html lang="ru" data-mood="release">' in page and "<span>день релиза</span>" in cover
+
+
+def test_week_cover_shows_the_week_number_instead_of_a_date():
+    page = render_page(sample(), {"issues": 14, "events": 140}, datetime(2026, 11, 8, 4, tzinfo=timezone.utc), failures=[],
+                       kind="week", period="2–8 ноября")
+    assert '<span class="ph">45</span><small>неделя · 2–8 ноября</small>' in page
+    assert 'data-label="Сюжет недели №1"' in page and '<html lang="ru" data-mood="calm">' in page
+
+
+def test_stories_are_one_feed_numbered_in_page_order():
+    digest = _with_extras()
+    for n, entry in enumerate(digest.entries):
+        entry.id = f"20261016-{n}"
+    page = render_page(digest, STATS, WHEN, failures=[])
+    cards = re.findall(r'<article class="slide st" id="(e-[0-9-]+)" data-entry="([0-9-]+)" data-i="([0-9])" data-label="([^"]+)">', page)
+    # Главное, затем фишки и статьи; номер — индекс перед заголовком, отдельного знака у новости нет
+    assert cards == [("e-20261016-0", "20261016-0", "0", "Главное"), ("e-20261016-2", "20261016-2", "1", "Фишки"),
+                     ("e-20261016-1", "20261016-1", "2", "Статьи")]
+    assert re.findall(r'<span class="idx">([0-9]+)</span>', page) == ["01", "02", "03"]
+    assert page.index("Почему важно") < page.index("Модель на 816B.")
+
+
+def test_theme_follows_the_system_and_remembers_the_manual_choice():
+    page = render_page(sample(), STATS, WHEN, failures=[])
+    head = page[:page.index("</head>")]
+    # Выбор применяется до отрисовки (в <head>), сама кнопка появляется только со скриптом
+    assert 'localStorage.getItem("theme")' in head and "prefers-color-scheme:dark" in head
+    assert '<button type="button" class="lnk sm" id="theme" hidden>' in page and 'remember("theme", root.dataset.theme)' in page
+
+
+def test_issue_page_has_no_rejected_or_mockup_only_parts():
+    page = render_page(_with_extras(), STATS, WHEN, failures=[], feedback_url="https://fb.example")
+    # Отвергнуто владельцем: пейзаж с небом, защёлкивающаяся прокрутка; только в макете: выбор шрифта, смена цвета дня
+    for gone in ("viewBox='0 0 800 320'", "scroll-snap", 'id="fonts"', 'id="mood"', "data-font"):
+        assert gone not in page
+    assert "__FB__" not in page and 'const FB = "https://fb.example";' in page
+    assert 'const FB = "";' in render_page(sample(), STATS, WHEN, failures=[])

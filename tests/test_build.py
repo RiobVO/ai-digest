@@ -8,6 +8,7 @@ import pytest
 import digest.__main__ as main
 from digest import llm
 from digest.models import Item
+from digest.render import NBSP
 
 CONFIG = """[digest]
 model = "test-model"
@@ -524,7 +525,8 @@ def test_numbers_known_only_from_a_record_absorbed_by_dedupe_need_no_rewrite(env
 
     monkeypatch.setattr(llm, "generate", generate)
     main.build(args)
-    page = (args.site / "index.html").read_text(encoding="utf-8")
+    # Текст страницы набран с неразрывными пробелами (render.typo): ищем его с обычными
+    page = (args.site / "index.html").read_text(encoding="utf-8").replace(NBSP, " ")
     assert "Модель на 14B параметров." in page
     assert evaluate.NUMBERS_SCHEMA not in schemas
 

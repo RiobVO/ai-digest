@@ -1,7 +1,6 @@
 """Обложка выпуска для превью ссылки в Telegram: HTML-карточка в стиле страницы, снятая headless Chrome."""
 import logging
 import os
-import re
 import shutil
 import subprocess
 import tempfile
@@ -15,11 +14,6 @@ log = logging.getLogger(__name__)
 
 TEMPLATES = Path(__file__).parent / "templates"
 TEMPLATE = Template((TEMPLATES / "cover.html").read_text(encoding="utf-8"))
-# Пейзаж берём из CSS героя страницы, а не копируем: сменится картинка на сайте — сменится и на обложке
-_landscape = re.search(r'url\("data:image/svg\+xml,[^"]+"\)', (TEMPLATES / "page.html").read_text(encoding="utf-8"))
-if _landscape is None:
-    raise RuntimeError("в page.html не найден SVG-пейзаж героя — обложке не из чего взять фон")
-LANDSCAPE = _landscape.group(0)
 WIDTH, HEIGHT = 1200, 630
 # Chrome снимает кадр по событию load, а Inter с Google Fonts к этому моменту может ещё не примениться:
 # виртуальное время даёт шрифту догрузиться
@@ -30,7 +24,7 @@ CHROME_NAMES = ("google-chrome", "google-chrome-stable", "chromium", "chromium-b
 
 
 def cover_html(headline: str, date_label: str, sub: str, mood: str = "calm") -> str:
-    return TEMPLATE.substitute(landscape=LANDSCAPE, mood=MOODS[mood].color, headline=escape(headline), date=escape(date_label),
+    return TEMPLATE.substitute(mood=MOODS[mood].color, headline=escape(headline), date=escape(date_label),
                                sub=escape(sub))
 
 

@@ -59,12 +59,13 @@ def test_day_colors_are_the_ones_the_owner_approved():
         "quiet": ("#2b4eff", "#7f97ff"), "calm": ("#151515", "#ece8df")}
 
 
-def test_sky_tint_is_gone_and_cover_still_finds_the_landscape():
+def test_sky_tint_and_landscape_are_gone_from_the_page_and_the_cover():
     from digest.render import TEMPLATE
 
-    # Тон неба отвергнут владельцем: настроение — цвет дня. Пейзаж остаётся до новой оболочки страницы
-    assert "--sky" not in TEMPLATE.template and "$sky" not in cover.TEMPLATE.template
-    assert cover.LANDSCAPE in cover.cover_html("H", "d", "s", "alarm")
+    # Пейзаж с небом отвергнут владельцем: настроение — цвет дня, обложка от разметки страницы больше не зависит
+    for template in (TEMPLATE.template, cover.TEMPLATE.template):
+        assert "--sky" not in template and "$sky" not in template and "viewBox='0 0 800 320'" not in template
+    assert MOODS["alarm"].color in cover.cover_html("H", "d", "s", "alarm")
 
 
 def test_weekly_summary_has_no_daily_mood():
