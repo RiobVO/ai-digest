@@ -2,41 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-09T06:18:05.554794+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMidEFVX3lxTE1wYlJ1dnEtOVJVMmNUYUdFLXVfZnR2eThUeFlfVHhkQmZ2cFZqSjVKME51aTZPNHhHMklRS2N4UXBlWGVoNElPYmZQQkxLSE9FcDhSVDdla3poNHpjRnJYQ1VXVFR4SUdfSmQ4dUdKOWlsUU5H?oc=5",
-    "news.google.com/rss/articles/CBMijwFBVV95cUxNcm9feVBVOTJ3RXZqZXBiU3dBajZMVnpfdDljcW9zVE5lZnA4OHA1TXRkS1VPWS1ZZi00U0tXcktsT1pZc1NGcU5pN21jOTRTYW5vSFZ6SkVoc3FETWhsSmZaQzkxek5KNmZkd210VmpUNDJwc3ozaXpnOWNmTkNsem1lQk4zUERNQnlmczlKZw?oc=5",
-    "news.google.com/rss/articles/CBMilwFBVV95cUxQOEZWbDhoNkR1NXJYUUhWa1FaMHg2VVB6ampDSlE2MEdJVEwxWVN0VXVVM09YYzg2MGl0Q0U4eGRUTzhOUlRrcWw5SFU0Z0lNbldQV29xb1ZBdGZOTXNQWFZqa3N4NDU2cTJlTEJPbEFBeGpYc1RkeEdvVE15dWdVVzk4R0lDSlhYX0Y0dmNIQVdSbG9JV0Zr?oc=5",
-    "title:amd vs intel which is the better ai chip stock to own for the next 3 years following the semiconductor crash"
-   ],
-   "strength": 3
-  },
-  {
-   "at": "2026-11-09T06:18:05.554794+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/korea-sovereign-ai-collaboration",
-    "news.google.com/rss/articles/CBMicEFVX3lxTFA3czhiSWdrd25IZVpkaHJ4RjRjblQ0Zk4wOUw3cngyRHotZnlXTTNhX0ZvYVlKb09fd3BqNzR2eW90Wlp6MGd4RGZZOG9IempnOTF2aFZmQnJEWFlQTjd6ZDIyM19XWGtZVWNpNVZxUl8?oc=5",
-    "title:from chips to skills nvidia and korea expand sovereign ai collaboration"
-   ],
-   "strength": 2
-  },
-  {
-   "at": "2026-11-09T06:18:05.554794+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/korea-secure-agentic-ai",
-    "title:korea s ai ecosystem advances and secures agentic ai with nvidia"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-09T06:18:05.554794+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/nvidia-dynamo-korea-open-models",
-    "title:nvidia dynamo recipes bring korea s leading open models to production"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-09T07:18:09.769813+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMifkFVX3lxTFBIMmpnUldKZkdEOEd6bVJtanE5aGhYQkN6R2ZuWEJqNWxNeC1pbnB4TTdlck84OFhXOEN4bWVUZXFPTmw5ZnZySzctZ2RGenJXODQxdlFqazE1WURDNjJPQWcwaDNvUmt0bTVlSjR4ME1VS1FTOUJhbzhJcHVIUQ?oc=5",
