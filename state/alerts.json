@@ -21,24 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-10T08:18:06.361566+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMikgFBVV95cUxOQ2dnM2FTQzdWZWEtMDRxaWdDbno4c2VmQnlCdDBfWUhQU3FUdlprb3Rid0VJdjFaLWJEWkpndi1zX1oxUjFPbkhfYl9IOWdQaHJiZzAtS29CTGF5SC1NUElIQktFTE1uTGhpMzJWcTlzLU1icUxsOTJXZGVsdHlVVm1SVGZ4a0dveEtGSFZNbTBIZw?oc=5",
-    "news.google.com/rss/articles/CBMipgFBVV95cUxPaHpmQ004SnRvTzRmXzFseXp4THJEWWJFeXNlVUY3eEUxVDdfbVpTUTMxNTdZVm14VmJyQkZOaUh0QTRCb0Zjc3VwRzJkY0pseG5idk5BQ0hBME5STDBwTlJCZmpHb0xhVEUwd29FRHRyWm1yQXY3bFNWNDh3c2xiSFJzUFdRWlRQdWJzWVBGS3hSYm8tUl9GS1JNZ3pWdWJpdXoweTFn?oc=5",
-    "news.google.com/rss/articles/CBMiwwFBVV95cUxOSkdyZ0hqUllXMmZjUVB1QnBoMXFCYWdEUldHN3hPWVo3MFNNbWlGX2dmWWVtdVVnTU5icUpXRGl3a09jSWpEN0x3VXJQQnNOZkxCbVhnREhXdWFoa25HbXIzUlZqVXVaVXd3T19HcmdxWGxHbjl5WC0zeDB5S3Q0SUxTNUREYm9lTE5IU0JJdXBSd1h5Q21uNHFfNGtqSi1tMkFmY1FDTWxEUmJ1enE3TUZSTWhYWVdjVHhoM2t0SmU4dVU?oc=5",
-    "title:china s trade surplus soars past 1 trillion as ai boom powers exports"
-   ],
-   "strength": 3
-  },
-  {
-   "at": "2026-11-10T09:18:07.551489+00:00",
-   "keys": [
-    "openai.com/index/closing-ai-guidance-gap-education",
-    "title:closing the ai guidance gap in education"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-10T10:18:08.629624+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMi_AFBVV95cUxQY2pIQ3hWUEZodkNQYzl4MWl5WF8tVk5ld2tEN1l2YlY0WUdsNWUwMDc1cDBLdTFtNFNvSTl0MjdBTW1ZTUk3emNWZ05aZkpyVVlHVUxlRjdPRjF6b09fdFZLekV2TGdkUW5jNS1WVXpjMmtPc3Y3S0VFYVk2c1p4cmkzcUJuN2EyeEhoZHEyRmJ4LUJVcHhwS1BCYjAzU3h0RGhvc2c3OG92NTNLcmQ0N1VQRDU5Q2N5TGl4Y2lGWEMzaDJYRTg1Ql93aDV1N3E5VG5YLU0wNldyaDhNMm5OVXdpNDAwTWNtMXRxc1dLMTNnUnVUdnJBTGd6RVQ?oc=5",
@@ -174,6 +156,14 @@
    "keys": [
     "openai.com/index/gilbert-tobin-sam-nickless",
     "title:gilbert tobin rethinks the business of law with ai"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-11T09:18:08.511017+00:00",
+   "keys": [
+    "blog.google/company-news/outreach-and-initiatives/arts-culture/esther-mahlangu",
+    "title:experience the art and legacy of dr esther mahlangu"
    ],
    "strength": 1
   }
