@@ -21,14 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-10T20:18:08.212900+00:00",
-   "keys": [
-    "neil.fraser.name/news/2026/11/10",
-    "title:name grandfathered"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-11-10T21:18:10.344139+00:00",
    "keys": [
     "docodethatmatters.com/home-automation-overnight-success",
@@ -77,15 +69,6 @@
     "title:chatgpt plus for veterans and servicemembers"
    ],
    "strength": 1
-  },
-  {
-   "at": "2026-11-11T14:18:10.969847+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMiYkFVX3lxTFBlU3UxRF83THdKRE1tMTJwVzA3YVZiY0c3R3pTTVJwYU1zU1dQcEtwRVRNNHJrM19SeWNWS1JJelVxV1EtNmdNQ0x2bk1PMWwwSW53anVWNmRoZjY0LWFoVVFB?oc=5",
-    "openai.com/index/gilbert-tobin-sam-nickless",
-    "title:gilbert tobin rethinks the business of law with ai"
-   ],
-   "strength": 2
   },
   {
    "at": "2026-11-11T15:18:06.592982+00:00",
@@ -143,6 +126,32 @@
     "title:gemini decisions api fast calibrated multimodal decisions"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-11-11T21:18:06.667482+00:00",
+   "keys": [
+    "github.com/aws/aws-emulator",
+    "title:aws finally built its own aws emulator"
+   ],
+   "strength": 4
+  },
+  {
+   "at": "2026-11-11T21:18:06.667482+00:00",
+   "keys": [
+    "openai.com/index/gilbert-tobin-sam-nickless",
+    "title:gilbert tobin rethinks the business of law with ai"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-11T21:18:06.667482+00:00",
+   "keys": [
+    "bloomberg.com/news/articles/2026-11-11/united-blocks-ai-agents-from-booking-flights-ahead-of-holidays",
+    "news.google.com/rss/articles/CBMiowFBVV95cUxNS1I5WWNhSXVTeHRjWUFheXJlb0pTdG44UW5BQ0RzNlllbFk0X3BoZkhwMTktdjdiWkNDX0VmRUIzMWhCcFJ4Y2VEZUo2a1Nlc0VnSHpQSy1HOUg0Q3EwV29Uc1hrRkE5QU1ZVUtxRXgyZnhXbXpBZTFZTnZPbUs5OHBMLU0yRUsyUzN2SnY5cDJmTi11REVxZE8yRThTLVdxRjNr?oc=5",
+    "news.google.com/rss/articles/CBMiswFBVV95cUxNWFNtbFdtU1FhajJHMUNsSXNYU2tnLUdMY3BMNDNfcFgzWDBWbE9ubmNMaTdTcmxSTVFqUUZVYmNCa2Y5czJxZFZUenF4WmhQWFEtdmhTeHplNkNvU294YjFIb2VxNWRTLU5QdGFKamhrRWotZUZFb0FVSWtmQldvNUtER0tBWXJXLUZ6Z2RrUFQ3eVZCTDJnQTZPd3pFN1U2VXJDUFpLTDd0ZlJMUTRKaXphSQ?oc=5",
+    "title:united blocks ai agents from booking flights ahead of holidays"
+   ],
+   "strength": 3
   }
  ],
  "undated": {
