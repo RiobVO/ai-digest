@@ -1,5 +1,183 @@
 [
  {
+  "date": "2026-11-11",
+  "slot": "morning",
+  "headline": "Gemini 4 Carbon с роем агентов, офисный Claude и уязвимость в Git",
+  "page": "2026-11-11.html",
+  "entries": [
+   {
+    "id": "20261111-0",
+    "title": "В Git устранили RCE-уязвимость при рекурсивном клонировании репозиториев",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/git-patches-flaw-that-lets-malicious.html",
+    "story": "s335"
+   },
+   {
+    "id": "20261111-1",
+    "title": "Google открыла Gemini 4 Carbon с поддержкой роя агентов",
+    "section": "model",
+    "source": "deepmind",
+    "url": "https://deepmind.google/blog/gemini-4-carbon-is-now-available/",
+    "story": "s336"
+   },
+   {
+    "id": "20261111-2",
+    "title": "Microsoft закрыла 1094 уязвимости в ноябрьском патче, включая 0-day в Outlook",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/microsoft/microsoft-november-2026-patch-tuesday-fixes-1-235-flaws-outlook-zero-day/",
+    "story": "s337"
+   },
+   {
+    "id": "20261111-3",
+    "title": "Anthropic задала диапазон IPO от $70 до $78 за акцию с оценкой до $1,4 трлн",
+    "section": "business",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/11/10/anthropic-sets-ipo-price-range-of-70-to-78-per-share-to-reach-an-implied-valuation-of-1-404-trillion/",
+    "story": "s282"
+   },
+   {
+    "id": "20261111-4",
+    "title": "Эксплойт в SGLang позволил взломать сервер NEAR AI и данные внутри TEE",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/sglang-rce-exploit-breaches-near-ai.html",
+    "story": "s338"
+   },
+   {
+    "id": "20261111-5",
+    "title": "Anthropic превращает Claude в рабочее пространство с таблицами и досками",
+    "section": "product",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/11/10/anthropic-launches-claude-meetings-to-turn-workplace-discussions-into-plans-and-tasks/",
+    "story": "s339"
+   },
+   {
+    "id": "20261111-6",
+    "title": "Совет директоров Nvidia нанял экс-прокурора США для расследования дела Хуанга",
+    "section": "business",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/11/10/nvidia-ceo-jensen-huangs-affair-with-alleged-chinese-spy-a-timeline/",
+    "story": "s310"
+   },
+   {
+    "id": "20261111-7",
+    "title": "DeepMind показала модель Gemini Robotics 2.5 на заводах Mercedes-Benz",
+    "section": "model",
+    "source": "deepmind",
+    "url": "https://deepmind.google/blog/gemini-robotics-2-5-accelerates-real-world-physical-intelligence/",
+    "story": "s340"
+   },
+   {
+    "id": "20261111-8",
+    "title": "OpenAI запустила бизнес-профили и торговых агентов в ChatGPT",
+    "section": "product",
+    "source": "openai",
+    "url": "https://openai.com/index/introducing-businesses-chatgpt",
+    "story": "s341"
+   },
+   {
+    "id": "20261111-9",
+    "title": "AMD показала серверные процессоры Zen 6 Epyc Venice под задачи ИИ-агентов",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://www.tomshardware.com/pc-components/cpus/amd-zen-6-epyc-venice-deep-dive-and-benchmarking-dual-epyc-9996-with-1-024-threads-delivers-up-to-93-percent-performance-gain-gen-on-gen-9686f-outclasses-nvidias-vera",
+    "story": "s342"
+   },
+   {
+    "id": "20261111-10",
+    "title": "Сооснователь Cyanogen создал Kora — бесплатную Linux-систему для локального ИИ",
+    "section": "dev",
+    "source": "wired_ai",
+    "url": "https://www.wired.com/story/kora-new-linux-based-desktop-operating-system-is-built-for-ai-nerds/",
+    "story": "s343"
+   },
+   {
+    "id": "20261111-11",
+    "title": "Зено Роша о том, как проектировать API и документацию под Claude Code",
+    "section": "voices",
+    "source": "latent_space",
+    "url": "https://latent.space/p/resend/",
+    "story": ""
+   },
+   {
+    "id": "20261111-12",
+    "title": "Тестирование правил обнаружения в Wazuh",
+    "section": "tips",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/companies/otus/articles/1101342/?utm_campaign=1101342&utm_source=habrahabr&utm_medium=rss",
+    "story": "",
+    "summary": "Запустить утилиту `wazuh-logtest` в консоли серверной части Wazuh и передать тестовые логи для проверки логики срабатывания.",
+    "why": "Позволяет отладить декодирование логов и убедиться в корректности правил SIEM до включения автоматической блокировки.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "security",
+    "steps": [
+     "Пользовательские правила обязательно размещаются в файле /var/ossec/etc/rules/local_rules.xml с использованием диапазона ID от 100000 до 120000.",
+     "Категорически запрещено править правила напрямую в каталоге /var/ossec/ruleset/rules/ — файлы перезаписываются при обновлении Wazuh.",
+     "Уровни критичности распределяются по шкале 0–15: 0–3 — информационные, 4–7 — низкий приоритет, 8–11 — средний, 12–15 — критический.",
+     "При переопределении правила через overwrite=\"yes\" теги привязок (if_sid, if_group, if_level и др.) игнорируются движком и берутся из оригинала; для смены логики родителя нужно создавать новое правило.",
+     "Скрипт firewall-drop в Active Response по умолчанию использует iptables; логи срабатываний блокировок пишутся в /var/ossec/logs/active-responses.log."
+    ]
+   },
+   {
+    "id": "20261111-13",
+    "title": "Быстрое переключение модели в Claude Code",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xsjs6e/fable_52_is_20_cheaper_so_naturally_i_will_now/",
+    "story": "",
+    "summary": "Ввести команду `/model fable` в интерактивном чате Claude Code для мгновенной смены модели.",
+    "why": "Позволяет менять модель прямо во время сессии без перезапуска интерфейса и потери контекста.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Команда вызывается прямо в диалоговом окне Claude Code без флагов в терминале."
+    ]
+   },
+   {
+    "id": "20261111-14",
+    "title": "Локальная генерация PDF-файлов в n8n",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/n8n/comments/1xt20ze/i_built_a_html_to_pdf_n8n_community_node/",
+    "story": "",
+    "summary": "В настройках n8n открыть раздел Community Nodes, выбрать пункт Install и указать название модуля `n8n-nodes-html2pdf-converter`.",
+    "why": "Позволяет конвертировать HTML-документы в PDF внутри своего контура без передачи конфиденциальных данных внешним API.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "automation",
+    "steps": [
+     "Включает режим потоковой обработки Streaming Mode: рендерит страницы инкрементально по мере готовности верстки вместо накопления всего документа в RAM.",
+     "Поставляется со встроенными статическими бинарниками под Linux x86_64, Linux ARM64 (AWS Graviton, Raspberry Pi) и macOS ARM64 (Apple Silicon M1–M4).",
+     "Позволяет настраивать ориентацию, размер, отступы, колонтитулы и метаданные документа (/Title, /Author, /Subject, /Keywords, /Creator).",
+     "Покрывает спецификацию CSS примерно на 70–80% (на типовых инвойсах выдает 60–70% точности верстки)."
+    ]
+   },
+   {
+    "id": "20261111-15",
+    "title": "Раздельная загрузка модулей памяти PLE в llama.cpp",
+    "section": "tips",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xsgpby/feat_external_ple_file_loading_by_pwilkin_pull/",
+    "story": "",
+    "summary": "Передать параметр `--shard` при запуске llama.cpp для указания путей к дополнительным GGUF-файлам с PLE.",
+    "why": "Позволяет подключать внешние файлы памяти engram из отдельных GGUF-шардов при локальном запуске поддерживаемых моделей.",
+    "copy": "--shard",
+    "copy_untrusted": true,
+    "topic": "local",
+    "steps": [
+     "Поддерживает все модели с PLE на текущий момент: Gemma4, Qwen3.8Next и GLM5.3Flash.",
+     "Добавлена поддержка конвертации для раздельной сборки как PLE-less, так и PLE-only GGUF.",
+     "Флаги --shard и --ple в CLI llama.cpp являются полными синтаксическими алиасами без смысловых различий.",
+     "Предусмотрен опциональный флаг для отключения проверки общего числа шардов, позволяющий компоновать фрагменты от разных сборок."
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-11-10",
   "slot": "evening",
   "headline": "Релиз Anthropic IPO и моделей Fable/Mythos 5.2, новый zero-day в Chrome",
