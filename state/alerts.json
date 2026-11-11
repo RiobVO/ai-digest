@@ -121,14 +121,6 @@
   {
    "at": "2026-11-11T15:18:06.592982+00:00",
    "keys": [
-    "pietromiotti.com/latest/maya-site",
-    "title:google swe points 48 ai agents at nasa lidar finds unmapped maya pyramid in 72h"
-   ],
-   "strength": 4
-  },
-  {
-   "at": "2026-11-11T15:18:06.592982+00:00",
-   "keys": [
     "deepmind.google/blog/alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease",
     "title:alphagenome 2 deciphering how cells read dna to better understand disease"
    ],
@@ -166,6 +158,14 @@
     "title:try tabletop customizable collaborative spaces for groups to plan play and do more together"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-11-11T17:18:06.831229+00:00",
+   "keys": [
+    "pietromiotti.com/latest/maya-site",
+    "title:google swe points 48 ai agents at nasa lidar finds unmapped maya pyramid in 72h"
+   ],
+   "strength": 7
   }
  ],
  "undated": {
