@@ -1,6 +1,86 @@
 [
  {
   "date": "2026-11-11",
+  "slot": "evening",
+  "headline": "Anthropic готовится к IPO, а Microsoft и CISA предупреждают об активных атаках",
+  "page": "2026-11-11-evening.html",
+  "entries": [
+   {
+    "id": "20261111-16",
+    "title": "Anthropic начала роуд-шоу в рамках подготовки к IPO",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.nytimes.com/2026/11/10/technology/anthropic-ipo-google-amazon.html?unlocked_article_code=1.PlE.gDyc.A0vRKAxGOwwz&smid=url-share",
+    "story": "s282"
+   },
+   {
+    "id": "20261111-17",
+    "title": "Microsoft Research внедрила бэкдор в ИИ-модель правкой менее 10 нейронов",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/microsoft-researchers-show-ai-agents.html",
+    "story": "s344"
+   },
+   {
+    "id": "20261111-18",
+    "title": "Утечка клиентских API-ключей на Railway обернулась убытком в $740,000",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/railway-says-stolen-customer-ai-keys.html",
+    "story": "s345"
+   },
+   {
+    "id": "20261111-19",
+    "title": "N-able выпустила экстренные патчи для RMM-платформы N-central после утечки 0-day",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/n-able-releases-security-hotfixes-for-zero-day-vulnerabilities/",
+    "story": "s323"
+   },
+   {
+    "id": "20261111-20",
+    "title": "Claude научился открывать Asana, Canva и Vercel прямо в интерфейсе чата",
+    "section": "product",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xt7krc/claude_can_now_open_apps_like_asana_canva_and/",
+    "story": "s346"
+   },
+   {
+    "id": "20261111-21",
+    "title": "В llama.cpp добавили поддержку FP8 KV-кэша и CUDA OCP FP8",
+    "section": "dev",
+    "source": "gh_llama_cpp",
+    "url": "https://github.com/ggml-org/llama.cpp/releases/tag/b12284",
+    "story": "s237"
+   },
+   {
+    "id": "20261111-22",
+    "title": "Alibaba открыла превью Qwen4-Max с контекстом на миллион токенов",
+    "section": "model",
+    "source": "technode",
+    "url": "https://technode.com/2026/11/11/alibaba-opens-qwen4-max-preview-with-a-million-token-context-window/",
+    "story": "s347"
+   },
+   {
+    "id": "20261111-23",
+    "title": "WikiTrace: проверка памяти ИИ-агентов по исходным траекториям",
+    "section": "paper",
+    "source": "hf_papers",
+    "url": "https://arxiv.org/abs/2611.14320",
+    "story": "s348"
+   },
+   {
+    "id": "20261111-24",
+    "title": "Инженерный разбор реального опыта работы с Claude",
+    "section": "voices",
+    "source": "hn",
+    "url": "https://babuschk.in/posts/2026-01-25-life-on-claude-nine.html",
+    "story": ""
+   }
+  ]
+ },
+ {
+  "date": "2026-11-11",
   "slot": "morning",
   "headline": "Gemini 4 Carbon с роем агентов, офисный Claude и уязвимость в Git",
   "page": "2026-11-11.html",
