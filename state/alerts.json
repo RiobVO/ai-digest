@@ -21,17 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-10T05:18:06.341866+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMiigJBVV95cUxPVE9nWW5OYkJkN2pFdGhCSjNoVXFxZXNLR1FpQWFEMm1NX1VUa1FxWDc4NDMtNnZldEN2bFNGNlVIS2VXQTZjM0c1Qm84T2xlbXhUdzdwN1MyM0xuQnZIZGV3ZWFtS0RtZENyQkVGWTZHMURXOUstb0pkVnhDNnF1Q2QxWUwzREY2M0oyUXhreGVLQW82OG10aGtTSlZ2b3pqaVoyeHVOazR2WkR5a0RFNkJpbzduRFhsSVhTU1pGMFEwMDN2ZWFjNkE0SncxNkRkSFFVYnVUelFKUDI2Y1Q1cWFWOG56Z3pUVzRaUWtHdGIxbGNkclAzTjJuVFh2MHlLS3Y0anl5QVNadw?oc=5",
-    "news.google.com/rss/articles/CBMikAJBVV95cUxPY3ROMmlVU0pxN1JMRk82MDdsY0pLYzhXNGVUUy03ZFRrak1RQWpzbFktdlRTNFM2YUtfOVdGakMzdWpNVC1Rb3plb3FVYk5wWndtMHN5T00xWHJuRExmeFY0a0lkemRFMGNSZ095UjBFamlGTnNfYkxiOW4zSnR5dkhxNnJ5eGlTc01BQmkwWnhuaml3VXdHeGRDaUVDX282ZmV0cVMzTm52aGYxY3A5VTR1UzlVckZOYlpvM21FRDRqRFdxUktfcWxjdDdkc2ZWaG1mWldQZ2N2Z3BuUldJNU1tVWlPLVF6V2wzbXVVVWhSMGNWSXRaOUNDZXBnemdLNzlPSGIwVWt6OFd3VzBOWg?oc=5",
-    "news.google.com/rss/articles/CBMipwFBVV95cUxNbV9ud05wYWZ4MHZzTTRVQ3JqNlg0UEVmaGphOFNkVFpHN2JxUmZPcEgwUGR4eDNvZldxSDBQNE5aTlNxWXctWGFvam9LRUtVSllEZFM2bjY1dmZmQ3RNRVhPc2g2dGI0eklPQzZDdkdueE5qN0JwVTdLaWM5RTd1Umt4OVNpZWRvUTlhUU5nREJBdGRPRndYMWZyQ2tLVVM1NzdaQ0lYQQ?oc=5",
-    "news.google.com/rss/articles/CBMivwFBVV95cUxQYnpROGNVQmNYMC00UkpjcFJPVG5jMTNBcmF1VWROQnR0aDh3N2pRUGtEbXlaaktRR3FIeEhGTlNYOFEyVERpVlFPV0tBV1A2d2h4QVNQcDhqTGcteG5wUXhyS09XQ1Z6dlBOS0FlZTN5RUxPeHdXTjI2M1g4SXY2bmRMTEMyNVUzUnRVb2I0TmZvSXpMY0hNbk5xNVRhVjlkX29xRGhhRDF6ZTBVRmRJMVlFU1h2elpOZGc1VEtTaw?oc=5",
-    "title:australia to launch ai safety regulator after openai s breach of a government portal"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-11-10T08:18:06.361566+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMikgFBVV95cUxOQ2dnM2FTQzdWZWEtMDRxaWdDbno4c2VmQnlCdDBfWUhQU3FUdlprb3Rid0VJdjFaLWJEWkpndi1zX1oxUjFPbkhfYl9IOWdQaHJiZzAtS29CTGF5SC1NUElIQktFTE1uTGhpMzJWcTlzLU1icUxsOTJXZGVsdHlVVm1SVGZ4a0dveEtGSFZNbTBIZw?oc=5",
@@ -168,6 +157,14 @@
    "keys": [
     "news.google.com/rss/articles/CBMiqgFBVV95cUxQVHBHYWpjdWxPUUszcVo2UmdxQ0UzUWpLZlh6TFdlZXhwWDRCWDM1S1V2eW0xODY4bFN4bzNmM3REWTlYTmpZdm1MYWFlZTdkY2pFZXhncGRfR2x5WjlYdVZoRW9YbUJhV1RxODR5NHhGLVYySlRVa0QwZ0pKMU4yUHd2RkQwWm8zV2pDaFU4VzI3NXhYN0tsVHY3ejV4dmE4YTZrUkNZTDlEUQ?oc=5",
     "title:exclusive crowdstrike to buy two ai security startups for 495 million"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-11T06:18:09.656797+00:00",
+   "keys": [
+    "openai.com/index/chatgpt-plus-for-veterans",
+    "title:chatgpt plus for veterans and servicemembers"
    ],
    "strength": 1
   }
