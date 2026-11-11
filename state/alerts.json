@@ -21,30 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-10T12:18:07.677763+00:00",
-   "keys": [
-    "deepmind.google/blog/introducing-alphaproof-code",
-    "title:introducing alphaproof code a breakthrough in verifying complex software at depth"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-10T13:18:09.226899+00:00",
-   "keys": [
-    "openai.com/index/helping-caregivers-use-ai-in-everyday-life",
-    "title:helping caregivers use ai in everyday life"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-10T13:18:09.226899+00:00",
-   "keys": [
-    "blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/gemini-for-healthcare",
-    "title:google cloud launches gemini for healthcare"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-10T14:18:08.264366+00:00",
    "keys": [
     "blog.google/company-news/inside-google/company-announcements/adobe-google-partnership-integration",
@@ -124,14 +100,6 @@
    "strength": 1
   },
   {
-   "at": "2026-11-11T06:18:09.656797+00:00",
-   "keys": [
-    "openai.com/index/chatgpt-plus-for-veterans",
-    "title:chatgpt plus for veterans and servicemembers"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-11T08:18:05.689110+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMihAJBVV95cUxQOVdzRjZsVlN0LWRpVVg2Y0VjWXVZRXRhNkVxLTV4YkhmeEhXOW40d0dFMkcwcUwxR1lzeWNTUWxIOE02aU5DUW02blN1RktneFN4WGxVUlZoUXF4eWlHdnhhN0YyampkWS1mNlZrSnpodTJxNF9fMnE0MW10SV9tTG9yeWJiMUNGTWdoX1lNSVpHY3RGdE5oRGZ1bFlyM2RaaWktM2ZsdFhmNlJLYjBGSHdkX3I1QkJvRVdqV1h1Zmp0UW4zLWRxR0owZm1GME0zOVpKaVJHTm0wUnRKSEFvZjdpbHpHeFh4NVZSUFA0aDAzMmR1b3RwdzVZOUhfOFcxQ0xlcA?oc=5",
@@ -154,6 +122,14 @@
    "keys": [
     "blog.google/company-news/outreach-and-initiatives/arts-culture/esther-mahlangu",
     "title:experience the art and legacy of dr esther mahlangu"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-11T13:18:16.069731+00:00",
+   "keys": [
+    "openai.com/index/chatgpt-plus-for-veterans",
+    "title:chatgpt plus for veterans and servicemembers"
    ],
    "strength": 1
   }
