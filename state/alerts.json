@@ -30,47 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-11T16:18:13.591977+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMingFBVV95cUxNTU15R3ZXQ2VOTTZWZDVWT2RKU2NzRlcycllOYVFRNjNrZllRazh5d1hXRndoaDc3NmxEem1LLWhhdE8zNVlHYzNCOFZ4SEdacUFmMVh0SHVYRVJRSDlLWm9qYUR1djlUTEh1V0hEdWFKYVRDbVhFZ1E5SGhYcklCRmY2REdpTGNRc0JnaFp6YzVBT1JETVc3NHRIWWp6QQ?oc=5",
-    "news.google.com/rss/articles/CBMingFBVV95cUxNY1JfM3VtQUFwNlRSVklwbVlvajZKNVh2OUVoNjdXRUdGSWJXSl85QkgweVpPaEhkWUhaLVRRTzJaQm9iSVlLUlFNeEpfcEpucGNLdlBrWGR6MlctNWc4eXRCZko1NGV5czl6RkNmM25CV1llak1reW85X1BldHozbGdSTmNrbWwwVl8zbkdFbm9jeU5Yc0ZRUW1PR2JoQQ?oc=5",
-    "news.google.com/rss/articles/CBMinwFBVV95cUxNOU9TNThDWGZONGpyZWFoUXczNnVRUXFxVDRBbWtEc1M5V1d1azdZMl9saUh1RDRkWXdtZDBLRnNTUnR4OTFYbDI2VzcweUtwendnUHdvSGNZWjNDS2xfNWktR183eGc1eko1T0ZDM0RoWkViRE9GR3YzeE02bGpwUGVqS25YYUphZ1Flb2d4bC1wOHpPbmg0VjNNbFExSjg?oc=5",
-    "news.google.com/rss/articles/CBMinwFBVV95cUxNWDdOVEpBQVE0RzFraWY2TE5qaW1LNTl2WkdlYjhCVERqU1A1b0RERjY1b1pudFlEeDFCRGNzbGlCR1ItRk5nSXdidUwxTjlSQUpvQmtuNUtMUVNtOTR5YzY0SnM3YUc5eWEzbkZ5RVBiYzdQcFBqdVkzQllaZFVQVURHMW5BSDJMalpETHF5Nm1EaXBQaGY0b3hydDZMUG8?oc=5",
-    "news.google.com/rss/articles/CBMinwFBVV95cUxNZ2tUZWdMcVl0SGE3Zl9VOU8yREtJWWJJS2xpYmV2NkFwVV9JSWVJUFZWNDNWMHQxSUxfWUpZYi1nWGMtVmJ4RWdXcXJ0YlNuNTUwN05iOERrcUVqOFMxV28yTTRzMURZWW1VM2MwWTRyb1pBVVdqUUc5OC0yWGwtZkhkQUl0M2p6MUJnTXVJb3FiSWViQ25KZDhYV0hBckU?oc=5",
-    "news.google.com/rss/articles/CBMinwFBVV95cUxOWEp4UGVTRHY4QWNubWkweVdKam9hWGF1RWZIakNlVDVVMFVkdjVVaVg2aXZ6b3dMaWQ3UXN4aFl4VmZGN0VvbTRLTVh1eVdRNXZERTRDZlNHNzEydG9YYVV3TVNCd3lsWjhGdkZNeG5CRFVRTWZramFKd28yemMxRWlpZk9HbjZsQWxKdTNNWHBGT2NXa29IYW9mOGxpNEU?oc=5",
-    "news.google.com/rss/articles/CBMinwFBVV95cUxPOWo4Mnd6YjI3bE1WVmtTQXViZ1A1cF9ITnZrQ3VKUl93Z0V5WkZBbFJjRkF1cFdKWnVKQm0wOE5UclctZUN5WnlNdm4yeFg1TXVTVnAyZXZ0UG0xVWNhdGF4eXhPbnNSQ3Y3QTlNUURKMkZtN2NCMkp2RTBOejM2b1FqSmhxWlFyM0RjcGRMU0NJZU5HMFpVWTFEcXdlTlU?oc=5",
-    "news.google.com/rss/articles/CBMinwFBVV95cUxPTDZkZjZ6V1hQZkdPV0lDWjlDdEJORVJxZlpteTdGZ0JZUnlyeXJsekdOUHl5UGU1b3FDZUoxUjdEOEM5QVYxaDFZanEtZ1VSc2lNZjJMeThsVjNJTDI1LUlsSURNZ2lVby1FNU1zSUZHX3VHZHZTVDZIbEFGVXpfNHQwTzZIakt2UHM0U0xSM2dKOUx1aTRraER1ZnVyZlU?oc=5",
-    "news.google.com/rss/articles/CBMinwFBVV95cUxPVGZPUmhjakF1d0cxbFJyT0hKNmxleTA2aTlNOUFZUXJTc2RDdXUxZFFtTUlpTEZ6eWpkcDVRX0hZOE5FYU53M3RvV2NSMUZxOWhHbmlFVE13M3llS2trY0VuVmJjZ0duNE1SZnY5TnFIbkhqRWdic1R4Z21wU2lONXE4RElTbWVXeGREZ1VKUDRMT1NISFhXamYwOVZ4UmM?oc=5",
-    "news.google.com/rss/articles/CBMinwFBVV95cUxPbUVJa3BYLU5aYWJrMTUyM1NIelVjSTlweXB2UEFNU3NTUVJlS0tYc1JhNDI1U3l6NzhmcFhiN2JPNGdhV0NRMjh4SWNBTXgtdEJWa0NFM0dNNFJwdW1GUjFRLVc0YkJpcTFiZkh5ckFteHlFVTVpRllCQ2lEZUNVZFpmUmJyZ3NnQW54b2RmcXd4a21RWUluSjF5ZFhmVEE?oc=5",
-    "news.google.com/rss/articles/CBMinwFBVV95cUxPdXdWWi1HbHV0SzJScldLQjlVZ1lyU3Vva29KMDZvSzFFdFNfZEt3Ti1paFpHbmVKYVpWcEF2SWhCMmFab00xVDh5RnFVX3FzczFidTVjenZLMExfNUdvUkdOdWVtTGRnbS0tSEtTU2RqaktGNUtwdi1IRDMyVzh1MXBpd3l3YWVlSE5IMjF1UHpTUm04N1plR2ZmVkRHT1k?oc=5",
-    "news.google.com/rss/articles/CBMinwFBVV95cUxQQzFOMGxJTks0dGYxMEQ5LU45Y3paT1NlVXJKMURLRVFhUElueUlMY3JJaWJjUUplRHoySVF1LU1XWk1UU3JjRjg1QkJqbXYzbkFoM2d5WEpEMkxYdVp3dkdiYlNDLUs4YXNPZ0lkLXkzN2ZSM0R5djVpdVZkNFVQU2lYemMzeE9FaEdRZVFqcTA0V3A2SEVCa0pqU1VYVFU?oc=5",
-    "news.google.com/rss/articles/CBMinwFBVV95cUxQR05kbVJVX2RTeTdxRUo2ak5zazBNZ0ZHeGdORHEweG9LclUwMFg2eHdQMFJLUWR6cEVGeVJXWS1reERJOTg1UDlNX2x0VU42OGdyRDlSTzBaUUs3NWNYeDd4cWFGdHlvZWRZUG9pbGY5TC1CUEZ2SWx5QzhvT3U1VFR3NjFGMFFRVnl2TmxTYTVQLXl4WGN5b00xYVhVMkk?oc=5",
-    "news.google.com/rss/articles/CBMioAFBVV95cUxOV3UxRURkLUQ0blA1aGs0NkZSbjV3dUNCYUVHeE5ZME1HZmFlNGpSYmIwQUY5ckcwTkxfRU9hRFJjVXFXRkQzVklMVExMUTd3LXAwb202S0pzZFV2Tm00NTdaQzd5U2Frb1RBX3V2bUxqWGZmYkJuRC10UVk4WTl0akIxTzZrcU1ZbVN4bEItZV9oMGY4SHVHQ0RjbGthdHJh?oc=5",
-    "news.google.com/rss/articles/CBMioAFBVV95cUxPMDVubHZLY1BPcjhuTG1ITFhPRzZGYVByaVhEOEQwalowNzN4RlN5Q0NXTnJudElSQzJMTThBNEt5clBMeFJwS3YzdWlDYnhrdFZpa1k2Z2RSQWNGeEtUVjBnN1FaaWpIeXY5cG5yd3A4NUhyd3FlR29sUGVYYUhzdFJ3bXVPamF0MC02bXZUeTBfaWlMdnJSaXpRbkgzVWdm?oc=5",
-    "news.google.com/rss/articles/CBMiogFBVV95cUxNU1lObDZOczVVOXFGeXJFRDcwR3FXZGdDOTFjV2ZVYUtfOWE0NXR4WVlzZEhPVjRQWGtnNWZxSWtOeFFRbTdpdHpRYzBEV0VaeHIyRHRHSUx3ZDY2cFVFakFaZ3FQRzBkdk5ER2hPUkhWcV9PU3lkV0xKZEE2LXFNWDd4NUhTUXZLc2F4a1pGTE5Ja1BJWEFINWluQmdoXzMzblE?oc=5",
-    "news.google.com/rss/articles/CBMiowFBVV95cUxQVVFqb0l5ZWhQWXdiTFI0dHgwX1hpNDhMdUgyR1gyTWc4OURXSS05c2ZsMzV5SWpWWjVfd1VVOGpIQkpmeFpTNjduZktQeFktTFpYTGpCdG9lNHl0bmJELVlVRVdyVXdIV3FFUEFSVDVFZE5DYngzdkt1N2F0cTdLdFNGZ085VnhEcU9WSjZqLXZueUdOeWNrQVpKcmQzMjQwOUhR?oc=5",
-    "news.google.com/rss/articles/CBMipwFBVV95cUxQSU8yWlJHcE5raEt1Qy0weWo2X0ExMzZ2MGZYWmg3cUpIOUhQNGVpaVc4MDRWZzNDN1hiVnVlMnRfSU1Cc3FqSzBrTE5tV0RLSmtxVmtyUDJSZ0pCZVFreFNya3drLVRWVzVaUEVNdlkwSlIzbGptTFV5MkRLUl9UdnowRXczQ0JSa3MzWVU5QlV5b3NySXFiYnlOTDlScDBLS2N2ZjMtNA?oc=5",
-    "title:what to keep out of ai chatbots to protect your personal information"
-   ],
-   "strength": 18
-  },
-  {
-   "at": "2026-11-11T16:18:13.591977+00:00",
-   "keys": [
-    "blog.google/innovation-and-ai/models-and-research/google-labs/tabletop",
-    "title:try tabletop customizable collaborative spaces for groups to plan play and do more together"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-11T17:18:06.831229+00:00",
-   "keys": [
-    "pietromiotti.com/latest/maya-site",
-    "title:google swe points 48 ai agents at nasa lidar finds unmapped maya pyramid in 72h"
-   ],
-   "strength": 7
-  },
-  {
    "at": "2026-11-11T18:18:06.619488+00:00",
    "keys": [
     "blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api",
@@ -176,12 +135,12 @@
    "strength": 3
   },
   {
-   "at": "2026-11-12T16:18:13.390398+00:00",
+   "at": "2026-11-12T17:18:25.401128+00:00",
    "keys": [
     "ipo.anthropic.com/us",
     "title:anthropic ipo"
    ],
-   "strength": 3
+   "strength": 5
   }
  ],
  "undated": {
