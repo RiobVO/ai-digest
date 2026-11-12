@@ -26,17 +26,18 @@
     "nvidianews.nvidia.com/news/nvidia-announces-ceo-transition",
     "title:jensen huang resigns as nvidia ceo president and board member cfo colette kress will be interim ceo as the board considers candidates nvda drops 5 nvidia newsroom"
    ]
+  },
+  {
+   "at": "2026-11-12T18:18:13.256607+00:00",
+   "day": "2026-11-12",
+   "title": "Google выкатила Gemini 4 Hydrogen — быструю модель для кода и агентов, доступную всем",
+   "keys": [
+    "deepmind.google/blog/introducing-gemini-4-hydrogen",
+    "title:introducing gemini 4 hydrogen"
+   ]
   }
  ],
  "rejected": [
-  {
-   "at": "2026-11-11T18:18:06.619488+00:00",
-   "keys": [
-    "blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api",
-    "title:gemini decisions api fast calibrated multimodal decisions"
-   ],
-   "strength": 1
-  },
   {
    "at": "2026-11-11T21:18:06.667482+00:00",
    "keys": [
@@ -141,6 +142,15 @@
     "title:anthropic ipo"
    ],
    "strength": 5
+  },
+  {
+   "at": "2026-11-12T18:18:13.256607+00:00",
+   "keys": [
+    "apnews.com/article/nvidia-megaspeed-china-singapore-huang-5403f152a601cf82ce939f1d24fffa0f",
+    "news.google.com/rss/articles/CBMiZEFVX3lxTE45RVBrQ2ZNX0ZuRW4wVW5NUmdHQ1M3VlBDMmxkX0RIQlUtb3lMak1kaklyM1lXSGcyU01ONzBRVFB3eGZCeHlNeEhDUHdidktvRXVONURXSm9EQ19nNUFtVndfdnY?oc=5",
+    "title:jensen huang resigns"
+   ],
+   "strength": 17
   }
  ],
  "undated": {
