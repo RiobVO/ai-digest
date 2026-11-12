@@ -1,6 +1,81 @@
 [
  {
   "date": "2026-11-12",
+  "slot": "evening",
+  "headline": "Nvidia, Anthropic и атаки через CI и N-central",
+  "page": "2026-11-12-evening.html",
+  "entries": [
+   {
+    "id": "20261112-10",
+    "title": "Совет Nvidia решает, оставить ли Дженсена Хуанга гендиректором",
+    "section": "business",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/technology/2026/nov/12/nvidia-board-decision-ceo-jensen-huang-alleged-second-affair",
+    "story": "s310"
+   },
+   {
+    "id": "20261112-11",
+    "title": "Взломщики украли 4837 аккаунтов GitHub и подсунули стилер в CI",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/4837-hijacked-github-accounts-ran-ci.html",
+    "story": "s355"
+   },
+   {
+    "id": "20261112-12",
+    "title": "Взломщики бьют по N-central, и новые эксплойты работают на пропатченных серверах",
+    "section": "security",
+    "source": "securityweek",
+    "url": "https://www.securityweek.com/hackers-target-n-central-zero-days-as-n-able-rushes-patches/",
+    "story": "s323"
+   },
+   {
+    "id": "20261112-13",
+    "title": "Anthropic идёт к IPO, несмотря на шум вокруг ИИ-рынка",
+    "section": "business",
+    "source": "hn",
+    "url": "https://ipo.anthropic.com/us/",
+    "story": "s282"
+   },
+   {
+    "id": "20261112-14",
+    "title": "Казахстанские хакеры использовали ИИ-агента для шпионажа за госорганами",
+    "section": "security",
+    "source": "the_record",
+    "url": "https://therecord.media/kazakhstan-hackers-central-asia",
+    "story": "s356"
+   },
+   {
+    "id": "20261112-15",
+    "title": "Австралия хочет законом обязать ИИ-лаборатории пускать независимых аудиторов",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/australias-proposed-ai-safety-bill-would-force-frontier-model-makers-to-open-up-to-independent-testing/",
+    "story": "s326"
+   },
+   {
+    "id": "20261112-16",
+    "title": "Прогрей npx перед claude mcp add, чтобы не ловить таймаут в 30 секунд",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xu82i7/tried_ruflo_claude_flow_in_claude_code_393_tools/",
+    "story": "",
+    "summary": "Открой терминал в папке проекта и выполни команду из copy один раз, дай пакету скачаться. Потом добавляй MCP-сервер через claude mcp add, как обычно.",
+    "why": "Пакет качался 1 мин 13 с, а claude mcp add ждёт 30 секунд, поэтому первая попытка и падала по таймауту.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Открой терминал в папке проекта.",
+     "Выполни npx -y ruflo@3.76.0 --version один раз и дай пакету скачаться.",
+     "Добавь MCP-сервер командой claude mcp add, как обычно.",
+     "Проверь через /mcp: должны появиться инструменты Ruflo (в тесте их было 393)."
+    ]
+   }
+  ]
+ },
+ {
+  "date": "2026-11-12",
   "slot": "morning",
   "headline": "Кризис в Nvidia, новый decision-API от Google и блокировка ИИ-агентов у авиакомпаний",
   "page": "2026-11-12.html",
