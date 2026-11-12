@@ -122,14 +122,6 @@
   {
    "at": "2026-11-11T21:18:06.667482+00:00",
    "keys": [
-    "github.com/aws/aws-emulator",
-    "title:aws finally built its own aws emulator"
-   ],
-   "strength": 4
-  },
-  {
-   "at": "2026-11-11T21:18:06.667482+00:00",
-   "keys": [
     "openai.com/index/gilbert-tobin-sam-nickless",
     "title:gilbert tobin rethinks the business of law with ai"
    ],
@@ -144,6 +136,14 @@
     "title:united blocks ai agents from booking flights ahead of holidays"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-11-12T00:18:10.614894+00:00",
+   "keys": [
+    "github.com/aws/aws-emulator",
+    "title:aws emulator"
+   ],
+   "strength": 6
   }
  ],
  "undated": {
