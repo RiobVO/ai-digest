@@ -39,16 +39,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-11T21:18:06.667482+00:00",
-   "keys": [
-    "bloomberg.com/news/articles/2026-11-11/united-blocks-ai-agents-from-booking-flights-ahead-of-holidays",
-    "news.google.com/rss/articles/CBMiowFBVV95cUxNS1I5WWNhSXVTeHRjWUFheXJlb0pTdG44UW5BQ0RzNlllbFk0X3BoZkhwMTktdjdiWkNDX0VmRUIzMWhCcFJ4Y2VEZUo2a1Nlc0VnSHpQSy1HOUg0Q3EwV29Uc1hrRkE5QU1ZVUtxRXgyZnhXbXpBZTFZTnZPbUs5OHBMLU0yRUsyUzN2SnY5cDJmTi11REVxZE8yRThTLVdxRjNr?oc=5",
-    "news.google.com/rss/articles/CBMiswFBVV95cUxNWFNtbFdtU1FhajJHMUNsSXNYU2tnLUdMY3BMNDNfcFgzWDBWbE9ubmNMaTdTcmxSTVFqUUZVYmNCa2Y5czJxZFZUenF4WmhQWFEtdmhTeHplNkNvU294YjFIb2VxNWRTLU5QdGFKamhrRWotZUZFb0FVSWtmQldvNUtER0tBWXJXLUZ6Z2RrUFQ3eVZCTDJnQTZPd3pFN1U2VXJDUFpLTDd0ZlJMUTRKaXphSQ?oc=5",
-    "title:united blocks ai agents from booking flights ahead of holidays"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-11-12T00:18:10.614894+00:00",
    "keys": [
     "github.com/aws/aws-emulator",
@@ -167,6 +157,14 @@
     "title:google launches gemini 4 hydrogen built for rapid execution across diverse agentic workflows priced at 1 50 1m input tokens and 7 50 1m output tokens koray kavukcuoglu google"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-11-12T21:18:14.397516+00:00",
+   "keys": [
+    "openai.com/index/amplitude",
+    "title:how amplitude ships product improvements in 1 2 days with openai"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
