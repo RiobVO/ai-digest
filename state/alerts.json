@@ -144,13 +144,21 @@
    "strength": 5
   },
   {
-   "at": "2026-11-12T18:18:13.256607+00:00",
+   "at": "2026-11-12T19:18:08.893933+00:00",
    "keys": [
     "apnews.com/article/nvidia-megaspeed-china-singapore-huang-5403f152a601cf82ce939f1d24fffa0f",
     "news.google.com/rss/articles/CBMiZEFVX3lxTE45RVBrQ2ZNX0ZuRW4wVW5NUmdHQ1M3VlBDMmxkX0RIQlUtb3lMak1kaklyM1lXSGcyU01ONzBRVFB3eGZCeHlNeEhDUHdidktvRXVONURXSm9EQ19nNUFtVndfdnY?oc=5",
     "title:jensen huang resigns"
    ],
-   "strength": 17
+   "strength": 20
+  },
+  {
+   "at": "2026-11-12T19:18:08.893933+00:00",
+   "keys": [
+    "blog.google/products-and-platforms/products/search/gemini-4-hydrogen-search-upgrade",
+    "title:google search gets a major upgrade with gemini 4 hydrogen"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
