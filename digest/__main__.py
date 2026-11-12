@@ -15,7 +15,7 @@ from digest import tip as tip_of_day
 from digest.cover import make_cover
 from digest.dedup import dedupe
 from digest.fetch import attach_discussions, fetch_all, fetch_articles, fill_from_feed, resolve_gnews
-from digest.llm import LlmError, cap_hot, cap_section, explain, extras, generate_first, select, verify_copies
+from digest.llm import LlmError, cap_events, cap_hot, cap_section, explain, extras, generate_first, select, verify_copies
 from digest.memory import (Archive, Stories, fetch_feedback, issue_slot, missed_in_morning, preferences_prompt,
                            record_issue, resolve_votes)
 from digest.models import Item
@@ -34,6 +34,9 @@ OUT = Path("out")
 SECURITY_CAP = 3
 # Карточек «главного за день» (важность ≥8) не больше трёх — ориентир промпта, который Lite не держит (llm.cap_hot)
 HOT_CAP = 3
+# Событий дня в выпуске не больше шести (решение владельца 12.11: длинный выпуск он пролистывал), остальное —
+# в «Ещё за день»; голоса и фишки идут сверх (llm.cap_events)
+EVENTS_CAP = 6
 
 
 def model_chains(settings: dict) -> tuple[list[str], list[str]]:
@@ -113,6 +116,7 @@ def build(args: argparse.Namespace) -> None:
         log.error("«Ещё за день» и фишки не собраны: %s", exc)
     # После extras: он переписал бы «Ещё за день», а лишние события безопасности должны оказаться там строкой
     cap_section(digest, "security", SECURITY_CAP)
+    cap_events(digest, EVENTS_CAP)
     cap_hot(digest, HOT_CAP)
     log.info("в выпуске %d событий, ещё за день %d, в шуме %d", len(digest.entries), len(digest.more), len(digest.noise))
     # Сначала настоящий адрес статьи: по нему ищется обсуждение на HN и скачивается текст для разбора.
@@ -294,6 +298,7 @@ def run_eval(args: argparse.Namespace) -> None:
             except LlmError as exc:
                 log.error("«Ещё за день» в прогоне %d не собраны: %s", run, exc)
             cap_section(digest, "security", SECURITY_CAP)
+            cap_events(digest, EVENTS_CAP)
             cap_hot(digest, HOT_CAP)
             missing = [e.item.url for e in digest.entries if e.item.url not in texts]
             if missing:

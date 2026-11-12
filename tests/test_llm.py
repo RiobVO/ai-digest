@@ -689,6 +689,33 @@ def test_importance_eight_and_up_stays_only_with_the_top_three_cards():
     assert [e.importance for e in calm.entries] == [8.5, 7.2]
 
 
+def test_events_beyond_the_cap_move_to_also_today_while_voices_and_tips_stay():
+    # Решение владельца 12.11: из 180 оценок 83 — «не зашло», выпуск в 10–16 карточек он пролистывал за 2–3 минуты.
+    # Событий дня не больше шести, остальное — строкой; число из промпта Lite не держит, поэтому лимит в коде
+    def ev(n, section, importance):
+        return Entry(Item(source="x", title=f"t{n}", url=f"https://x.io/{n}", category="news"), section, importance,
+                     f"Событие {n}", "s", "")
+    entries = [ev(n, "model", 9 - n / 2) for n in range(8)] + [ev(8, "voices", 7), ev(9, "tips", 6)]
+    digest = Digest("h", "l", entries, more=[llm.Mention(Item(source="y", title="m", url="https://y.io", category="news"),
+                                                          "Строка")])
+    llm.cap_events(digest, 6)
+    assert [e.title for e in digest.entries] == [f"Событие {n}" for n in (0, 1, 2, 3, 4, 5, 8, 9)]
+    assert [m.title for m in digest.more] == ["Событие 6", "Событие 7", "Строка"]
+    # Короткий выпуск лимит не трогает
+    short = Digest("h", "l", [ev(0, "model", 8), ev(1, "tips", 6)])
+    llm.cap_events(short, 6)
+    assert [e.title for e in short.entries] == ["Событие 0", "Событие 1"] and short.more == []
+
+
+def test_selection_prompt_asks_for_few_cards_and_states_the_reader_taste_as_a_rule():
+    prompt = build_prompt(items(), "читатель")
+    assert "5–6" in prompt and "8–12" not in prompt
+    # Вкус читателя — правило отбора: то, что он дизлайкал месяц подряд, в карточки не идёт
+    assert "Берём в карточки" in prompt and "Не берём в карточки" in prompt
+    # Прежний призыв «смотри шире: китайские лаборатории, чипы, роботы» тянул в выпуск ровно то, что он дизлайкал
+    assert "Смотри шире" not in prompt
+
+
 def test_selection_prompt_caps_security_and_puts_the_new_fact_first_in_a_continuing_story():
     assert "не больше 3" in llm.PROMPT
     assert "начинай title с нового" in llm.PROMPT
