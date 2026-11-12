@@ -21,14 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-11T09:18:08.511017+00:00",
-   "keys": [
-    "blog.google/company-news/outreach-and-initiatives/arts-culture/esther-mahlangu",
-    "title:experience the art and legacy of dr esther mahlangu"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-11T13:18:16.069731+00:00",
    "keys": [
     "openai.com/index/chatgpt-plus-for-veterans",
