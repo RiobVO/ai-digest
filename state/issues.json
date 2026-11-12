@@ -1,5 +1,111 @@
 [
  {
+  "date": "2026-11-12",
+  "slot": "morning",
+  "headline": "Кризис в Nvidia, новый decision-API от Google и блокировка ИИ-агентов у авиакомпаний",
+  "page": "2026-11-12.html",
+  "entries": [
+   {
+    "id": "20261112-0",
+    "title": "Совет директоров Nvidia готовится сместить Дженсена Хуанга",
+    "section": "business",
+    "source": "verge",
+    "url": "https://www.theverge.com/tech/1031652/jensen-huang-rumor",
+    "story": "s310"
+   },
+   {
+    "id": "20261112-1",
+    "title": "United Airlines запретила ИИ-агентам бронировать билеты",
+    "section": "product",
+    "source": "hn",
+    "url": "https://www.cbsnews.com/news/united-airlines-bans-ai-agents-booking-flights/",
+    "story": "s349"
+   },
+   {
+    "id": "20261112-2",
+    "title": "Атакующие применили ИИ-платформу AntiFox для кражи AWS-секретов",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/antifox-ai-pentesting-platform-linked.html",
+    "story": "s350"
+   },
+   {
+    "id": "20261112-3",
+    "title": "Массовая утечка секретов через локальный конфиг Claude Code",
+    "section": "security",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xtx4ik/heads_up_claude_codes_dont_ask_again_has_been/",
+    "story": "s286"
+   },
+   {
+    "id": "20261112-4",
+    "title": "Google выкатила Gemini Decisions API для пакетной оценки",
+    "section": "model",
+    "source": "google_ai",
+    "url": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/",
+    "story": "s351"
+   },
+   {
+    "id": "20261112-5",
+    "title": "AWS выпустила локальный эмулятор более чем 200 сервисов",
+    "section": "dev",
+    "source": "techmeme",
+    "url": "https://www.geekwire.com/2026/aws-gives-developers-a-free-local-stand-in-for-its-cloud-built-from-scratch-by-ai-agents/",
+    "story": "s352"
+   },
+   {
+    "id": "20261112-6",
+    "title": "Zoom закрыл критическую уязвимость RCE в десктопном клиенте",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/critical-zoom-workplace-flaw-could.html",
+    "story": "s353"
+   },
+   {
+    "id": "20261112-7",
+    "title": "Anthropic заявила о сокращении срока перехода на чипы AMD",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/anthropic-says-ai-is-eroding-nvidias-cuda-lead-cutting-an-amd-chip-switch-from-months-to-three-days/",
+    "story": "s354"
+   },
+   {
+    "id": "20261112-8",
+    "title": "Использование enum-ограничений в JSON Schema для классификации в Ling-3.2-flash",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/PromptEngineering/comments/1xtfekf/ling32flash_documents_enumconstrained_output_for/",
+    "story": "",
+    "summary": "Определи разрешенные метки в response schema как enum, а в промпте объясни модели, как выбирать между ними.",
+    "why": "Помогает жестко зафиксировать допустимые метки для классификатора в схеме ответа, чтобы модель возвращала только нужные категории.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "prompts",
+    "steps": [
+     "В схеме ответа разрешенные метки определяются через массив enum (например, billing, technical и account).",
+     "Инструкции в промпте детально раскрывают смысл каждой категории и регламентируют обработку сложных или пограничных обращений."
+    ]
+   },
+   {
+    "id": "20261112-9",
+    "title": "Настройка Time Machine на сетевой шаре или VPN для бэкапа рабочей среды на Mac",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xthl2f/easy_failsafes_for_mac_users/",
+    "story": "",
+    "summary": "Настрой резервное копирование Time Machine на сетевую паску дома или подключи ее через рабочий VPN.",
+    "why": "Защищает от сбоев в работе с кодом на продакшн-машинах, позволяя быстро откатить неудачные изменения.",
+    "copy": "time-machine",
+    "copy_untrusted": true,
+    "topic": "workflow",
+    "steps": [
+     "Time Machine настраивается на домашней сетевой шаре или через рабочий VPN для удаленной работы.",
+     "Метод выступает в роли встроенной системы создания полных резервных копий рабочей машины разработчика."
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-11-11",
   "slot": "evening",
   "headline": "Anthropic готовится к IPO, а Microsoft и CISA предупреждают об активных атаках",
