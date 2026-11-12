@@ -21,22 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-11T03:18:06.314716+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/ai-recycling-startups",
-    "title:how ai helps recyclers turn mixed waste into reusable material"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-11T03:18:06.314716+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMiqgFBVV95cUxQVHBHYWpjdWxPUUszcVo2UmdxQ0UzUWpLZlh6TFdlZXhwWDRCWDM1S1V2eW0xODY4bFN4bzNmM3REWTlYTmpZdm1MYWFlZTdkY2pFZXhncGRfR2x5WjlYdVZoRW9YbUJhV1RxODR5NHhGLVYySlRVa0QwZ0pKMU4yUHd2RkQwWm8zV2pDaFU4VzI3NXhYN0tsVHY3ejV4dmE4YTZrUkNZTDlEUQ?oc=5",
-    "title:exclusive crowdstrike to buy two ai security startups for 495 million"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-11T08:18:05.689110+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMihAJBVV95cUxQOVdzRjZsVlN0LWRpVVg2Y0VjWXVZRXRhNkVxLTV4YkhmeEhXOW40d0dFMkcwcUwxR1lzeWNTUWxIOE02aU5DUW02blN1RktneFN4WGxVUlZoUXF4eWlHdnhhN0YyampkWS1mNlZrSnpodTJxNF9fMnE0MW10SV9tTG9yeWJiMUNGTWdoX1lNSVpHY3RGdE5oRGZ1bFlyM2RaaWktM2ZsdFhmNlJLYjBGSHdkX3I1QkJvRVdqV1h1Zmp0UW4zLWRxR0owZm1GME0zOVpKaVJHTm0wUnRKSEFvZjdpbHpHeFh4NVZSUFA0aDAzMmR1b3RwdzVZOUhfOFcxQ0xlcA?oc=5",
@@ -122,14 +106,6 @@
   {
    "at": "2026-11-11T21:18:06.667482+00:00",
    "keys": [
-    "openai.com/index/gilbert-tobin-sam-nickless",
-    "title:gilbert tobin rethinks the business of law with ai"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-11T21:18:06.667482+00:00",
-   "keys": [
     "bloomberg.com/news/articles/2026-11-11/united-blocks-ai-agents-from-booking-flights-ahead-of-holidays",
     "news.google.com/rss/articles/CBMiowFBVV95cUxNS1I5WWNhSXVTeHRjWUFheXJlb0pTdG44UW5BQ0RzNlllbFk0X3BoZkhwMTktdjdiWkNDX0VmRUIzMWhCcFJ4Y2VEZUo2a1Nlc0VnSHpQSy1HOUg0Q3EwV29Uc1hrRkE5QU1ZVUtxRXgyZnhXbXpBZTFZTnZPbUs5OHBMLU0yRUsyUzN2SnY5cDJmTi11REVxZE8yRThTLVdxRjNr?oc=5",
     "news.google.com/rss/articles/CBMiswFBVV95cUxNWFNtbFdtU1FhajJHMUNsSXNYU2tnLUdMY3BMNDNfcFgzWDBWbE9ubmNMaTdTcmxSTVFqUUZVYmNCa2Y5czJxZFZUenF4WmhQWFEtdmhTeHplNkNvU294YjFIb2VxNWRTLU5QdGFKamhrRWotZUZFb0FVSWtmQldvNUtER0tBWXJXLUZ6Z2RrUFQ3eVZCTDJnQTZPd3pFN1U2VXJDUFpLTDd0ZlJMUTRKaXphSQ?oc=5",
@@ -161,6 +137,14 @@
     "wsj.com/business/nvidia-is-preparing-to-oust-nvidia-ceo-jensen-huang-30f421ad"
    ],
    "strength": 6
+  },
+  {
+   "at": "2026-11-12T04:18:05.217108+00:00",
+   "keys": [
+    "openai.com/index/gilbert-tobin-sam-nickless",
+    "title:gilbert tobin rethinks the business of law with ai"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
