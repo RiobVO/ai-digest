@@ -144,6 +144,23 @@
     "title:aws emulator"
    ],
    "strength": 6
+  },
+  {
+   "at": "2026-11-12T01:18:06.623059+00:00",
+   "keys": [
+    "cbsnews.com/news/united-airlines-bans-ai-agents-booking-flights",
+    "news.google.com/rss/articles/CBMiggFBVV95cUxPZDJtSXdwdkJWUlI4SlRWMzhQNlFKTG00LW4xVW9tZ1pLcFUtRzBQYklOMWRvZVZ4a3AwOTliX2hvcWpjYTN2eGR4NWp2M1BiMGNUMl9SZUxqQnpOWDU0QnRpUkdyX1FVSkVaRDFSUmw1R1pQWFFEMzNfVDN1MjY3QUNn?oc=5",
+    "title:united airlines bans ai agents from booking flights on behalf of travelers"
+   ],
+   "strength": 4
+  },
+  {
+   "at": "2026-11-12T01:18:06.623059+00:00",
+   "keys": [
+    "title:nvidia is preparing to oust jensen huang",
+    "wsj.com/business/nvidia-is-preparing-to-oust-nvidia-ceo-jensen-huang-30f421ad"
+   ],
+   "strength": 4
   }
  ],
  "undated": {
