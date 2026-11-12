@@ -6,7 +6,7 @@ import httpx
 import pytest
 
 from digest import fetch, health, llm
-from digest.render import render_health, source_label
+from digest.render import model_label, render_health, source_label
 
 SETTINGS = {"model": "gemini-flash-latest", "extras_model": "gemini-3.5-flash", "lite_model": "gemini-3.5-flash-lite"}
 # Ключ, токен бота и URL с токеном: ни одно из этого не должно попасть ни в state/health, ни на страницу
@@ -180,3 +180,9 @@ def test_health_page_lists_how_many_records_each_source_gave():
     runs = evening_2110()
     page = render_health(runs, SETTINGS, utc(2026, 10, 21, 14))
     assert "Techmeme 30" in page and "Записей из источников" in page
+
+
+def test_paid_model_gets_a_short_readable_label_in_the_chain_of_attempts():
+    # Без своего правила платная модель подписывалась «Claude haiku 5 5»
+    assert model_label("claude-haiku-5-5") == "Haiku 5.5"
+    assert model_label("gemini-3.5-flash-lite") == "3.5 Flash-Lite" and model_label("gemini-flash-latest") == "Flash latest"

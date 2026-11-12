@@ -716,6 +716,88 @@ def test_selection_prompt_asks_for_few_cards_and_states_the_reader_taste_as_a_ru
     assert "Смотри шире" not in prompt
 
 
+def test_voice_is_a_friend_engineer_who_explains_rare_terms_on_the_go():
+    # Решение владельца 12.11: «как друг-инженер рассказывает, чтобы я сразу понимал». Прежний голос просил термины
+    # «без расшифровки» и «кто, что сделал, главная цифра» — выходила лента агентства с «musl libc» в заголовке
+    assert "друг читателя, инженер" in llm.VOICE and "без расшифровки" not in llm.VOICE
+    assert "Редкий термин" in llm.VOICE and "поясни на ходу" in llm.VOICE
+    prompt = build_prompt(items(), "читатель")
+    assert "событие так, как сказал бы другу" in prompt and "кто, что сделал, главная цифра" not in prompt
+    # Разбор технику не выбрасывает, но и не оставляет её непонятной
+    assert "не упрощают технические детали" not in llm.EXPLAIN_PROMPT and "поясняй на ходу" in llm.EXPLAIN_PROMPT
+
+
+class _FakeAnthropic:
+    """Подмена клиента Anthropic: запоминает, с чем его создали и что спросили, и отдаёт заготовленный ответ."""
+    made: dict = {}
+    asked: dict = {}
+    answer = None
+
+    def __init__(self, **kwargs):
+        type(self).made = kwargs
+        self.messages = self
+
+    def stream(self, **kwargs):
+        type(self).asked = kwargs
+        return self
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+    def get_final_message(self):
+        return type(self).answer
+
+
+def _claude_answer(text, stop_reason="end_turn"):
+    from types import SimpleNamespace
+    return SimpleNamespace(stop_reason=stop_reason, model="claude-haiku-5-5",
+                           content=[SimpleNamespace(type="thinking", thinking=""), SimpleNamespace(type="text", text=text)],
+                           usage=SimpleNamespace(input_tokens=70000, output_tokens=9000))
+
+
+def test_claude_model_is_asked_through_anthropic_with_a_plain_json_schema(monkeypatch):
+    import json
+
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "claude-key")
+    monkeypatch.setattr(llm.anthropic, "Anthropic", _FakeAnthropic)
+    _FakeAnthropic.answer = _claude_answer('{"headline": "h", "lead": "l", "items": []}')
+    raw = llm.generate("запрос", SCHEMA, "claude-haiku-5-5", "gemini-key")
+    assert raw == {"headline": "h", "lead": "l", "items": []}
+    # Свой ключ, а не ключ Gemini; повторов нет — при сбое цепочка сама идёт к следующей модели
+    assert _FakeAnthropic.made["api_key"] == "claude-key" and _FakeAnthropic.made["max_retries"] == 0
+    asked = _FakeAnthropic.asked
+    assert asked["model"] == "claude-haiku-5-5" and asked["messages"] == [{"role": "user", "content": "запрос"}]
+    schema = asked["output_config"]["format"]["schema"]
+    assert asked["output_config"]["format"]["type"] == "json_schema"
+    # Схема Gemini (типы прописными, propertyOrdering) приходит обычной JSON Schema с закрытыми объектами
+    assert schema["type"] == "object" and schema["additionalProperties"] is False
+    row = schema["properties"]["items"]["items"]
+    assert row["type"] == "object" and row["additionalProperties"] is False
+    assert row["properties"]["section"]["enum"] == llm.SELECT_SECTIONS
+    assert "propertyOrdering" not in json.dumps(schema) and "OBJECT" not in json.dumps(schema)
+
+
+def test_claude_without_a_key_or_with_an_early_stop_fails_so_the_chain_moves_on(monkeypatch):
+    import pytest
+
+    monkeypatch.setattr(llm.anthropic, "Anthropic", _FakeAnthropic)
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    with pytest.raises(llm.LlmError):
+        llm.generate("запрос", SCHEMA, "claude-haiku-5-5", "gemini-key")
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "claude-key")
+    # Отказ отвечать и обрыв по длине — не ответ: выпуск допишет следующая модель цепочки
+    for stop in ("refusal", "max_tokens"):
+        _FakeAnthropic.answer = _claude_answer('{"items": []}', stop_reason=stop)
+        with pytest.raises(llm.LlmError):
+            llm.generate("запрос", SCHEMA, "claude-haiku-5-5", "gemini-key")
+    _FakeAnthropic.answer = _claude_answer("не JSON")
+    with pytest.raises(llm.LlmError):
+        llm.generate("запрос", SCHEMA, "claude-haiku-5-5", "gemini-key")
+
+
 def test_selection_prompt_caps_security_and_puts_the_new_fact_first_in_a_continuing_story():
     assert "не больше 3" in llm.PROMPT
     assert "начинай title с нового" in llm.PROMPT

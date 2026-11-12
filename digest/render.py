@@ -785,7 +785,7 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
         f'<section class="slide end" id="end" data-label="Конец выпуска"><div class="inner"><div class="content">'
         f'{_progress(len(numbers))}<h2 class="hl rv" id="verdict">Конец выпуска</h2>'
         f'<p class="body rv" style="--d:1">{funnel}</p>{_noise(digest.noise)}'
-        f'<div class="meta rv" style="--d:2"><span>собрано {local:%d.%m} в {local:%H:%M}</span><span>стоимость 0 ₽</span>{fail}</div>'
+        f'<div class="meta rv" style="--d:2"><span>собрано {local:%d.%m} в {local:%H:%M}</span>{fail}</div>'
         f'<div class="act rv" style="--d:3"><a class="btn" href="#cover">К началу ↑</a>{_previous_issue(issues, page_name)}'
         f'<a class="lnk" href="archive.html">Архив</a><a class="lnk" href="tips.html">Арсенал фишек</a>'
         f'<a class="lnk" href="health.html">Здоровье</a></div></div></div></section>')
@@ -827,7 +827,7 @@ def _sec(anchor: str, title: str, body: str, sub: str = "") -> str:
 def _foot(when: datetime) -> str:
     local = when.astimezone(DISPLAY_TZ)
     return (f'<section class="sec" id="end"><div class="inner"><div class="content">'
-            f'<div class="meta"><span>обновлено {local:%d.%m} в {local:%H:%M}</span><span>стоимость 0 ₽</span></div>'
+            f'<div class="meta"><span>обновлено {local:%d.%m} в {local:%H:%M}</span></div>'
             f'<div class="act"><a class="btn" href="index.html">К выпуску</a><a class="lnk" href="archive.html">Архив</a>'
             f'<a class="lnk" href="tips.html">Арсенал фишек</a><a class="lnk" href="health.html">Здоровье</a></div>'
             f'</div></div></section>')
@@ -858,6 +858,8 @@ def render_archive(issues: list[dict], when: datetime) -> str:
 
 
 MODEL_NAME = re.compile(r"gemini-(\d+(?:\.\d+)*)-(flash|pro)(-lite)?")
+# claude-haiku-5-5 → «Haiku 5.5»: у Anthropic версия идёт после названия линейки и через дефис
+CLAUDE_NAME = re.compile(r"claude-([a-z]+)-(\d+)-(\d+)")
 CALL_LABELS = {"select": "Отбор", "extras": "Ещё за день и фишки", "explain": "Разборы", "weekly": "Итог недели",
                "triage": "Отсев срочных", "alert": "Текст срочной", "numbers": "Проверка чисел"}
 # Квота израсходована на эту долю — полоса краснеет: до вечернего выпуска может не хватить
@@ -866,6 +868,9 @@ QUOTA_WARN = 0.75
 
 def model_label(name: str) -> str:
     """gemini-3.5-flash-lite → «3.5 Flash-Lite»: в цепочке попыток полные имена не помещаются в строку телефона."""
+    claude = CLAUDE_NAME.fullmatch(name)
+    if claude:
+        return f"{claude.group(1).capitalize()} {claude.group(2)}.{claude.group(3)}"
     match = MODEL_NAME.search(name)
     if not match:
         # Алиас gemini-flash-latest → «Flash latest»: какая модель за ним, знает только успешный ответ

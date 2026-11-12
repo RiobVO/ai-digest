@@ -30,7 +30,7 @@ Without a local 3.12 venv: `uv run --no-project --python 3.12 --with httpx --wit
 (`--no-project` matters: otherwise uv rewrites `.venv` and creates `uv.lock`).
 
 Local runs read `.env` (`load_env` in `digest/__main__.py`; never overrides real env). `build` needs `GEMINI_API_KEY`, `SITE_URL`;
-`FEEDBACK_URL`/`FEEDBACK_TOKEN` optional. `--dry-run` only skips saving `state/` — it still calls Gemini (daily quota)
+`ANTHROPIC_API_KEY` (paid model, without it the free chain writes), `FEEDBACK_URL`/`FEEDBACK_TOKEN` optional. `--dry-run` only skips saving `state/` — it still calls Gemini (daily quota)
 and overwrites `site/index.html`, `site/archive.html` and the issue page. Covers need Chrome (`CHROME_PATH` locally);
 missing Chrome just skips the cover.
 
@@ -42,9 +42,21 @@ Chrome at 390 and 1400 px in both themes. On Windows a Chrome window is never na
 `--window-size=390,…` crops the picture instead of narrowing the layout: set the width through DevTools
 (`Emulation.setDeviceMetricsOverride`) and check `innerWidth` equals what was asked — a wider value means overflow.
 
-## Gemini budget (free tier — stay within it)
+## Models: paid first, free Gemini behind it
 
-- The key is free tier (AI Studio project `ai-daig`), no billing — don't propose a paid key. `gemini-flash-latest`
+- **Paid model first** (owner decision 2026-11-12): `paid_model` in sources.toml (`claude-haiku-5-5`, key
+  `ANTHROPIC_API_KEY`, prepaid credits) leads the select, extras, explain, weekly and alert re-check chains
+  (`__main__.paid_models`). The whole free Gemini chain stays behind it: no credits, no key or an API failure →
+  the issue ships as before. Alert triage stays on free Lite (hourly, many calls). `llm.generate` routes `claude-*`
+  names to `llm._generate_claude` (Anthropic SDK, stream, `output_config.format` JSON schema converted from the
+  Gemini schema by `llm._json_schema`, `max_retries=0`, `stop_reason` other than `end_turn` is a failure).
+  Haiku 5.5 costs $0.10 / $0.50 per MTok **only for prompts up to 100K tokens** (5× above); measured on the
+  snapshots: select 64–75K input tokens, a whole issue (3 calls) ≈ $0.03 and ≈ 2.5 min. Logs show input tokens.
+  Don't move to a bigger model or add calls without asking the owner — he pays per token.
+
+### Gemini budget (free tier — the fallback chain, stay within it)
+
+- The Gemini key is free tier (AI Studio project `ai-daig`), no billing — don't propose billing on it. `gemini-flash-latest`
   (now 3.8 Flash): 5 RPM, 250K TPM, **20 requests/day**, reset at midnight Pacific (≈12–13 Tashkent). Lite models
   (`gemini-3.5-flash-lite`, `gemini-3.1-flash-lite`): 15 RPM, 500/day. Quotas are per model.
 - Model chains (`__main__.model_chains`, sources.toml): select and explain go `model` (3.8 Flash) → `extras_model`
@@ -172,8 +184,11 @@ Site pages besides issues (all built with the `page.html` shell via `render._she
   news events (`__main__.EVENTS_CAP`, `llm.cap_events`; voices and tips come on top), the rest become «Ещё за день»
   lines. What goes into cards is the «Берём в карточки / Не берём в карточки» block of `llm.PROMPT` — a rule, not a
   hint; the last 20 votes (`memory.preferences_prompt`) stay a hint. Change the block only from vote data.
+- **Voice** (`llm.VOICE`, shared by every prompt; owner decision 2026-11-12): a friend engineer retelling the news —
+  the point in plain words first, one or two numbers per card, a rare term explained on the go in 3–5 words or
+  replaced; accuracy rules unchanged. Haiku 5.5 keeps this voice, Lite only partly (snapshot 2026-11-06).
 - **Prompts** (Russian) live next to their schemas: `llm.PROMPT`/`EXPLAIN_PROMPT` (+ shared `VOICE`), `alert.ALERT_PROMPT`,
-  `weekly.WEEK_PROMPT`. All Gemini calls go through `llm.generate_first` → `llm.generate` (JSON `responseSchema`, one attempt per model).
+  `weekly.WEEK_PROMPT`. All model calls go through `llm.generate_first` → `llm.generate` (JSON schema, one attempt per model).
 
 ### Security boundaries (keep them)
 

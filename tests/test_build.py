@@ -87,6 +87,15 @@ def env(tmp_path, monkeypatch):
     return tmp_path, args
 
 
+def test_paid_model_leads_every_chain_and_the_free_chain_stays_behind_it():
+    # Решение владельца 12.11: бесплатный 3.8 Flash отвечал через раз и ждал по 6 минут, выпуски писала Lite.
+    # Платная модель идёт первой; закончились деньги или лёг её API — выпуск выходит на прежней бесплатной цепочке
+    free = {"model": "flash", "extras_model": "flash-old", "lite_model": "lite"}
+    assert main.model_chains({**free, "paid_model": "claude-haiku-5-5"}) == (
+        ["claude-haiku-5-5", "flash", "flash-old", "lite"], ["claude-haiku-5-5", "flash-old", "flash", "lite"])
+    assert main.model_chains(free) == (["flash", "flash-old", "lite"], ["flash-old", "flash", "lite"])
+
+
 def test_build_ships_page_message_and_state_that_agree(env):
     tmp, args = env
     main.build(args)

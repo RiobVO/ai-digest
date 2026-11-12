@@ -44,8 +44,16 @@ def model_chains(settings: dict) -> tuple[list[str], list[str]]:
     Главная — отбор и разборы: сначала 3.8 Flash (20 запросов в день). Побочная — «Ещё за день» и фишки: 3.6 Flash,
     чтобы не тратить квоту 3.8; но 3.6 на бесплатном тарифе отказывает в ~85% вызовов (22.10), поэтому дальше 3.8,
     а не сразу Lite. Последней везде стоит Lite (500 в день): выпуск похуже лучше, чем никакого."""
-    return ([settings["model"], settings["extras_model"], settings["lite_model"]],
-            [settings["extras_model"], settings["model"], settings["lite_model"]])
+    paid = paid_models(settings)
+    return ([*paid, settings["model"], settings["extras_model"], settings["lite_model"]],
+            [*paid, settings["extras_model"], settings["model"], settings["lite_model"]])
+
+
+def paid_models(settings: dict) -> list[str]:
+    """Платная модель (paid_model в sources.toml) — первой в каждой цепочке, где текст читает владелец: с 12.11.2026
+    это Claude Haiku 5.5. Бесплатная цепочка остаётся за ней целиком: кончились деньги на счету или лёг API —
+    выпуск выходит как раньше. Ключа нет в настройках — цепочки прежние."""
+    return [settings["paid_model"]] if settings.get("paid_model") else []
 
 
 def load_env(path: Path) -> None:
@@ -227,11 +235,12 @@ def alert(args: argparse.Namespace) -> None:
             urgent, rejected = breaking.triage(raw, candidates)
         if urgent:
             # Срочное может разбудить читателя ночью — перепроверку и текст пишет лучшая модель, 3.6 только запас.
-            # До Flash доходит редко: почти все прогоны заканчиваются на отсеве Lite
+            # До Flash доходит редко: почти все прогоны заканчиваются на отсеве Lite. Платная модель — первой: она
+            # отвечает за секунды, а бесплатный Flash держал срочное в очереди по 6 минут
+            recheck = [*paid_models(settings), settings["model"], settings["extras_model"]]
             try:
                 raw = generate_first(breaking.build_prompt(urgent, state, settings["audience"], texts, stack),
-                                     breaking.ALERT_SCHEMA, [settings["model"], settings["extras_model"]], api_key,
-                                     call="alert")
+                                     breaking.ALERT_SCHEMA, recheck, api_key, call="alert")
             except LlmError as exc:
                 # 21.10: 3.8 и 3.6 отвечали 503, проверка падала, не сохранив состояние, и каждый час тратила квоту
                 # 3.8 и 3.6 — квоту утреннего выпуска — на ту же новость. Откладываем её как отклонённую: охлаждение

@@ -71,6 +71,7 @@ jobs:
         if: steps.plan.outputs.daily == 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           FEEDBACK_TOKEN: ${{ secrets.FEEDBACK_TOKEN }}
           # Утро или вечер задаёт планировщик по запланированному времени: опоздавший запуск не сменит выпуск
           ISSUE_SLOT: ${{ inputs.slot }}
@@ -81,6 +82,7 @@ jobs:
         if: steps.plan.outputs.weekly == 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python -m digest weekly
 
       - uses: actions/configure-pages@v5
