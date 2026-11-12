@@ -615,11 +615,39 @@ def test_tips_put_the_readers_daily_agents_first_and_keep_why_honest():
     # 22.10: своих ботов у владельца нет, каждый день — Claude Code и Codex; пример garak обещал «проверишь бота»,
     # а команда атаковала голую модель и требовала платный ключ
     prompt = llm.EXTRAS_PROMPT
-    assert "Claude Code и OpenAI Codex" in prompt
+    assert "Claude Code каждый день" in prompt
     assert "чужой репозиторий или веб-страницу" in prompt
     assert "результат именно этих шагов" in prompt and "платный ключ" in prompt
     # 23.10: фишка «начинай ответ с этой фразы» без самой фразы — copy с Reddit тогда не показывался
     assert "не «скорми эту фразу»" in prompt
+
+
+def test_tips_are_only_about_the_readers_tools_and_must_be_doable_from_the_message():
+    # Решение владельца 12.11: «сузить фишки до моих инструментов и сделать практичнее». По оценкам: 7 из 8 лайков
+    # фишкам — про Claude Code, дизлайки — n8n (дважды), Cursor, Blender. Codex у владельца не оплачен
+    prompt = llm.EXTRAS_PROMPT
+    assert "OpenAI Codex" not in prompt and "1–2 записи" in prompt and "2–4 фишки" not in prompt
+    rejected = prompt.split("Не фишка:")[1].split("Нет таких записей")[0]
+    assert all(word in rejected for word in ("n8n", "Cursor", "Codex CLI", "только на macOS"))
+    # Фишка без точных названий — пересказ, по которому ничего не сделать: «сбрось переменную окружения» без имени
+    assert "Нет точных названий — это не фишка" in prompt and "не открывая источник" in prompt
+    assert "как проверить, что сработало" in llm.EXPLAIN_PROMPT
+
+
+def test_extras_see_the_whole_changelog_of_a_tool_release_but_not_whole_community_posts():
+    # 47 из 58 фишек архива пришли с Reddit, а оттуда команды не показываются; из релизов Claude Code — одна:
+    # модель видела первые 400 знаков списка изменений в 16–20 тыс. знаков, а новые флаги и настройки — дальше
+    release = Item(source="gh_claude_code", title="Claude Code v2", url="https://github.com/anthropics/claude-code/releases/v2",
+                   category="release", summary="What's changed", body="Fixed a bug. " * 60 + "Added --settings <file> flag")
+    post = Item(source="reddit_tips", title="My setup", url="https://www.reddit.com/r/ClaudeCode/2", category="community",
+                summary="intro " * 100 + "tail of the summary", body="intro " * 200 + "tail of the post")
+    pool = [release, post]
+    prompt = llm.build_extras_prompt(Digest("h", "l", [], noise=list(pool)), pool, "читатель")
+    assert "Added --settings <file> flag" in prompt
+    assert "tail of the post" not in prompt and "tail of the summary" not in prompt
+    # Отбор событий список изменений целиком не получает: ему хватает начала, а запрос и так под 75 тыс. токенов
+    assert "Added --settings <file> flag" not in build_prompt(pool, "читатель")
+    assert "category=release про Claude Code" in llm.EXTRAS_PROMPT
 
 
 def _reddit_tip(copy: str) -> Entry:

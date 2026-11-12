@@ -176,6 +176,9 @@ latest_only = true
 name = "gh_claude_code"
 type = "rss"
 category = "release"
+# Список изменений целиком (до 8000 знаков) — в запрос фишек: новые команды, флаги и настройки стоят в нём дальше
+# первых строк, а это единственный доверенный источник, чьи команды можно показать дословно
+body_from_feed = true
 url = "https://github.com/anthropics/claude-code/releases.atom"
 title_prefix = "Claude Code"
 max_age_hours = 30

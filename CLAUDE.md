@@ -108,7 +108,7 @@ All human-facing time is Tashkent, UTC+5 (`DISPLAY_TZ` in `render.py`); evening 
 `fetch_all` (sources.toml) → `SeenStore.take_new` (cross-run dedup, `state/seen.json`) → `dedupe` (within run) →
 `fetch_feedback` (votes/read marks from worker) → `llm.select` (Gemini picks 5–6 events + voices) → `llm.extras`
 (second call over the records `select` left in noise, original numbering kept: 10–15 «Ещё за день» one-liners in
-`Digest.more` + 2–4 tricks in section `tips`, rest is noise; `llm.CORPORATE_MONEY` drops funding/revenue lines
+`Digest.more` + 1–2 tricks in section `tips`, rest is noise; `llm.CORPORATE_MONEY` drops funding/revenue lines
 the model let through) → `resolve_gnews` (events and one-liners) →
 `attach_discussions` (HN) → `fetch_articles` → `evaluate.verify_numbers` (numbers absent from the record and article:
 sentence cut, else one Lite rewrite call `numbers`) → `llm.explain` (detailed breakdowns) → `evaluate.verify_details`
@@ -155,6 +155,12 @@ Site pages besides issues (all built with the `page.html` shell via `render._she
   old archived names are mapped in `weekly.LEGACY_SECTIONS`. `llm.EXTRA_SECTIONS` (`voices`, `tips`) are not news:
   they rank after events, never become the hero, and render after the «Ещё за день» block.
 - **«Ещё за день»** (`Digest.more`, `llm.Mention`) has no entry id: not in the archive, votes, stories or the weekly.
+- **Tricks are only about the reader's tools** (owner decision 2026-11-12; block «### Фишки» of `llm.EXTRAS_PROMPT`):
+  Claude Code first, then Claude API, Python, Telegram bots, Cloudflare Workers, GitHub Actions, Windows; not n8n,
+  Cursor, Codex CLI, local models, macOS-only. A trick must be doable from the message alone — exact file, setting,
+  flag or command, else it is not a trick. The main source is the changelog of a Claude Code release: `gh_claude_code`
+  has `body_from_feed`, and only the extras prompt shows a release body in full (`llm._item_line(notes=True)`) — it
+  is the trusted source whose commands may be shown verbatim (47 of 58 archived tricks came from Reddit, without one).
 - **Tricks** carry `topic` from `llm.TIP_TOPICS` (enum in the extras schema) ↔ `render.TIP_TOPIC_LABELS`; the archive
   stores summary/why/copy/topic for tips only. Tips and voices never start stories (`Stories.apply`).
 - **Mood** (`digest/mood.py`) is computed from sections and gives the colour of the day (`MOODS[name].color` /
