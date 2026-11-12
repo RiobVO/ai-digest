@@ -21,14 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-11T13:18:16.069731+00:00",
-   "keys": [
-    "openai.com/index/chatgpt-plus-for-veterans",
-    "title:chatgpt plus for veterans and servicemembers"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-11T15:18:06.592982+00:00",
    "keys": [
     "deepmind.google/blog/alphagenome-2-deciphering-how-cells-read-dna-to-better-understand-disease",
@@ -161,6 +153,14 @@
    "keys": [
     "news.google.com/rss/articles/CBMidkFVX3lxTFBzSDJBcERnYVYxaUpYRllaZHFfMkdfeU5MLUhEZk9lMjBwaFRHbklZTk5mTjFqNWwtWnkwbU5PSDlKdXA1RVZrbmpJbDFqTkZZQ1RTbUtiUElGR3ZvdjAtUEt4ZWljZ2FfSF9lRVRPTGVjQURHNnc?oc=5",
     "title:microsoft expands entra governance and access controls for ai agents and guest users"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-12T14:18:11.885964+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/geforce-now-thursday-warhammer-dawn-of-war-iv-coming",
+    "title:a new dawn in the cloud warhammer 40 000 dawn of war iv is coming to geforce now"
    ],
    "strength": 1
   }
