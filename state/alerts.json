@@ -39,14 +39,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-12T00:18:10.614894+00:00",
-   "keys": [
-    "github.com/aws/aws-emulator",
-    "title:aws emulator"
-   ],
-   "strength": 6
-  },
-  {
    "at": "2026-11-12T01:18:06.623059+00:00",
    "keys": [
     "cbsnews.com/news/united-airlines-bans-ai-agents-booking-flights",
@@ -171,6 +163,14 @@
    "keys": [
     "news.ycombinator.com/item?id=50471668",
     "title:ask hn microsoft azure outage"
+   ],
+   "strength": 4
+  },
+  {
+   "at": "2026-11-13T00:18:10.858375+00:00",
+   "keys": [
+    "status.cloud.microsoft",
+    "title:service degradation on microsoft 365"
    ],
    "strength": 4
   }
