@@ -1,5 +1,5 @@
 {
- "next": 360,
+ "next": 363,
  "stories": {
   "s9": {
    "name": "Финансы и IPO Anthropic",
@@ -3984,6 +3984,12 @@
      "title": "Уязвимость php2shell дает удаленный шелл на сервере без авторизации",
      "entry": "20261108-21",
      "issue": "2026-11-08-evening.html"
+    },
+    {
+     "date": "2026-11-13",
+     "title": "Через PHP2Shell взламывают Check Point Gateway и стирают файлы ESXi",
+     "entry": "20261113-8",
+     "issue": "2026-11-13-evening.html"
     }
    ]
   },
@@ -4075,6 +4081,12 @@
      "title": "Дженсен Хуанг ушёл с поста главы Nvidia из-за романов, один с подозреваемой в шпионаже",
      "entry": "20261113-0",
      "issue": "2026-11-13.html"
+    },
+    {
+     "date": "2026-11-13",
+     "title": "Хуанг называл исполняющую обязанности главы Nvidia Кресс «оленем в свете фар»",
+     "entry": "20261113-7",
+     "issue": "2026-11-13-evening.html"
     }
    ]
   },
@@ -4248,6 +4260,12 @@
      "title": "Взломщики бьют по N-central, и новые эксплойты работают на пропатченных серверах",
      "entry": "20261112-12",
      "issue": "2026-11-12-evening.html"
+    },
+    {
+     "date": "2026-11-13",
+     "title": "В N-central дыру 4EverAble2Shell взяли в работу через часы после публикации эксплойта",
+     "entry": "20261113-10",
+     "issue": "2026-11-13-evening.html"
     }
    ]
   },
@@ -4662,6 +4680,39 @@
      "title": "Claude Meetings: Claude заходит в Google Meet и пишет протокол и доски",
      "entry": "20261113-5",
      "issue": "2026-11-13.html"
+    }
+   ]
+  },
+  "s360": {
+   "name": "Сбой Microsoft 365",
+   "events": [
+    {
+     "date": "2026-11-13",
+     "title": "Outlook, Teams и Exchange лежат больше 18 часов, Microsoft говорит, что не взлом",
+     "entry": "20261113-9",
+     "issue": "2026-11-13-evening.html"
+    }
+   ]
+  },
+  "s361": {
+   "name": "Claude Managed Agents",
+   "events": [
+    {
+     "date": "2026-11-13",
+     "title": "Claude Managed Agents теперь можно запускать внутри своего периметра",
+     "entry": "20261113-11",
+     "issue": "2026-11-13-evening.html"
+    }
+   ]
+  },
+  "s362": {
+   "name": "SilentAir",
+   "events": [
+    {
+     "date": "2026-11-13",
+     "title": "SilentAir взламывает мобильных операторов Азии и перехватывает SMS-коды 2FA",
+     "entry": "20261113-12",
+     "issue": "2026-11-13-evening.html"
     }
    ]
   }

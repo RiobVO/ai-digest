@@ -1,6 +1,62 @@
 [
  {
   "date": "2026-11-13",
+  "slot": "evening",
+  "headline": "Уход Хуанга из Nvidia, сбой Microsoft 365 и атаки на сетевое железо",
+  "page": "2026-11-13-evening.html",
+  "entries": [
+   {
+    "id": "20261113-7",
+    "title": "Хуанг называл исполняющую обязанности главы Nvidia Кресс «оленем в свете фар»",
+    "section": "business",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/11/13/jensen-huang-didnt-show-confidence-in-his-successor-report-says/",
+    "story": "s310"
+   },
+   {
+    "id": "20261113-8",
+    "title": "Через PHP2Shell взламывают Check Point Gateway и стирают файлы ESXi",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/hackers-exploit-php2shell-flaws-in.html",
+    "story": "s305"
+   },
+   {
+    "id": "20261113-9",
+    "title": "Outlook, Teams и Exchange лежат больше 18 часов, Microsoft говорит, что не взлом",
+    "section": "product",
+    "source": "the_register",
+    "url": "https://www.theregister.com/saas/2026/11/13/microsofts-massive-m365-outage-stretches-past-18-hours-as-its-fixes-keep-failing/5309609",
+    "story": "s360"
+   },
+   {
+    "id": "20261113-10",
+    "title": "В N-central дыру 4EverAble2Shell взяли в работу через часы после публикации эксплойта",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/hackers-exploit-n-central-flaws-to.html",
+    "story": "s323"
+   },
+   {
+    "id": "20261113-11",
+    "title": "Claude Managed Agents теперь можно запускать внутри своего периметра",
+    "section": "product",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xuw68g/claude_managed_agents_can_now_run_selfhosted/",
+    "story": "s361"
+   },
+   {
+    "id": "20261113-12",
+    "title": "SilentAir взламывает мобильных операторов Азии и перехватывает SMS-коды 2FA",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/silentair-hijacks-asian-telecom.html",
+    "story": "s362"
+   }
+  ]
+ },
+ {
+  "date": "2026-11-13",
   "slot": "morning",
   "headline": "Nvidia без Хуанга, Gemini 4 Hydrogen, атаки на GitHub и ScreenConnect",
   "page": "2026-11-13.html",
