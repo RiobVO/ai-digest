@@ -1,15 +1,6 @@
 {
  "sent": [
   {
-   "at": "2026-11-10T16:18:08.485563+00:00",
-   "day": "2026-11-10",
-   "title": "Google DeepMind выкатила флагманскую модель Gemini 4 Carbon",
-   "keys": [
-    "deepmind.google/blog/gemini-4-carbon-is-now-available",
-    "title:gemini 4 carbon is now available"
-   ]
-  },
-  {
    "at": "2026-11-12T15:18:12.243311+00:00",
    "day": "2026-11-12",
    "title": "Дженсен Хуанг ушёл с постов главы Nvidia, временно гендиректором стала финдиректор Колетт Кресс",
@@ -130,6 +121,14 @@
     "title:elevated errors on claude ai claude code and platform claude com"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-11-13T16:18:09.491946+00:00",
+   "keys": [
+    "openai.com/index/introducing-chatgpt-wallet",
+    "title:introducing chatgpt wallet"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
