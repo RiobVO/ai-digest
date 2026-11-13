@@ -39,16 +39,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-12T06:18:10.367317+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMikgJBVV95cUxQb0xMMkhHUnVidy1qR3Q1VC1Vdk9RbU1HbEZDZjlFOW5ZM3ctaE1mLXRwVVZoUnlnVjBUSVNsLU9ONlZodDZKSFBtaEtHOFFQU0xaQ0RaMEtsM0o5LXdaMTJ5VXdRbGxnbS04aWhYS0RyRTJHOExRczlrcVJZUWtqbVVBMWtvMU1IZkRlUVNkRVR3dkQ5N3JtUXNuTW95dnhNTFdKTE5OZC1nRzk5TVUxRVZJVFBrcnROQ3FfQlRaYThQVzJxRGUwOUVWY3Vkd1habFN4SllzT2tIRHdsT3F4OG9kSVpUeWtSWmtmeXNhVlRDZDl6NFNtSTJ0Z3JWak5XbmVaQW40VHoycDlOSmp2TUJR?oc=5",
-    "news.google.com/rss/articles/CBMinAFBVV95cUxPVFFiZmRWVmxZNDlVRnR1NHVQNkprRUhWMnNLMHFLWC1qdGljTm9ON2Z3U2FuXzNUcjRwRmNqMFZVemE4TVA1RVhRdl9paUtyMXJoYWhHbVl5d1FfNWZIZTVVU0IwcDQ0eHlnWGxxWEFhZjdkVko1a1hwY25XWE9uc3Q0MkIyaHpCWkNuZk05SGs1ck5DTFV4ZktQNWo?oc=5",
-    "news.google.com/rss/articles/CBMipAFBVV95cUxNZ2w1T3kyVkk0S293TlNCS1dHaWhMS0F3cUFjUTA1dkVudUZ2WmpvZnNXQnhOOXNUYzloY0huYjBlRUJVaW13UUFLY0t4Q05kYmpMUnY4NFhmbXBMOFVhazlZaTJ5Q21qeEhNM3BGMFNjYU1MUGNVRVBBQjhtXy1fSGNuSElvaWZnTTFpR3Ric0FtMlBub1VMWF9YR1lPRGpCUno2dQ?oc=5",
-    "title:asian shares mostly slip as nvidia s troubles weigh on ai stocks despite a rally on wall st"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-11-12T11:18:09.690297+00:00",
    "keys": [
     "openai.com/business/customer-stories/holidays-extras-codex",
@@ -169,6 +159,14 @@
     "title:fallout from the nvidia scandal may dampen the exuberance around the ai boom"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-11-13T07:18:08.719282+00:00",
+   "keys": [
+    "title:nvidia employees petition to bring back jensen huang",
+    "wired.com/story/nvidia-employees-petition-for-jensen-huangs-return"
+   ],
+   "strength": 4
   }
  ],
  "undated": {
