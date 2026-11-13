@@ -30,24 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-12T14:18:11.885964+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/geforce-now-thursday-warhammer-dawn-of-war-iv-coming",
-    "title:a new dawn in the cloud warhammer 40 000 dawn of war iv is coming to geforce now"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-12T15:18:12.243311+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMi9AFBVV95cUxNZEtWc3Vob245NERrZk91RzlDb1FTSmNkX1Ywdk03RE1meHZnRl9qMjJjcTRQTW5UZE5VZXhETzJsbEZncjNTYU1ONmNPcEF0Y25rZi1RM1ZZbHlVVkdlRklxTVhzOTZfVDRTY3h6d1A1SGhzcHAyNDQwWGljU1g3WWNxbUNnalZwdWtuUk94YTNvNmpLS1U5Z2g2UWI1RjFEU1o4MXhVd2p1SDJzZDFhNHlNSE5kNk1UdGg2MXBIVTFWNmcxdHJKdGVMVXphQXlYWjNaWGl2bWFCQUs1YXJqSTZFOEREOVItczBMY1BvY2ZEbl9x?oc=5",
-    "news.google.com/rss/articles/CBMijwJBVV95cUxNRkplbDBfMkZqdFZHdVVzNmV5N2ZFalRjUnl1SVpPUUpmZTJxd19yUFZwU0dGNldMQ1piOVE5akhrSmRYdFNEbm1GbGdvN3ktQUVOZnYyQ0JGdnkxSG0ta2VGM0pSYnRKRlNfOWtYcm1xbVdENVoycXVOM3Vja21IRVlpV0UydHhHYlk3R1BoZDlwQTcwampVa25uNjFWWjVKVl84NjFtXzZhcEg3NlRUMzIzSmExZkpVTndIUWZfemN6VTNJSElmVExGb0tIUmFPN2pPdWtaeEpRWFhfWlZRNnZONG1Wb3A2Q294TjVCYi1yeXFmN2lDTnpjQkhSZmlMYjIwc1hfajZqYllnaWE0?oc=5",
-    "news.google.com/rss/articles/CBMitwFBVV95cUxPWlhsTHNDTHF2Tm40NmUyd01iY2FGODNUWWFCaElZS0o1Sy1JYmdLdTJjZnE4QkNfLWIyU1NXVXRlZTBCVmhqSDh3WHVrSmxMNHVfMEZhLXRWUjF5XzlFSDBiN0RiVEYtcDA2SGNNTTdVYVIxcTlGOEN2QXdWQXhzd0pNbk1ia09RVGdtdUcyUjFsb0hOalVNZXlVUHY1NjNyaUpYT2FTTkozUHhCaTRfY19DRFYzUGs?oc=5",
-    "title:advocacy groups sue ai giants to freeze new models warning of catastrophic risks"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-11-12T17:18:25.401128+00:00",
    "keys": [
     "ipo.anthropic.com/us",
