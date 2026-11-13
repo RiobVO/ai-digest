@@ -549,5 +549,6 @@
 {"at": "2026-11-13T17:18:24Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-11-13T18:18:29Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-11-13T19:18:26Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [{"at": "2026-11-13T19:18:25Z", "call": "triage", "asked": "gemini-3.5-flash-lite", "served": "gemini-3.5-flash-lite", "status": 200, "seconds": 1.0, "thinking": 0, "error": ""}], "failed": {}, "sources": {}, "events": {}},
-{"at": "2026-11-13T20:18:35Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {"gnews_ai": "HTTPStatusError"}, "sources": {}, "events": {}}
+{"at": "2026-11-13T20:18:35Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {"gnews_ai": "HTTPStatusError"}, "sources": {}, "events": {}},
+{"at": "2026-11-13T21:18:25Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [{"at": "2026-11-13T21:18:24Z", "call": "triage", "asked": "gemini-3.5-flash-lite", "served": "gemini-3.5-flash-lite", "status": 200, "seconds": 1.0, "thinking": 0, "error": ""}], "failed": {}, "sources": {}, "events": {}}
 ]
