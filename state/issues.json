@@ -1,5 +1,79 @@
 [
  {
+  "date": "2026-11-13",
+  "slot": "morning",
+  "headline": "Nvidia без Хуанга, Gemini 4 Hydrogen, атаки на GitHub и ScreenConnect",
+  "page": "2026-11-13.html",
+  "entries": [
+   {
+    "id": "20261113-0",
+    "title": "Дженсен Хуанг ушёл с поста главы Nvidia из-за романов, один с подозреваемой в шпионаже",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/jensen-huang-resigns-as-nvidia-ceo-after-espionage-scandal-wipes-out-1-4-trillion-in-market-value/",
+    "story": "s310"
+   },
+   {
+    "id": "20261113-1",
+    "title": "Google выкатила Gemini 4 Hydrogen: почти как Claude Sonnet 5.5, но дешевле",
+    "section": "model",
+    "source": "deepmind",
+    "url": "https://deepmind.google/blog/introducing-gemini-4-hydrogen/",
+    "story": "s357"
+   },
+   {
+    "id": "20261113-2",
+    "title": "Кампания wfx-loot прощупала 61 764 репозитория через 4837 захваченных аккаунтов",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/hackers-compromise-4-800-github-accounts-to-steal-cloud-credentials/",
+    "story": "s355"
+   },
+   {
+    "id": "20261113-3",
+    "title": "В ноябрьском патче Microsoft закрыто 1200+ дыр, включая 0-day в Outlook",
+    "section": "security",
+    "source": "xakep",
+    "url": "https://xakep.ru/2026/11/12/november-2026-patches/",
+    "story": "s337"
+   },
+   {
+    "id": "20261113-4",
+    "title": "Через ScreenConnect червь SCKit лезет от клиентов к MSP-техникам",
+    "section": "security",
+    "source": "the_record",
+    "url": "https://therecord.media/connectwise-screenconnect-breaches-third-party-tool",
+    "story": "s358"
+   },
+   {
+    "id": "20261113-5",
+    "title": "Claude Meetings: Claude заходит в Google Meet и пишет протокол и доски",
+    "section": "product",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/claude-meetings-lets-anthropics-ai-join-your-video-calls/",
+    "story": "s359"
+   },
+   {
+    "id": "20261113-6",
+    "title": "Переменная CLAUDE_CODE_DISABLE_AGENT_PROGRESS_SUMMARIES=1 — меньше лишних запросов от субагентов",
+    "section": "tips",
+    "source": "gh_claude_code",
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.323",
+    "story": "",
+    "summary": "Обнови Claude Code до версии 2.1.323 (переменная доступна с 2.1.318) и задай переменную окружения CLAUDE_CODE_DISABLE_AGENT_PROGRESS_SUMMARIES со значением 1 до запуска claude.",
+    "why": "Отключает сводки прогресса субагентов и запросы, которые их пишут, поэтому лишних запросов и расхода становится меньше.",
+    "copy": "CLAUDE_CODE_DISABLE_AGENT_PROGRESS_SUMMARIES",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Переменная CLAUDE_CODE_DISABLE_AGENT_PROGRESS_SUMMARIES появилась в версии 2.1.318, а в релизе 2.1.323 её описали в списке добавлений.",
+     "Шаг 1: обнови Claude Code до версии 2.1.323.",
+     "Значение 1 отключает сводки прогресса субагентов и запросы, которые их пишут."
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-11-12",
   "slot": "evening",
   "headline": "Nvidia, Anthropic и атаки через CI и N-central",
