@@ -21,14 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-12T21:18:14.397516+00:00",
-   "keys": [
-    "openai.com/index/amplitude",
-    "title:how amplitude ships product improvements in 1 2 days with openai"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-12T23:18:14.090603+00:00",
    "keys": [
     "news.ycombinator.com/item?id=50471668",
@@ -104,6 +96,14 @@
     "twitter.com/LibreOffice/status/2121205272479998268"
    ],
    "strength": 7
+  },
+  {
+   "at": "2026-11-13T22:18:09.565176+00:00",
+   "keys": [
+    "fly.faa.gov/adv/adv_otherdis?adv_date=11132026&advn=111",
+    "title:faa issues national ground stop"
+   ],
+   "strength": 6
   }
  ],
  "undated": {
