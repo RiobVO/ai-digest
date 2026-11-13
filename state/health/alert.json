@@ -532,5 +532,6 @@
 {"at": "2026-11-13T00:18:26Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [{"at": "2026-11-13T00:18:21Z", "call": "triage", "asked": "gemini-3.5-flash-lite", "served": "gemini-3.5-flash-lite", "status": 200, "seconds": 0.9, "thinking": 0, "error": ""}, {"at": "2026-11-13T00:18:22Z", "call": "alert", "asked": "claude-haiku-5-5", "served": "claude-haiku-5-5", "status": 200, "seconds": 4.0, "thinking": 0, "error": ""}], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-11-13T01:18:27Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-11-13T02:18:21Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
-{"at": "2026-11-13T03:18:20Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}}
+{"at": "2026-11-13T03:18:20Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
+{"at": "2026-11-13T04:18:34Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}}
 ]
