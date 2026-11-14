@@ -1,5 +1,61 @@
 [
  {
+  "date": "2026-11-14",
+  "slot": "morning",
+  "headline": "Уход Хуанга из Nvidia, Fable 5.2 и атаки на шлюзы и CI",
+  "page": "2026-11-14.html",
+  "entries": [
+   {
+    "id": "20261114-0",
+    "title": "Дженсен Хуанг ушёл с поста главы Nvidia после скандала с романами",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.reuters.com/world/china/ex-nvidia-ceo-misled-top-lawyer-affair-with-chinese-businesswoman-sources-say-2026-11-14/",
+    "story": "s310"
+   },
+   {
+    "id": "20261114-1",
+    "title": "Anthropic выпустила Fable 5.2 и закрытую Mythos 5.2 для кибербезопасности",
+    "section": "model",
+    "source": "reddit",
+    "url": "https://www.reddit.com/r/ClaudeAI/comments/1xvbe0t/claude_fable_52_just_topped_the_artificial/",
+    "story": "s322"
+   },
+   {
+    "id": "20261114-2",
+    "title": "Вылеты в США встали на четыре часа из-за сбоя связи диспетчеров",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://www.axios.com/2026/11/13/faa-nationwide-ground-stop",
+    "story": "s363"
+   },
+   {
+    "id": "20261114-3",
+    "title": "Через PHP2Shell взламывают Check Point Gateway и стирают данные на ESXi",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/check-point-gateways-hacked-via-php2shell-to-deploy-vmware-esxi-wiper/",
+    "story": "s305"
+   },
+   {
+    "id": "20261114-4",
+    "title": "ChatGPT научили платить: агенты покупают только с твоего подтверждения",
+    "section": "product",
+    "source": "openai",
+    "url": "https://openai.com/index/introducing-chatgpt-wallet",
+    "story": "s364"
+   },
+   {
+    "id": "20261114-5",
+    "title": "Кампания wfx-loot украла секреты у 1,8 тыс. целей через GitHub Actions",
+    "section": "security",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1107652/?utm_campaign=1107652&utm_source=habrahabr&utm_medium=rss",
+    "story": "s355"
+   }
+  ]
+ },
+ {
   "date": "2026-11-13",
   "slot": "evening",
   "headline": "Уход Хуанга из Nvidia, сбой Microsoft 365 и атаки на сетевое железо",
