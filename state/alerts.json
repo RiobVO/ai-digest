@@ -30,14 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-13T16:18:09.491946+00:00",
-   "keys": [
-    "openai.com/index/introducing-chatgpt-wallet",
-    "title:introducing chatgpt wallet"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-13T21:18:13.762800+00:00",
    "keys": [
     "title:libreoffice actually works 365 days a year",
