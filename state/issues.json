@@ -1,6 +1,108 @@
 [
  {
   "date": "2026-11-14",
+  "slot": "evening",
+  "headline": "Nvidia без Хуанга, Microsoft 365 снова работает, Claude пошёл в Google Meet",
+  "page": "2026-11-14-evening.html",
+  "entries": [
+   {
+    "id": "20261114-6",
+    "title": "Дженсен Хуанг ушёл из Nvidia, временным CEO стала финдиректор Колетт Кресс",
+    "section": "business",
+    "source": "bloomberg_tech",
+    "url": "https://www.bloomberg.com/news/videos/2026-11-14/nvidia-s-leadership-shakeup-tests-ai-chip-giant-video",
+    "story": "s310"
+   },
+   {
+    "id": "20261114-7",
+    "title": "Microsoft 365 снова работает после суток простоя, это был не взлом",
+    "section": "product",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/technology/2026/nov/14/microsoft-says-services-fully-restored-after-global-outage",
+    "story": "s360"
+   },
+   {
+    "id": "20261114-8",
+    "title": "Claude теперь заходит в Google Meet и ведёт протокол встречи",
+    "section": "product",
+    "source": "hn",
+    "url": "https://claude.com/resources/articles/claude-meetings",
+    "story": "s359"
+   },
+   {
+    "id": "20261114-9",
+    "title": "Uber подтвердила утечку данных водителей через подрядчика",
+    "section": "security",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1107802/?utm_campaign=1107802&utm_source=habrahabr&utm_medium=rss",
+    "story": "s365"
+   },
+   {
+    "id": "20261114-10",
+    "title": "Claude Code 2.1.323: экспериментальный Code Mode и закрепление версий плагинов",
+    "section": "dev",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xvw576/claude_code_21323_experimental_code_mode_claude/",
+    "story": "s366"
+   },
+   {
+    "id": "20261114-11",
+    "title": "Вымогатели берут ИИ-инструменты, хотя полностью автоматического ransomware пока нет",
+    "section": "security",
+    "source": "wired_ai",
+    "url": "https://www.wired.com/story/beware-the-new-ai-fueled-ransomware-boom/",
+    "story": "s367"
+   },
+   {
+    "id": "20261114-12",
+    "title": "Автор: после ухода Хуанга open source-ИИ придётся строить заново",
+    "section": "voices",
+    "source": "interconnects",
+    "url": "https://www.interconnects.ai/p/open-source-ai-without-jensen",
+    "story": ""
+   },
+   {
+    "id": "20261114-13",
+    "title": "Проекты в Claude: память только внутри проекта, клиентские чаты не смешиваются",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ChatGPTPro/comments/1xv88cr/projectonly_memory_for_client_work_one_project/",
+    "story": "",
+    "summary": "Открой настройки нужного проекта, раздел memory (project settings > memory), и переключи его на project-only memory. Делай так отдельно для каждого клиента.",
+    "why": "Проект перестаёт видеть сохранённую память и чаты вне себя, так что контекст одного клиента не утекает в другой.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "workflow",
+    "steps": [
+     "Открой настройки нужного проекта (project settings).",
+     "Перейди в раздел memory.",
+     "Переключи память на project-only memory, отдельно для каждого клиента."
+    ]
+   },
+   {
+    "id": "20261114-14",
+    "title": "Промпт, который находит забытые заглушки и черновые фразы в тексте перед отправкой файла",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/PromptEngineering/comments/1xvfuex/asking_the_model_to_find_leftover_placeholder/",
+    "story": "",
+    "summary": "Вставь текст в чат и добавь к нему промпт из записи: он просит только цитировать найденные фрагменты и не трогать текст.",
+    "why": "Модель выписывает подозрительные фрагменты дословно и ничего не переписывает, так что текст остаётся вашим.",
+    "copy": "list every sentence that looks like filler, a template, or a draft note, and quote it exactly. do not rewrite anything. if you find nothing, say that you found nothing.",
+    "copy_untrusted": true,
+    "topic": "prompts",
+    "steps": [
+     "Вставь текст из файла в чат.",
+     "Добавь инструкцию: перечислить каждое предложение, похожее на заглушку, шаблон или черновую пометку, и процитировать его дословно.",
+     "Добавь инструкцию: ничего не переписывать.",
+     "Добавь инструкцию: если ничего не найдено, так и написать.",
+     "Сверь каждую цитату с файлом; так на это уходит около минуты."
+    ]
+   }
+  ]
+ },
+ {
+  "date": "2026-11-14",
   "slot": "morning",
   "headline": "Уход Хуанга из Nvidia, Fable 5.2 и атаки на шлюзы и CI",
   "page": "2026-11-14.html",
