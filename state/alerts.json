@@ -30,22 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-13T13:18:13.144605+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/how-ai-is-helping-care-teams",
-    "title:how ai is helping care teams get patients the right care sooner"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-13T14:18:10.028242+00:00",
-   "keys": [
-    "status.claude.com/incidents/nn11wk485zfn",
-    "title:elevated errors on claude ai claude code and platform claude com"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-11-13T16:18:09.491946+00:00",
    "keys": [
     "openai.com/index/introducing-chatgpt-wallet",
