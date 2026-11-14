@@ -30,22 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-12T23:18:14.090603+00:00",
-   "keys": [
-    "news.ycombinator.com/item?id=50471668",
-    "title:ask hn microsoft azure outage"
-   ],
-   "strength": 4
-  },
-  {
-   "at": "2026-11-13T00:18:10.858375+00:00",
-   "keys": [
-    "status.cloud.microsoft",
-    "title:service degradation on microsoft 365"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-11-13T05:18:12.142211+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMiggJBVV95cUxNaDJZZHFjeUZDaUhDVFhramR5OV8tQ25pUEdibmFSRUs2djF4MjBjNjlqVzRlbWtERndlekwyeTB0U2xubXJVTFg3d2lvblZRTk41MW9IaVk5TDNCVXBQc2ctNVJtdnlUWVZUMW41NFlOaWluT2FvUDBxbTk4OUwtbGNlN1dHeWJXRVd5TE8ySW5aRUpFdFFsZHM5d0R2ZHF6R3FGU2ZnRE4zS0xqdGxfMXRsdXFhejFoMjg5ZGNIcm5XSTJYS1VlNzJvRHVkczFSbDBWVDVYY3k0UFhTRkgwZ1g1b2NDTmtTS21QMTUyeDgtdENOT3lSaFZCMFVWS0dNamc?oc=5",
