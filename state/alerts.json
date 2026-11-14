@@ -30,14 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-13T07:18:08.719282+00:00",
-   "keys": [
-    "title:nvidia employees petition to bring back jensen huang",
-    "wired.com/story/nvidia-employees-petition-for-jensen-huangs-return"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-11-13T13:18:13.144605+00:00",
    "keys": [
     "blogs.nvidia.com/blog/how-ai-is-helping-care-teams",
@@ -88,6 +80,14 @@
     "title:the nvidia scandal is heightening america s ai rivalry with china ahead of trump s visit"
    ],
    "strength": 5
+  },
+  {
+   "at": "2026-11-14T07:18:11.860281+00:00",
+   "keys": [
+    "techpowerup.com/354814/nvidia-allegedly-engineered-scarcity-by-funding-ai-startups-to-buy-its-gpus",
+    "title:nvidia allegedly engineered scarcity by funding ai startups to buy its gpus"
+   ],
+   "strength": 3
   }
  ],
  "undated": {
