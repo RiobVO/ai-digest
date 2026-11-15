@@ -1,5 +1,61 @@
 [
  {
+  "date": "2026-11-15",
+  "slot": "morning",
+  "headline": "Уход Хуанга из Nvidia, IPO Anthropic и вредное расширение Claude Code",
+  "page": "2026-11-15.html",
+  "entries": [
+   {
+    "id": "20261115-0",
+    "title": "Хуанг ушёл с поста главы Nvidia; петиция за его возвращение набрала 100 тыс. подписей",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.businessinsider.com/petition-reinstate-jensen-huang-nvidia-elon-musk-2026-11",
+    "story": "s310"
+   },
+   {
+    "id": "20261115-1",
+    "title": "Вредное расширение Claude Code попало в маркетплейс Cursor после взлома Fireworks AI",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/cursor-confirms-security-breach-led-to-malicious-claude-code-extension/",
+    "story": "s324"
+   },
+   {
+    "id": "20261115-2",
+    "title": "Anthropic перед рекордным IPO: обязательства на вычисления около $901 млрд",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/anthropic-ceo-amodei-admits-theres-a-huge-uncertainty-in-whats-going-to-happen-next-year-days-before-a-record-ipo/",
+    "story": "s282"
+   },
+   {
+    "id": "20261115-3",
+    "title": "Opus 5.5 стал моделью по умолчанию на всех платных тарифах Claude",
+    "section": "product",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/anthropic-says-outdated-prompting-habits-are-slowing-down-claude-opus-5-5/",
+    "story": "s368"
+   },
+   {
+    "id": "20261115-4",
+    "title": "В приложениях на Lovable утекли паспортные данные и 200 тысяч личных сообщений",
+    "section": "security",
+    "source": "hn_top",
+    "url": "https://www.crissyfield.de/research/lovable-en/",
+    "story": "s369"
+   },
+   {
+    "id": "20261115-5",
+    "title": "Италия оштрафовала Meta на €805 млн за доступ к фото и видео на Android",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.reuters.com/world/italy-fines-meta-887-million-over-android-users-data-access-2026-11-14/",
+    "story": "s370"
+   }
+  ]
+ },
+ {
   "date": "2026-11-14",
   "slot": "evening",
   "headline": "Nvidia без Хуанга, Microsoft 365 снова работает, Claude пошёл в Google Meet",
