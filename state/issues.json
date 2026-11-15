@@ -1,6 +1,62 @@
 [
  {
   "date": "2026-11-15",
+  "slot": "evening",
+  "headline": "Скандал Nvidia, IPO Anthropic и подмена Claude Code в Cursor",
+  "page": "2026-11-15-evening.html",
+  "entries": [
+   {
+    "id": "20261115-6",
+    "title": "Хуанг ушёл из Nvidia из-за романа, а теперь разбирают схему с чипами для Китая",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/firm-linked-to-jensen-huangs-ex-lover-reportedly-brokered-nearly-12-billion-in-nvidia-chip-orders-for-china/",
+    "story": "s310"
+   },
+   {
+    "id": "20261115-7",
+    "title": "Подменили расширение Claude Code в маркетплейсе Cursor: ключ утёк из взлома Fireworks AI",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/stolen-fireworks-ai-key-led-to-cursor.html",
+    "story": "s324"
+   },
+   {
+    "id": "20261115-8",
+    "title": "IPO Anthropic на $64 млрд пришлось на распродажу ИИ-акций",
+    "section": "business",
+    "source": "CNBC",
+    "url": "https://www.cnbc.com/2026/11/15/anthropic-ipo-is-make-or-break-for-the-technology-industry.html",
+    "story": "s282"
+   },
+   {
+    "id": "20261115-9",
+    "title": "Италия оштрафовала Meta на €805 млн за фото и видео с Android-телефонов",
+    "section": "business",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/technology/2026/nov/15/italy-fines-meta-887m-for-accessing-android-users-photos-and-videos",
+    "story": "s370"
+   },
+   {
+    "id": "20261115-10",
+    "title": "Фальшивая капча с клавишами ставит вредоносный софт на компьютер",
+    "section": "security",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/money/2026/nov/15/captcha-scam-computer-malicious-software",
+    "story": "s371"
+   },
+   {
+    "id": "20261115-11",
+    "title": "United Airlines и JPMorgan закрыли доступ внешним ИИ-агентам",
+    "section": "product",
+    "source": "BigGo Finance",
+    "url": "https://finance.biggo.com/news/c80793ec-2ad1-4fd3-ad42-4c8758ce48c8",
+    "story": "s349"
+   }
+  ]
+ },
+ {
+  "date": "2026-11-15",
   "slot": "morning",
   "headline": "Уход Хуанга из Nvidia, IPO Anthropic и вредное расширение Claude Code",
   "page": "2026-11-15.html",
