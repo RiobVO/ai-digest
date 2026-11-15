@@ -1,15 +1,6 @@
 {
  "sent": [
   {
-   "at": "2026-11-12T18:18:13.256607+00:00",
-   "day": "2026-11-12",
-   "title": "Google выкатила Gemini 4 Hydrogen — быструю модель для кода и агентов, доступную всем",
-   "keys": [
-    "deepmind.google/blog/introducing-gemini-4-hydrogen",
-    "title:introducing gemini 4 hydrogen"
-   ]
-  },
-  {
    "at": "2026-11-13T23:18:12.204119+00:00",
    "day": "2026-11-14",
    "title": "FAA остановила все вылеты с аэропортов США по соображениям безопасности",
@@ -72,12 +63,12 @@
    "strength": 3
   },
   {
-   "at": "2026-11-15T17:18:11.605317+00:00",
+   "at": "2026-11-15T19:18:12.591983+00:00",
    "keys": [
     "jakub.jankiewicz.org/blog/ai-code-open-source",
     "title:all ai generated code should be open source"
    ],
-   "strength": 4
+   "strength": 7
   }
  ],
  "undated": {
