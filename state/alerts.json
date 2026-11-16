@@ -112,6 +112,46 @@
     "title:new ask maps features to help with holiday travel and prep"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-11-16T16:18:14.079655+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/lambda-photonics",
+    "title:lambda boosts ai factory resiliency and efficiency with nvidia photonics"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-16T16:18:14.079655+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/slurm-quantum-computing-supercomputing",
+    "title:nvidia expands slurm to bring quantum computing into supercomputing"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-16T16:18:14.079655+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/mlperf-training-endpoints-vera-rubin",
+    "title:nvidia sweeps mlperf training and endpoints as vera rubin debuts with leading performance"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-16T16:18:14.079655+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/cuda-x-libraries-agents-accelerate-scientific-discovery",
+    "title:nvidia cuda x libraries give agents the tools to accelerate scientific discovery"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-16T16:18:14.079655+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/20-years-cuda",
+    "title:cuda at 20 how the platform transformed scientific computing"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
