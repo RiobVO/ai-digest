@@ -1,6 +1,62 @@
 [
  {
   "date": "2026-11-16",
+  "slot": "evening",
+  "headline": "Nvidia без Хуанга, Fable 5.2 и утечки из Claude Code",
+  "page": "2026-11-16-evening.html",
+  "entries": [
+   {
+    "id": "20261116-8",
+    "title": "Fable 5.2 меньше отказывается от security-задач, Mythos сильнее ищет баги",
+    "section": "model",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/artificial-intelligence/anthropics-claude-fable-52-blocks-fewer-security-tasks-while-mythos-gets-better-at-finding-bugs/",
+    "story": "s322"
+   },
+   {
+    "id": "20261116-9",
+    "title": "Маск и тысячи других просят вернуть Хуанга в Nvidia",
+    "section": "business",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/technology/2026/nov/16/elon-musk-tech-execs-open-letter-jensen-huang-return-nvidia-ceo",
+    "story": "s310"
+   },
+   {
+    "id": "20261116-10",
+    "title": "ИИ-агенты взломщиков охотятся за ключами к AI-приложениям",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/amazon-uncovers-ai-agent-campaign.html",
+    "story": "s376"
+   },
+   {
+    "id": "20261116-11",
+    "title": "Тысячи секретов утекли на GitHub через настройки Claude Code",
+    "section": "security",
+    "source": "xakep",
+    "url": "https://xakep.ru/2026/11/16/claude-code-leaks/",
+    "story": "s286"
+   },
+   {
+    "id": "20261116-12",
+    "title": "BO Team через Log4Shell в vCenter добралась до сервера подписи кода",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/bo-team-exploits-log4shell-in-vmware.html",
+    "story": "s377"
+   },
+   {
+    "id": "20261116-13",
+    "title": "Сбой Microsoft 365: виновата ошибка в июльском обновлении, не взлом",
+    "section": "product",
+    "source": "techmeme",
+    "url": "https://www.theregister.com/saas/2026/11/16/microsoft-blames-monster-email-outage-on-software-defect-introduced-in-july-fix/5310026",
+    "story": "s360"
+   }
+  ]
+ },
+ {
+  "date": "2026-11-16",
   "slot": "morning",
   "headline": "IPO Anthropic, Nvidia и ИИ-инструменты в атаках",
   "page": "2026-11-16.html",
