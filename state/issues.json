@@ -1,5 +1,97 @@
 [
  {
+  "date": "2026-11-16",
+  "slot": "morning",
+  "headline": "IPO Anthropic, Nvidia и ИИ-инструменты в атаках",
+  "page": "2026-11-16.html",
+  "entries": [
+   {
+    "id": "20261116-0",
+    "title": "Anthropic IPO собрала спрос почти в семь раз больше предложения",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.bloomberg.com/news/features/2026-11-15/anthropic-s-ipo-makes-dario-amodei-the-new-face-of-the-ai-boom",
+    "story": "s282"
+   },
+   {
+    "id": "20261116-1",
+    "title": "ФБР предупреждает: взломщики ставят ИИ-инструмент ARTEX на автоматические атаки",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/fbi-warns-artex-ai-hacking-tool-is-powering-global-cyberattacks/",
+    "story": "s372"
+   },
+   {
+    "id": "20261116-2",
+    "title": "Бессент требует от Nvidia внешнего CEO и ответа за 10 дней",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.bloomberg.com/news/articles/2026-11-15/bessent-says-nvidia-needs-dramatic-shakeup-after-huang-ouster",
+    "story": "s310"
+   },
+   {
+    "id": "20261116-3",
+    "title": "Claude Code без спроса открыл чужой конфиг и показал Google API-ключ",
+    "section": "security",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xx7ksq/risk_of_using_auto_claude_code_is_reading_config/",
+    "story": "s373"
+   },
+   {
+    "id": "20261116-4",
+    "title": "OpenAI распустила команду робототехники сразу после истории про зарплаты",
+    "section": "product",
+    "source": "eu.36kr.com",
+    "url": "https://eu.36kr.com/en/p/4071732882445193",
+    "story": "s374"
+   },
+   {
+    "id": "20261116-5",
+    "title": "У TSMC утекли данные сотрудников: 6,9 ГБ выставили на аукцион",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/tsmc-employee-data-breach-linked-to-cloud-provider/",
+    "story": "s375"
+   },
+   {
+    "id": "20261116-6",
+    "title": "Вернуть старое поведение Bash в песочнице: настройка sandbox.autoAllowBashIfSandboxed",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xwkvy3/claude_code_21325_sandboxed_bash_commands_now/",
+    "story": "",
+    "summary": "Открой settings.json Claude Code (если используешь managed-настройки, они имеют приоритет) и добавь sandbox.autoAllowBashIfSandboxed со значением true. Включай, только если доверяешь песочнице.",
+    "why": "Команды в песочнице снова идут без запроса разрешения, как раньше, и не прерывают работу.",
+    "copy": "",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Открой settings.json Claude Code.",
+     "Добавь в него ключ sandbox.autoAllowBashIfSandboxed.",
+     "Поставь значение true.",
+     "Если используешь managed-настройки, пропиши ключ в самом приоритетном источнике managed-настроек, потому что они имеют приоритет."
+    ]
+   },
+   {
+    "id": "20261116-7",
+    "title": "Правило для Claude: после двух неудачных правок стоп и разбор причины вместо третьей слепой попытки",
+    "section": "tips",
+    "source": "reddit_tips",
+    "url": "https://www.reddit.com/r/ClaudeCode/comments/1xwxl17/whats_your_rule_for_when_claude_fails_the_same/",
+    "story": "",
+    "summary": "Добавь эту фразу в CLAUDE.md проекта, чтобы правило работало в каждой сессии без повторного напоминания.",
+    "why": "Модель перестаёт переписывать код наугад и сначала называет причину и способ проверки.",
+    "copy": "After two failed attempts at the same problem, stop editing. Tell me what you think the cause is and how you'd check it before a third try.",
+    "copy_untrusted": true,
+    "topic": "prompts",
+    "steps": [
+     "Открой CLAUDE.md проекта.",
+     "Добавь в него фразу: After two failed attempts at the same problem, stop editing. Tell me what you think the cause is and how you'd check it before a third try."
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-11-15",
   "slot": "evening",
   "headline": "Скандал Nvidia, IPO Anthropic и подмена Claude Code в Cursor",
