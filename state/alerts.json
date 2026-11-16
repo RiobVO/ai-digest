@@ -12,14 +12,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-15T19:18:12.591983+00:00",
-   "keys": [
-    "jakub.jankiewicz.org/blog/ai-code-open-source",
-    "title:all ai generated code should be open source"
-   ],
-   "strength": 7
-  },
-  {
    "at": "2026-11-15T23:18:10.620528+00:00",
    "keys": [
     "openai.com/index/step-toward-defining-the-standard-model",
@@ -183,6 +175,14 @@
    "keys": [
     "openai.com/index/strengthening-online-child-safety",
     "title:strengthening the fight against online child sexual abuse with new tools and support"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-16T20:07:13.765406+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/ai-infrastructure-supply-chain",
+    "title:how the world s most advanced ai infrastructure supply chain invents the future"
    ],
    "strength": 1
   }
