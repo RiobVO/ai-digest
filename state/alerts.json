@@ -21,22 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-15T23:18:10.620528+00:00",
-   "keys": [
-    "openai.com/index/step-toward-defining-the-standard-model",
-    "title:a step toward defining the standard model on a lattice"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-15T23:18:10.620528+00:00",
-   "keys": [
-    "openai.com/index/our-new-blog-for-science",
-    "title:our new blog for science"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-16T00:18:11.441146+00:00",
    "keys": [
     "blogs.nvidia.com/blog/ai-day-seoul-wrapup",
@@ -192,6 +176,14 @@
    "keys": [
     "blogs.nvidia.com/blog/ai-infrastructure-supply-chain",
     "title:how the world s most advanced ai infrastructure supply chain invents the future"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-16T23:18:11.787666+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/dgx-spark-hpc-developer-kit-sc26",
+    "title:nvidia dgx spark developer kit turns a desk into a supercomputing lab"
    ],
    "strength": 1
   }
