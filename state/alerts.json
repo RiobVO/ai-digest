@@ -23,14 +23,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-16T14:18:30.440266+00:00",
-   "keys": [
-    "blog.google/products-and-platforms/products/maps/ask-maps-holiday-travel-features-2026",
-    "title:new ask maps features to help with holiday travel and prep"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-16T16:18:14.079655+00:00",
    "keys": [
     "blogs.nvidia.com/blog/lambda-photonics",
