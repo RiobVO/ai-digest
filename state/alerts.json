@@ -19,6 +19,15 @@
     "news.google.com/rss/articles/CBMimAFBVV95cUxQSEtLZEEySjcwRTBRLUtzbnVVSVliZ2tmOXgzWkFfMGl1RDBaWHFHM3c4RWJyN1NzR0tvSU5wX1Jqd2dWTWVUV0xyMU1vbFZmcF9xbzZBbjQ2M2xTZGp1ajJXbEhUNmFEakE0OWgxSUdhTE5BdGJucXFvelZ1ZTVmMjBzWDU3ek1vc0VDenJUV3hDNllUaGtRaA?oc=5",
     "title:us moves to cut china s remote access to ai chips"
    ]
+  },
+  {
+   "at": "2026-11-17T19:18:20.049154+00:00",
+   "day": "2026-11-18",
+   "title": "OpenAI показала GPT-6.2 Astra и Sol: лучше в работе, коде и на компьютере",
+   "keys": [
+    "openai.com/index/introducing-gpt-6-2-astra-sol",
+    "title:introducing gpt 6 2 astra and sol"
+   ]
   }
  ],
  "rejected": [
@@ -55,6 +64,14 @@
     "title:trump administration moves to block china from indirect access to american ai technology"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-11-17T19:18:20.049154+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/ian-buck-sc26",
+    "title:ian buck kicks off nvidia s week at sc26 as science enters the age of agents"
+   ],
+   "strength": 1
   }
  ],
  "undated": {

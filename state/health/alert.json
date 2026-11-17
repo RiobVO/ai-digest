@@ -643,5 +643,6 @@
 {"at": "2026-11-17T15:18:28Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-11-17T16:18:37Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-11-17T17:18:26Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
-{"at": "2026-11-17T18:18:25Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}}
+{"at": "2026-11-17T18:18:25Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
+{"at": "2026-11-17T19:18:39Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [{"at": "2026-11-17T19:18:30Z", "call": "triage", "asked": "gemini-3.5-flash-lite", "served": "gemini-3.5-flash-lite", "status": 200, "seconds": 0.9, "thinking": 0, "error": ""}, {"at": "2026-11-17T19:18:30Z", "call": "alert", "asked": "claude-haiku-5-5", "served": "claude-haiku-5-5", "status": 200, "seconds": 8.7, "thinking": 0, "error": ""}], "failed": {}, "sources": {}, "events": {}}
 ]
