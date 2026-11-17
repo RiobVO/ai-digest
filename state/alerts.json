@@ -28,17 +28,18 @@
     "openai.com/index/introducing-gpt-6-2-astra-sol",
     "title:introducing gpt 6 2 astra and sol"
    ]
+  },
+  {
+   "at": "2026-11-17T20:18:11.170431+00:00",
+   "day": "2026-11-18",
+   "title": "Google выкатила Gemini, который записывается на приёмы, платит по счетам и покупает продукты",
+   "keys": [
+    "blog.google/innovation-and-ai/products/gemini-app/tasks-in-gemini-free-new-features",
+    "title:put gemini to work for you"
+   ]
   }
  ],
  "rejected": [
-  {
-   "at": "2026-11-16T20:07:13.765406+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/ai-infrastructure-supply-chain",
-    "title:how the world s most advanced ai infrastructure supply chain invents the future"
-   ],
-   "strength": 1
-  },
   {
    "at": "2026-11-16T23:18:11.787666+00:00",
    "keys": [
