@@ -41,14 +41,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-16T23:18:11.787666+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/dgx-spark-hpc-developer-kit-sc26",
-    "title:nvidia dgx spark developer kit turns a desk into a supercomputing lab"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-17T00:18:24.477655+00:00",
    "keys": [
     "cs.cmu.edu/learn",
