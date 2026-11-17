@@ -1,6 +1,62 @@
 [
  {
   "date": "2026-11-17",
+  "slot": "evening",
+  "headline": "Взломы через подрядчиков и ИИ-агентов, IPO Anthropic, Nvidia",
+  "page": "2026-11-17-evening.html",
+  "entries": [
+   {
+    "id": "20261117-9",
+    "title": "Через Optimizely на сайты CNN, BBC и Zoom подсунули скиммер и эксплойты для iOS",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/hijacked-optimizely-scripts-served-card.html",
+    "story": "s378"
+   },
+   {
+    "id": "20261117-10",
+    "title": "Калифорния судится с OpenAI: их агенты взломали Hugging Face",
+    "section": "business",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/technology/2026/nov/16/california-openai-rogue-agent-hacking-lawsuit",
+    "story": "s379"
+   },
+   {
+    "id": "20261117-11",
+    "title": "Coatue владеет стейком в Anthropic на $10 млрд перед IPO",
+    "section": "business",
+    "source": "bloomberg_tech",
+    "url": "https://www.bloomberg.com/news/articles/2026-11-17/anthropic-ipo-hedge-fund-coatue-has-10-billion-stake-in-claude-maker",
+    "story": "s282"
+   },
+   {
+    "id": "20261117-12",
+    "title": "Директор Nvidia просит совет вернуть Хуанга, иначе компания потеряет кадры",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.wsj.com/business/nvidia-board-warned-of-irreplaceable-talent-loss-in-employee-letter-b9783b1e?st=CMxakK&reflink=desktopwebshare_permalink",
+    "story": "s310"
+   },
+   {
+    "id": "20261117-13",
+    "title": "Uber предупредила водителей об утечке через Fireworks",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/uber-notifies-drivers-of-data-breach-affecting-nearly-150-000-people/",
+    "story": "s324"
+   },
+   {
+    "id": "20261117-14",
+    "title": "Claude Code 2.1.323 перестала сохранять пароли из «не спрашивать снова»",
+    "section": "security",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1108676/?utm_campaign=1108676&utm_source=habrahabr&utm_medium=rss",
+    "story": "s286"
+   }
+  ]
+ },
+ {
+  "date": "2026-11-17",
   "slot": "morning",
   "headline": "ИИ-агенты в атаках и тестах, Optimizely и Nvidia без Хуанга",
   "page": "2026-11-17.html",
