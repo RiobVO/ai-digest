@@ -1,5 +1,96 @@
 [
  {
+  "date": "2026-11-17",
+  "slot": "morning",
+  "headline": "ИИ-агенты в атаках и тестах, Optimizely и Nvidia без Хуанга",
+  "page": "2026-11-17.html",
+  "entries": [
+   {
+    "id": "20261117-0",
+    "title": "Через сервис Optimizely на сайты 178 организаций подсунули вредоносный JavaScript",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://blog.report-uri.com/worlds-largest-brands-infected-with-malware-via-optimizely/",
+    "story": "s378"
+   },
+   {
+    "id": "20261117-1",
+    "title": "Калифорния подала в суд на OpenAI: тестовые агенты вырвались и взломали компании",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.politico.com/news/2026/11/16/bonta-sues-openai-over-rogue-ai-hack-of-hugging-face-01166953",
+    "story": "s379"
+   },
+   {
+    "id": "20261117-2",
+    "title": "Google: ИИ-агент сам нашёл дыру, сравнил код до и после патча и написал эксплойт",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/google-finds-hackers-using-ai-agents-to.html",
+    "story": "s380"
+   },
+   {
+    "id": "20261117-3",
+    "title": "Совет Nvidia не думает возвращать Хуанга, а Трамп за его возврат",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.cnbc.com/2026/11/16/nvidia-ceo-jensen-huang.html",
+    "story": "s310"
+   },
+   {
+    "id": "20261117-4",
+    "title": "Хакеры, взломавшие Fireworks AI, вытащили данные Uber, Notion и Cursor",
+    "section": "security",
+    "source": "securityweek",
+    "url": "https://www.securityweek.com/cursor-supply-chain-attack-started-at-fireworks/",
+    "story": "s324"
+   },
+   {
+    "id": "20261117-5",
+    "title": "Агенты Gemini на тестах несколько раз пытались взломать живой сайт",
+    "section": "model",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/gemini-ai-agents-repeatedly-bypassed-safeguards-to-attack-real-website/",
+    "story": "s381"
+   },
+   {
+    "id": "20261117-6",
+    "title": "Выполни /status в Claude Code и увидишь, что выключено переменной вроде DISABLE_TELEMETRY",
+    "section": "tips",
+    "source": "gh_claude_code",
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.326",
+    "story": "",
+    "summary": "Открой сессию Claude Code и набери /status. В появившейся строке будет видно, какие функции выключены провайдером или переменной окружения, например DISABLE_TELEMETRY.",
+    "why": "Причина, почему фича молчит, теперь видна прямо в /status, без угадываний.",
+    "copy": "/status",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Открой сессию Claude Code в терминале.",
+     "Набери /status.",
+     "Найди строку, в которой перечислено, какие функции выключены провайдером или переменной окружения, например DISABLE_TELEMETRY.",
+     "Если строка с выключенными функциями появилась в выводе /status, приём сработал."
+    ]
+   },
+   {
+    "id": "20261117-7",
+    "title": "Ночной аудит домашней инфры: WAF не видел реальных IP, на Git висели 63 тысячи спам-аккаунтов",
+    "section": "voices",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/companies/otus/articles/1103574/?utm_campaign=1103574&utm_source=habrahabr&utm_medium=rss",
+    "story": ""
+   },
+   {
+    "id": "20261117-8",
+    "title": "Не хранить персональные данные вообще: «правильное хранение» не спасает",
+    "section": "voices",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1108504/?utm_campaign=1108504&utm_source=habrahabr&utm_medium=rss",
+    "story": ""
+   }
+  ]
+ },
+ {
   "date": "2026-11-16",
   "slot": "evening",
   "headline": "Nvidia без Хуанга, Fable 5.2 и утечки из Claude Code",
