@@ -23,22 +23,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-16T17:18:09.506629+00:00",
-   "keys": [
-    "groundworkcollaborative.org/news/amazons-decoy-deals-groundwork-investigation-reveals-nearly-1-in-3-black-friday-and-cyber-monday-deals-advertised-by-amazon-offered-no-savings-to-shoppers-nearly-1-in-10-w",
-    "title:many of amazon s black friday and cyber monday deals offered no savings"
-   ],
-   "strength": 4
-  },
-  {
-   "at": "2026-11-16T17:18:09.506629+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/rubin-hpc",
-    "title:nvidia announces rubin hpc a new gpu to accelerate agents for science engineering and analytics"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-16T18:18:09.936056+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMid0FVX3lxTFBQY1F3MlV5UmdNdVFMYy03RjJJdUx3S0MwbWluSkFkMHpVZVFRZERWM1FvTTJBZ2JuSnlHSWhpREZjeDFtdUdFenc0X3lUYlcwUVhvdDY4UkdzbWFBTXlKQ3FUbjdlMEwzb0NfQk9mVHFWLVF4bUFR?oc=5",
