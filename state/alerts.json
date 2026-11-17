@@ -1,15 +1,6 @@
 {
  "sent": [
   {
-   "at": "2026-11-13T23:18:12.204119+00:00",
-   "day": "2026-11-14",
-   "title": "FAA остановила все вылеты с аэропортов США по соображениям безопасности",
-   "keys": [
-    "fly.faa.gov/adv/adv_otherdis?adv_date=11132026&advn=111",
-    "title:faa issues national ground stop"
-   ]
-  },
-  {
    "at": "2026-11-16T21:18:12.863402+00:00",
    "day": "2026-11-17",
    "title": "Онлайн-банкинг Bank of America, Chase и Wells Fargo сбоит: клиенты жалуются на доступ к счетам",
@@ -17,18 +8,20 @@
     "apnews.com/article/bank-outage-chase-wells-fargo-truist-50fee2693c22f597fa6ca51a97ef2cda",
     "title:customers of bofa chase wells fargo and other us banks report online service issues chase says a technical issue not a cyber issue is causing delays associated press"
    ]
+  },
+  {
+   "at": "2026-11-17T00:18:24.477655+00:00",
+   "day": "2026-11-17",
+   "title": "США закрывают для Китая доступ к ИИ-чипам через дата-центры в других странах",
+   "keys": [
+    "arstechnica.com/tech-policy/2026/11/us-moves-to-cut-chinas-remote-access-to-ai-chips",
+    "news.google.com/rss/articles/CBMihgFBVV95cUxOOFhmZVV3Z2ExYTlLTHIwbEt4SWF6eG9WbGs3REJqZ3N6cWxqRVMtVUlOaDJQSnRNbDBTel9wRExsaVhiOFl6azZGNWZSbWVBVnJuYmlwcEVmbUxzOGptYjk1VFVSWHlQcC10ZXN0SWJYLTZOZVg0ZzJ0cjQtNzY5VjFIY1NoZw?oc=5",
+    "news.google.com/rss/articles/CBMimAFBVV95cUxQSEtLZEEySjcwRTBRLUtzbnVVSVliZ2tmOXgzWkFfMGl1RDBaWHFHM3c4RWJyN1NzR0tvSU5wX1Jqd2dWTWVUV0xyMU1vbFZmcF9xbzZBbjQ2M2xTZGp1ajJXbEhUNmFEakE0OWgxSUdhTE5BdGJucXFvelZ1ZTVmMjBzWDU3ek1vc0VDenJUV3hDNllUaGtRaA?oc=5",
+    "title:us moves to cut china s remote access to ai chips"
+   ]
   }
  ],
  "rejected": [
-  {
-   "at": "2026-11-16T00:18:11.441146+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/ai-day-seoul-wrapup",
-    "news.google.com/rss/articles/CBMiSEFVX3lxTFBFeFdid2ZPZ3ZNMHd3NGdYLTNvYzlMTElHdEh0clRZYmpOek5tUTcwbl84ZzFZcGJmR2QxR3YyRGZvOUJ1NGRDZA?oc=5",
-    "title:ai day seoul brings together korea s industry leaders startups and developer communities"
-   ],
-   "strength": 2
-  },
   {
    "at": "2026-11-16T02:18:11.744176+00:00",
    "keys": [
@@ -186,6 +179,24 @@
     "title:nvidia dgx spark developer kit turns a desk into a supercomputing lab"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-11-17T00:18:24.477655+00:00",
+   "keys": [
+    "cs.cmu.edu/learn",
+    "title:carnegie mellon is putting computer science courses on youtube for free"
+   ],
+   "strength": 5
+  },
+  {
+   "at": "2026-11-17T00:18:24.477655+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMimAFBVV95cUxQblVXOTh3a2FNSnhjQ2Jjb3I5TF9xT3plWFZHQnBrV214YXZyQ0pCdlBySVZEd2dLM292elBfMEVQSjNWSXdGaTB1NGRTSEtzMnQxeG0xcDBVdGhxM0h5X0N2emVOUHdKdzNubjB3dEY0bXUzRUtvZzBhbzZrWkhZejZjbzVRVll4VlczR0d0ekZydnIxVWZnLQ?oc=5",
+    "news.google.com/rss/articles/CBMirAFBVV95cUxONGJmTGhQa3FRRDZtX3BqVk9SNlc1aHZ1QXZiUXdHMmlmZmdyUjFKS0hrREM1OFRrVDVjUGpSWnZfVTEtdlozVHVDc0h5Rld1cGVKQTFGYzVZOGJMdDNheWdEcFRhakxCVW1xcnQ3VHBzS2lRdWNPTGdtUkNxNVRnT1JUVzVKNzRXUlNuLUtBOVk2REZnZjMySER5NmhfNTliRjZsZ3B5TElrN0JU?oc=5",
+    "securityweek.com/trump-administration-moves-to-block-china-from-indirect-access-to-american-ai-technology",
+    "title:trump administration moves to block china from indirect access to american ai technology"
+   ],
+   "strength": 3
   }
  ],
  "undated": {
