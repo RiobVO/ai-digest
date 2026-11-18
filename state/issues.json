@@ -1,5 +1,87 @@
 [
  {
+  "date": "2026-11-18",
+  "slot": "morning",
+  "headline": "GPT-6.2 Astra, IPO Anthropic, Nvidia без Хуанга и ИИ-атаки",
+  "page": "2026-11-18.html",
+  "entries": [
+   {
+    "id": "20261118-0",
+    "title": "OpenAI выкатила GPT-6.2 Astra и Sol: Astra для тяжёлых задач, Sol для каждодневной работы",
+    "section": "model",
+    "source": "openai",
+    "url": "https://openai.com/index/introducing-gpt-6-2-astra-sol",
+    "story": "s382"
+   },
+   {
+    "id": "20261118-1",
+    "title": "Через Optimizely на сайты BBC, CNN и Zoom подсунули вредонос",
+    "section": "security",
+    "source": "ars_security",
+    "url": "https://arstechnica.com/security/2026/11/malicious-code-delivered-through-optimizely-hits-visitors-to-hundreds-of-sites/",
+    "story": "s378"
+   },
+   {
+    "id": "20261118-2",
+    "title": "Anthropic выходит на биржу: Amazon и Google вместе получат почти 30%",
+    "section": "business",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/11/17/amazon-and-google-will-together-own-nearly-30-of-anthropic-after-its-ipo/",
+    "story": "s282"
+   },
+   {
+    "id": "20261118-3",
+    "title": "Совет Nvidia не возвращает Хуанга, хотя сам Хуанг готов вернуться",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.theverge.com/report/1035465/nvidia-says-it-will-not-reinstate-jensen-huang-as-ceo?view_token=eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjA3cFNpbDJCT1MiLCJwIjoiL3JlcG9ydC8xMDM1NDY1L252aWRpYS1zYXlzLWl0LXdpbGwtbm90LXJlaW5zdGF0ZS1qZW5zZW4taHVhbmctYXMtY2VvIiwiZXhwIjoxNzk1Mzg1NDc1LCJpYXQiOjE3OTQ5NTM0NzV9.PWMNbp8LvjiIh6EH1gdv9OqWZ7SGbuRwywWf6K983Vg&utm_medium=gift-link",
+    "story": "s310"
+   },
+   {
+    "id": "20261118-4",
+    "title": "В OpenJDK нашли RCE Java4Shell: бьёт по Jenkins, Jira и Confluence",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/critical-java4shell-flaw-allows-rce-attacks-on-major-java-applications/",
+    "story": "s383"
+   },
+   {
+    "id": "20261118-5",
+    "title": "Взломщики запускают ИИ-агентов, которые сами ищут дыры и бьют по ним",
+    "section": "security",
+    "source": "the_record",
+    "url": "https://therecord.media/chinese-state-group-developing-automated-attack-tool-espionage",
+    "story": "s380"
+   },
+   {
+    "id": "20261118-6",
+    "title": "Песочницы для агентов, которые пишут код: выносим выполнение наружу",
+    "section": "voices",
+    "source": "simon_willison",
+    "url": "https://simonwillison.net/2026/Nov/17/external-sandboxes-for-coding-agents/",
+    "story": ""
+   },
+   {
+    "id": "20261118-7",
+    "title": "Claude Code: передай MCP-токен через stdin, и он не попадёт в командную строку",
+    "section": "tips",
+    "source": "gh_claude_code",
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.327",
+    "story": "",
+    "summary": "Запусти команду в обычном терминале, а не внутри открытой сессии Claude Code, там её нет. Вместо <name> подставь имя сервера и передай JSON с токеном на вход: дефис в конце означает чтение со стдина.",
+    "why": "Токены остаются вне командной строки, потому что JSON сервера читается со стандартного ввода.",
+    "copy": "claude mcp add-json <name> -",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Открой обычный терминал, а не сессию Claude Code: в ней эта команда недоступна.",
+     "Запусти claude mcp add-json <name> -, вместо <name> подставив имя сервера.",
+     "Дефис в конце означает, что JSON сервера с токеном читается со стдина: вставь в ввод JSON с токеном."
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-11-17",
   "slot": "evening",
   "headline": "Взломы через подрядчиков и ИИ-агентов, IPO Anthropic, Nvidia",
