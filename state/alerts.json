@@ -50,14 +50,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-17T19:18:20.049154+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/ian-buck-sc26",
-    "title:ian buck kicks off nvidia s week at sc26 as science enters the age of agents"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-18T19:18:11.144663+00:00",
    "keys": [
     "deepmind.google/blog/genie-4-is-now-available",
@@ -80,6 +72,14 @@
     "title:nvidia rtx spark compact desktops out now"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-11-18T20:18:14.819638+00:00",
+   "keys": [
+    "microsoft.ai/news/microsoft-ignite-2026",
+    "title:seven new models at scalable price performance"
+   ],
+   "strength": 3
   }
  ],
  "undated": {
