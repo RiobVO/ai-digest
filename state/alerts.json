@@ -37,6 +37,15 @@
     "blog.google/innovation-and-ai/products/gemini-app/tasks-in-gemini-free-new-features",
     "title:put gemini to work for you"
    ]
+  },
+  {
+   "at": "2026-11-18T19:18:11.144663+00:00",
+   "day": "2026-11-19",
+   "title": "В NGINX нашли две критичные дыры: захват сервера без пароля через HTTP/2",
+   "keys": [
+    "title:unauthenticated remote code execution in nginx cve 2026 123633 cve 2026 123007",
+    "wiz.io/blog/nginx-http2-rce-vulnerabilities"
+   ]
   }
  ],
  "rejected": [
@@ -45,6 +54,30 @@
    "keys": [
     "blogs.nvidia.com/blog/ian-buck-sc26",
     "title:ian buck kicks off nvidia s week at sc26 as science enters the age of agents"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-18T19:18:11.144663+00:00",
+   "keys": [
+    "deepmind.google/blog/genie-4-is-now-available",
+    "title:genie 4 is now available"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-18T19:18:11.144663+00:00",
+   "keys": [
+    "blog.google/innovation-and-ai/products/gemini-app/gemini-lower-memory-devices",
+    "title:the gemini app is now available on lower memory android devices"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-18T19:18:11.144663+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/rtx-spark-desktop-local-ai-available-now",
+    "title:nvidia rtx spark compact desktops out now"
    ],
    "strength": 1
   }
