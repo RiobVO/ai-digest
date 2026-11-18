@@ -46,6 +46,15 @@
     "title:unauthenticated remote code execution in nginx cve 2026 123633 cve 2026 123007",
     "wiz.io/blog/nginx-http2-rce-vulnerabilities"
    ]
+  },
+  {
+   "at": "2026-11-18T22:18:15.168513+00:00",
+   "day": "2026-11-19",
+   "title": "Google выпустила Gemini 4 Neon: API, AI Studio и приложение Gemini",
+   "keys": [
+    "deepmind.google/blog/introducing-gemini-4-neon",
+    "title:introducing gemini 4 neon"
+   ]
   }
  ],
  "rejected": [
