@@ -1,6 +1,62 @@
 [
  {
   "date": "2026-11-18",
+  "slot": "evening",
+  "headline": "Anthropic к IPO, Java4Shell и малварь через Optimizely",
+  "page": "2026-11-18-evening.html",
+  "entries": [
+   {
+    "id": "20261118-8",
+    "title": "Java4Shell: в OpenJDK дыра, через которую берут Jenkins и Jira",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/java4shell-cve-2026-114938-enables-pre.html",
+    "story": "s384"
+   },
+   {
+    "id": "20261118-9",
+    "title": "Malware через Optimizely уже на 178 сайтах: CNN, BBC, Zoom",
+    "section": "security",
+    "source": "xakep",
+    "url": "https://xakep.ru/2026/11/18/optimizely-hack/",
+    "story": "s378"
+   },
+   {
+    "id": "20261118-10",
+    "title": "В PyPI пакет agent-framework от Microsoft заразили стилером",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/attackers-compromise-microsofts-agent.html",
+    "story": "s385"
+   },
+   {
+    "id": "20261118-11",
+    "title": "Перед IPO Anthropic: ранние фонды могут заработать $100 млрд",
+    "section": "business",
+    "source": "sifted",
+    "url": "https://sifted.eu/articles/anthropic-ipo-puts-europe-ai-boom-to-the-test/",
+    "story": "s282"
+   },
+   {
+    "id": "20261118-12",
+    "title": "Astra от OpenAI на 20–600% дешевле, но отзывы на неё разошлись",
+    "section": "model",
+    "source": "latent_space",
+    "url": "https://latent.space/p/ainews-gpt-6-2-astra-the-2-frontier-model-is-better-and-20-600-cheaper-but-has-mixed-reviews-6-2-sol/",
+    "story": "s382"
+   },
+   {
+    "id": "20261118-13",
+    "title": "Nvidia: Хуанга не вернут, а выручка за квартал выше ожиданий",
+    "section": "business",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/technology/2026/nov/17/nvidia-third-quarter-revenue-jensen-huang",
+    "story": "s310"
+   }
+  ]
+ },
+ {
+  "date": "2026-11-18",
   "slot": "morning",
   "headline": "GPT-6.2 Astra, IPO Anthropic, Nvidia без Хуанга и ИИ-атаки",
   "page": "2026-11-18.html",

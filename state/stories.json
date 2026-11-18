@@ -1,5 +1,5 @@
 {
- "next": 384,
+ "next": 386,
  "stories": {
   "s9": {
    "name": "Финансы и IPO Anthropic",
@@ -3467,6 +3467,12 @@
      "title": "Anthropic выходит на биржу: Amazon и Google вместе получат почти 30%",
      "entry": "20261118-2",
      "issue": "2026-11-18.html"
+    },
+    {
+     "date": "2026-11-18",
+     "title": "Перед IPO Anthropic: ранние фонды могут заработать $100 млрд",
+     "entry": "20261118-11",
+     "issue": "2026-11-18-evening.html"
     }
    ]
   },
@@ -3913,6 +3919,12 @@
      "title": "Совет Nvidia не возвращает Хуанга, хотя сам Хуанг готов вернуться",
      "entry": "20261118-3",
      "issue": "2026-11-18.html"
+    },
+    {
+     "date": "2026-11-18",
+     "title": "Nvidia: Хуанга не вернут, а выручка за квартал выше ожиданий",
+     "entry": "20261118-13",
+     "issue": "2026-11-18-evening.html"
     }
    ]
   },
@@ -4799,6 +4811,12 @@
      "title": "Через Optimizely на сайты BBC, CNN и Zoom подсунули вредонос",
      "entry": "20261118-1",
      "issue": "2026-11-18.html"
+    },
+    {
+     "date": "2026-11-18",
+     "title": "Malware через Optimizely уже на 178 сайтах: CNN, BBC, Zoom",
+     "entry": "20261118-9",
+     "issue": "2026-11-18-evening.html"
     }
    ]
   },
@@ -4855,6 +4873,12 @@
      "title": "OpenAI выкатила GPT-6.2 Astra и Sol: Astra для тяжёлых задач, Sol для каждодневной работы",
      "entry": "20261118-0",
      "issue": "2026-11-18.html"
+    },
+    {
+     "date": "2026-11-18",
+     "title": "Astra от OpenAI на 20–600% дешевле, но отзывы на неё разошлись",
+     "entry": "20261118-12",
+     "issue": "2026-11-18-evening.html"
     }
    ]
   },
@@ -4866,6 +4890,28 @@
      "title": "В OpenJDK нашли RCE Java4Shell: бьёт по Jenkins, Jira и Confluence",
      "entry": "20261118-4",
      "issue": "2026-11-18.html"
+    }
+   ]
+  },
+  "s384": {
+   "name": "Java4Shell в OpenJDK",
+   "events": [
+    {
+     "date": "2026-11-18",
+     "title": "Java4Shell: в OpenJDK дыра, через которую берут Jenkins и Jira",
+     "entry": "20261118-8",
+     "issue": "2026-11-18-evening.html"
+    }
+   ]
+  },
+  "s385": {
+   "name": "Стилер в agent-framework",
+   "events": [
+    {
+     "date": "2026-11-18",
+     "title": "В PyPI пакет agent-framework от Microsoft заразили стилером",
+     "entry": "20261118-10",
+     "issue": "2026-11-18-evening.html"
     }
    ]
   }
