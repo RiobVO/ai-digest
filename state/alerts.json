@@ -41,24 +41,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-17T00:18:24.477655+00:00",
-   "keys": [
-    "cs.cmu.edu/learn",
-    "title:carnegie mellon is putting computer science courses on youtube for free"
-   ],
-   "strength": 5
-  },
-  {
-   "at": "2026-11-17T00:18:24.477655+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMimAFBVV95cUxQblVXOTh3a2FNSnhjQ2Jjb3I5TF9xT3plWFZHQnBrV214YXZyQ0pCdlBySVZEd2dLM292elBfMEVQSjNWSXdGaTB1NGRTSEtzMnQxeG0xcDBVdGhxM0h5X0N2emVOUHdKdzNubjB3dEY0bXUzRUtvZzBhbzZrWkhZejZjbzVRVll4VlczR0d0ekZydnIxVWZnLQ?oc=5",
-    "news.google.com/rss/articles/CBMirAFBVV95cUxONGJmTGhQa3FRRDZtX3BqVk9SNlc1aHZ1QXZiUXdHMmlmZmdyUjFKS0hrREM1OFRrVDVjUGpSWnZfVTEtdlozVHVDc0h5Rld1cGVKQTFGYzVZOGJMdDNheWdEcFRhakxCVW1xcnQ3VHBzS2lRdWNPTGdtUkNxNVRnT1JUVzVKNzRXUlNuLUtBOVk2REZnZjMySER5NmhfNTliRjZsZ3B5TElrN0JU?oc=5",
-    "securityweek.com/trump-administration-moves-to-block-china-from-indirect-access-to-american-ai-technology",
-    "title:trump administration moves to block china from indirect access to american ai technology"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-11-17T19:18:20.049154+00:00",
    "keys": [
     "blogs.nvidia.com/blog/ian-buck-sc26",
