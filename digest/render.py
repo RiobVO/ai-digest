@@ -198,12 +198,18 @@ PAGE_SCRIPT = """<script>
   function refit() { fitDate(); measure(); onScroll(); }
   // Под открытым листом страница стоит на месте: на касаниях html не запирается (см. page.html), а прокрутить её
   // можно и без жеста — тап по строке состояния iPhone возвращает страницу к началу. Чужую прокрутку откатываем
-  let tick = false, held = null;
+  // Держим не число пикселей, а новость: поворот телефона или смена ширины окна перевёрстывают страницу,
+  // и прежняя позиция пришлась бы на другую новость
+  let tick = false, held = null, heldEl = null, heldOff = 0;
+  const hold = el => { heldEl = el; heldOff = el.getBoundingClientRect().top; held = scrollY; };
   addEventListener("scroll", () => {
     if (held !== null && Math.abs(scrollY - held) > 1) { scrollTo({top: held, behavior: "instant"}); return; }
     hideTip(); if (tick) return; tick = true; requestAnimationFrame(() => { tick = false; onScroll(); });
   }, {passive: true});
-  addEventListener("resize", refit);
+  addEventListener("resize", () => {
+    refit();
+    if (held !== null) { held = scrollY + heldEl.getBoundingClientRect().top - heldOff; scrollTo({top: held, behavior: "instant"}); }
+  });
   document.addEventListener("visibilitychange", arm);
   root.classList.add("fly"); refit();
   document.fonts.ready.then(refit);
@@ -216,7 +222,7 @@ PAGE_SCRIPT = """<script>
     $("sh-k").textContent = kicker; if (from) t.innerHTML = from.innerHTML; else t.textContent = title;
     t.style.cssText = ""; shBody.replaceChildren(...nodes); shBody.scrollTop = 0;
     opener = document.activeElement;
-    sheet.hidden = scrim.hidden = false; root.classList.add("locked"); deck.inert = true; held = scrollY;
+    sheet.hidden = scrim.hidden = false; root.classList.add("locked"); deck.inert = true; hold(slides[cur] || deck);
     if (from && !reduced) {
       // Заголовок в листе — точная уменьшенная копия заголовка плаката (те же переносы), поэтому перелёт заканчивается без скачка
       const r = from.getBoundingClientRect(), cs = getComputedStyle(from), fs = parseFloat(cs.fontSize), k = Math.min(.72, 30 / fs);
@@ -267,7 +273,7 @@ PAGE_SCRIPT = """<script>
     t.style.cssText = ""; t.innerHTML = s.querySelector(".hl").innerHTML;
     $("sh-k").textContent = kicker(s);
     shBody.replaceChildren(...breakdown(s)); shBody.scrollTop = 0;
-    go(s, true); held = scrollY; onScroll(); clearTimeout(dwell);
+    go(s, true); hold(s); onScroll(); clearTimeout(dwell);
     sheetStory = s; markRead(s);
     if (!reduced) shBody.animate([{opacity: 0, transform: "translateY(10px)"}, {opacity: 1, transform: "none"}], {duration: 260, easing: "ease-out"});
   }
