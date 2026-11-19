@@ -211,6 +211,14 @@ def test_telegram_numbers_items():
     assert "<b>1.</b>" in text and "<b>2.</b>" in text and "2-й день" in text
 
 
+def test_page_scroll_lock_is_only_for_mouse():
+    # iPhone, Safari (2026-11-19): overflow:hidden на html при открытии листа дёргал шапку с датой и кольцом;
+    # на касаниях страницу под листом держат обработчики touchmove, запор нужен только мыши и клавиатуре
+    page = render_page(sample(), STATS, WHEN, failures=[])
+    assert "@media (hover:hover) and (pointer:fine){html.locked{overflow:hidden}}" in page
+    assert page.count("html.locked{overflow:hidden}") == 1
+
+
 def test_header_shows_event_count_and_reading_time():
     digest = sample()
     digest.entries[0].summary = "слово " * 900
