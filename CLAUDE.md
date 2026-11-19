@@ -4,6 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Personal AI/tech news digest for one Russian-speaking reader (Tashkent): collects ~40 feeds, Gemini selects and explains,
 publishes a static page to GitHub Pages and a message to Telegram. Twice a day, plus hourly breaking alerts and a Sunday weekly summary.
+A second reader, the owner's colleague (owner decision 2026-11-19), reads the same issue: no own selection or model calls,
+the morning/evening issue and breaking alerts in Telegram (no tips, no weekly, no failure notices), own marks on the page
+that never reach the owner's data or the pipeline.
 
 ## Commands
 
@@ -137,6 +140,9 @@ Site pages besides issues (all built with the `page.html` shell via `render._she
 - **Work stack** (`[[work_stack]]` in sources.toml: Entra, ManageEngine, CrowdStrike, NetBird) is the reader's job
   infrastructure: a story matching it (`alert.stack_hits`, whole words) becomes an alert candidate without the
   «3 publishers» bar and goes first; the alert rules drop the scale criterion for it.
+- **Colleague delivery is fail-soft**: the `Send to colleague` step of `digest.yml` is `continue-on-error` and skips
+  without the secret; `alert` sends to the colleague only after `state.save`, so a blocked bot never repeats an alert
+  to the owner.
 - **Tips during the day** (`digest/tip.py`, `python -m digest tip`) ride the hourly `alert.yml` run: every tip of
   today's issues gets its own random hour (morning tips 10–18, evening 19–23 Tashkent, evenly spread, seeded by date
   and slot), and each run sends at most one due tip, with sound, logging it in `state/tip.json`. No Gemini call.
@@ -177,9 +183,20 @@ Site pages besides issues (all built with the `page.html` shell via `render._she
   A story is read after `DWELL_MS` on screen, on opening its breakdown or its source link. Text goes through
   `render._rich` (escape + `typo` + terms as buttons); commands only through `_term`. `render.BASE_SCRIPT` (theme,
   copy buttons) is on every page; the arsenal adds `TIPS_SCRIPT` (tried state from the worker → «Проверено» stamp).
-- **Page ↔ worker**: page scripts send `POST /vote?e=<id>&v=up|down`, `POST /read?e=<id>` (with `keepalive`),
-  `GET /tried` and `POST /tried?e=<id>&v=0|1`, and remember the answer in `localStorage` under `v:<id>`, `r:<id>`,
-  `t:<id>`. Read marks feed «Утром ты пропустил» in the evening issue (`memory.missed_in_morning`).
+- **Page ↔ worker** (two readers since 2026-11-19): the reader pastes a personal key once per browser into the field of
+  `render.READER_SCRIPT` (end of the issue, top of the arsenal); `POST /r/who` names the reader, the page shows
+  «Отметки: владелец/коллега» and stores `reader:key` / `reader:role` in `localStorage`. Page scripts then send
+  `POST /r/vote?e=<id>&v=up|down`, `POST /r/read?e=<id>` (with `keepalive`), `POST /r/tried?e=<id>&v=0|1` and
+  `POST /r/tried` (list) through `window.reader.post`, the key as the text/plain body (no preflight, never in the URL:
+  Workers Logs record URLs), and remember the answer under `v:<id>`, `r:<id>`, `t:<id>`. Without an accepted key the
+  page sends nothing and hides thumbs and checkboxes. Keys are `o_…` (secret `OWNER_KEY`) and `c_…` (`COLLEAGUE_KEY`);
+  the worker checks the role mark on the secret too, so swapped secrets refuse everyone. The owner writes to the
+  original KV keys `vote:` / `read:` / `tried:` (never migrate them), the colleague to `colleague:vote:` /
+  `colleague:read:` / `colleague:tried:`, which `GET /votes` never lists. The old `/vote`, `/read`, `/tried` are gone:
+  pages built before 2026-11-19 sent no key, so their clicks can't be attributed and now get 404. Read marks of the
+  owner feed «Утром ты пропустил» in the evening issue (`memory.missed_in_morning`); on the page that block is
+  `data-owner hidden` and shown only to the owner key, and the colleague's Telegram copy (`out/colleague.json`,
+  sent with secret `TELEGRAM_COLLEAGUE_CHAT_ID`) has no such block.
 - **Anchors** `id="e-<entry id>"` on story cards are linked from the arsenal, story pages, «Утром ты пропустил» and
   the Telegram messages (`telegram.py`, `tip.py`) — keep them when the card markup changes.
 - **Pre-releases**: `fetch.PRERELEASE` matches a suffix right after the version digit (`v1.2.3-rc1`, `-nightly.`,
@@ -229,7 +246,10 @@ Site pages besides issues (all built with the `page.html` shell via `render._she
   «Ещё за день» lines — the model does not keep the prompt's cap.
 - The Telegram bot token is in request URLs and Actions logs are public: `httpx`/`httpcore` logging is raised to WARNING
   and `TelegramError` drops the original exception. Don't log request URLs.
-- Worker: constant-time token compare, page endpoints (`/vote`, `/read`, `/tried` GET+POST) accept only `PAGE_ORIGIN`,
+- Worker: constant-time token and key compare, page endpoints (`/r/*`) accept only `PAGE_ORIGIN` **and** a reader
+  key (the Origin check alone let any visitor or curl write the owner's votes); the reader is decided only by the key,
+  never by the page or a parameter. `PAGE_ORIGIN` `riobvo.github.io` is shared with the owner's other Pages sites
+  (`hbucc-reports`), whose scripts could read the key from `localStorage` — risk accepted by the owner (2026-11-19).
   Telegram votes only from `OWNER_CHAT_ID`; KV records are duplicated into key metadata so `/votes` stays within the KV
   operation limit. The KV namespace id is pinned in `wrangler.jsonc` so a redeploy never binds an empty store.
 

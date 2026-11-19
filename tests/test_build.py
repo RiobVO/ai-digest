@@ -8,7 +8,8 @@ import pytest
 import digest.__main__ as main
 from digest import llm
 from digest.models import Item
-from digest.render import NBSP
+from digest.render import DISPLAY_TZ, NBSP
+from digest.telegram import TelegramError
 
 CONFIG = """[digest]
 model = "test-model"
@@ -122,6 +123,27 @@ def test_build_ships_page_message_and_state_that_agree(env):
     assert (args.state_dir / "stories.json").exists()
     # Арсенал пересобирается вместе с выпуском: новая фишка появляется в нём сразу
     assert "Арсенал фишек" in (args.site / "tips.html").read_text(encoding="utf-8")
+
+
+def test_colleague_gets_the_same_evening_issue_without_the_owner_missed_block(env, monkeypatch):
+    tmp, args = env
+    today = datetime.now(timezone.utc).astimezone(DISPLAY_TZ).date()
+    args.state_dir.mkdir()
+    morning = [{"date": today.isoformat(), "slot": "morning", "headline": "Утро", "page": f"{today}.html",
+                "entries": [{"id": f"{today:%Y%m%d}-0", "title": "Утренняя новость", "section": "model",
+                             "source": "x", "url": "https://x.io/a", "story": ""}]}]
+    (args.state_dir / "issues.json").write_text(json.dumps(morning, ensure_ascii=False), encoding="utf-8")
+    monkeypatch.setenv("ISSUE_SLOT", "evening")
+    # Утром владелец ничего не открыл: блок «Утром ты пропустил» строится по его отметкам — и только для него
+    monkeypatch.setattr(main, "fetch_feedback", lambda url, token: ([], set()))
+    main.build(args)
+    owner = json.loads((tmp / "out" / "message.json").read_text(encoding="utf-8"))
+    colleague = json.loads((tmp / "out" / "colleague.json").read_text(encoding="utf-8"))
+    assert "Утром ты пропустил" in owner["text"] and "Утренняя новость" in owner["text"]
+    assert "Утром ты пропустил" not in colleague["text"] and "Утренняя новость" not in colleague["text"]
+    assert colleague["url"] == owner["url"]
+    assert colleague["text"].splitlines()[:2] == owner["text"].splitlines()[:2]
+    assert "OpenAI выкатила модель" in colleague["text"] and "Разбор целиком" in colleague["text"]
 
 
 def test_also_today_gets_decoded_links_and_reaches_page_and_message(env, monkeypatch):
@@ -330,21 +352,76 @@ def test_alert_flash_rechecks_only_what_lite_flagged_and_may_refuse(env, monkeyp
     assert len(state["rejected"]) == 2 and state["sent"] == []
 
 
+def _confirm_second(prompt, schema, model, api_key):
+    if model == "lite-model":
+        return {"items": [{"index": 0, "urgent": True}, {"index": 1, "urgent": True}]}
+    return {"items": [{"index": 1, "urgent": True, "title": "Блог обновили", "text": "Текст."}]}
+
+
 def test_alert_sends_what_flash_confirmed(env, monkeypatch):
     monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "t")
     monkeypatch.setenv("TELEGRAM_CHAT_ID", "1")
+    monkeypatch.delenv("TELEGRAM_COLLEAGUE_CHAT_ID", raising=False)
+    args = _alert_env(env, monkeypatch, _posts())
+    sent = []
+    monkeypatch.setattr(llm, "generate", _confirm_second)
+    monkeypatch.setattr(main, "send", lambda text, url, token, chat, **kw: sent.append((chat, url)))
+    main.alert(args)
+    assert sent == [("1", "https://openai.com/blog-update")]
+
+
+def test_alert_reaches_the_colleague_after_the_owner_with_the_same_text(env, monkeypatch):
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "t")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "1")
+    monkeypatch.setenv("TELEGRAM_COLLEAGUE_CHAT_ID", "2")
+    args = _alert_env(env, monkeypatch, _posts())
+    sent = []
+    monkeypatch.setattr(llm, "generate", _confirm_second)
+    monkeypatch.setattr(main, "send", lambda text, url, token, chat, **kw: sent.append((chat, text, url, kw)))
+    main.alert(args)
+    assert [chat for chat, *_ in sent] == ["1", "2"]
+    assert sent[0][1:] == sent[1][1:]
+
+
+def test_failed_delivery_to_the_colleague_never_repeats_the_alert_for_the_owner(env, monkeypatch):
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "t")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "1")
+    monkeypatch.setenv("TELEGRAM_COLLEAGUE_CHAT_ID", "2")
     args = _alert_env(env, monkeypatch, _posts())
     sent = []
 
-    def judge(prompt, schema, model, api_key):
-        if model == "lite-model":
-            return {"items": [{"index": 0, "urgent": True}, {"index": 1, "urgent": True}]}
-        return {"items": [{"index": 1, "urgent": True, "title": "Блог обновили", "text": "Текст."}]}
+    def send(text, url, token, chat, **kw):
+        # Коллега не нажал Start у бота или заблокировал его
+        if chat == "2":
+            raise TelegramError("Telegram ответил 403: Forbidden: bot was blocked by the user")
+        sent.append(chat)
 
-    monkeypatch.setattr(llm, "generate", judge)
-    monkeypatch.setattr(main, "send", lambda text, url, *a, **kw: sent.append(url))
+    monkeypatch.setattr(llm, "generate", _confirm_second)
+    monkeypatch.setattr(main, "send", send)
     main.alert(args)
-    assert sent == ["https://openai.com/blog-update"]
+    assert sent == ["1"]
+    # Срочное уже отмечено отправленным: через час владелец его не получит снова
+    state = json.loads((args.state_dir / "alerts.json").read_text(encoding="utf-8"))
+    assert len(state["sent"]) == 1
+
+
+def test_html_error_page_on_delivery_to_the_colleague_does_not_fail_the_alert_run(env, monkeypatch):
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "t")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "1")
+    monkeypatch.setenv("TELEGRAM_COLLEAGUE_CHAT_ID", "2")
+    args = _alert_env(env, monkeypatch, _posts())
+    sent = []
+
+    def send(text, url, token, chat, **kw):
+        # 502 от прокси Telegram приходит HTML-страницей: send падает на разборе ответа, а не TelegramError
+        if chat == "2":
+            json.loads("<html>502 Bad Gateway</html>")
+        sent.append(chat)
+
+    monkeypatch.setattr(llm, "generate", _confirm_second)
+    monkeypatch.setattr(main, "send", send)
+    main.alert(args)
+    assert sent == ["1"]
 
 
 def test_eval_runs_see_the_same_input_and_never_rewrite_the_snapshot(tmp_path, monkeypatch):

@@ -29,16 +29,30 @@ function memoryKV({ pageSize = 1000, emptyFirst = false } = {}) {
   };
 }
 
+const SITE = "https://riobvo.github.io";
+// Ключи читателей: метка роли и случайная часть, как их генерирует владелец
+const OWNER = "o_owner-key-0123456789abcdefghijklmnop";
+const COLLEAGUE = "c_colleague-key-0123456789abcdefghijk";
+
 const votesOf = async (env) =>
   (await worker.fetch(new Request("https://w.dev/votes", { headers: { Authorization: "Bearer read" } }), env)).json();
-const pageVote = (id, v) =>
-  new Request(`https://w.dev/vote?e=${id}&v=${v}`, { method: "POST", headers: { Origin: "https://riobvo.github.io" } });
-const pageRead = (id) => new Request(`https://w.dev/read?e=${id}`, { method: "POST", headers: { Origin: "https://riobvo.github.io" } });
+// Действие со страницы: ключ читателя в теле, как его шлёт READER_SCRIPT (text/plain, без preflight)
+const act = (path, key, origin = SITE) =>
+  new Request(`https://w.dev${path}`, { method: "POST", headers: { Origin: origin }, body: key });
+const pageVote = (id, v, key = OWNER) => act(`/r/vote?e=${id}&v=${v}`, key);
+const pageRead = (id, key = OWNER) => act(`/r/read?e=${id}`, key);
 
-const tried = (id, v, origin = "https://riobvo.github.io") =>
-  new Request(`https://w.dev/tried?e=${id}&v=${v}`, { method: "POST", headers: { Origin: origin } });
-const triedList = async (origin = "https://riobvo.github.io") =>
-  worker.fetch(new Request("https://w.dev/tried", { headers: { Origin: origin } }), env);
+const tried = (id, v, origin = SITE, key = OWNER) => act(`/r/tried?e=${id}&v=${v}`, key, origin);
+const triedList = async (origin = SITE, key = OWNER) => worker.fetch(act("/r/tried", key, origin), env);
+const triedIds = async (key) => (await (await triedList(SITE, key)).json()).ids.sort();
+
+// Всё, что принадлежит владельцу: ключи KV без префикса коллеги, тело /votes (единственный вход конвейера —
+// оценки для промпта и «Утром ты пропустил») и его галочки в арсенале
+async function ownerState() {
+  const kv = [...env.VOTES.store.entries()].filter(([k]) => !k.startsWith("colleague:"))
+    .map(([k, { value, metadata, expirationTtl }]) => [k, value, metadata, expirationTtl]).sort();
+  return { kv, votes: await votesOf(env), tried: await triedIds(OWNER) };
+}
 
 let env;
 let telegramCalls;
@@ -52,6 +66,8 @@ beforeEach(() => {
     OWNER_CHAT_ID: "42",
     GITHUB_REPO: "RiobVO/ai-digest",
     PAGE_ORIGIN: "https://riobvo.github.io",
+    OWNER_KEY: OWNER,
+    COLLEAGUE_KEY: COLLEAGUE,
   };
   telegramCalls = [];
   globalThis.fetch = async (url, init) => {
@@ -96,7 +112,7 @@ test("мусорные данные кнопки игнорируются", asyn
 });
 
 test("оценка со страницы принимается только с нашего сайта", async () => {
-  const vote = (origin) => new Request("https://w.dev/vote?e=20261016-1&v=down", { method: "POST", headers: { Origin: origin } });
+  const vote = (origin) => act("/r/vote?e=20261016-1&v=down", OWNER, origin);
   const ok = await worker.fetch(vote("https://riobvo.github.io"), env);
   assert.equal(ok.status, 200);
   assert.equal(ok.headers.get("Access-Control-Allow-Origin"), "https://riobvo.github.io");
@@ -115,7 +131,7 @@ test("список оценок отдаётся только с токеном"
 });
 
 test("отметка «прочитано» со страницы сохраняется и отдаётся вместе с оценками", async () => {
-  const read = (origin, id = "20261017-2") => new Request(`https://w.dev/read?e=${id}`, { method: "POST", headers: { Origin: origin } });
+  const read = (origin, id = "20261017-2") => act(`/r/read?e=${id}`, OWNER, origin);
   const ok = await worker.fetch(read("https://riobvo.github.io"), env);
   assert.equal(ok.status, 200);
   assert.equal((await worker.fetch(read("https://evil.example"), env)).status, 403);
@@ -260,5 +276,146 @@ test("галочка с чужого сайта не принимается и �
 test("галочка с мусорным id или значением отклоняется", async () => {
   assert.equal((await worker.fetch(tried("../votes", 1), env)).status, 400);
   assert.equal((await worker.fetch(tried("20261021-22", "yes"), env)).status, 400);
+  assert.equal(env.VOTES.store.size, 0);
+});
+
+// ── Второй читатель: ни одно действие коллеги или постороннего не меняет данные владельца ──
+
+test("ключ владельца пишет в прежние ключи KV, записи до появления ключей читаются как есть", async () => {
+  // Записи, сделанные до ключей читателей: и со значением в metadata, и самые старые — без неё
+  env.VOTES.store.set("vote:20261001-0", { value: JSON.stringify({ id: "20261001-0", v: "down", via: "page", at: "2026-10-01T09:00:00Z" }) });
+  await env.VOTES.put("tried:20261002-5", JSON.stringify({ id: "20261002-5", at: "2026-10-02T09:00:00Z" }),
+    { metadata: { id: "20261002-5", at: "2026-10-02T09:00:00Z" } });
+  await worker.fetch(pageVote("20261119-9", "up"), env);
+  await worker.fetch(pageRead("20261119-9"), env);
+  assert.equal(JSON.parse(env.VOTES.store.get("vote:20261119-9").value).v, "up");
+  assert.ok(env.VOTES.store.has("read:20261119-9"));
+  const body = await votesOf(env);
+  assert.deepEqual(body.votes.map((v) => [v.id, v.v]).sort(), [["20261001-0", "down"], ["20261119-9", "up"]]);
+  assert.deepEqual(body.reads.map((r) => r.id), ["20261119-9"]);
+  assert.deepEqual(await triedIds(OWNER), ["20261002-5"]);
+});
+
+test("воркер называет читателя по ключу", async () => {
+  const who = async (key) => (await worker.fetch(act("/r/who", key), env)).json();
+  assert.deepEqual(await who(OWNER), { reader: "owner" });
+  assert.deepEqual(await who(COLLEAGUE), { reader: "colleague" });
+  assert.equal((await worker.fetch(act("/r/who", "c_unknown-key-0123456789abcdefghijklmn"), env)).status, 401);
+  assert.equal(env.VOTES.store.size, 0);
+});
+
+for (const [name, request, key] of [
+  ["👍", () => pageVote("20261119-9", "up", COLLEAGUE), "colleague:vote:20261119-9"],
+  ["👎", () => pageVote("20261119-9", "down", COLLEAGUE), "colleague:vote:20261119-9"],
+  ["«прочитано»", () => pageRead("20261119-9", COLLEAGUE), "colleague:read:20261119-9"],
+  ["галочка «попробовал»", () => tried("20261021-22", 1, SITE, COLLEAGUE), "colleague:tried:20261021-22"],
+]) {
+  test(`${name} коллеги лежит отдельно и не меняет ничего у владельца`, async () => {
+    await worker.fetch(pageVote("20261118-1", "up"), env);
+    await worker.fetch(pageRead("20261119-2"), env);
+    await worker.fetch(tried("20261021-21", 1), env);
+    const before = await ownerState();
+    const res = await worker.fetch(request(), env);
+    assert.equal(res.status, 200);
+    assert.ok(env.VOTES.store.has(key));
+    assert.deepEqual(await ownerState(), before);
+  });
+}
+
+test("снятая коллегой галочка не снимает галочку владельца на той же фишке", async () => {
+  await worker.fetch(tried("20261021-22", 1), env);
+  await worker.fetch(tried("20261021-22", 1, SITE, COLLEAGUE), env);
+  const before = await ownerState();
+  assert.equal((await worker.fetch(tried("20261021-22", 0, SITE, COLLEAGUE), env)).status, 200);
+  assert.ok(!env.VOTES.store.has("colleague:tried:20261021-22"));
+  assert.deepEqual(await ownerState(), before);
+  assert.deepEqual(before.tried, ["20261021-22"]);
+});
+
+test("галочки видит только их хозяин", async () => {
+  await worker.fetch(tried("20261021-21", 1), env);
+  await worker.fetch(tried("20261021-22", 1, SITE, COLLEAGUE), env);
+  assert.deepEqual(await triedIds(OWNER), ["20261021-21"]);
+  assert.deepEqual(await triedIds(COLLEAGUE), ["20261021-22"]);
+});
+
+test("разные оценки одной новости хранятся обе, конвейеру уходит только оценка владельца", async () => {
+  await worker.fetch(pageVote("20261119-9", "up"), env);
+  await worker.fetch(pageVote("20261119-9", "down", COLLEAGUE), env);
+  assert.equal(JSON.parse(env.VOTES.store.get("vote:20261119-9").value).v, "up");
+  assert.equal(JSON.parse(env.VOTES.store.get("colleague:vote:20261119-9").value).v, "down");
+  const body = await votesOf(env);
+  assert.deepEqual(body.votes.map((v) => [v.id, v.v]), [["20261119-9", "up"]]);
+  assert.deepEqual(body.reads, []);
+});
+
+// Каждое действие страницы — чтобы отказ проверялся на всех путях, а не на одном
+const ACTIONS = ["/r/who", "/r/vote?e=20261119-9&v=up", "/r/read?e=20261119-9", "/r/tried?e=20261021-22&v=1", "/r/tried"];
+
+async function refusedEverywhere(key) {
+  await worker.fetch(pageVote("20261118-1", "up"), env);
+  const before = [...env.VOTES.store.entries()];
+  for (const path of ACTIONS) {
+    const res = await worker.fetch(act(path, key), env);
+    assert.equal(res.status, 401, `${path} с ключом ${JSON.stringify(key)}`);
+  }
+  assert.deepEqual([...env.VOTES.store.entries()], before);
+}
+
+test("без ключа (пересланная ссылка, поисковик) страница ничего никому не пишет", async () => {
+  await refusedEverywhere(undefined);
+  await refusedEverywhere("");
+});
+
+test("неизвестный и мусорный ключ отклоняются", async () => {
+  await refusedEverywhere("o_unknown-key-0123456789abcdefghijklmnop");
+  await refusedEverywhere("../vote:20261119-9");
+  await refusedEverywhere(OWNER + "x".repeat(300));
+});
+
+test("отозванный ключ коллеги больше не принимается", async () => {
+  delete env.COLLEAGUE_KEY;
+  await refusedEverywhere(COLLEAGUE);
+  env.COLLEAGUE_KEY = "c_rotated-key-0123456789abcdefghijklmn";
+  await refusedEverywhere(COLLEAGUE);
+});
+
+test("незаданный секрет не совпадает с пустым телом и со строкой undefined", async () => {
+  // TextEncoder кодирует undefined как пустую строку: без проверки формата пустое тело прошло бы как владелец
+  delete env.OWNER_KEY;
+  delete env.COLLEAGUE_KEY;
+  for (const key of [undefined, "", "undefined", OWNER, COLLEAGUE]) await refusedEverywhere(key);
+});
+
+test("перепутанные секреты отклоняют всех, а не пишут коллегу владельцу", async () => {
+  env.OWNER_KEY = COLLEAGUE;
+  env.COLLEAGUE_KEY = OWNER;
+  for (const key of [OWNER, COLLEAGUE]) await refusedEverywhere(key);
+});
+
+test("ключ с меткой владельца в секрете коллеги не делает его ключом коллеги", async () => {
+  env.COLLEAGUE_KEY = OWNER;
+  assert.deepEqual(await (await worker.fetch(act("/r/who", OWNER), env)).json(), { reader: "owner" });
+  await worker.fetch(pageVote("20261119-9", "up"), env);
+  assert.ok(env.VOTES.store.has("vote:20261119-9"));
+  assert.ok(![...env.VOTES.store.keys()].some((k) => k.startsWith("colleague:")));
+});
+
+test("старые страницы без ключа больше никому не пишут", async () => {
+  const legacy = [
+    new Request("https://w.dev/vote?e=20261119-9&v=up", { method: "POST", headers: { Origin: SITE } }),
+    new Request("https://w.dev/read?e=20261119-9", { method: "POST", headers: { Origin: SITE } }),
+    new Request("https://w.dev/tried?e=20261021-22&v=1", { method: "POST", headers: { Origin: SITE } }),
+    new Request("https://w.dev/tried", { headers: { Origin: SITE } }),
+  ];
+  for (const request of legacy) {
+    const res = await worker.fetch(request, env);
+    assert.ok(!res.ok, `${request.method} ${request.url}`);
+  }
+  assert.equal(env.VOTES.store.size, 0);
+});
+
+test("действие с ключом, но с чужого сайта отклоняется", async () => {
+  for (const path of ACTIONS) assert.equal((await worker.fetch(act(path, OWNER, "https://evil.example"), env)).status, 403);
   assert.equal(env.VOTES.store.size, 0);
 });

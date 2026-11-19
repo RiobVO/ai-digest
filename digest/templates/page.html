@@ -160,6 +160,11 @@ html:not(.js) .tw:focus::after{content:attr(data-def);position:absolute;left:0;t
 .vote .on{opacity:1}
 .vote .on svg{fill:currentColor}
 .vote.err{outline:1.5px solid var(--alarm)}
+/* Чьи отметки: подпись или поле личного ключа (READER_SCRIPT) */
+.reader{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;margin-top:14px;font:400 .72rem/1.6 var(--f-mono)}
+.reader form{display:flex;flex-wrap:wrap;gap:8px;width:100%;max-width:30rem}
+.reader input{flex:1 1 12rem;min-width:0;min-height:46px;padding:0 12px;border:1.5px solid var(--line);border-radius:3px;
+  background:none;color:inherit;font:400 .9rem var(--f-mono)}
 /* Всплеск от «нравится»: два кольца, как у знака сигнала, и восемь искр */
 .burst{position:absolute;left:50%;top:50%;width:0;height:0;pointer-events:none}
 .burst b{position:absolute;left:-23px;top:-23px;width:46px;height:46px;border:2px solid var(--mood);border-radius:50%;opacity:0}

@@ -101,6 +101,19 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python -m digest send
 
+      # Коллеге — тот же выпуск без «Утром ты пропустил» (блок по отметкам владельца); итог недели, фишки и сообщения
+      # о сбое — только владельцу. Сбой доставки (не нажал Start, заблокировал бота) не должен ронять прогон: state
+      # не закоммитился бы, и следующий запуск собрал бы выпуск заново. Без секрета шаг ничего не делает
+      - name: Send to colleague
+        if: steps.plan.outputs.daily == 'true'
+        continue-on-error: true
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_COLLEAGUE_CHAT_ID }}
+        run: |
+          [ -n "$TELEGRAM_CHAT_ID" ] || exit 0
+          python -m digest send --message colleague.json
+
       - name: Send weekly to Telegram
         if: steps.plan.outputs.weekly == 'true'
         env:

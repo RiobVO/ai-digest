@@ -33,6 +33,8 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # Срочные уходят и коллеге; фишки ниже — только владельцу
+          TELEGRAM_COLLEAGUE_CHAT_ID: ${{ secrets.TELEGRAM_COLLEAGUE_CHAT_ID }}
         run: python -m digest alert
 
       # Фишки выпусков приходят по одной в течение дня, каждая в свой случайный час: запуск каждый час, а пора ли —

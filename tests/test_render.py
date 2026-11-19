@@ -310,9 +310,69 @@ def test_cards_carry_entry_id_for_read_marks_when_feedback_is_on():
     digest.entries[0].id, digest.entries[1].id = "20261016-0", "20261016-1"
     page = render_page(digest, STATS, WHEN, failures=[], feedback_url="https://fb.example.workers.dev")
     assert 'data-entry="20261016-0"' in page and 'data-entry="20261016-1"' in page
-    assert "/read?e=" in page
+    assert '"/r/read?e="' in page
     # Клик по первоисточнику уводит со страницы — без keepalive браузер оборвёт отметку
-    assert "keepalive: true" in page[page.index("/read?e="):][:200]
+    assert "keepalive: true" in page[page.index('"/r/read?e="'):][:200]
+
+
+def test_reader_key_is_asked_on_the_issue_and_the_arsenal_and_travels_only_in_the_body():
+    # Второй читатель (2026-11-19): чей клик — решает воркер по личному ключу, без ключа страница никому не пишет
+    digest = sample()
+    digest.entries[0].id, digest.entries[1].id = "20261016-0", "20261016-1"
+    page = render_page(digest, STATS, WHEN, failures=[], feedback_url="https://fb.example")
+    tips = render_tips(TIP_ISSUES, WHEN, feedback_url="https://fb.dev")
+    for html in (page, tips):
+        assert html.count('id="reader"') == 1
+        # Скрипт читателя идёт раньше скрипта страницы: тому нужен window.reader
+        assert html.index("window.reader =") < html.index('"/r/vote?e="' if html is page else '"/r/tried?e="')
+        # Ключ — только в теле POST: адреса запросов пишутся в логи воркера
+        assert "body: k" in html and "?k=" not in html and "&k=" not in html
+        # Старые адреса без ключа воркер больше не принимает — страница их не зовёт
+        assert '"/vote?' not in html and '"/read?' not in html and '"/tried' not in html
+    assert '"/r/vote?e="' in page and '"/r/read?e="' in page
+
+
+def test_arsenal_restores_remembered_ticks_only_for_an_accepted_key():
+    # Старый скрипт арсенала клал в t: галочки владельца любому посетителю: без ключа они не должны всплыть штампами
+    page = render_tips(TIP_ISSUES, WHEN, feedback_url="https://fb.dev")
+    script = page[page.index("const R = window.reader;"):]
+    assert script.index("if (R.can())") < script.index('localStorage.getItem("t:"')
+
+
+def test_keyboard_paging_skips_slides_hidden_from_this_reader():
+    # «Утром ты пропустил» скрыт от коллеги и гостя: j/k на него не встают и не застревают
+    page = render_page(sample(), STATS, WHEN, failures=[], feedback_url="https://fb.example")
+    keys = page[page.index('e.key === "j"'):][:400]
+    assert "slides[to]?.hidden" in keys
+    # За краем — к началу текущего слайда, как до скрытых слайдов: k на прокрученной обложке возвращает наверх
+    assert "slides[to] || slides[Math.max(cur, 0)]" in keys
+
+
+def test_without_the_worker_the_page_asks_for_no_reader_key():
+    page = render_page(sample(), STATS, WHEN, failures=[])
+    # Без скрипта читателя window.reader не появляется, и скрипт страницы ничего не шлёт
+    assert 'id="reader"' not in page and "window.reader =" not in page and "const FB" not in page
+    assert 'id="reader"' not in render_tips(TIP_ISSUES, WHEN)
+
+
+def _section_tag(page: str, anchor: str) -> str:
+    match = re.search(rf'<section[^>]*id="{anchor}"[^>]*>', page)
+    assert match, anchor
+    return match.group(0)
+
+
+def test_missed_morning_block_is_shown_only_to_the_owner_key():
+    # Блок построен по отметкам владельца: коллеге или гостю он чужой и подписан «ты пропустил»
+    missed = [{"id": "20261017-1", "title": "Пропущенное"}]
+    page = render_page(sample(), STATS, WHEN, failures=[], slot="evening", missed=missed,
+                       morning_page="2026-10-17.html", feedback_url="https://fb.example")
+    tag = _section_tag(page, "missed")
+    assert "data-owner" in tag and " hidden" in tag
+    assert 'querySelectorAll("[data-owner]")' in page and 'role !== "owner"' in page
+    # Без воркера читателей не различить — блок, как раньше, виден сразу
+    local = render_page(sample(), STATS, WHEN, failures=[], slot="evening", missed=missed,
+                        morning_page="2026-10-17.html")
+    assert " hidden" not in _section_tag(local, "missed")
 
 
 def test_telegram_evening_message_mentions_missed_morning_news():
@@ -521,7 +581,7 @@ def test_tried_tip_gets_a_stamp_that_the_worker_state_switches_on():
     # Штамп лежит в разметке каждой фишки; виден он по классу done, который ставит скрипт по ответу воркера
     assert page.count('<span class="stamp" aria-hidden="true">Проверено</span>') == 3
     assert '.tip.done .stamp{opacity:1}' in page and 'b.closest(".tip").classList.toggle("done", on)' in page
-    assert 'fetch(FB + "/tried")' in page and '"/tried?e="' in page
+    assert 'R.post("/r/tried")' in page and '"/r/tried?e="' in page
     # Без воркера отмечать нечем — штампа нет
     assert 'class="stamp"' not in render_tips(TIP_ISSUES, WHEN)
 
@@ -743,5 +803,6 @@ def test_issue_page_has_no_rejected_or_mockup_only_parts():
         assert gone not in page
     # Длинное неразрывное имя в тексте не должно распирать колонку шире экрана телефона (арсенал, 2026-11-10)
     assert re.search(r"\.content\{[^}]*overflow-wrap:anywhere", page)
-    assert "__FB__" not in page and 'const FB = "https://fb.example";' in page
-    assert 'const FB = "";' in render_page(sample(), STATS, WHEN, failures=[])
+    # Адрес воркера — только в скрипте читателя: без воркера его нет вовсе
+    assert "__FB__" not in page and 'const FB = "https://fb.example",' in page
+    assert "const FB" not in render_page(sample(), STATS, WHEN, failures=[])

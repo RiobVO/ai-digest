@@ -24,7 +24,7 @@ from digest.mood import mood
 from digest.render import (DISPLAY_TZ, MONTHS, cover_date, render_archive, render_health, render_page,
                            render_story_pages, render_tips)
 from digest.state import SeenStore
-from digest.telegram import build_message, send
+from digest.telegram import TelegramError, build_message, send
 from digest.weekly import WEEK_DAYS, summarize_week
 
 log = logging.getLogger("digest")
@@ -172,6 +172,8 @@ def build(args: argparse.Namespace) -> None:
     morning_url = f"{os.environ['SITE_URL'].rstrip('/')}/{morning_page}"
     message = build_message(digest, page_url, now, label=label, missed=missed, morning_url=morning_url)
     _write_message("message.json", message, page_url)
+    # Коллеге — тот же выпуск без «Утром ты пропустил»: блок построен по отметкам владельца
+    _write_message("colleague.json", build_message(digest, page_url, now, label=label), page_url)
     log.info("страница %s, сообщение в out/message.json", args.site / page_name)
     # State сохраняем только после успешного отбора: упавший запуск не должен «съесть» новости
     if not args.dry_run:
@@ -213,6 +215,7 @@ def alert(args: argparse.Namespace) -> None:
         raise SystemExit(f"ни один источник срочных новостей не собран: {failures}")
     state = breaking.AlertState.load(args.state_dir / "alerts.json")
     stack = config.get("work_stack", [])
+    delivered: tuple[str, str] | None = None
     candidates = breaking.find_candidates(breaking.split_undated(items, state, now), state, now, stack)
     log.info("свежих записей %d, кандидатов в срочные %d, отправлено сегодня %d",
              len(items), len(candidates), state.sent_today(now))
@@ -256,11 +259,20 @@ def alert(args: argparse.Namespace) -> None:
             state.mark_rejected(item, now)
         if picked:
             item, title, text = picked
-            send(breaking.build_alert(item, title, text), item.url, os.environ["TELEGRAM_BOT_TOKEN"],
-                 os.environ["TELEGRAM_CHAT_ID"], silent=breaking.is_quiet(now))
+            delivered = breaking.build_alert(item, title, text), item.url
+            send(*delivered, os.environ["TELEGRAM_BOT_TOKEN"], os.environ["TELEGRAM_CHAT_ID"], silent=breaking.is_quiet(now))
             state.mark_sent(item, title, now)
             log.info("срочная новость отправлена: %s", title)
     state.save(now)
+    colleague = os.environ.get("TELEGRAM_COLLEAGUE_CHAT_ID", "")
+    if delivered and colleague:
+        # Коллеге — после сохранения состояния: сбой его доставки (не нажал Start, заблокировал бота) не должен
+        # повторить срочное владельцу через час
+        try:
+            send(*delivered, os.environ["TELEGRAM_BOT_TOKEN"], colleague, silent=breaking.is_quiet(now))
+        except (TelegramError, ValueError) as exc:
+            # ValueError: ошибку 502 прокси Telegram присылает HTML-страницей, и send падает на её разборе
+            log.error("срочное коллеге не доставлено: %s", exc)
 
 
 def tip(args: argparse.Namespace) -> None:

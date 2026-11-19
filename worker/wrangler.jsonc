@@ -15,5 +15,7 @@
   // Время держит Cloudflare, а не GitHub: 08:07 и 18:07 по Ташкенту — выпуски, :17 каждого часа — срочные
   "triggers": { "crons": ["7 3 * * *", "7 13 * * *", "17 * * * *"] },
   "observability": { "enabled": true }
-  // Секреты: TELEGRAM_BOT_TOKEN, WEBHOOK_SECRET, READ_TOKEN, OWNER_CHAT_ID, SCHEDULER_TOKEN — через `wrangler secret put`
+  // Секреты: TELEGRAM_BOT_TOKEN, WEBHOOK_SECRET, READ_TOKEN, OWNER_CHAT_ID, SCHEDULER_TOKEN — через `wrangler secret put`.
+  // Личные ключи читателей страницы: OWNER_KEY (o_…) и COLLEAGUE_KEY (c_…); без них отметки со страницы не пишутся.
+  // Только [A-Za-z0-9_-]: `echo "o_$(openssl rand -hex 24)"` и `echo "c_$(openssl rand -hex 24)"` — base64 даёт +/= и не подойдёт
 }

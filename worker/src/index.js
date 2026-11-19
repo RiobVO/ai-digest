@@ -1,5 +1,7 @@
 // Приём оценок 👍/👎 для ИИ-дайджеста: кнопки в Telegram (вебхук) и на странице GitHub Pages.
 // Сборщик забирает оценки через GET /votes с токеном. Хранилище — KV: последняя оценка по записи перезаписывает прежнюю.
+// Читателей страницы двое — владелец и коллега; воркер различает их по личному ключу, и действия коллеги в /votes
+// не попадают: выпуск строится только по отметкам владельца.
 
 const ID_RE = /^\d{8}-\d{1,3}$/;
 const VOTE_PREFIX = "vote:";
@@ -10,6 +12,16 @@ const ANSWERS = { up: "👍 Учту — больше такого", down: "👎
 // «Прочитано» нужно только вечернему выпуску того же дня — неделя с запасом, дальше ключ удаляет сам KV.
 // Оценки без срока: промпт берёт последние 20, как бы редко читатель ни голосовал
 const READ_TTL_SECONDS = 7 * 24 * 3600;
+// Личный ключ читателя: метка роли (o_ — владелец, c_ — коллега) и случайная часть. Метку проверяет и секрет:
+// перепутанные при `wrangler secret put` ключи отклоняют всех, а не пишут действия коллеги в данные владельца
+const KEY_RE = /^[oc]_[A-Za-z0-9_-]{32,128}$/;
+const KEY_BODY_MAX = 256;
+// Владелец пишет в прежние ключи KV: их читает конвейер через /votes, и они не переносятся. Коллега — под своим
+// префиксом, который list по "vote:" и "read:" не захватывает
+const READERS = [
+  { name: "owner", mark: "o_", secret: "OWNER_KEY", space: "" },
+  { name: "colleague", mark: "c_", secret: "COLLEAGUE_KEY", space: "colleague:" },
+];
 
 const enc = new TextEncoder();
 
@@ -29,8 +41,8 @@ async function putRecord(env, key, record, options = {}) {
   await env.VOTES.put(key, JSON.stringify(record), { metadata: record, ...options });
 }
 
-async function saveVote(env, id, v, via) {
-  await putRecord(env, VOTE_PREFIX + id, { id, v, via, at: new Date().toISOString() });
+async function saveVote(env, id, v, via, space = "") {
+  await putRecord(env, space + VOTE_PREFIX + id, { id, v, via, at: new Date().toISOString() });
 }
 
 async function callTelegram(env, method, body) {
@@ -89,45 +101,73 @@ function cors(env) {
   return { "Access-Control-Allow-Origin": env.PAGE_ORIGIN, "Access-Control-Allow-Methods": "GET, POST", Vary: "Origin" };
 }
 
-async function pageVote(request, url, env) {
-  if (request.headers.get("Origin") !== env.PAGE_ORIGIN) return new Response("forbidden", { status: 403 });
-  if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors(env) });
-  if (request.method !== "POST") return new Response("method not allowed", { status: 405, headers: cors(env) });
-  const id = url.searchParams.get("e") ?? "";
-  const v = url.searchParams.get("v");
-  if (!ID_RE.test(id) || !(v in ANSWERS)) return new Response("bad request", { status: 400, headers: cors(env) });
-  await saveVote(env, id, v, "page");
-  return Response.json({ ok: true }, { headers: cors(env) });
-}
-
-// Отметка «прочитано»: раскрытый разбор или переход к первоисточнику; вечерний выпуск по ним находит пропущенное
-async function pageRead(request, url, env) {
-  if (request.headers.get("Origin") !== env.PAGE_ORIGIN) return new Response("forbidden", { status: 403 });
-  if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors(env) });
-  if (request.method !== "POST") return new Response("method not allowed", { status: 405, headers: cors(env) });
-  const id = url.searchParams.get("e") ?? "";
-  if (!ID_RE.test(id)) return new Response("bad request", { status: 400, headers: cors(env) });
-  await putRecord(env, READ_PREFIX + id, { id, at: new Date().toISOString() }, { expirationTtl: READ_TTL_SECONDS });
-  return Response.json({ ok: true }, { headers: cors(env) });
-}
-
-// Арсенал фишек: POST ставит или снимает галочку (v=1/0), GET отдаёт отмеченные — страница статичная и узнаёт
-// свои галочки только отсюда. Оба только с нашего сайта, как /vote и /read
-async function pageTried(request, url, env) {
-  if (request.headers.get("Origin") !== env.PAGE_ORIGIN) return new Response("forbidden", { status: 403 });
-  if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors(env) });
-  if (request.method === "GET") {
-    const ids = (await listPrefix(env, TRIED_PREFIX)).map((r) => r.id);
-    return Response.json({ ids }, { headers: cors(env) });
+// Ключ приходит строкой в теле: такой POST браузер шлёт как text/plain, без preflight, поэтому keepalive у отметки
+// «прочитано» при уходе на первоисточник работает. В адрес ключ не кладём — адреса запросов пишутся в логи воркера
+async function readerOf(request, env) {
+  if (Number(request.headers.get("content-length") ?? 0) > KEY_BODY_MAX) return null;
+  const key = await request.text();
+  if (!KEY_RE.test(key)) return null;
+  let found = null;
+  for (const reader of READERS) {
+    const secret = env[reader.secret];
+    // Незаданный секрет — undefined, а TextEncoder кодирует его как пустую строку: без проверки формата пустое тело
+    // совпало бы с ним. Секрет с чужой меткой роли — перепутанные ключи, такой не принимаем вовсе
+    if (typeof secret !== "string" || !KEY_RE.test(secret) || !secret.startsWith(reader.mark)) continue;
+    if (safeEqual(key, secret)) found = reader;
   }
+  return found;
+}
+
+// Действие со страницы: только с нашего сайта и только с ключом читателя. Без ключа или с чужим — отказ до любой
+// операции KV: пересланная ссылка, поисковик и старые страницы (их скрипт ключа не шлёт) никому не пишут
+async function pageAction(request, env, handler) {
+  if (request.headers.get("Origin") !== env.PAGE_ORIGIN) return new Response("forbidden", { status: 403 });
+  if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors(env) });
   if (request.method !== "POST") return new Response("method not allowed", { status: 405, headers: cors(env) });
+  const reader = await readerOf(request, env);
+  if (!reader) return new Response("unauthorized", { status: 401, headers: cors(env) });
+  return handler(reader);
+}
+
+const done = (env, body = { ok: true }) => Response.json(body, { headers: cors(env) });
+const badRequest = (env) => new Response("bad request", { status: 400, headers: cors(env) });
+
+// Страница спрашивает, чей ключ, чтобы подписать «Отметки: владелец/коллега»: перепутанный ключ виден сразу
+async function readerWho(url, env, reader) {
+  return done(env, { reader: reader.name });
+}
+
+async function readerVote(url, env, reader) {
   const id = url.searchParams.get("e") ?? "";
   const v = url.searchParams.get("v");
-  if (!ID_RE.test(id) || (v !== "1" && v !== "0")) return new Response("bad request", { status: 400, headers: cors(env) });
-  if (v === "1") await putRecord(env, TRIED_PREFIX + id, { id, at: new Date().toISOString() });
-  else await env.VOTES.delete(TRIED_PREFIX + id);
-  return Response.json({ ok: true }, { headers: cors(env) });
+  if (!ID_RE.test(id) || !(v in ANSWERS)) return badRequest(env);
+  await saveVote(env, id, v, "page", reader.space);
+  return done(env);
 }
+
+// Отметка «прочитано»: раскрытый разбор или переход к первоисточнику; вечерний выпуск по отметкам владельца
+// находит пропущенное
+async function readerRead(url, env, reader) {
+  const id = url.searchParams.get("e") ?? "";
+  if (!ID_RE.test(id)) return badRequest(env);
+  await putRecord(env, reader.space + READ_PREFIX + id, { id, at: new Date().toISOString() }, { expirationTtl: READ_TTL_SECONDS });
+  return done(env);
+}
+
+// Арсенал фишек: с e и v=1/0 ставит или снимает галочку, без e отдаёт галочки своего читателя — страница статичная
+// и узнаёт их только отсюда
+async function readerTried(url, env, reader) {
+  const prefix = reader.space + TRIED_PREFIX;
+  if (!url.searchParams.has("e")) return done(env, { ids: (await listPrefix(env, prefix)).map((r) => r.id) });
+  const id = url.searchParams.get("e") ?? "";
+  const v = url.searchParams.get("v");
+  if (!ID_RE.test(id) || (v !== "1" && v !== "0")) return badRequest(env);
+  if (v === "1") await putRecord(env, prefix + id, { id, at: new Date().toISOString() });
+  else await env.VOTES.delete(prefix + id);
+  return done(env);
+}
+
+const READER_ROUTES = { "/r/who": readerWho, "/r/vote": readerVote, "/r/read": readerRead, "/r/tried": readerTried };
 
 async function listPrefix(env, prefix) {
   const rows = [];
@@ -207,9 +247,10 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/telegram" && request.method === "POST") return telegram(request, env);
-    if (url.pathname === "/vote") return pageVote(request, url, env);
-    if (url.pathname === "/read") return pageRead(request, url, env);
-    if (url.pathname === "/tried") return pageTried(request, url, env);
+    // Старые адреса /vote, /read, /tried убраны: страницы до ключей читателей слали без ключа, и чьи это клики —
+    // владельца, коллеги или постороннего — не понять. Их ответ 404, запись не происходит
+    const route = READER_ROUTES[url.pathname];
+    if (route) return pageAction(request, env, (reader) => route(url, env, reader));
     if (url.pathname === "/votes" && request.method === "GET") return listVotes(request, env);
     return new Response("not found", { status: 404 });
   },

@@ -103,12 +103,74 @@ BASE_SCRIPT = """<script>
 })();
 </script>"""
 
+# Читатель страницы (решение владельца 2026-11-19: второй читатель — коллега). Личный ключ вводится один раз в браузере
+# и хранится в нём; чьи это отметки, решает воркер по ключу, а без ключа страница никому ничего не шлёт. Ключ уходит
+# только в теле POST: адреса запросов пишутся в логи воркера. Идёт перед PAGE_SCRIPT и TIPS_SCRIPT и отдаёт им
+# window.reader. Адрес воркера подставляется вместо __FB__
+READER_SCRIPT = """<script>
+(() => {
+  const FB = __FB__, box = document.getElementById("reader");
+  const KEY_RE = /^[oc]_[A-Za-z0-9_-]{32,128}$/, NAMES = {owner: "владелец", colleague: "коллега"};
+  const known = r => r === "owner" || r === "colleague" ? r : null;
+  const get = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+  const put = (k, v) => { try { if (v) localStorage.setItem(k, v); else localStorage.removeItem(k); return true; } catch (e) { return false; } };
+  let key = get("reader:key"), role = key ? known(get("reader:role")) : null, editing = false, note = "";
+  // Строка в теле уходит как text/plain — простой запрос без preflight, поэтому keepalive у «прочитано» работает
+  const ask = (path, k, extra) => fetch(FB + path, {method: "POST", body: k, ...extra});
+  function show() {
+    // Пальцы, галочки и блок «Утром ты пропустил» (он по отметкам владельца) — только тому, чей ключ принят
+    document.querySelectorAll(".vote,.tried").forEach(el => { el.hidden = !role; });
+    document.querySelectorAll("[data-owner]").forEach(el => { el.hidden = role !== "owner"; });
+    if (!box) return;
+    const text = document.createElement("span");
+    if (role && !editing) {
+      text.textContent = "Отметки: " + NAMES[role];
+      const change = document.createElement("button");
+      change.type = "button"; change.className = "lnk sm"; change.textContent = "Сменить ключ";
+      change.addEventListener("click", () => { editing = true; note = ""; show(); });
+      box.replaceChildren(text, change);
+    } else {
+      text.textContent = note || (editing ? "Новый личный ключ" : "В этом браузере отметки не сохраняются — нужен личный ключ");
+      const form = document.createElement("form"), input = document.createElement("input"), save = document.createElement("button");
+      input.type = "password"; input.autocomplete = "off"; input.placeholder = "Личный ключ"; input.setAttribute("aria-label", "Личный ключ");
+      save.type = "submit"; save.className = "btn"; save.textContent = "Сохранить";
+      form.append(input, save);
+      form.addEventListener("submit", e => { e.preventDefault(); adopt(input.value.trim()); });
+      box.replaceChildren(text, form);
+    }
+    box.hidden = false;
+  }
+  function adopt(k) {
+    if (!KEY_RE.test(k)) { note = "Это не личный ключ — проверь, что он скопирован целиком"; show(); return; }
+    ask("/r/who", k).then(r => r.ok ? r.json() : Promise.reject(r.status)).then(({reader}) => {
+      // Другой читатель в этом браузере: оценки, «прочитано» и галочки прежнего ключа не его
+      if (k !== key) {
+        try { Object.keys(localStorage).filter(n => /^[vrt]:/.test(n)).forEach(n => localStorage.removeItem(n)); }
+        catch (e) { /* хранилище закрыто — чистить нечего */ }
+      }
+      if (!put("reader:key", k) || !put("reader:role", known(reader))) { note = "Браузер не даёт сохранить ключ"; show(); return; }
+      location.reload();
+    }).catch(status => { note = status === 401 ? "Ключ не принят" : "Воркер не ответил — попробуй ещё раз"; show(); });
+  }
+  // Подпись — сразу по последнему ответу воркера, затем ключ проверяется заново: отозванный перестаёт работать
+  if (key) ask("/r/who", key).then(r => {
+    if (r.status === 401) { role = null; note = "Ключ больше не принимается — нужен новый"; put("reader:role", ""); show(); return; }
+    if (r.ok) return r.json().then(({reader}) => { if (known(reader) !== role) { role = known(reader); put("reader:role", role); show(); } });
+  }).catch(() => { /* сеть недоступна: остаётся последняя подтверждённая роль */ });
+  show();
+  window.reader = {can: () => Boolean(key && role), post: (path, extra) => ask(path, key, extra)};
+})();
+</script>"""
+
+# Место для подписи «Отметки: …» или поля ключа; без скрипта остаётся скрытым
+READER_BOX = '<div class="reader" id="reader" hidden></div>'
+
 # Скрипт страницы выпуска: шапка с датой и кругами прогресса, лист разбора и сюжета, содержание, термины,
-# оценки и отметки чтения (POST в воркер обратной связи). Адрес воркера подставляется вместо __FB__; без него
+# оценки и отметки чтения (POST в воркер через window.reader из READER_SCRIPT). Без воркера или без ключа читателя
 # оценок нет, а отметки чтения живут до закрытия страницы. Без сторонних скриптов.
 PAGE_SCRIPT = """<script>
 (() => {
-  const FB = __FB__;
+  const R = window.reader, can = () => Boolean(R && R.can());
   const root = document.documentElement, $ = id => document.getElementById(id);
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const deck = $("deck"), hdr = $("hdr"), sheet = $("sheet"), scrim = $("scrim"), shBody = $("sh-b"), tip = $("tip");
@@ -135,9 +197,9 @@ PAGE_SCRIPT = """<script>
   function markRead(s) {
     const i = +s.dataset.i, id = s.dataset.entry;
     if (!read.has(i)) paint(i);
-    if (!FB || !id || recall("r:" + id)) return;
+    if (!can() || !id || recall("r:" + id)) return;
     // keepalive: клик по первоисточнику уводит со страницы, и без него браузер оборвал бы запрос
-    fetch(FB + "/read?e=" + encodeURIComponent(id), {method: "POST", keepalive: true})
+    R.post("/r/read?e=" + encodeURIComponent(id), {keepalive: true})
       .then(r => { if (r.ok) remember("r:" + id, "1"); })
       .catch(() => { /* сеть недоступна: отметки в браузере нет, следующая задержка или клик отправит её снова */ });
   }
@@ -331,7 +393,7 @@ PAGE_SCRIPT = """<script>
   document.querySelectorAll(".vote").forEach(box => { const saved = recall("v:" + box.dataset.id); if (saved) setVote(box, saved); });
   function vote(b) {
     const box = b.closest(".vote"), id = box.dataset.id, v = b.dataset.v, was = box.querySelector(".on")?.dataset.v || "";
-    if (v === was) return;
+    if (v === was || !can()) return;
     box.classList.remove("err"); setVote(box, v);
     if (v === "up" && !reduced) {
       const el = document.createElement("span");
@@ -341,7 +403,7 @@ PAGE_SCRIPT = """<script>
       // Вибрации нет на iPhone и в части встроенных окон — эффект остаётся только зрительным
       if (navigator.vibrate) navigator.vibrate(12);
     }
-    fetch(FB + "/vote?e=" + encodeURIComponent(id) + "&v=" + v, {method: "POST"})
+    R.post("/r/vote?e=" + encodeURIComponent(id) + "&v=" + v)
       .then(r => { if (!r.ok) throw new Error(r.status); remember("v:" + id, v); })
       .catch(() => { setVote(box, was); box.classList.add("err"); });
   }
@@ -371,7 +433,11 @@ PAGE_SCRIPT = """<script>
     if (sheet.classList.contains("open")) { if (e.key === "Escape") closeSheet(); return; }
     if (e.metaKey || e.ctrlKey || e.altKey || /input|textarea/i.test(e.target.tagName)) return;
     const step = e.key === "j" ? 1 : e.key === "k" ? -1 : 0;
-    if (step) go(slides[Math.max(0, Math.min(slides.length - 1, cur + step))]);
+    // Скрытый слайд («Утром ты пропустил» не владельцу) прокрутить нельзя: на нём j/k застряли бы
+    let to = cur + step;
+    while (step && slides[to]?.hidden) to += step;
+    // За краем — к началу текущего слайда: k на прокрученной обложке возвращает наверх
+    if (step) go(slides[to] || slides[Math.max(cur, 0)]);
     else if (e.key === "o" && slides[cur]?.querySelector(".more-body")) openBreakdown(slides[cur]);
   });
 })();
@@ -609,8 +675,8 @@ def _card(n: int, entry: Entry, votes: bool, label: str) -> str:
             f'<div class="content">{"".join(parts)}</div></div></article>')
 
 
-def _block(anchor: str, title: str, body: str) -> str:
-    return (f'<section class="slide blk" id="{anchor}" data-label="{title}"><div class="inner"><div class="content">'
+def _block(anchor: str, title: str, body: str, attrs: str = "") -> str:
+    return (f'<section class="slide blk" id="{anchor}"{attrs} data-label="{title}"><div class="inner"><div class="content">'
             f'<h2 class="hl rv">{title}</h2>{body}</div></div></section>')
 
 
@@ -636,10 +702,13 @@ def _also_today(more: list[Mention]) -> str:
     return _block("also-today", "Ещё за день", f'<ol class="list">{rows}</ol>')
 
 
-def _missed(missed: list[dict], morning_page: str) -> str:
+def _missed(missed: list[dict], morning_page: str, owner_only: bool) -> str:
     links = "".join(f'<li><a href="{escape(morning_page)}#e-{escape(m["id"])}">{_rich(m["title"])}</a></li>'
                     for m in missed)
-    return _block("missed", "Утром ты пропустил", f'<ul class="list">{links}</ul>')
+    # Блок построен по отметкам владельца: коллеге и гостю он чужой. Когда читателей различает воркер, блок скрыт,
+    # и READER_SCRIPT открывает его только ключу владельца
+    return _block("missed", "Утром ты пропустил", f'<ul class="list">{links}</ul>',
+                  " data-owner hidden" if owner_only else "")
 
 
 def issue_summary(entries: list[Entry], kind: str = "day") -> str:
@@ -783,7 +852,7 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
     first = "main-story" if top else (_card_id(0, digest.entries[0]) if digest.entries else "")
     body = [_cover(digest.headline, digest.lead, date, small, spoken, meta, first, bool(toc))]
     if missed:
-        body.append(_missed(missed, morning_page))
+        body.append(_missed(missed, morning_page, votes))
     if toc:
         body.append(f'<section class="slide blk" id="index" data-label="Содержание"><div class="inner"><div class="content">'
                     f'<ol class="toc">{"".join(toc)}</ol></div></div></section>')
@@ -797,6 +866,7 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
         f'{_progress(len(numbers))}<h2 class="hl rv" id="verdict">Конец выпуска</h2>'
         f'<p class="body rv" style="--d:1">{funnel}</p>{_noise(digest.noise)}'
         f'<div class="meta rv" style="--d:2"><span>собрано {local:%d.%m} в {local:%H:%M}</span>{fail}</div>'
+        f'{READER_BOX if votes else ""}'
         f'<div class="act rv" style="--d:3"><a class="btn" href="#cover">К началу ↑</a>{_previous_issue(issues, page_name)}'
         f'<a class="lnk" href="archive.html">Архив</a><a class="lnk" href="tips.html">Арсенал фишек</a>'
         f'<a class="lnk" href="health.html">Здоровье</a></div></div></div></section>')
@@ -808,7 +878,8 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
               f'<span id="hdr-date"></span><span id="hdr-sec"></span><span class="hdr-r"><span id="hdr-n"></span>'
               f'{_progress(len(numbers))}</span></button></header>')
     return _shell(escape(digest.headline), escape(description[:300]), "\n".join(block for block in body if block),
-                  PAGE_SCRIPT.replace("__FB__", json.dumps(feedback_url)), day_mood=day_mood, top=chrome, og_image=og_image)
+                  (READER_SCRIPT.replace("__FB__", json.dumps(feedback_url)) if votes else "") + PAGE_SCRIPT,
+                  day_mood=day_mood, top=chrome, og_image=og_image)
 
 
 
@@ -820,13 +891,13 @@ def _shell(headline: str, description: str, body: str, script: str = "", *, day_
                                mood_css=MOOD_CSS, top=top, body=body, script=BASE_SCRIPT + script)
 
 
-def _head(title: str, meta: list[str], kicker: str = "") -> str:
+def _head(title: str, meta: list[str], kicker: str = "", extra: str = "") -> str:
     """Верх служебной страницы (архив, сюжет, арсенал, здоровье): строка со знаком, заголовок и подпись.
-    title и meta — готовая разметка."""
+    title, meta и extra — готовая разметка."""
     label = f'<div class="label">{kicker}</div>' if kicker else ""
     spans = "".join(f"<span>{m}</span>" for m in meta if m)
     return (f'<section class="slide head" id="cover"><div class="inner">{BAR}<div class="content">{label}'
-            f'<h1 class="hl">{title}</h1><div class="meta">{spans}</div></div></div></section>')
+            f'<h1 class="hl">{title}</h1><div class="meta">{spans}</div>{extra}</div></div></section>')
 
 
 def _sec(anchor: str, title: str, body: str, sub: str = "") -> str:
@@ -1022,7 +1093,7 @@ TIP_TOPIC_LABELS = {"claude_code": "Claude Code", "agents": "Агенты и IDE
 # получает класс done — по нему на ней появляется штамп «Проверено»
 TIPS_SCRIPT = """<script>
 (() => {
-  const FB = %s;
+  const R = window.reader;
   const boxes = [...document.querySelectorAll(".tried input")];
   // Галочки, которые читатель уже трогал: снимок из воркера, пришедший позже клика, их не перезаписывает
   const touched = new Set();
@@ -1034,13 +1105,17 @@ TIPS_SCRIPT = """<script>
     b.checked = on; b.closest(".tip").classList.toggle("done", on);
   });
   const remember = (id, on) => { try { localStorage.setItem("t:" + id, on ? "1" : "0"); } catch (e) {} };
-  boxes.forEach(b => { try { if (localStorage.getItem("t:" + b.dataset.id) === "1") set(b.dataset.id, true); } catch (e) {} });
+  // Галочки своего читателя: без принятого ключа их нет, а чужие воркер не отдаёт. Память браузера — тоже только
+  // с ключом: старый скрипт арсенала клал в t: галочки владельца любому посетителю, и они всплыли бы штампами
+  if (R.can()) {
+    boxes.forEach(b => { try { if (localStorage.getItem("t:" + b.dataset.id) === "1") set(b.dataset.id, true); } catch (e) {} });
+    R.post("/r/tried").then(r => r.ok ? r.json() : Promise.reject(r.status)).then(({ids}) => {
+      const on = new Set(ids);
+      boxes.filter(b => !touched.has(b.dataset.id)).forEach(b => { set(b.dataset.id, on.has(b.dataset.id)); remember(b.dataset.id, on.has(b.dataset.id)); });
+      count();
+    }).catch(() => {});
+  }
   count();
-  fetch(FB + "/tried").then(r => r.ok ? r.json() : Promise.reject(r.status)).then(({ids}) => {
-    const on = new Set(ids);
-    boxes.filter(b => !touched.has(b.dataset.id)).forEach(b => { set(b.dataset.id, on.has(b.dataset.id)); remember(b.dataset.id, on.has(b.dataset.id)); });
-    count();
-  }).catch(() => {});
   boxes.forEach(b => b.addEventListener("change", () => {
     const id = b.dataset.id, on = b.checked;
     const label = b.closest(".tried");
@@ -1050,7 +1125,7 @@ TIPS_SCRIPT = """<script>
     count();
     // Пока запрос не вернулся, галочка заблокирована: два запроса подряд воркер мог бы применить в обратном порядке
     b.disabled = true;
-    fetch(FB + "/tried?e=" + encodeURIComponent(id) + "&v=" + (on ? 1 : 0), {method: "POST"})
+    R.post("/r/tried?e=" + encodeURIComponent(id) + "&v=" + (on ? 1 : 0))
       .then(r => { if (!r.ok) throw new Error(r.status); remember(id, on); })
       // Изменение не сохранилось — значит, верен снимок воркера: снова разрешаем ему обновить эту галочку
       .catch(() => { touched.delete(id); set(id, !on); count(); label.classList.add("err"); })
@@ -1098,7 +1173,7 @@ def render_tips(issues: list[dict], when: datetime, feedback_url: str = "") -> s
     if tried:
         # Сколько попробовано, знает только воркер: число подставит скрипт страницы
         meta.append("попробовано <output data-tried-count>0</output>")
-    body = [_head("Арсенал фишек", meta)]
+    body = [_head("Арсенал фишек", meta, extra=READER_BOX if tried else "")]
     topics = [(topic, tips) for topic, tips in groups.items() if tips]
     if topics:
         links = "".join(f'<li><a href="#t-{topic}"><span class="n">{len(tips)}</span>'
@@ -1112,7 +1187,7 @@ def render_tips(issues: list[dict], when: datetime, feedback_url: str = "") -> s
                      '<p class="body">Каждый выпуск добавляет 2–4 приёма из релизов, блогов инженеров, Reddit и HN.</p>'))
     body.append(_foot(when))
     return _shell("Арсенал фишек", f"{plural(total, 'фишка', 'фишки', 'фишек')} из выпусков ИИ-дайджеста",
-                  "".join(body), TIPS_SCRIPT % json.dumps(feedback_url) if tried else "")
+                  "".join(body), READER_SCRIPT.replace("__FB__", json.dumps(feedback_url)) + TIPS_SCRIPT if tried else "")
 
 
 def story_page(story_id: str) -> str:
