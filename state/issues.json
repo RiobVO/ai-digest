@@ -1,5 +1,96 @@
 [
  {
+  "date": "2026-11-19",
+  "slot": "morning",
+  "headline": "IPO Anthropic, Gemini 4 Neon и взломы через nginx и PyPI",
+  "page": "2026-11-19.html",
+  "entries": [
+   {
+    "id": "20261119-0",
+    "title": "Anthropic провела IPO: акции по $83, сбор $81,3 млрд",
+    "section": "business",
+    "source": "anthropic",
+    "url": "https://www.anthropic.com/news/anthropic-prices-initial-public-offering",
+    "story": "s282"
+   },
+   {
+    "id": "20261119-1",
+    "title": "В nginx нашли десятилетнюю дыру: без входа можно выполнить код на сервере",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/10-year-old-nginx-http2-flaw-lets.html",
+    "story": "s386"
+   },
+   {
+    "id": "20261119-2",
+    "title": "Google выпустила Gemini 4 Neon для кода, работы и науки",
+    "section": "model",
+    "source": "techmeme",
+    "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/",
+    "story": "s387"
+   },
+   {
+    "id": "20261119-3",
+    "title": "Дженсен Хуанг ушёл из Nvidia после скандалов",
+    "section": "business",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/11/18/openai-ceo-sam-altman-says-its-hard-to-imagine-the-ai-industry-without-jensen/",
+    "story": "s310"
+   },
+   {
+    "id": "20261119-4",
+    "title": "Официальный пакет Microsoft agent-framework на PyPI подменили стилером",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://www.bleepingcomputer.com/news/security/microsofts-agent-framework-pypi-package-compromised-to-steal-credentials/",
+    "story": "s385"
+   },
+   {
+    "id": "20261119-5",
+    "title": "Японский суперкомпьютер Fugaku отключили после взлома публичной панели",
+    "section": "security",
+    "source": "xakep",
+    "url": "https://xakep.ru/2026/11/18/fugaku-attack/",
+    "story": "s388"
+   },
+   {
+    "id": "20261119-6",
+    "title": "Даниэль Стенберг: агенты переписали curl на Rust и заодно починили сам curl",
+    "section": "voices",
+    "source": "simon_willison",
+    "url": "https://simonwillison.net/2026/Nov/18/daniel-stenberg/",
+    "story": ""
+   },
+   {
+    "id": "20261119-7",
+    "title": "В хуках mcp_tool ставим onFailure: block — если хук упал, действие блокируется",
+    "section": "tips",
+    "source": "gh_claude_code",
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.328",
+    "story": "",
+    "summary": "Открой settings.json, найди в блоке hooks хук типа mcp_tool и добавь в него поле onFailure со значением block. Теперь при ошибке вызова хука действие остановится.",
+    "why": "Если вызов хука mcp_tool падает, действие теперь блокируется, как уже работает для command и HTTP-хуков.",
+    "copy": "\"onFailure\": \"block\"",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Открой settings.json, в котором настраиваются хуки Claude Code.",
+     "В блоке hooks найди хук типа mcp_tool.",
+     "Добавь в этот хук поле onFailure со значением block.",
+     "Проверка: теперь при ошибке вызова хука действие остановится."
+    ]
+   },
+   {
+    "id": "20261119-8",
+    "title": "CodeRabbit: 5000 пулл-реквестов за месяц и ревью людьми, по его мнению, отмирает",
+    "section": "voices",
+    "source": "pragmatic_engineer",
+    "url": "https://newsletter.pragmaticengineer.com/p/software-factories-and-code-reviews",
+    "story": ""
+   }
+  ]
+ },
+ {
   "date": "2026-11-18",
   "slot": "evening",
   "headline": "Anthropic к IPO, Java4Shell и малварь через Optimizely",
