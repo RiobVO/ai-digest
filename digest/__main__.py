@@ -23,7 +23,7 @@ from digest.mood import mood
 from digest.render import (DISPLAY_TZ, MONTHS, cover_date, render_archive, render_health, render_page,
                            render_story_pages, render_tips)
 from digest.state import SeenStore
-from digest.telegram import build_keyboard, build_message, send
+from digest.telegram import build_message, send
 from digest.weekly import WEEK_DAYS, summarize_week
 
 log = logging.getLogger("digest")
@@ -66,10 +66,9 @@ def load_env(path: Path) -> None:
             os.environ.setdefault(name.strip(), value.strip())
 
 
-def _write_message(name: str, text: str, url: str, keyboard: dict | None) -> None:
+def _write_message(name: str, text: str, url: str) -> None:
     OUT.mkdir(exist_ok=True)
-    (OUT / name).write_text(json.dumps({"text": text, "url": url, "keyboard": keyboard}, ensure_ascii=False),
-                            encoding="utf-8")
+    (OUT / name).write_text(json.dumps({"text": text, "url": url}, ensure_ascii=False), encoding="utf-8")
 
 
 def _cover(site: Path, page_name: str, headline: str, date: str, day_mood: str = "calm") -> str:
@@ -169,7 +168,7 @@ def build(args: argparse.Namespace) -> None:
     label = "Утренний дайджест" if slot == "morning" else "Вечерний дайджест"
     morning_url = f"{os.environ['SITE_URL'].rstrip('/')}/{morning_page}"
     message = build_message(digest, page_url, now, label=label, missed=missed, morning_url=morning_url)
-    _write_message("message.json", message, page_url, build_keyboard(digest))
+    _write_message("message.json", message, page_url)
     log.info("страница %s, сообщение в out/message.json", args.site / page_name)
     # State сохраняем только после успешного отбора: упавший запуск не должен «съесть» новости
     if not args.dry_run:
@@ -196,7 +195,7 @@ def weekly(args: argparse.Namespace) -> None:
     args.site.mkdir(parents=True, exist_ok=True)
     (args.site / page_name).write_text(page, encoding="utf-8")
     page_url = f"{os.environ['SITE_URL'].rstrip('/')}/{page_name}"
-    _write_message("weekly.json", build_message(digest, page_url, now, label="Итог недели"), page_url, None)
+    _write_message("weekly.json", build_message(digest, page_url, now, label="Итог недели"), page_url)
     log.info("итог недели: %d сюжетов, страница %s", len(digest.entries), args.site / page_name)
 
 
@@ -350,7 +349,7 @@ def run_eval(args: argparse.Namespace) -> None:
 def send_message(args: argparse.Namespace) -> None:
     message = json.loads((OUT / args.message).read_text(encoding="utf-8"))
     send(message["text"], message["url"], os.environ["TELEGRAM_BOT_TOKEN"], os.environ["TELEGRAM_CHAT_ID"],
-         message.get("keyboard"), large_preview=True)
+         large_preview=True)
     log.info("отправлено в Telegram: %s", message["url"])
 
 

@@ -73,25 +73,11 @@ def build_message(digest: Digest, page_url: str, when: datetime, label: str = "�
     return "\n".join(head + body + tail)
 
 
-def build_keyboard(digest: Digest) -> dict | None:
-    """Кнопки оценок под сообщением: номер кнопки = номер пункта в тексте; нажатия принимает воркер обратной связи."""
-    shown = [(n, e) for n, e in enumerate(digest.entries[:SHOWN], start=1) if e.id]
-    if not shown:
-        return None
-    return {"inline_keyboard": [
-        [{"text": f"👍 {n}", "callback_data": f"u:{e.id}"} for n, e in shown],
-        [{"text": f"👎 {n}", "callback_data": f"d:{e.id}"} for n, e in shown],
-    ]}
-
-
-def send(text: str, page_url: str, token: str, chat_id: str, keyboard: dict | None = None, silent: bool = False,
-         large_preview: bool = False) -> None:
+def send(text: str, page_url: str, token: str, chat_id: str, silent: bool = False, large_preview: bool = False) -> None:
     # У выпуска своя обложка — её показываем крупно; превью чужих статей в срочных новостях остаётся маленьким
     media = {"prefer_large_media": True} if large_preview else {"prefer_small_media": True}
     payload = {"chat_id": chat_id, "text": text, "parse_mode": "HTML", "disable_notification": silent,
                "link_preview_options": {"url": page_url, **media}}
-    if keyboard:
-        payload["reply_markup"] = keyboard
     try:
         response = httpx.post(f"https://api.telegram.org/bot{token}/sendMessage", json=payload, timeout=30)
     except httpx.HTTPError as exc:

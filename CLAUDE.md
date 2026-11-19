@@ -149,8 +149,9 @@ Site pages besides issues (all built with the `page.html` shell via `render._she
 ### Cross-file contracts
 
 - **Entry id** `YYYYMMDD-N`: numbered across both issues of a day, never reused (`Archive.next_index`). The worker
-  validates it with `ID_RE = /^\d{8}-\d{1,3}$/`; Telegram buttons use `callback_data` `u:<id>` / `d:<id>`. Changing the
-  format means changing the worker too.
+  validates it with `ID_RE = /^\d{8}-\d{1,3}$/`. Changing the format means changing the worker too. Votes are cast
+  only on the page (owner decision 2026-11-19): issue messages carry no vote buttons; the worker still accepts
+  `callback_data` `u:<id>` / `d:<id>` from the buttons under messages sent before that.
 - **Sections**: `llm.SECTIONS` (also the Gemini schema enum) ↔ `render.SECTION_LABELS` / `ROW_SECTIONS` / `BRIEF_LABELS`;
   old archived names are mapped in `weekly.LEGACY_SECTIONS`. `llm.EXTRA_SECTIONS` (`voices`, `tips`) are not news:
   they rank after events, never become the hero, and render after the «Ещё за день» block.

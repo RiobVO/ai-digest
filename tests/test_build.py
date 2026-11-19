@@ -111,11 +111,11 @@ def test_build_ships_page_message_and_state_that_agree(env):
     issues = json.loads((args.state_dir / "issues.json").read_text(encoding="utf-8"))
     ids = [e["id"] for e in issues[0]["entries"]]
     assert issues[0]["page"] == page_name and len(ids) == 2
-    # Один и тот же id должен дойти до страницы, кнопок Telegram и архива — по нему воркер принимает голос
-    buttons = [b["callback_data"] for row in message["keyboard"]["inline_keyboard"] for b in row]
+    # Один и тот же id должен дойти до страницы и архива — по нему воркер принимает голос.
+    # Кнопок оценок в Telegram нет (решение владельца 2026-11-19): оценки ставятся только на странице
+    assert set(message) == {"text", "url"}
     for entry_id in ids:
         assert f'data-entry="{entry_id}"' in page
-        assert f"u:{entry_id}" in buttons and f"d:{entry_id}" in buttons
 
     seen = json.loads((args.state_dir / "seen.json").read_text(encoding="utf-8"))
     assert any("openai.com/news/model" in key for key in seen["seen"])
