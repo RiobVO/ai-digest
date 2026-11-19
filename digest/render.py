@@ -196,8 +196,13 @@ PAGE_SCRIPT = """<script>
     for (let i = 0; i < slides.length; i++) { const r = slides[i].getBoundingClientRect(); if (r.top <= line && r.bottom > line) { setCur(i); break; } }
   }
   function refit() { fitDate(); measure(); onScroll(); }
-  let tick = false;
-  addEventListener("scroll", () => { hideTip(); if (tick) return; tick = true; requestAnimationFrame(() => { tick = false; onScroll(); }); }, {passive: true});
+  // Под открытым листом страница стоит на месте: на касаниях html не запирается (см. page.html), а прокрутить её
+  // можно и без жеста — тап по строке состояния iPhone возвращает страницу к началу. Чужую прокрутку откатываем
+  let tick = false, held = null;
+  addEventListener("scroll", () => {
+    if (held !== null && Math.abs(scrollY - held) > 1) { scrollTo({top: held, behavior: "instant"}); return; }
+    hideTip(); if (tick) return; tick = true; requestAnimationFrame(() => { tick = false; onScroll(); });
+  }, {passive: true});
   addEventListener("resize", refit);
   document.addEventListener("visibilitychange", arm);
   root.classList.add("fly"); refit();
@@ -211,7 +216,7 @@ PAGE_SCRIPT = """<script>
     $("sh-k").textContent = kicker; if (from) t.innerHTML = from.innerHTML; else t.textContent = title;
     t.style.cssText = ""; shBody.replaceChildren(...nodes); shBody.scrollTop = 0;
     opener = document.activeElement;
-    sheet.hidden = scrim.hidden = false; root.classList.add("locked"); deck.inert = true;
+    sheet.hidden = scrim.hidden = false; root.classList.add("locked"); deck.inert = true; held = scrollY;
     if (from && !reduced) {
       // Заголовок в листе — точная уменьшенная копия заголовка плаката (те же переносы), поэтому перелёт заканчивается без скачка
       const r = from.getBoundingClientRect(), cs = getComputedStyle(from), fs = parseFloat(cs.fontSize), k = Math.min(.72, 30 / fs);
@@ -234,7 +239,7 @@ PAGE_SCRIPT = """<script>
   }
   function closeSheet() {
     sheet.style.transition = ""; sheet.style.transform = "";
-    sheet.classList.remove("open"); scrim.classList.remove("open"); root.classList.remove("locked"); deck.inert = false;
+    sheet.classList.remove("open"); scrim.classList.remove("open"); root.classList.remove("locked"); deck.inert = false; held = null;
     if (hiddenHl) { hiddenHl.style.visibility = ""; hiddenHl = null; }
     sheetStory = null;
     setTimeout(() => { if (!sheet.classList.contains("open")) sheet.hidden = scrim.hidden = true; }, 480);
@@ -262,7 +267,7 @@ PAGE_SCRIPT = """<script>
     t.style.cssText = ""; t.innerHTML = s.querySelector(".hl").innerHTML;
     $("sh-k").textContent = kicker(s);
     shBody.replaceChildren(...breakdown(s)); shBody.scrollTop = 0;
-    go(s, true); onScroll(); clearTimeout(dwell);
+    go(s, true); held = scrollY; onScroll(); clearTimeout(dwell);
     sheetStory = s; markRead(s);
     if (!reduced) shBody.animate([{opacity: 0, transform: "translateY(10px)"}, {opacity: 1, transform: "none"}], {duration: 260, easing: "ease-out"});
   }

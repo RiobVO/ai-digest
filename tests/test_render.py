@@ -215,7 +215,7 @@ def test_page_scroll_lock_is_only_for_mouse():
     # iPhone, Safari (2026-11-19): overflow:hidden на html при открытии листа дёргал шапку с датой и кольцом;
     # на касаниях страницу под листом держат обработчики touchmove, запор нужен только мыши и клавиатуре
     page = render_page(sample(), STATS, WHEN, failures=[])
-    assert "@media (hover:hover) and (pointer:fine){html.locked{overflow:hidden}}" in page
+    assert "@media (any-hover:hover),(any-pointer:fine){html.locked{overflow:hidden}}" in page
     assert page.count("html.locked{overflow:hidden}") == 1
 
 

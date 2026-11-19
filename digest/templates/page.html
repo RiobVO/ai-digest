@@ -44,9 +44,9 @@ $mood_css
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{margin:0}
-/* Запор прокрутки под открытым листом — только для мыши и клавиатуры. На касаниях страницу держат обработчики
+/* Запор прокрутки под открытым листом — только там, где есть мышь или трекпад. На чисто сенсорных страницу держат обработчики
    touchmove листа и затемнения: в Safari на iPhone overflow:hidden на html дёргал шапку с датой и кольцом (2026-11-19) */
-@media (hover:hover) and (pointer:fine){html.locked{overflow:hidden}}
+@media (any-hover:hover),(any-pointer:fine){html.locked{overflow:hidden}}
 body{background:var(--paper);color:var(--ink);font-family:var(--f-text);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
 :focus-visible{outline:2.5px solid currentColor;outline-offset:3px}
 button{font:inherit;color:inherit}
