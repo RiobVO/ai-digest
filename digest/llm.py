@@ -903,6 +903,45 @@ def _generate_claude(prompt: str, schema: dict, model: str) -> dict:
     return raw
 
 
+# Пересказу хватает абзаца; обрыв по длине — не ответ
+SAY_MAX_TOKENS = 2000
+
+
+def say(system: str, messages: list[anthropic.types.MessageParam], model: str, call: str = "") -> str:
+    """Свободный ответ модели Anthropic на диалог — одна попытка, сбой — LlmError. Без схемы и без размышлений:
+    так пересказывает digest.buddy, и с размышлением Haiku приглаживает речь, которую ей показали в истории.
+    call — имя вызова для панели здоровья."""
+    start = time.monotonic()
+    started = datetime.now(timezone.utc)
+    since = len(health.RUN.calls)
+
+    def failed(status: int, reason: str) -> LlmError:
+        health.record_call(model, "", status, time.monotonic() - start, 0, reason, started)
+        return LlmError(f"Claude {model} недоступен через {time.monotonic() - start:.0f} с: {reason}", status)
+
+    try:
+        key = os.environ.get("ANTHROPIC_API_KEY", "")
+        if not key:
+            raise failed(0, "NoApiKey")
+        client = anthropic.Anthropic(api_key=key, timeout=TIMEOUT, max_retries=0)
+        try:
+            with client.messages.stream(model=model, max_tokens=SAY_MAX_TOKENS, system=system, messages=messages,
+                                        thinking={"type": "disabled"}) as stream:
+                message = stream.get_final_message()
+        except anthropic.APIStatusError as exc:
+            raise failed(exc.status_code, type(exc).__name__) from exc
+        except Exception as exc:
+            # Обрыв связи посреди потока SDK отдаёт как есть (RemoteProtocolError, ReadTimeout транспорта), а не своим
+            # APIConnectionError. Пересказ — надстройка: любой сбой вызова здесь — отказ модели, а не падение сборки
+            raise failed(0, type(exc).__name__) from exc
+        if message.stop_reason != "end_turn":
+            raise failed(200, f"stop:{message.stop_reason}")
+        health.record_call(model, message.model, 200, time.monotonic() - start, 0, started=started)
+        return "".join(block.text for block in message.content if block.type == "text")
+    finally:
+        health.label_calls(since, call)
+
+
 def generate(prompt: str, schema: dict, model: str, api_key: str) -> dict:
     """Одна попытка на одной модели. Повтор на той же модели — ещё один запрос из дневной квоты, поэтому при сбое
     вызывающий переходит к следующей модели (generate_first), а не повторяет."""

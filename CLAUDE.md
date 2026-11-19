@@ -112,7 +112,8 @@ All human-facing time is Tashkent, UTC+5 (`DISPLAY_TZ` in `render.py`); evening 
 the model let through) → `resolve_gnews` (events and one-liners) →
 `attach_discussions` (HN) → `fetch_articles` → `evaluate.verify_numbers` (numbers absent from the record and article:
 sentence cut, else one Lite rewrite call `numbers`) → `llm.explain` (detailed breakdowns) → `evaluate.verify_details`
-(same check on the breakdowns, drop only) → `evaluate.unmachine` (filler opener of `why`, the word «запись», no model call) → `record_issue` (ids → stories → archive) → cover → `render_page` + `archive.html`,
+(same check on the breakdowns, drop only) → `evaluate.unmachine` (filler opener of `why`, the word «запись», no model call) → `buddy.retell` (cards retold
+in the buddy voice, one paid call per card, fail-soft) → `record_issue` (ids → stories → archive) → cover → `render_page` + `archive.html`,
 `tips.html`, `story-<id>.html` → `out/message.json` → save state.
 
 Site pages besides issues (all built with the `page.html` shell via `render._shell`, rebuilt by every `build`):
@@ -201,6 +202,16 @@ Site pages besides issues (all built with the `page.html` shell via `render._she
   «Значит,» / «Так что» from `why`, drops a sentence-initial «По записи,» and turns «по записи Guardian» into
   «по данным Guardian». Cutting «, по записи,» mid-sentence or caveats like «в тексте нет ссылки» was tried and
   dropped: on published issues it broke commas and took the fact next to the caveat. That part is the prompt's job.
+- **Buddy voice** (`digest/buddy.py`, owner decision 2026-11-19: «чтоб новости рассказывал мой кореш», swearing
+  wanted): after the breakdowns each event and voice card is retold by the paid model — the text goes to `summary`,
+  `why` becomes empty; tips keep their exact steps, breakdowns stay professional. Haiku 5.5 does not take this voice
+  from a description in the select prompt (five variants, same dry text). What works: the examples sit in the
+  dialogue history as the model's own earlier replies (`buddy.EXAMPLES`), thinking is off (`llm.say`), one call per
+  card with its own example order. `buddy.faithful` compares the retelling with the card (numbers kept, «6,34 млрд»
+  not turned into «6,34 ляма», no new numbers or Latin names, not longer than the card, not talking about «заметка»)
+  and keeps the sober card on a mismatch; only one card per issue may open with an interjection (`buddy.OPENER`).
+  Measured on the snapshot: swearing in 0–3 cards of 7, about 2 of 7 retellings rejected; opinions the model adds
+  («хороший знак для всей темы») are not caught. Examples that all start with a reaction bring the tic back.
 - **Prompts** (Russian) live next to their schemas: `llm.PROMPT`/`EXPLAIN_PROMPT` (+ shared `VOICE`), `alert.ALERT_PROMPT`,
   `weekly.WEEK_PROMPT`. All model calls go through `llm.generate_first` → `llm.generate` (JSON schema, one attempt per model).
 

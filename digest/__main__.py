@@ -10,6 +10,7 @@ from pathlib import Path
 
 from digest import alert as breaking
 from digest import evaluate, health
+from digest.buddy import retell
 from digest.evaluate import unmachine, verify_details, verify_numbers
 from digest import tip as tip_of_day
 from digest.cover import make_cover
@@ -144,6 +145,7 @@ def build(args: argparse.Namespace) -> None:
         log.error("подробные разборы не сгенерированы: %s", exc)
     verify_details(digest.entries, texts, records)
     unmachine(digest.entries)
+    retell(digest.entries, texts, records, paid_models(settings))
 
     # Утренний выпуск сохраняет прежнее имя страницы, вечерний — свою: ссылки на старые выпуски не ломаются
     page_name = f"{today:%Y-%m-%d}.html" if slot == "morning" else f"{today:%Y-%m-%d}-evening.html"
@@ -324,6 +326,7 @@ def run_eval(args: argparse.Namespace) -> None:
                 log.error("разборы в прогоне %d не сгенерированы: %s", run, exc)
             verify_details(digest.entries, texts, records)
             unmachine(digest.entries)
+            retell(digest.entries, texts, records, paid_models(settings))
             result = evaluate.report(digest, texts, records)
             print(f"{path.stem} | {run} | {result['entries']} | {result['more']} | {result['tips']} | "
                   f"{result['high_importance']} | {result['slop']} | {result['officialese']} | "

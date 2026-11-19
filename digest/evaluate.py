@@ -126,7 +126,7 @@ NUMBERS_SCHEMA = {
 }
 
 
-def _known_text(item: Item, texts: dict[str, str], records: dict[str, str]) -> str:
+def known_text(item: Item, texts: dict[str, str], records: dict[str, str]) -> str:
     """Всё, откуда модель могла законно взять число: запись, текст первоисточника и записи склеенных дублей.
     Один эталон у защиты и у метрики report: иначе защита считала бы карточку чистой, а eval — нет."""
     parts = [item.title, item.summary, texts.get(item.url, ""), records.get(item.url, "")]
@@ -159,7 +159,7 @@ def verify_numbers(entries: list[Entry], texts: dict[str, str], records: dict[st
     выпуск с одной лишней цифрой лучше выпуска без карточки."""
     pending: list[tuple[int, Entry, str, list[str]]] = []
     for n, entry in enumerate(entries):
-        source = _known_text(entry.item, texts, records)
+        source = known_text(entry.item, texts, records)
         if not invented_numbers(f"{entry.title} {entry.summary} {entry.why}", source):
             continue
         if entry.why and invented_numbers(entry.why, source):
@@ -201,7 +201,7 @@ def verify_details(entries: list[Entry], texts: dict[str, str], records: dict[st
         d = entry.details
         if d is None:
             continue
-        source = _known_text(entry.item, texts, records)
+        source = known_text(entry.item, texts, records)
         points = [p for p in d.points if not invented_numbers(p, source)]
         what, try_it, caveats = (_cut(t, source) or "" if t else "" for t in (d.what, d.try_it, d.caveats))
         if (points, what, try_it, caveats) != (d.points, d.what, d.try_it, d.caveats):
@@ -280,7 +280,7 @@ def report(digest: Digest, texts: dict[str, str], records: dict[str, str] | None
             "slop": slop_hits(written),
             "officialese": officialese_hits(written),
             "forecasts": forecast_hits(written),
-            "invented": invented_numbers(written, _known_text(entry.item, texts, records)),
+            "invented": invented_numbers(written, known_text(entry.item, texts, records)),
             "why_repeats": bool(entry.why) and repeats(entry.why, entry.summary),
             "templates": template_hits(entry.why),
         })
@@ -294,7 +294,7 @@ def report(digest: Digest, texts: dict[str, str], records: dict[str, str] | None
             "slop": slop_hits(mention.title),
             "officialese": officialese_hits(mention.title),
             "forecasts": forecast_hits(mention.title),
-            "invented": invented_numbers(mention.title, _known_text(item, texts, records)),
+            "invented": invented_numbers(mention.title, known_text(item, texts, records)),
             "why_repeats": False,
             "templates": [],
         })
