@@ -1,15 +1,6 @@
 {
  "sent": [
   {
-   "at": "2026-11-16T21:18:12.863402+00:00",
-   "day": "2026-11-17",
-   "title": "Онлайн-банкинг Bank of America, Chase и Wells Fargo сбоит: клиенты жалуются на доступ к счетам",
-   "keys": [
-    "apnews.com/article/bank-outage-chase-wells-fargo-truist-50fee2693c22f597fa6ca51a97ef2cda",
-    "title:customers of bofa chase wells fargo and other us banks report online service issues chase says a technical issue not a cyber issue is causing delays associated press"
-   ]
-  },
-  {
    "at": "2026-11-17T00:18:24.477655+00:00",
    "day": "2026-11-17",
    "title": "США закрывают для Китая доступ к ИИ-чипам через дата-центры в других странах",
@@ -64,17 +55,18 @@
     "reuters.com/business/finance/anthropics-historic-debut-put-ais-promise-peril-wall-st-test-2026-11-19",
     "title:anthropic makes its nasdaq debut opening at 111 50 per share after pricing at 83 each giving it a 2t market cap in a historic moment for the ai industry reuters"
    ]
+  },
+  {
+   "at": "2026-11-19T22:18:13.559941+00:00",
+   "day": "2026-11-20",
+   "title": "Суд обязал власти Британии признать секретный приказ Apple о доступе к зашифрованному iCloud",
+   "keys": [
+    "macanorak.com/uk-government-forced-to-admit-it-issued-apple-a-secret-encryption-order",
+    "title:uk government forced to admit it issued apple a secret encryption order"
+   ]
   }
  ],
  "rejected": [
-  {
-   "at": "2026-11-18T21:18:21.297887+00:00",
-   "keys": [
-    "inside-db.com",
-    "title:inside deutsche bank"
-   ],
-   "strength": 4
-  },
   {
    "at": "2026-11-19T19:18:15.989535+00:00",
    "keys": [
@@ -120,6 +112,24 @@
    "keys": [
     "ounapuu.ee/posts/2026/11/19/unsafeguards",
     "title:fuck your ai safeguards"
+   ],
+   "strength": 3
+  },
+  {
+   "at": "2026-11-19T22:18:13.559941+00:00",
+   "keys": [
+    "anthropic.com/research/claude-black-hole-physics",
+    "title:claude solves two open problems in the physics of black holes"
+   ],
+   "strength": 3
+  },
+  {
+   "at": "2026-11-19T22:18:13.559941+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMickFVX3lxTE1jMEplTm9NVDRYOUxGdmN3dFBWbGVVWVZpc2VZVWI3UkIzRDViaG12WERXRE1kbkJ3VDNpQTBnSFdDamp1R1pJMkdVdkw4STRWanRGTk5kbFBJU2tRRHhuMlBqZEVRMlNWd0o0Ql8xMzA1UQ?oc=5",
+    "news.google.com/rss/articles/CBMisgFBVV95cUxPOFRrWXhLbGJZcHVKYzUycHNKbTdKZUE2clNGYUp5WFFBOTdaWndZbVdDZW0xSTQzUi1EZlRsRElldE00bktXMUFMaG1Sclo4eGdCVnZab1JUbWJwZHQ4cGFSTzgyNkZSZmF0WHAzR0hTa1B3eUQ5cmJRTGRfd1ZBdkFiSzNpU1RDeF8wU0pmbXBqWXYxeFNuaWdmV01QLWk0MWdrclJDV2ZYNVFFN0puWU9B?oc=5",
+    "news.google.com/rss/articles/CBMitwFBVV95cUxNblFuUDdEWUg1ZWIwNTZNbHlaYmNJZzVIZWw4ZzlJQnBnWUdFOHRLVXlPb0Yzb04ybzlTWG81Vk5NcERaTFF3emJvQjU3emdyMEIzQnQ4TUZ5NXl5eWVVYnhWODVoR01nRjJiX3RTWkZqQm9NbzFsdklxN3QxRVFsVHhVZXBwUHI0blg3T0p6QzJfQVhQaDNTRF9EMEF2VUYzdkFTNnZQRE80SGVfMDBOQVg0ZmZlVlHSAbwBQVVfeXFMUFIzdGJGR3ZPOHVNc2c3cmROaWtaUFhhSE55NkQ4YVVvQVhjU3o0MTBqT25XTzZYUF90alpxMk1ROWxpTFl6Mm83YXhhQW5uOHZqczF3VGRlcTRUNWdWeUVaMmQ4eGVrQ3RtVXFvZzl5aWx5OTBoNV9ybG5QMzBNTGRHcF9wWmZIYjMwc0JPUmhyM3A1VGJWMmxvUG9mT1UwZnRZZlFGS1o3ekgxZUxQY1pxWHhXc2lYU24wUDY?oc=5",
+    "title:us signed off on sales of nearly 900 000 ai chips to china in six months committee says"
    ],
    "strength": 3
   }
