@@ -57,6 +57,9 @@ _STARTS = (r"(?:ну|да|вот|ого|ой|ох|блин|бля|блять|б�
 _FILLER = rf"(?:{_STARTS}|это|и|всё|уже|такое|серь[её]зно|хрень)"
 _CLAUSE = rf"(?:\s+{_FILLER}){{0,3}}\s*[,.:!—]+\s*"
 OPENER = re.compile(rf"^{_STARTS}{_CLAUSE}(?:(?:это|ну|вот){_CLAUSE})*", re.I)
+# «вывод: …» — подпись из подачи карточки модели («… Вывод: …»), читателю она ни к чему
+LABEL = re.compile(r"(?<!\w)вывод:\s*", re.I)
+ATTEMPTS = 2
 MAT = re.compile(r"пизд|ху[йеяё]|еба|ёб|бля|нахуй|охуе|заеб", re.I)
 # Сумма со сленговой единицей: «6,34 ляма» вместо «6,34 млрд» проверка чисел не видит — число то же
 SLANG_SUM = re.compile(r"\d[\d.,]*\s*(?:лям|лярд|косар)", re.I)
@@ -117,24 +120,28 @@ def retell(entries: list[Entry], texts: dict[str, str], records: dict[str, str],
             continue
         # С заголовком: пересказ карточки часто начинается с «Модель нужна, чтобы…», и без него теряется, о чём речь
         sober = f"{entry.title}. {entry.summary} Вывод: {entry.why or '—'}"
-        examples = EXAMPLES[:]
-        # Свой порядок примеров у каждой карточки: при одном порядке модель повторяет начало последнего примера
-        random.Random(n).shuffle(examples)
-        history: list[MessageParam] = []
-        for dry, said in examples:
-            history += [{"role": "user", "content": dry}, {"role": "assistant", "content": said}]
-        history.append({"role": "user", "content": sober})
-        try:
-            said = llm.say(SYSTEM, history, models[0], call="buddy").strip()
-        except LlmError as exc:
-            log.error("пересказ голосом недоступен, остальные карточки остаются как есть: %s", exc)
-            return
-        if opened:
-            said = OPENER.sub("", said)
-        # Проверяем то, что пойдёт в выпуск: без присказки от ответа может не остаться ничего
-        reason = faithful(said, sober, known_text(entry.item, texts, records))
-        if reason:
-            log.warning("пересказ голосом отброшен (%s): %s", reason, entry.title)
-            continue
-        opened = opened or bool(OPENER.match(said))
-        entry.summary, entry.why = said, ""
+        source = known_text(entry.item, texts, records)
+        # Вторая попытка — с другим порядком примеров: в тестовом выпуске 19.11.2026 без неё половина карточек
+        # осталась сухой, и выпуск вышел пёстрым
+        for attempt in range(ATTEMPTS):
+            examples = EXAMPLES[:]
+            # Свой порядок примеров у каждой карточки: при одном порядке модель повторяет начало последнего примера
+            random.Random(n + attempt * len(entries)).shuffle(examples)
+            history: list[MessageParam] = []
+            for dry, said in examples:
+                history += [{"role": "user", "content": dry}, {"role": "assistant", "content": said}]
+            history.append({"role": "user", "content": sober})
+            try:
+                said = LABEL.sub("", llm.say(SYSTEM, history, models[0], call="buddy").strip())
+            except LlmError as exc:
+                log.error("пересказ голосом недоступен, остальные карточки остаются как есть: %s", exc)
+                return
+            if opened:
+                said = OPENER.sub("", said)
+            # Проверяем то, что пойдёт в выпуск: без присказки от ответа может не остаться ничего
+            reason = faithful(said, sober, source)
+            if not reason:
+                opened = opened or bool(OPENER.match(said))
+                entry.summary, entry.why = said, ""
+                break
+            log.warning("пересказ голосом отброшен (%s), попытка %d: %s", reason, attempt + 1, entry.title)

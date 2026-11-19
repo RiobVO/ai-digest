@@ -82,7 +82,7 @@ def test_a_phrase_that_only_looks_like_an_interjection_stays(monkeypatch):
     "",
 ])
 def test_unfaithful_retelling_leaves_the_sober_card(monkeypatch, said):
-    answers(monkeypatch, said)
+    answers(monkeypatch, said, said)
     entry = card()
     buddy.retell([entry], {}, {}, ["claude-haiku-5-5"])
     assert entry.summary == SOBER and entry.why == WHY
@@ -116,7 +116,7 @@ def test_without_a_paid_model_nothing_is_called(monkeypatch):
 def test_a_reaction_left_empty_by_the_opener_cut_keeps_the_sober_card(monkeypatch):
     # Ревью 19.11.2026: «ну пиздец.» у карточки без чисел проходил проверку, присказка срезалась — карточка пустела
     plain = "Microsoft закрывает Skype и переводит пользователей в Teams."
-    answers(monkeypatch, "ну вот, microsoft закрывает skype и переводит всех в teams.", "ну пиздец.")
+    answers(monkeypatch, "ну вот, microsoft закрывает skype и переводит всех в teams.", "ну пиздец.", "ну пиздец.")
     first, second = card(summary=plain, why=""), card(summary=plain, why="")
     first.title = second.title = "Microsoft закрывает Skype"
     buddy.retell([first, second], {}, {}, ["claude-haiku-5-5"])
@@ -156,3 +156,21 @@ def test_a_connection_dropped_mid_answer_is_a_model_failure_not_a_crash(monkeypa
     entry = card()
     buddy.retell([entry], {}, {}, ["claude-haiku-5-5"])
     assert entry.summary == SOBER and entry.why == WHY
+
+
+def test_a_rejected_retelling_gets_one_more_try_with_another_example_order(monkeypatch):
+    # Тестовый выпуск 19.11.2026: три карточки из шести остались сухими, выпуск вышел пёстрым
+    calls = answers(monkeypatch, "заметка такая: хакеры сперли 6,34 млрд долларов, заморозили 2,85 млрд.", GOOD)
+    entry = card()
+    buddy.retell([entry], {}, {}, ["claude-haiku-5-5"])
+    assert entry.summary == GOOD and len(calls) == 2
+    order = [[m["content"] for m in history[1:-1:2]] for history in calls]
+    assert order[0] != order[1] and sorted(order[0]) == sorted(order[1])
+
+
+def test_the_label_of_the_conclusion_does_not_reach_the_reader(monkeypatch):
+    said = "хакеры сперли 6,34 млрд долларов у binance, заморозить удалось 2,85 млрд. вывод: зашли через ноуты и homebrew."
+    answers(monkeypatch, said)
+    entry = card()
+    buddy.retell([entry], {}, {}, ["claude-haiku-5-5"])
+    assert entry.summary == "хакеры сперли 6,34 млрд долларов у binance, заморозить удалось 2,85 млрд. зашли через ноуты и homebrew."
