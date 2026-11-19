@@ -1,6 +1,70 @@
 [
  {
   "date": "2026-11-19",
+  "slot": "evening",
+  "headline": "Anthropic вышла на биржу, в OpenJDK дыра Java4Shell, новый Gemini",
+  "page": "2026-11-19-evening.html",
+  "entries": [
+   {
+    "id": "20261119-9",
+    "title": "Anthropic вышла на биржу: акции по $83, сбор рекордный",
+    "section": "business",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/technology/2026/nov/18/anthropic-share-price-stock-market-ipo",
+    "story": "s282"
+   },
+   {
+    "id": "20261119-10",
+    "title": "В OpenJDK нашли RCE Java4Shell: через неё берут Jenkins, Jira и Confluence",
+    "section": "security",
+    "source": "xakep",
+    "url": "https://xakep.ru/2026/11/19/java4shell/",
+    "story": "s383"
+   },
+   {
+    "id": "20261119-11",
+    "title": "Google выпустила Gemini 4 Neon: почти вдвое быстрее Carbon и дешевле",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/googles-latest-ai-model-is-faster-cheaper-and-smarter-than-its-flagship-predecessor-from-just-weeks-ago/",
+    "story": "s387"
+   },
+   {
+    "id": "20261119-12",
+    "title": "У N-central нашли новые 0-day: хакеры взяли эксплойт через часы после PoC",
+    "section": "security",
+    "source": "xakep",
+    "url": "https://xakep.ru/2026/11/19/4everable2shell/",
+    "story": "s323"
+   },
+   {
+    "id": "20261119-13",
+    "title": "Anthropic включила часть политики ответственного масштабирования перед IPO",
+    "section": "model",
+    "source": "ft_tech",
+    "url": "https://www.ft.com/content/d8be4655-211c-49a8-bfe4-18a00b8e8619?syn-25a6b1a6=1",
+    "story": "s389"
+   },
+   {
+    "id": "20261119-14",
+    "title": "Nvidia ищет нового CEO: рекрутеры вышли на главу Arm Рене Хааса",
+    "section": "business",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/technology/2026/nov/19/nvidia-new-ceo-search-jensen-huang-arm-rene-haas",
+    "story": "s310"
+   },
+   {
+    "id": "20261119-15",
+    "title": "Разобрали бинарник Claude Code 2.1.294: что он хранит и что собирает",
+    "section": "voices",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1109634/?utm_campaign=1109634&utm_source=habrahabr&utm_medium=rss",
+    "story": ""
+   }
+  ]
+ },
+ {
+  "date": "2026-11-19",
   "slot": "morning",
   "headline": "IPO Anthropic, Gemini 4 Neon и взломы через nginx и PyPI",
   "page": "2026-11-19.html",
