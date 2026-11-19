@@ -55,33 +55,18 @@
     "deepmind.google/blog/introducing-gemini-4-neon",
     "title:introducing gemini 4 neon"
    ]
+  },
+  {
+   "at": "2026-11-19T19:18:15.989535+00:00",
+   "day": "2026-11-20",
+   "title": "Anthropic дебютировала на Nasdaq с капитализацией около $2 трлн",
+   "keys": [
+    "reuters.com/business/finance/anthropics-historic-debut-put-ais-promise-peril-wall-st-test-2026-11-19",
+    "title:anthropic makes its nasdaq debut opening at 111 50 per share after pricing at 83 each giving it a 2t market cap in a historic moment for the ai industry reuters"
+   ]
   }
  ],
  "rejected": [
-  {
-   "at": "2026-11-18T19:18:11.144663+00:00",
-   "keys": [
-    "deepmind.google/blog/genie-4-is-now-available",
-    "title:genie 4 is now available"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-18T19:18:11.144663+00:00",
-   "keys": [
-    "blog.google/innovation-and-ai/products/gemini-app/gemini-lower-memory-devices",
-    "title:the gemini app is now available on lower memory android devices"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-18T19:18:11.144663+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/rtx-spark-desktop-local-ai-available-now",
-    "title:nvidia rtx spark compact desktops out now"
-   ],
-   "strength": 1
-  },
   {
    "at": "2026-11-18T20:18:14.819638+00:00",
    "keys": [
@@ -97,6 +82,38 @@
     "title:inside deutsche bank"
    ],
    "strength": 4
+  },
+  {
+   "at": "2026-11-19T19:18:15.989535+00:00",
+   "keys": [
+    "blog.google/innovation-and-ai/technology/developers-tools/gemini-api-tool-retrieval",
+    "title:introducing tool retrieval in the gemini api"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-19T19:18:15.989535+00:00",
+   "keys": [
+    "blog.google/innovation-and-ai/technology/ai/dialogues-walter-isaacson",
+    "title:walter isaacson on curiosity and creativity in the ai age"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-19T19:18:15.989535+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/developers-simulation-frontier-ai-agents",
+    "title:into the omniverse how developers turn ideas into simulations with frontier ai agents"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-19T19:18:15.989535+00:00",
+   "keys": [
+    "blogs.nvidia.com/blog/geforce-now-thursday-black-friday-2026",
+    "title:season s streamings and savings black friday deals come to geforce now"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
