@@ -38,17 +38,24 @@ def test_card_is_retold_and_the_conclusion_moves_into_the_text(monkeypatch):
     # Примеры лежат в истории как прошлые ответы самой модели, карточка — последней репликой
     history = calls[0]
     assert [m["role"] for m in history] == ["user", "assistant"] * len(buddy.EXAMPLES) + ["user"]
-    assert history[-1]["content"] == f"{entry.title}. {SOBER} Вывод: {WHY}"
-    assert {m["content"] for m in history[1:-1:2]} == {said for _, said in buddy.EXAMPLES}
+    assert history[-1]["content"] == f"Заголовок: {entry.title}\n{SOBER} Вывод: {WHY}"
+    assert {m["content"] for m in history[1:-1:2]} == {said for _, _, said in buddy.EXAMPLES}
 
 
 def test_examples_do_not_teach_an_opening_tic():
     # Присказка в начале каждой карточки («ну пиздец…», «бля, …») — та же болезнь, что «Значит,» (19.11.2026)
-    firsts = [said.split()[0] for _, said in buddy.EXAMPLES]
+    firsts = [said.split()[0] for _, _, said in buddy.EXAMPLES]
     assert len(set(firsts)) == len(firsts)
-    assert not any(buddy.MAT.match(said) for _, said in buddy.EXAMPLES)
-    calm = [said for _, said in buddy.EXAMPLES if not buddy.MAT.search(said)]
+    assert not any(buddy.MAT.match(said) or buddy.OPENER.match(said) for _, _, said in buddy.EXAMPLES)
+    calm = [said for _, _, said in buddy.EXAMPLES if not buddy.MAT.search(said)]
     assert len(calm) >= 2
+
+
+def test_examples_pass_their_own_check_and_do_not_repeat_the_headline():
+    # Первая фраза под заголовком не должна быть самим заголовком (тестовый выпуск 19.11.2026)
+    for title, dry, said in buddy.EXAMPLES:
+        assert buddy.faithful(said, dry, title, "") == ""
+        assert said.split()[0].lower() != title.split()[0].lower()
 
 
 @pytest.mark.parametrize("opener", ["блин, ", "ну вот, ", "да блин, это жесть: ", "блин, ну это жесть. ", "ахренеть, ",
@@ -75,7 +82,7 @@ def test_a_phrase_that_only_looks_like_an_interjection_stays(monkeypatch):
     "хакеры сперли 6,34 млрд долларов у binance, заморозили 2,85 млрд, ещё 40% не найти.",  # число из головы
     "хакеры сперли 6,34 млрд долларов у binance через okta, заморозили 2,85 млрд.",         # название из головы
     "заметка такая: хакеры сперли 6,34 млрд долларов у binance, заморозить удалось 2,85 млрд.",     # вышла из роли
-    GOOD + " " + GOOD,                                                                         # дописала своё
+    GOOD + " " + GOOD + " " + GOOD,                                                            # дописала своё
     "ну пиздец.",                                                                              # одна реакция
     "binance, ну такое.",                                                                      # фактов не осталось
     "хакеры сперли 6,34 млрд долларов у binance, заморозили 2,85 млрд, ушло ещё 2,85 тысячи.",  # порядок из головы
@@ -174,3 +181,13 @@ def test_the_label_of_the_conclusion_does_not_reach_the_reader(monkeypatch):
     entry = card()
     buddy.retell([entry], {}, {}, ["claude-haiku-5-5"])
     assert entry.summary == "хакеры сперли 6,34 млрд долларов у binance, заморозить удалось 2,85 млрд. зашли через ноуты и homebrew."
+
+
+def test_a_short_card_may_get_a_reaction_longer_than_a_quarter_of_it(monkeypatch):
+    plain = "Штат Аризона открыл уголовное расследование против OpenAI."
+    said = "аризона открыла уголовное расследование против openai, и это уже не шутки: дело уголовное, а не штраф."
+    answers(monkeypatch, said)
+    entry = card(summary=plain, why="")
+    entry.title = "Аризона расследует OpenAI"
+    buddy.retell([entry], {}, {}, ["claude-haiku-5-5"])
+    assert entry.summary == said
