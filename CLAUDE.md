@@ -184,7 +184,8 @@ Site pages besides issues (all built with the `page.html` shell via `render._she
   `render._rich` (escape + `typo` + terms as buttons); commands only through `_term`. `render.BASE_SCRIPT` (theme,
   copy buttons) is on every page; the arsenal adds `TIPS_SCRIPT` (tried state from the worker → «Проверено» stamp).
 - **Page ↔ worker** (two readers since 2026-11-19): the reader pastes a personal key once per browser into the field of
-  `render.READER_SCRIPT` (end of the issue, top of the arsenal); `POST /r/who` names the reader, the page shows
+  `render.READER_SCRIPT` (end of the issue, top of the arsenal). Without an accepted key the page shows no trace of
+  keys (owner decision 2026-11-19: the colleague sees a plain issue); the field opens only on a URL ending in `#ключ`; `POST /r/who` names the reader, the page shows
   «Отметки: владелец/коллега» and stores `reader:key` / `reader:role` in `localStorage`. Page scripts then send
   `POST /r/vote?e=<id>&v=up|down`, `POST /r/read?e=<id>` (with `keepalive`), `POST /r/tried?e=<id>&v=0|1` and
   `POST /r/tried` (list) through `window.reader.post`, the key as the text/plain body (no preflight, never in the URL:

@@ -101,6 +101,8 @@ img{max-width:100%}
 .meta>.also{white-space:normal}
 /* inline-block: иначе точка-разделитель после ссылки HN была бы подчёркнута вместе с ней */
 .meta>:not(:last-child)::after{content:"·";display:inline-block;margin-left:10px}
+/* Скрытый последний пункт (счётчик арсенала без ключа) не оставляет висящую точку */
+.meta>:has(+[hidden]:last-child)::after{content:none}
 /* Значок издания на белой плашке: тёмные значки не пропадают на ночном фоне */
 .fav{width:14px;height:14px;margin-right:6px;border-radius:3px;background:#fff;vertical-align:-2px}
 .thread{display:grid;gap:6px;justify-items:start;font:500 .9rem/1.4 var(--f-text)}

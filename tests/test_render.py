@@ -348,6 +348,18 @@ def test_keyboard_paging_skips_slides_hidden_from_this_reader():
     assert "slides[to] || slides[Math.max(cur, 0)]" in keys
 
 
+def test_reader_without_a_key_sees_no_trace_of_keys_unless_the_hidden_entry_is_opened():
+    # Решение владельца 2026-11-19: коллега и гость не видят ни поля ключа, ни счётчика «попробовано» — будто этого
+    # нет. Поле открывается только по адресу с #ключ на конце: так владелец ставит ключ в новом браузере
+    page = render_page(sample(), STATS, WHEN, failures=[], feedback_url="https://fb.example")
+    tips = render_tips(TIP_ISSUES, WHEN, feedback_url="https://fb.dev")
+    for html in (page, tips):
+        assert 'decodeURIComponent(location.hash) === "#ключ"' in html
+        assert "box.hidden = !role && !entry" in html
+    assert '<span hidden data-reader-only>попробовано <output data-tried-count>0</output></span>' in tips
+    assert 'querySelectorAll("[data-reader-only]")' in tips
+
+
 def test_without_the_worker_the_page_asks_for_no_reader_key():
     page = render_page(sample(), STATS, WHEN, failures=[])
     # Без скрипта читателя window.reader не появляется, и скрипт страницы ничего не шлёт

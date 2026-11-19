@@ -115,12 +115,16 @@ READER_SCRIPT = """<script>
   const get = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
   const put = (k, v) => { try { if (v) localStorage.setItem(k, v); else localStorage.removeItem(k); return true; } catch (e) { return false; } };
   let key = get("reader:key"), role = key ? known(get("reader:role")) : null, editing = false, note = "";
+  // Без принятого ключа о ключах на странице ни следа (решение владельца 2026-11-19: коллега и гость видят обычный
+  // выпуск). Поле открывается только по адресу с #ключ на конце — так владелец ставит ключ в новом браузере
+  const entry = (() => { try { return decodeURIComponent(location.hash) === "#ключ"; } catch (e) { return false; } })();
   // Строка в теле уходит как text/plain — простой запрос без preflight, поэтому keepalive у «прочитано» работает
   const ask = (path, k, extra) => fetch(FB + path, {method: "POST", body: k, ...extra});
   function show() {
     // Пальцы, галочки и блок «Утром ты пропустил» (он по отметкам владельца) — только тому, чей ключ принят
     document.querySelectorAll(".vote,.tried").forEach(el => { el.hidden = !role; });
     document.querySelectorAll("[data-owner]").forEach(el => { el.hidden = role !== "owner"; });
+    document.querySelectorAll("[data-reader-only]").forEach(el => { el.hidden = !role; });
     if (!box) return;
     const text = document.createElement("span");
     if (role && !editing) {
@@ -138,7 +142,7 @@ READER_SCRIPT = """<script>
       form.addEventListener("submit", e => { e.preventDefault(); adopt(input.value.trim()); });
       box.replaceChildren(text, form);
     }
-    box.hidden = false;
+    box.hidden = !role && !entry;
   }
   function adopt(k) {
     if (!KEY_RE.test(k)) { note = "Это не личный ключ — проверь, что он скопирован целиком"; show(); return; }
@@ -149,6 +153,8 @@ READER_SCRIPT = """<script>
         catch (e) { /* хранилище закрыто — чистить нечего */ }
       }
       if (!put("reader:key", k) || !put("reader:role", known(reader))) { note = "Браузер не даёт сохранить ключ"; show(); return; }
+      // Адрес с #ключ не остаётся в истории и не уйдёт дальше, если ссылку скопируют
+      if (entry) history.replaceState(null, "", location.pathname + location.search);
       location.reload();
     }).catch(status => { note = status === 401 ? "Ключ не принят" : "Воркер не ответил — попробуй ещё раз"; show(); });
   }
@@ -891,11 +897,11 @@ def _shell(headline: str, description: str, body: str, script: str = "", *, day_
                                mood_css=MOOD_CSS, top=top, body=body, script=BASE_SCRIPT + script)
 
 
-def _head(title: str, meta: list[str], kicker: str = "", extra: str = "") -> str:
+def _head(title: str, meta: list[str], kicker: str = "", extra: str = "", meta_tail: str = "") -> str:
     """Верх служебной страницы (архив, сюжет, арсенал, здоровье): строка со знаком, заголовок и подпись.
-    title, meta и extra — готовая разметка."""
+    title, meta, extra и meta_tail — готовая разметка; meta_tail встаёт в подпись как есть, со своим span."""
     label = f'<div class="label">{kicker}</div>' if kicker else ""
-    spans = "".join(f"<span>{m}</span>" for m in meta if m)
+    spans = "".join(f"<span>{m}</span>" for m in meta if m) + meta_tail
     return (f'<section class="slide head" id="cover"><div class="inner">{BAR}<div class="content">{label}'
             f'<h1 class="hl">{title}</h1><div class="meta">{spans}</div>{extra}</div></div></section>')
 
@@ -1170,10 +1176,10 @@ def render_tips(issues: list[dict], when: datetime, feedback_url: str = "") -> s
     total = sum(map(len, groups.values()))
     with_copy = sum(1 for tips in groups.values() for tip, _ in tips if tip.get("copy"))
     meta = [plural(total, "фишка", "фишки", "фишек"), f"{with_copy} с командой"]
-    if tried:
-        # Сколько попробовано, знает только воркер: число подставит скрипт страницы
-        meta.append("попробовано <output data-tried-count>0</output>")
-    body = [_head("Арсенал фишек", meta, extra=READER_BOX if tried else "")]
+    # Сколько попробовано, знает только воркер: число подставит скрипт страницы. Без принятого ключа счётчик скрыт —
+    # гостю и коллеге «попробовано 0» ни о чём не говорит
+    counter = '<span hidden data-reader-only>попробовано <output data-tried-count>0</output></span>' if tried else ""
+    body = [_head("Арсенал фишек", meta, extra=READER_BOX if tried else "", meta_tail=counter)]
     topics = [(topic, tips) for topic, tips in groups.items() if tips]
     if topics:
         links = "".join(f'<li><a href="#t-{topic}"><span class="n">{len(tips)}</span>'
