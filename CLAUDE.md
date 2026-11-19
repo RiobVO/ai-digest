@@ -112,7 +112,7 @@ All human-facing time is Tashkent, UTC+5 (`DISPLAY_TZ` in `render.py`); evening 
 the model let through) → `resolve_gnews` (events and one-liners) →
 `attach_discussions` (HN) → `fetch_articles` → `evaluate.verify_numbers` (numbers absent from the record and article:
 sentence cut, else one Lite rewrite call `numbers`) → `llm.explain` (detailed breakdowns) → `evaluate.verify_details`
-(same check on the breakdowns, drop only) → `record_issue` (ids → stories → archive) → cover → `render_page` + `archive.html`,
+(same check on the breakdowns, drop only) → `evaluate.unmachine` (filler opener of `why`, the word «запись», no model call) → `record_issue` (ids → stories → archive) → cover → `render_page` + `archive.html`,
 `tips.html`, `story-<id>.html` → `out/message.json` → save state.
 
 Site pages besides issues (all built with the `page.html` shell via `render._shell`, rebuilt by every `build`):
@@ -194,6 +194,13 @@ Site pages besides issues (all built with the `page.html` shell via `render._she
 - **Voice** (`llm.VOICE`, shared by every prompt; owner decision 2026-11-12): a friend engineer retelling the news —
   the point in plain words first, one or two numbers per card, a rare term explained on the go in 3–5 words or
   replaced; accuracy rules unchanged. Haiku 5.5 keeps this voice, Lite only partly (snapshot 2026-11-06).
+  No filler openers and no talk about the source (owner, 2026-11-19: «без ЗНАЧИТ через каждое слово», no empty
+  talk): the `why` field once suggested the form «значит, …» and Haiku opened 8 of 9 with it; the prompt's word
+  «запись» leaked into the text («по записи», «в тексте не сказано»). Never give a connective as the example of
+  a field's form. `evaluate.unmachine` (after `verify_details`) only does what is safe in any phrase: strips a leading
+  «Значит,» / «Так что» from `why`, drops a sentence-initial «По записи,» and turns «по записи Guardian» into
+  «по данным Guardian». Cutting «, по записи,» mid-sentence or caveats like «в тексте нет ссылки» was tried and
+  dropped: on published issues it broke commas and took the fact next to the caveat. That part is the prompt's job.
 - **Prompts** (Russian) live next to their schemas: `llm.PROMPT`/`EXPLAIN_PROMPT` (+ shared `VOICE`), `alert.ALERT_PROMPT`,
   `weekly.WEEK_PROMPT`. All model calls go through `llm.generate_first` → `llm.generate` (JSON schema, one attempt per model).
 

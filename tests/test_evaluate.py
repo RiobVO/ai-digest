@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 
 from digest import evaluate
 from digest.evaluate import (forecast_hits, invented_numbers, load_snapshot, officialese_hits, repeats, report,
-                             save_snapshot, slop_hits, template_hits, verify_details, verify_numbers)
+                             save_snapshot, slop_hits, template_hits, unmachine, verify_details, verify_numbers)
 from digest.llm import Details, Digest, Entry, Mention
 from digest.models import Item
 
@@ -205,3 +205,50 @@ def test_clean_details_and_cards_without_details_are_left_alone():
     assert clean.details == Details("Контекст.", ["Модель 14B"], "", "", ["pip install orbit"],
                                     [("RCE", "удалённый запуск кода")])
     assert bare.details is None
+
+
+def test_filler_opener_of_why_is_cut_and_the_sentence_starts_with_the_point():
+    # Выпуск 19.11.2026: «почему важно» начиналось со «Значит,» в 8 карточках из 9
+    cards = [_card("T", "S.", why) for why in (
+        "Значит, все версии до 1.31.8 надо обновлять.", "значит, атака держалась на людях.",
+        "Так что ключи с той машины считай утёкшими.", "Получается, что подписка подорожала вдвое.",
+        "Это значит, что v1 отключат 1 марта.", "Значит, iOS 19 надо ставить сразу.")]
+    unmachine(cards)
+    assert [c.why for c in cards] == [
+        "Все версии до 1.31.8 надо обновлять.", "Атака держалась на людях.", "Ключи с той машины считай утёкшими.",
+        "Подписка подорожала вдвое.", "v1 отключат 1 марта.", "iOS 19 надо ставить сразу."]
+    # Не вводное слово, а часть фразы — не трогаем
+    plain = ["Теперь при ошибке хука действие остановится.", "Значит ли это конец v1, неясно.",
+             "Получается дешевле, чем аренда GPU."]
+    kept = [_card("T", "S.", why) for why in plain]
+    unmachine(kept)
+    assert [c.why for c in kept] == plain
+
+
+def test_the_word_record_goes_where_the_phrase_survives_it():
+    # Фразы из опубликованных выпусков 12–19.11.2026
+    card = _card("T", "OpenAI выпустила модель. По записи, её обучили не выходить за рамки теста. "
+                      "По записи Guardian, сам Хуанг признал отношения.", "Значит, по записи Shattered, чипы ушли в обход.")
+    card.details = Details("Контекст.", ["Издание ссылается на суд, а по записи Wired, иск подали в июне"], "", "")
+    unmachine([card])
+    assert card.summary == ("OpenAI выпустила модель. Её обучили не выходить за рамки теста. "
+                            "По данным Guardian, сам Хуанг признал отношения.")
+    assert card.why == "По данным Shattered, чипы ушли в обход."
+    assert card.details.points == ["Издание ссылается на суд, а по данным Wired, иск подали в июне"]
+
+
+def test_phrases_that_cannot_be_fixed_without_damage_are_left_alone():
+    # Оборот в середине фразы и оговорка об источнике: первая версия ломала запятые и уносила факт рядом с оговоркой
+    card = _card("Суд опубликовал текст решения", "Её обязательства, по записи, уже почти $901 млрд. "
+                                                  "Fireworks AI, провайдер инфраструктуры, по записи, потерял ключи. "
+                                                  "Мошенников вычислили по записи звонков.",
+                 "Обновляйся, ведь по записи nginx стоит на 225 млн сайтов.")
+    card.details = Details("Прогноза по выручке в тексте нет: Амодеи сам говорит, что неизвестно, оправдают ли доходы расходы.",
+                           ["Calif опубликовала proof-of-concept; ссылки в тексте нет, боевые эксплойты публиковать не стали.",
+                            "В отчёте называются три группировки: APT28, APT29 и Lazarus"],
+                           "Обнови агент, но в тексте не уточняется, какая версия закрывает дыру, поэтому ставь последнюю.",
+                           "В тексте нет данных о взломе, о котором пишет заголовок.")
+    before = (card.summary, card.why, card.details.what, list(card.details.points), card.details.try_it, card.details.caveats)
+    unmachine([card, _card("T", "S.")])
+    d = card.details
+    assert (card.summary, card.why, d.what, d.points, d.try_it, d.caveats) == before

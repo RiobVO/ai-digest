@@ -209,6 +209,48 @@ def verify_details(entries: list[Entry], texts: dict[str, str], records: dict[st
             d.points, d.what, d.try_it, d.caveats = points, what, try_it, caveats
 
 
+# Привычки модели, по которым читатель узнаёт машинный текст (выпуск 19.11.2026, Haiku 5.5): «почему важно» начиналось
+# со «Значит,» в 8 карточках из 9, а в рассказ попадало слово из промпта — «по записи Guardian», «По записи, её
+# обучили…». Правило в промпте модели держат не всегда (Lite — хуже всех), поэтому, как и с числами, его дожимает
+# код — но только там, где правка безопасна в любой фразе. Вырезать «, по записи,» из середины предложения и
+# оговорки вроде «в тексте нет ссылки» пробовали: на опубликованных выпусках это ломало запятые («Компания,
+# которую подозревают наняла…») и уносило факт, стоящий рядом с оговоркой. Это остаётся промпту.
+# Вводное слово снимаем только в начале «почему важно» и только с запятой или союзом: «Значит ли это…»,
+# «Получается дешевле…», «Теперь при ошибке…» — обычные фразы
+OPENER_RE = re.compile(r"^(?:значит,|так что|получается(?:,| что)|выходит,|то есть,?|это значит,?|по сути,?)\s+(?:что\s+)?",
+                       re.I)
+# В начале предложения оборот убирается целиком; перед названием это ссылка на издание, там меняется только слово
+ASIDE_RE = re.compile(r"^по записи,\s*", re.I)
+CITED_RE = re.compile(r"(?<!\w)([Пп])о записи(?= [A-ZА-ЯЁ])")
+
+
+def _cap(text: str) -> str:
+    # Название со строчной латинской буквы (iOS, nginx, curl, vLLM) пишется как есть и в начале фразы
+    return text[:1].upper() + text[1:] if re.match(r"[а-яё]", text) else text
+
+
+def _unaside(text: str) -> str:
+    parts = []
+    for sentence in SENTENCE.split(text):
+        plain = CITED_RE.sub(lambda m: f"{m.group(1)}о данным", ASIDE_RE.sub("", sentence))
+        parts.append(_cap(plain) if plain != sentence else sentence)
+    return " ".join(p for p in parts if p)
+
+
+def unmachine(entries: list[Entry]) -> None:
+    """Снимает вводное слово с «почему важно» и убирает из рассказа слово «запись» как ссылку на источник."""
+    for entry in entries:
+        d = entry.details
+        before = (entry.summary, entry.why, d and (d.what, list(d.points), d.try_it, d.caveats))
+        entry.summary, why = _unaside(entry.summary), _unaside(entry.why)
+        entry.why = _cap(OPENER_RE.sub("", why)) if OPENER_RE.match(why) else why
+        if d is not None:
+            d.what, d.try_it, d.caveats = _unaside(d.what), _unaside(d.try_it), _unaside(d.caveats)
+            d.points = [_unaside(point) for point in d.points]
+        if before != (entry.summary, entry.why, d and (d.what, list(d.points), d.try_it, d.caveats)):
+            log.warning("машинные обороты убраны из текста: %s", entry.title)
+
+
 def _stems(text: str) -> set[str]:
     return {w[:STEM] for w in re.findall(r"\w{4,}", text.lower())}
 
