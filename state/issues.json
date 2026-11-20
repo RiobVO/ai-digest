@@ -1,6 +1,62 @@
 [
  {
   "date": "2026-11-20",
+  "slot": "evening",
+  "headline": "IPO Anthropic, расследование Nvidia, дыры в vCenter и nginx",
+  "page": "2026-11-20-evening.html",
+  "entries": [
+   {
+    "id": "20261120-8",
+    "title": "Anthropic закрыла IPO по $83",
+    "section": "business",
+    "source": "anthropic",
+    "url": "https://www.anthropic.com/news/ipo-close",
+    "story": "s282"
+   },
+   {
+    "id": "20261120-9",
+    "title": "Китайская шпионская группа с сентября ломала vCenter через zero-day",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/china-linked-hackers-exploit-critical.html",
+    "story": "s390"
+   },
+   {
+    "id": "20261120-10",
+    "title": "Еврокомиссия подтвердила: атака с помощью ИИ нарушила её сервисы",
+    "section": "security",
+    "source": "securityweek",
+    "url": "https://www.securityweek.com/european-commission-confirms-ai-assisted-cyberattack-disrupted-services/",
+    "story": "s372"
+   },
+   {
+    "id": "20261120-11",
+    "title": "В nginx с 2015 года сидела дыра: без входа можно выполнить код на сервере",
+    "section": "security",
+    "source": "xakep",
+    "url": "https://xakep.ru/2026/11/20/nginx2root/",
+    "story": "s391"
+   },
+   {
+    "id": "20261120-12",
+    "title": "Калифорния вызвала Nvidia на расследование: проверяют, не ушли ли чипы в Китай",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.cbsnews.com/sanfrancisco/news/california-nvidia-subpoena-jensen-huang-affair-alleged-chinese-spy/",
+    "story": "s310"
+   },
+   {
+    "id": "20261120-13",
+    "title": "GPT-6.2 для части кибер-задач просит подтвердить личность",
+    "section": "business",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1110122/?utm_campaign=1110122&utm_source=habrahabr&utm_medium=rss",
+    "story": "s382"
+   }
+  ]
+ },
+ {
+  "date": "2026-11-20",
   "slot": "morning",
   "headline": "Anthropic на бирже, дыры в vCenter и nginx, ИИ-инструмент ARTEX",
   "page": "2026-11-20.html",
