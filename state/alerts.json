@@ -1,15 +1,6 @@
 {
  "sent": [
   {
-   "at": "2026-11-17T20:18:11.170431+00:00",
-   "day": "2026-11-18",
-   "title": "Google выкатила Gemini, который записывается на приёмы, платит по счетам и покупает продукты",
-   "keys": [
-    "blog.google/innovation-and-ai/products/gemini-app/tasks-in-gemini-free-new-features",
-    "title:put gemini to work for you"
-   ]
-  },
-  {
    "at": "2026-11-18T19:18:11.144663+00:00",
    "day": "2026-11-19",
    "title": "В NGINX нашли две критичные дыры: захват сервера без пароля через HTTP/2",
@@ -47,22 +38,6 @@
   }
  ],
  "rejected": [
-  {
-   "at": "2026-11-19T20:18:12.698371+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/microsoft-ignite-accelerated-computing-azure-windows-pcs",
-    "title:nvidia and microsoft expand accelerated computing from azure to windows pcs"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-19T21:18:12.331672+00:00",
-   "keys": [
-    "ounapuu.ee/posts/2026/11/19/unsafeguards",
-    "title:fuck your ai safeguards"
-   ],
-   "strength": 3
-  },
   {
    "at": "2026-11-19T22:18:13.559941+00:00",
    "keys": [
@@ -118,20 +93,20 @@
   {
    "at": "2026-11-20T20:18:10.555024+00:00",
    "keys": [
-    "math216.wordpress.com/2026/11/20/hurried-announcement-alessandro-masullo-grh",
-    "title:hurried announcement alessandro masullo grh"
-   ],
-   "strength": 6
-  },
-  {
-   "at": "2026-11-20T20:18:10.555024+00:00",
-   "keys": [
     "news.google.com/rss/articles/CBMiuwFBVV95cUxNcjRkVkRVVmNKQXJGaW1TOE9vM05iRllrdUVzRTZ4LTBTZUtVRzdpa3pJVHB3TXljYV9rT1VueG5MRndHN1ZnV1RRcERHVURucm1WZkFtTFpTQk8wYkJQb3hlLXNvcW1TUTRXQkY3eVVia0ZuRGtwRC1LS0tEaEZkbldUZFF6M3BaRENvOHlDdDMwa1FyOFZ0ZU1PdzRROW1iem9Bb2xVeF9hLTRCbzdPWXQ1ckVZdlhzVXo4?oc=5",
     "news.google.com/rss/articles/CBMivwFBVV95cUxNV3UtTjRsMF9CQW4yUE1jd0JKR1ZZeWFJQjBCd0txUkc3c3N4amM3ZTFrd1paRk1xdUV3VFhOTDNaa1piY0lnLXEzV1Fuc0FTb3l3WjFfRzYyRlkwMENoc0lMSTZLLUZUVWtWX29iQldJU3k4Zm9pa1h3QXFZQjI4NnlqMElIY3RlRGFXZzd5UDNPZUdQaEp1Wmc1Z0k2bkJDVFN4ZFdBUEVzVjBWU001bk82TFo4N0FFSG1rTF9mQQ?oc=5",
     "news.google.com/rss/articles/CBMiywFBVV95cUxONExyM29GZGRLYlVOTko0V2tZWFhfdWVNN3dkRVVQRkNVOUJNNE1GVm85SXdNR05RQVlXVzFIRkNhaG5RZXlmYWZmelFsajdaWDJ0UTRWT3ZPWGhxQ2RoSTd2TTliVUxhWXVNd001UnVVLTVzYjdqSVlQRnJITmVXLTdxODNKSGZKNnM1NTFvQ2g4Q0JVaDdlTFl4ejVGQWRQSW05TzZLNjVMd0ZwdTdXYkVsbktUc0d3Rkl1R2RoRFZzQmNSMThGX1kyMA?oc=5",
     "title:trump says he plans to penalize us tech companies that build ai data centers in other countries"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-11-20T21:18:19.453705+00:00",
+   "keys": [
+    "math216.wordpress.com/2026/11/20/hurried-announcement-alessandro-masullo-grh",
+    "title:hurried announcement alessandro masullo grh"
+   ],
+   "strength": 9
   }
  ],
  "undated": {
