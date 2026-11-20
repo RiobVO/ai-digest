@@ -101,12 +101,20 @@
    "strength": 3
   },
   {
-   "at": "2026-11-20T21:18:19.453705+00:00",
+   "at": "2026-11-20T22:18:13.186786+00:00",
    "keys": [
     "math216.wordpress.com/2026/11/20/hurried-announcement-alessandro-masullo-grh",
     "title:hurried announcement alessandro masullo grh"
    ],
-   "strength": 9
+   "strength": 11
+  },
+  {
+   "at": "2026-11-20T22:18:13.186786+00:00",
+   "keys": [
+    "bloomberg.com/news/articles/2026-11-20/crowdstrike-is-in-talks-to-buy-cybersecurity-firm-zscaler",
+    "title:sources crowdstrike is in talks to acquire zscaler which would create a cybersecurity company with a combined market cap of 265b zs jumps 15 after hours bloomberg"
+   ],
+   "strength": 0
   }
  ],
  "undated": {
