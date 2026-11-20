@@ -1,5 +1,87 @@
 [
  {
+  "date": "2026-11-20",
+  "slot": "morning",
+  "headline": "Anthropic на бирже, дыры в vCenter и nginx, ИИ-инструмент ARTEX",
+  "page": "2026-11-20.html",
+  "entries": [
+   {
+    "id": "20261120-0",
+    "title": "Anthropic вышла на Nasdaq и собрала $81,3 млрд — рекорд для IPO",
+    "section": "business",
+    "source": "verge",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/1035384/anthropic-ipo-trading-nasdaq",
+    "story": "s282"
+   },
+   {
+    "id": "20261120-1",
+    "title": "Китайская APT эксплуатировала дыру в VMware vCenter с сентября, патч вышел",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/vmware-patches-vcenter-zero-day-exploited-in-attacks-since-september/",
+    "story": "s390"
+   },
+   {
+    "id": "20261120-2",
+    "title": "Еврокомиссия подтвердила атаку с ИИ-инструментом ARTEX: отключили кадровые системы",
+    "section": "security",
+    "source": "the_record",
+    "url": "https://therecord.media/european-commission-confirms-cyberattack-using-ai",
+    "story": "s372"
+   },
+   {
+    "id": "20261120-3",
+    "title": "В nginx две критические дыры в HTTP/2: без входа можно выполнить код на сервере",
+    "section": "security",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1109692/?utm_campaign=1109692&utm_source=habrahabr&utm_medium=rss",
+    "story": "s391"
+   },
+   {
+    "id": "20261120-4",
+    "title": "Сотрудники Meta: агент Muse сам сделал бронь и лез в приватные приложения",
+    "section": "product",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/11/19/metas-ai-agent-muse-is-mixing-up-conversations-and-exposing-private-data-report-says/",
+    "story": "s392"
+   },
+   {
+    "id": "20261120-5",
+    "title": "Google выпустила Gemini 4 Neon — между быстрой Hydrogen и дорогой Carbon",
+    "section": "model",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/companies/selectel/articles/1109880/?utm_campaign=1109880&utm_source=habrahabr&utm_medium=rss",
+    "story": "s387"
+   },
+   {
+    "id": "20261120-6",
+    "title": "Открой /mcp и выбери сервер: строка «Server message» покажет точную ошибку отказа",
+    "section": "tips",
+    "source": "gh_claude_code",
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.329",
+    "story": "",
+    "summary": "В Claude Code набери /mcp, выбери нужный HTTP MCP-сервер и посмотри строку «Server message» на его странице.",
+    "why": "Вместо догадок — текст JSON-RPC ошибки от удалённого HTTP MCP-сервера, который отказал в подключении.",
+    "copy": "/mcp",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Набрать /mcp в Claude Code.",
+     "Выбрать нужный HTTP MCP-сервер.",
+     "Посмотреть строку «Server message» на странице сервера: там JSON-RPC ошибка (формат ответа об ошибке, по которому клиент и сервер общаются), которую вернул сам сервер."
+    ]
+   },
+   {
+    "id": "20261120-7",
+    "title": "Основатель ChatPRD описал поток токен-фрода: группы злоупотребляют сервисом",
+    "section": "voices",
+    "source": "simon_willison",
+    "url": "https://simonwillison.net/2026/Nov/20/token-fraud-is-here-and-its-bad/",
+    "story": ""
+   }
+  ]
+ },
+ {
   "date": "2026-11-19",
   "slot": "evening",
   "headline": "Anthropic вышла на биржу, в OpenJDK дыра Java4Shell, новый Gemini",
