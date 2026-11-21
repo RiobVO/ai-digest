@@ -91,14 +91,6 @@
    "strength": 0
   },
   {
-   "at": "2026-11-20T23:18:11.794858+00:00",
-   "keys": [
-    "thinkingmachines.ai/news/inkling-2-mini",
-    "title:tml releases inkling 2 mini an open weights 26 4b parameter transformer that loops middle layers three times per token for better reasoning with fewer tokens thinking machines lab"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-11-21T00:18:09.487830+00:00",
    "keys": [
     "bloomberg.com/news/videos/2026-11-20/tony-wang-on-crowdstrike-zscaler-deal-ai-trade-video",
@@ -113,6 +105,14 @@
     "title:hurried announcement alessandro masullo grh"
    ],
    "strength": 14
+  },
+  {
+   "at": "2026-11-21T01:18:22.050699+00:00",
+   "keys": [
+    "thinkingmachines.ai/news/inkling-2-mini",
+    "title:tml releases inkling 2 mini an open weights 26 4b parameter transformer that loops middle layers three times per token for better reasoning with fewer tokens thinking machines lab"
+   ],
+   "strength": 6
   }
  ],
  "undated": {
