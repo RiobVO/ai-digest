@@ -35,6 +35,15 @@
     "macanorak.com/uk-government-forced-to-admit-it-issued-apple-a-secret-encryption-order",
     "title:uk government forced to admit it issued apple a secret encryption order"
    ]
+  },
+  {
+   "at": "2026-11-21T18:18:07.735927+00:00",
+   "day": "2026-11-21",
+   "title": "Microsoft: через дыру в Entra Connect Health утекли метаданные клиентов, но не пароли",
+   "keys": [
+    "bleepingcomputer.com/news/security/microsoft-entra-connect-health-flaw-exploited-to-steal-tenant-data",
+    "title:microsoft entra connect health flaw exploited to steal tenant data"
+   ]
   }
  ],
  "rejected": [
@@ -133,6 +142,14 @@
     "title:if ai chips become commoditized nvidia has the most to lose while these 3 stocks are set to gain"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-11-21T18:18:07.735927+00:00",
+   "keys": [
+    "leanprover-community.github.io/blog/posts/riemann-hypothesis",
+    "title:lean verification of the riemann hypothesis"
+   ],
+   "strength": 4
   }
  ],
  "undated": {
