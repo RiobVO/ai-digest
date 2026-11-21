@@ -1,15 +1,6 @@
 {
  "sent": [
   {
-   "at": "2026-11-18T19:18:11.144663+00:00",
-   "day": "2026-11-19",
-   "title": "В NGINX нашли две критичные дыры: захват сервера без пароля через HTTP/2",
-   "keys": [
-    "title:unauthenticated remote code execution in nginx cve 2026 123633 cve 2026 123007",
-    "wiz.io/blog/nginx-http2-rce-vulnerabilities"
-   ]
-  },
-  {
    "at": "2026-11-18T22:18:15.168513+00:00",
    "day": "2026-11-19",
    "title": "Google выпустила Gemini 4 Neon: API, AI Studio и приложение Gemini",
@@ -47,40 +38,6 @@
   }
  ],
  "rejected": [
-  {
-   "at": "2026-11-20T19:18:10.222523+00:00",
-   "keys": [
-    "alpo.ge/remark.pdf",
-    "title:levent alpöge claims proof of the generalized riemann hypothesis pdf"
-   ],
-   "strength": 18
-  },
-  {
-   "at": "2026-11-20T19:18:10.222523+00:00",
-   "keys": [
-    "poolp.org/posts/2026-11-20/ill-never-buy-framework-hardware-again",
-    "title:i ll never buy framework hardware again"
-   ],
-   "strength": 6
-  },
-  {
-   "at": "2026-11-20T19:18:10.222523+00:00",
-   "keys": [
-    "anthropic.com/news/ipo-close",
-    "title:today anthropic pbc announced the closing of its initial public offering of an aggregate of 1 127 000 000 shares of its class a common stock at a public offering price of 83 00 per share including the full exercise by the underwriters of their option to purchase an additional 147 000 000 shares of class a common stock from anthropic at the initial public offering price"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-20T19:18:10.222523+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMi2AFBVV95cUxPaGd4d0IwMmJyalR0cmVFNEdDTXVjcUN6eVYyYzVYQ3FaOWxMSDZzMXRVaXNDWWV0dUx1cGs2R19wWGc1STFuYjlFdWgyOVpEbHV5M1pud0ROcDhKeTM3aGxqOS1BeFlZOE1BYWNHR1pCY2lCYk5zRmlxWmhMZmJIcnZ4cUVBYnFGQ1NFOG43QnV0YzBIdldCYjN5UjhDbjBfVXFybkYxNkhKd3I4eWw2OGJ5eEhIYmdxRXpCUXJFMUhKNlZ5MEdnc1FQeXY0RVlJVDBRcTdwREw?oc=5",
-    "news.google.com/rss/articles/CBMijwJBVV95cUxNQnR6WUZ0aUlSb05wcHBFejUwaHdYdE1UaGQ2WjJNcVVKVFVxRGYxd1FCUHdSdHVUVDJYdDdDQmpLZjJlbVd3N3RJMUx5M2dQaFBGYndPSFdPLWREN3RtQ0JHNkkydzFBcVpLMm5IWVVYQVVPOWg5ZUJwVXdmYzNuQy1BQi1nZW0yU0MyWHZwYkh3VVdBY3ZBODZQb0Q0UDV6R2t6NXpycndBM0Y3WHltdV9zZ3VNYzRackRGaFlYbHVzSGJtWVdvNjRfcm52MXE0bWtOT0I0OXktRUU3RDZaWHJtcnZYZDNNRlpyUW1ERTJseGduV29ZNU43S1FfQUJfRmhnV1FocVN5R0N1d3pB?oc=5",
-    "news.google.com/rss/articles/CBMipAFBVV95cUxPWEtzQUtZSkNqOE9ReXZEMTlIRVNjOEdzRVp0b1E1UkFiYncyMGpadjRFV1ZSeDJqSnJuRnhhZ3JvRkt3ZG9BNlN3Z0VESFpTbHFTREp6bzVFWnBKZVNweW5wUUVpMzFaZk14UzA3RFVveWdDUW9rVjI1dTZOeEVVeGl5Ql9QYVFpdWl3cm15VHg4SlZNVXR3dWVuTm0xVk1HZkZZdg?oc=5",
-    "title:us tech companies that build ai data centers in other countries will be penalized trump says"
-   ],
-   "strength": 3
-  },
   {
    "at": "2026-11-20T20:18:10.555024+00:00",
    "keys": [
@@ -150,6 +107,15 @@
     "title:lean verification of the riemann hypothesis"
    ],
    "strength": 4
+  },
+  {
+   "at": "2026-11-21T19:18:16.865486+00:00",
+   "keys": [
+    "bloomberg.com/news/articles/2026-11-21/crowdstrike-s-talks-with-zscaler-show-ai-led-cyber-consolidation",
+    "news.google.com/rss/articles/CBMitgFBVV95cUxQb0VYZF9KRG42dkJPc2xHRUVQYWdOTjd3dWdCOEhWbzZ0dGdGWXV5c29QaXZFOURSSDJmZU9LUUgyTjc2SC1HNFNMTU53V0NCZlMya1BLQWdCWk9HZGU4RGJ4WDI3bTZHWGRobjBTYnpGSUlST2xHLWtOYjlnZy0yTUgtbWkwdjBoSHhIX01teDB0Y2JVV1BvdnNQMkFybWV2V2Z4NmE5OGF1UkRqMEpycU1LdmdVQQ?oc=5",
+    "title:crowdstrike s talks with zscaler show ai led cyber consolidation"
+   ],
+   "strength": 2
   }
  ],
  "undated": {
