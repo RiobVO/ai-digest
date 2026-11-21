@@ -1,15 +1,6 @@
 {
  "sent": [
   {
-   "at": "2026-11-18T22:18:15.168513+00:00",
-   "day": "2026-11-19",
-   "title": "Google выпустила Gemini 4 Neon: API, AI Studio и приложение Gemini",
-   "keys": [
-    "deepmind.google/blog/introducing-gemini-4-neon",
-    "title:introducing gemini 4 neon"
-   ]
-  },
-  {
    "at": "2026-11-19T19:18:15.989535+00:00",
    "day": "2026-11-20",
    "title": "Anthropic дебютировала на Nasdaq с капитализацией около $2 трлн",
@@ -38,14 +29,6 @@
   }
  ],
  "rejected": [
-  {
-   "at": "2026-11-20T22:18:13.186786+00:00",
-   "keys": [
-    "bloomberg.com/news/articles/2026-11-20/crowdstrike-is-in-talks-to-buy-cybersecurity-firm-zscaler",
-    "title:sources crowdstrike is in talks to acquire zscaler which would create a cybersecurity company with a combined market cap of 265b zs jumps 15 after hours bloomberg"
-   ],
-   "strength": 0
-  },
   {
    "at": "2026-11-21T00:18:09.487830+00:00",
    "keys": [
