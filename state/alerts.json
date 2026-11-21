@@ -85,14 +85,6 @@
   {
    "at": "2026-11-20T22:18:13.186786+00:00",
    "keys": [
-    "math216.wordpress.com/2026/11/20/hurried-announcement-alessandro-masullo-grh",
-    "title:hurried announcement alessandro masullo grh"
-   ],
-   "strength": 11
-  },
-  {
-   "at": "2026-11-20T22:18:13.186786+00:00",
-   "keys": [
     "bloomberg.com/news/articles/2026-11-20/crowdstrike-is-in-talks-to-buy-cybersecurity-firm-zscaler",
     "title:sources crowdstrike is in talks to acquire zscaler which would create a cybersecurity company with a combined market cap of 265b zs jumps 15 after hours bloomberg"
    ],
@@ -105,6 +97,22 @@
     "title:tml releases inkling 2 mini an open weights 26 4b parameter transformer that loops middle layers three times per token for better reasoning with fewer tokens thinking machines lab"
    ],
    "strength": 4
+  },
+  {
+   "at": "2026-11-21T00:18:09.487830+00:00",
+   "keys": [
+    "bloomberg.com/news/videos/2026-11-20/tony-wang-on-crowdstrike-zscaler-deal-ai-trade-video",
+    "title:tony wang on crowdstrike zscaler deal ai trade"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-21T00:18:09.487830+00:00",
+   "keys": [
+    "math216.wordpress.com/2026/11/20/hurried-announcement-alessandro-masullo-grh",
+    "title:hurried announcement alessandro masullo grh"
+   ],
+   "strength": 14
   }
  ],
  "undated": {
