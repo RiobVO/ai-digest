@@ -1,5 +1,85 @@
 [
  {
+  "date": "2026-11-21",
+  "slot": "morning",
+  "headline": "Гипотеза Римана от Claude, обвал ИИ-акций и ИИ-агенты в атаках",
+  "page": "2026-11-21.html",
+  "entries": [
+   {
+    "id": "20261121-0",
+    "title": "Математик Anthropic заявил, что с Claude доказал гипотезу Римана",
+    "section": "model",
+    "source": "verge",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/1010051/anthropic-riemann-hypothesis-millennium-prize-problem",
+    "story": "s393"
+   },
+   {
+    "id": "20261121-1",
+    "title": "Китайские хакеры пустили ИИ-агентов на университеты и нашли 0-day сами",
+    "section": "security",
+    "source": "the_record",
+    "url": "https://therecord.media/amazon-research-cairn-ai-university-attacks-possible-zero-day",
+    "story": "s380"
+   },
+   {
+    "id": "20261121-2",
+    "title": "В nginx закрыли десять дыр, пять из них ведут к выполнению кода на сервере",
+    "section": "security",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1110428/?utm_campaign=1110428&utm_source=habrahabr&utm_medium=rss",
+    "story": "s391"
+   },
+   {
+    "id": "20261121-3",
+    "title": "Акции Anthropic упали после IPO, Nasdaq 100 на грани медвежьего рынка",
+    "section": "business",
+    "source": "hn",
+    "url": "https://www.nbcnews.com/business/markets/anthropic-shares-markets-selloff-nasdaq-rcna610394",
+    "story": "s282"
+   },
+   {
+    "id": "20261121-4",
+    "title": "SEC проверяет учёт выручки Nvidia",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.reuters.com/world/us-secs-nvidia-probe-is-examining-potential-accounting-issues-sources-say-2026-11-20/",
+    "story": "s394"
+   },
+   {
+    "id": "20261121-5",
+    "title": "Агентный хакер украл данные корпоративных клиентов Bell Canada",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/bell-canada-says-agentic-hacker-stole-enterprise-customer-data/",
+    "story": "s395"
+   },
+   {
+    "id": "20261121-6",
+    "title": "Формальная верификация с Lean может стать оружием против ИИ-слопа",
+    "section": "voices",
+    "source": "latent_space",
+    "url": "https://latent.space/p/formal-verification/",
+    "story": ""
+   },
+   {
+    "id": "20261121-7",
+    "title": "Выключи авто-графики Claude Code в /config, если они мешают",
+    "section": "tips",
+    "source": "gh_claude_code",
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.330",
+    "story": "",
+    "summary": "Запусти claude, набери /config и выключи автоматические графики (automatic charts) — это одна настройка в меню.",
+    "why": "Перестанут сами появляться графики под результатами MCP-метрик.",
+    "copy": "/config",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "В /config выключи automatic charts (автоматические графики)."
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-11-20",
   "slot": "evening",
   "headline": "IPO Anthropic, расследование Nvidia, дыры в vCenter и nginx",
