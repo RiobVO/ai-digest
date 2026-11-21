@@ -1,6 +1,62 @@
 [
  {
   "date": "2026-11-21",
+  "slot": "evening",
+  "headline": "Гипотеза Римана от Claude и ИИ-агенты в живых атаках",
+  "page": "2026-11-21-evening.html",
+  "entries": [
+   {
+    "id": "20261121-8",
+    "title": "Стэнфорд выложил человеческое доказательство гипотезы Римана через часы после Claude",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/hours-after-anthropic-claims-a-claude-proof-of-the-riemann-hypothesis-stanford-releases-an-all-human-competing-draft/",
+    "story": "s393"
+   },
+   {
+    "id": "20261121-9",
+    "title": "Агенты китайских хакеров сами нашли 0-day в MONAI Label и взяли root",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/attackers-ai-agents-found-zero-day-in.html",
+    "story": "s380"
+   },
+   {
+    "id": "20261121-10",
+    "title": "CISA добавила в список активных атак дыры в vCenter, Cisco, SAP и Apache",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/hackers-exploit-critical-vmware-cisco.html",
+    "story": "s390"
+   },
+   {
+    "id": "20261121-11",
+    "title": "Акции Anthropic за день потеряли почти весь прирост после рекордного IPO",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/us-technology-stocks-suffer-their-worst-weekly-loss-since-the-pandemic-as-ai-doubts-pile-up/",
+    "story": "s282"
+   },
+   {
+    "id": "20261121-12",
+    "title": "Signal по умолчанию закроет скриншоты, чтобы ИИ-агенты не читали чаты",
+    "section": "product",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/signal-blocks-ai-agents-from-reading.html",
+    "story": "s396"
+   },
+   {
+    "id": "20261121-13",
+    "title": "Вредоносная страница могла вытащить приватные чаты из Meta Muse без запроса",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/a-single-malicious-webpage-let.html",
+    "story": "s397"
+   }
+  ]
+ },
+ {
+  "date": "2026-11-21",
   "slot": "morning",
   "headline": "Гипотеза Римана от Claude, обвал ИИ-акций и ИИ-агенты в атаках",
   "page": "2026-11-21.html",
