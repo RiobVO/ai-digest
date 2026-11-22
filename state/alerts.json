@@ -1,15 +1,6 @@
 {
  "sent": [
   {
-   "at": "2026-11-19T22:18:13.559941+00:00",
-   "day": "2026-11-20",
-   "title": "Суд обязал власти Британии признать секретный приказ Apple о доступе к зашифрованному iCloud",
-   "keys": [
-    "macanorak.com/uk-government-forced-to-admit-it-issued-apple-a-secret-encryption-order",
-    "title:uk government forced to admit it issued apple a secret encryption order"
-   ]
-  },
-  {
    "at": "2026-11-21T18:18:07.735927+00:00",
    "day": "2026-11-21",
    "title": "Microsoft: через дыру в Entra Connect Health утекли метаданные клиентов, но не пароли",
