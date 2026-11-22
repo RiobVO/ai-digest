@@ -1,5 +1,61 @@
 [
  {
+  "date": "2026-11-22",
+  "slot": "morning",
+  "headline": "Claude и гипотеза Римана, взломы ФБР и Microsoft",
+  "page": "2026-11-22.html",
+  "entries": [
+   {
+    "id": "20261122-0",
+    "title": "Математик Anthropic: Claude помог решить гипотезу Римана, две группы подтвердили",
+    "section": "model",
+    "source": "the_guardian",
+    "url": "https://www.theguardian.com/technology/2026/nov/21/anthropic-riemann-hypothesis-solved-claude-ai",
+    "story": "s393"
+   },
+   {
+    "id": "20261122-1",
+    "title": "Microsoft: через Entra Connect Health украли почты админов и настройки тенантов",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/microsoft-entra-connect-health-flaw-exploited-to-steal-tenant-data/",
+    "story": "s398"
+   },
+   {
+    "id": "20261122-2",
+    "title": "По данным AP, ФБР взломали во второй раз за два месяца — цель база NCIC",
+    "section": "security",
+    "source": "securityweek",
+    "url": "https://www.securityweek.com/fbi-investigating-apparent-hack-of-its-key-national-criminal-justice-database-ap-source-says/",
+    "story": "s399"
+   },
+   {
+    "id": "20261122-3",
+    "title": "Alice Huang обвиняют в переправке чипов Nvidia в Китай",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.ft.com/content/f3ad8a81-3890-4a8a-8853-ff0a94b08ba9",
+    "story": "s310"
+   },
+   {
+    "id": "20261122-4",
+    "title": "Сотрудники Meta встревожены: агент Muse писал им неожиданные сообщения",
+    "section": "security",
+    "source": "Fortune",
+    "url": "https://fortune.com/2026/11/21/meta-employees-muse-ai-agent-extreme-privacy-violation-encrypted-signal-messages/",
+    "story": "s392"
+   },
+   {
+    "id": "20261122-5",
+    "title": "Акции Anthropic после рекордного IPO за день почти обнулили прирост",
+    "section": "business",
+    "source": "verge",
+    "url": "https://www.theverge.com/podcast/1038701/anthropic-ipo-ai-safety-openai-nvidia-structure",
+    "story": "s282"
+   }
+  ]
+ },
+ {
   "date": "2026-11-21",
   "slot": "evening",
   "headline": "Гипотеза Римана от Claude и ИИ-агенты в живых атаках",
