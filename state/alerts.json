@@ -30,14 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-21T01:18:22.050699+00:00",
-   "keys": [
-    "thinkingmachines.ai/news/inkling-2-mini",
-    "title:tml releases inkling 2 mini an open weights 26 4b parameter transformer that loops middle layers three times per token for better reasoning with fewer tokens thinking machines lab"
-   ],
-   "strength": 6
-  },
-  {
    "at": "2026-11-21T09:18:11.436851+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMi4AFBVV95cUxPUWxrcTU0RElJR2RLNTFKTGJ0VHJ2djc5MXZ5UmUtVnpyNkdNNk5zdldWeWFzcVlGWUdGNUlmdjRpMC1OSzk1SGZFbGRqaF9nbU10bUxzT05sZXBJTWxsZ0ozUjRmTS1ES0FMalhnd25SR3lKczlGeTVrSW5BVE1zaWtfN25DTC02WGJfWXJhWFR2T1YyLTc0c1lHTFhpbS1wUzAxOEZ2bnR6WUY0WW9YY3FCRUVjNGJUN0R0dE1jaTc0UXR1YVplSW9ZYTk3R09KclZqbGdSU0FwTDN6bjVpSw?oc=5",
