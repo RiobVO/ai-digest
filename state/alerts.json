@@ -1,15 +1,6 @@
 {
  "sent": [
   {
-   "at": "2026-11-19T19:18:15.989535+00:00",
-   "day": "2026-11-20",
-   "title": "Anthropic дебютировала на Nasdaq с капитализацией около $2 трлн",
-   "keys": [
-    "reuters.com/business/finance/anthropics-historic-debut-put-ais-promise-peril-wall-st-test-2026-11-19",
-    "title:anthropic makes its nasdaq debut opening at 111 50 per share after pricing at 83 each giving it a 2t market cap in a historic moment for the ai industry reuters"
-   ]
-  },
-  {
    "at": "2026-11-19T22:18:13.559941+00:00",
    "day": "2026-11-20",
    "title": "Суд обязал власти Британии признать секретный приказ Apple о доступе к зашифрованному iCloud",
@@ -29,15 +20,6 @@
   }
  ],
  "rejected": [
-  {
-   "at": "2026-11-21T19:18:16.865486+00:00",
-   "keys": [
-    "bloomberg.com/news/articles/2026-11-21/crowdstrike-s-talks-with-zscaler-show-ai-led-cyber-consolidation",
-    "news.google.com/rss/articles/CBMitgFBVV95cUxQb0VYZF9KRG42dkJPc2xHRUVQYWdOTjd3dWdCOEhWbzZ0dGdGWXV5c29QaXZFOURSSDJmZU9LUUgyTjc2SC1HNFNMTU53V0NCZlMya1BLQWdCWk9HZGU4RGJ4WDI3bTZHWGRobjBTYnpGSUlST2xHLWtOYjlnZy0yTUgtbWkwdjBoSHhIX01teDB0Y2JVV1BvdnNQMkFybWV2V2Z4NmE5OGF1UkRqMEpycU1LdmdVQQ?oc=5",
-    "title:crowdstrike s talks with zscaler show ai led cyber consolidation"
-   ],
-   "strength": 2
-  },
   {
    "at": "2026-11-22T09:18:15.539837+00:00",
    "keys": [
