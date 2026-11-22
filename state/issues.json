@@ -1,6 +1,70 @@
 [
  {
   "date": "2026-11-22",
+  "slot": "evening",
+  "headline": "Утечки через ИИ-провайдеров, взлом ФБР и гипотеза Римана",
+  "page": "2026-11-22-evening.html",
+  "entries": [
+   {
+    "id": "20261122-6",
+    "title": "Доказательство гипотезы Римана от Левента Алпёге признали верным",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/lean-and-mathlib-community-officially-confirms-levent-alpoges-proof-of-the-riemann-hypothesis-is-correct/",
+    "story": "s393"
+   },
+   {
+    "id": "20261122-7",
+    "title": "Через ИИ-провайдеров месяцами крали промпты и AWS-ключи",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/openrouter-drops-3-providers-after.html",
+    "story": "s400"
+   },
+   {
+    "id": "20261122-8",
+    "title": "Взломщики снова залезли в системы ФБР, теперь в базу NCIC",
+    "section": "security",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1110820/?utm_campaign=1110820&utm_source=habrahabr&utm_medium=rss",
+    "story": "s399"
+   },
+   {
+    "id": "20261122-9",
+    "title": "Помощник Alice Huang, которого судили в Сингапуре, возил чипы Nvidia в Китай",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.wsj.com/tech/li-ming-megaspeed-nvidia-chips-china-6260d836?st=HzXMZU",
+    "story": "s310"
+   },
+   {
+    "id": "20261122-10",
+    "title": "Крупные банки закрывают вход сторонним ИИ-агентам в аккаунты клиентов",
+    "section": "product",
+    "source": "wired_ai",
+    "url": "https://www.wired.com/story/banks-are-cracking-down-on-ai-agents/",
+    "story": "s349"
+   },
+   {
+    "id": "20261122-11",
+    "title": "Файл при обычной загрузке запускает команды на сервере через Ghostscript",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/researchers-demonstrate-ghostscript.html",
+    "story": "s401"
+   },
+   {
+    "id": "20261122-12",
+    "title": "Посчитал по nginx-логам, какие ИИ-боты реально ходят на блог",
+    "section": "voices",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1107206/?utm_campaign=1107206&utm_source=habrahabr&utm_medium=rss",
+    "story": ""
+   }
+  ]
+ },
+ {
+  "date": "2026-11-22",
   "slot": "morning",
   "headline": "Claude и гипотеза Римана, взломы ФБР и Microsoft",
   "page": "2026-11-22.html",
