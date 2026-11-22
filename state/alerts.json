@@ -30,14 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-21T18:18:07.735927+00:00",
-   "keys": [
-    "leanprover-community.github.io/blog/posts/riemann-hypothesis",
-    "title:lean verification of the riemann hypothesis"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-11-21T19:18:16.865486+00:00",
    "keys": [
     "bloomberg.com/news/articles/2026-11-21/crowdstrike-s-talks-with-zscaler-show-ai-led-cyber-consolidation",
