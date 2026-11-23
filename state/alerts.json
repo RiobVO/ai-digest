@@ -30,16 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-22T21:18:11.352650+00:00",
-   "keys": [
-    "bloomberg.com/news/articles/2026-11-22/openai-chief-scientist-urges-industry-limits-on-ai-development",
-    "news.google.com/rss/articles/CBMirAFBVV95cUxQTnU1MU1DVUI0TFJHMklHdjVPdEhJQ2M4Y1cxdUhXUkVEX3lxZXd6SWp4M0FoNkpnMHNHU1B2akJqWmUyTFRFOW1TRjRBaE1uVHNnZTZiZ245dlBBWXM0RGRLSGd2S0VxLUs3ZUhZUkpnNEMzcE8tS0R0dGY1MUQyMUFHZXR3cGFMMWNXMlMzSlEzeDF5bXA5VVhsbnBCbzlKTDd6UG42Ym1jQ1Bh?oc=5",
-    "news.google.com/rss/articles/CBMiswFBVV95cUxQMjVTYVIwT3huVU8teHdXRHdnWGxOUTI5d1J6elZhWktVMVpSZDhhRmk5eV82c0JuRDBSUWNHdl84Z253WDJDbmd6SXhiNlFsdkxhM2gxWTVoTnY2ZkdrZ0dVam1OVXNSZWIwUnBQaTU4bEhJNTZValFSQ1Naam1xb1FkTklSZXI2Ums4d19sUjVheGtLNGhUWjFPcEVyd0ZIRmJlX0FqNXF5cHpCR2pjczF5WQ?oc=5",
-    "title:openai chief scientist urges industry limits on ai development"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-11-22T22:18:12.478065+00:00",
    "keys": [
     "openai.com/index/perplexity-and-intelligence",
@@ -140,26 +130,10 @@
   {
    "at": "2026-11-23T19:18:11.185087+00:00",
    "keys": [
-    "ladybird.org/posts/alpha",
-    "title:ladybird is now in alpha"
-   ],
-   "strength": 7
-  },
-  {
-   "at": "2026-11-23T19:18:11.185087+00:00",
-   "keys": [
     "deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification",
     "title:finding faster quantum algorithms with agents and formal verification"
    ],
    "strength": 1
-  },
-  {
-   "at": "2026-11-23T20:18:10.661834+00:00",
-   "keys": [
-    "title:dario is hyping the dangers so oss models are illegal and he stays in control",
-    "twitter.com/ylecun/status/2124550037912920090"
-   ],
-   "strength": 3
   },
   {
    "at": "2026-11-23T20:18:10.661834+00:00",
@@ -176,6 +150,30 @@
     "title:merry making play build and create with nvidia technologies this holiday season"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-11-23T21:18:12.551704+00:00",
+   "keys": [
+    "ladybird.org/posts/alpha",
+    "title:ladybird is now in alpha"
+   ],
+   "strength": 9
+  },
+  {
+   "at": "2026-11-23T21:18:12.551704+00:00",
+   "keys": [
+    "title:dario is hyping the dangers so oss models are illegal and he stays in control",
+    "twitter.com/ylecun/status/2124550037912920090"
+   ],
+   "strength": 5
+  },
+  {
+   "at": "2026-11-23T21:18:12.551704+00:00",
+   "keys": [
+    "arm.jonpalmisc.com",
+    "title:per arm s request this site will be discontinued on 4 december 2026"
+   ],
+   "strength": 5
   }
  ],
  "undated": {
