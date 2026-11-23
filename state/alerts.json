@@ -8,6 +8,15 @@
     "bleepingcomputer.com/news/security/microsoft-entra-connect-health-flaw-exploited-to-steal-tenant-data",
     "title:microsoft entra connect health flaw exploited to steal tenant data"
    ]
+  },
+  {
+   "at": "2026-11-23T11:18:11.330927+00:00",
+   "day": "2026-11-23",
+   "title": "CrowdStrike покупает Zscaler за $43,9 млрд, расчёт целиком акциями",
+   "keys": [
+    "bloomberg.com/news/articles/2026-11-23/crowdstrike-reaches-44-billion-cybersecurity-deal-for-zscaler",
+    "title:crowdstrike agrees to acquire zscaler which develops network security tools for 43 9b in an all stock deal one of the largest ever deals in the sector bloomberg"
+   ]
   }
  ],
  "rejected": [
@@ -46,6 +55,14 @@
     "title:emerging market stocks set to erase 2026 gains on ai selloff"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-11-23T11:18:11.330927+00:00",
+   "keys": [
+    "bloomberg.com/news/videos/2026-11-23/crowdstrike-to-acquire-zscaler-in-44-billion-deal-video",
+    "title:crowdstrike to acquire zscaler in 44 billion cybersecurity deal"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
