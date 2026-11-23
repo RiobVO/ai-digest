@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="ru" data-mood="alarm">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Взломы ИИ-провайдеров и MSP-инструментов, Astra и Anthropic · ИИ-дайджест</title>
+<meta name="description" content="6 событий. Главное за день: взломы на стыке ИИ и инфраструктуры. OpenRouter нашёл взломанных провайдеров, а ScreenConnect и Cisco Expressway уже используют в атаках. Из ИИ — доказательство теоремы от GPT-6.2 Astra, из денег — Nvidia без Хуанга и акции Anthropic после IPO.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="сигнал · ИИ-дайджест">
+<meta property="og:title" content="Взломы ИИ-провайдеров и MSP-инструментов, Astra и Anthropic">
+<meta property="og:description" content="6 событий. Главное за день: взломы на стыке ИИ и инфраструктуры. OpenRouter нашёл взломанных провайдеров, а ScreenConnect и Cisco Expressway уже используют в атаках. Из ИИ — доказательство теоремы от GPT-6.2 Astra, из денег — Nvidia без Хуанга и акции Anthropic после IPO.">
+<meta property="og:image" content="https://RiobVO.github.io/ai-digest/og/2026-11-23-evening.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14.5' fill='none' stroke='%232474ff' stroke-width='1.8' opacity='.35'/%3E%3Ccircle cx='16' cy='16' r='9.5' fill='none' stroke='%232474ff' stroke-width='2' opacity='.6'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%232474ff'/%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-title" content="Сигнал">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f1ede4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c0c0e" media="(prefers-color-scheme: dark)">
+<!-- Выбранная вручную тема применяется до отрисовки, иначе ночью страница мигнула бы светлой бумагой -->
+<script>try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){/* хранилище закрыто — остаётся системная тема */}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Sofia+Sans+Extra+Condensed:wght@700;800;900&display=swap">
+<style>
+/* Выпуск — лента плакатов в одном наборе: бумага, чёрный текст и один цвет-акцент (design/REDESIGN.md).
+   Акцент — цвет дня (digest/mood.py): им набраны дата на обложке, круги прогресса и мелкие метки. Ночью бумага чёрная.
+   Дата с обложки при прокрутке сжимается и встаёт в шапку; круги в шапке — новости выпуска, прочитанные закрашены.
+   Вся разметка статична: без скрипта страница читается целиком, скрипт добавляет шапку, лист разбора и отметки. */
+:root{
+  color-scheme:light;
+  --paper:#f1ede4; --ink:#151515;
+  --line:color-mix(in srgb,var(--ink) 22%,transparent);
+  --f-display:"Sofia Sans Extra Condensed","Oswald","Arial Narrow",sans-serif;
+  --f-text:"Golos Text","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){color-scheme:dark; --paper:#0c0c0e; --ink:#ece8df}
+}
+:root[data-theme="dark"]{color-scheme:dark; --paper:#0c0c0e; --ink:#ece8df}
+:root{--alarm:#ff4f38;--release:#0fa968;--quiet:#2b4eff;--calm:#151515}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--alarm:#ff5a44;--release:#2fcf8f;--quiet:#7f97ff;--calm:#ece8df}}
+:root[data-theme="dark"]{--alarm:#ff5a44;--release:#2fcf8f;--quiet:#7f97ff;--calm:#ece8df}
+[data-mood="alarm"]{--mood:var(--alarm)} [data-mood="release"]{--mood:var(--release)} [data-mood="quiet"]{--mood:var(--quiet)} [data-mood="calm"]{--mood:var(--calm)}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+/* Запор прокрутки под открытым листом — только там, где есть мышь или трекпад. На чисто сенсорных страницу держат обработчики
+   touchmove листа и затемнения: в Safari на iPhone overflow:hidden на html дёргал шапку с датой и кольцом (2026-11-19) */
+@media (any-hover:hover),(any-pointer:fine){html.locked{overflow:hidden}}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-text);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2.5px solid currentColor;outline-offset:3px}
+button{font:inherit;color:inherit}
+a{color:inherit}
+img{max-width:100%}
+
+/* Шапка: появляется, когда обложка уходит; место слева занимает прилетевшая дата. Нажатие открывает содержание */
+#hdr{position:fixed;inset:0 0 auto;z-index:6;padding-top:env(safe-area-inset-top,0px);background:var(--paper);border-bottom:3px solid var(--ink);
+  transform:translateY(-102%);will-change:transform}
+.hdr-in{display:flex;align-items:center;gap:12px;width:100%;height:50px;max-width:1120px;margin-inline:auto;border:0;background:none;text-align:left;cursor:pointer;
+  padding:0 max(18px,env(safe-area-inset-right,0px)) 0 max(18px,env(safe-area-inset-left,0px));
+  font:500 .72rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;font-variant-numeric:tabular-nums}
+#hdr-date{flex:none;width:var(--date-w,84px);height:27px}
+#hdr-sec{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hdr-r{flex:none;display:flex;align-items:center;gap:10px}
+#fly{display:none;position:fixed;left:0;top:0;z-index:7;transform-origin:0 0;pointer-events:none;white-space:nowrap;will-change:transform;
+  font:900 var(--date-size,clamp(9rem,47vw,24rem))/.76 var(--f-display);letter-spacing:-.025em;color:var(--mood);font-variant-numeric:tabular-nums}
+#fly span{display:block}
+.fly #fly{display:block}
+.fly .cover .ph{visibility:hidden}
+
+/* Круги прогресса: новости выпуска изнутри наружу */
+.prog{display:block;width:30px;height:30px;overflow:visible}
+.prog circle{fill:none;stroke:var(--ink);stroke-width:.5;opacity:.4;transition:stroke .3s,stroke-width .4s,opacity .3s}
+.prog circle.on{stroke:var(--mood);stroke-width:1.5;opacity:1}
+.end .prog{width:min(62vw,340px);height:auto}
+.end .prog circle.on{stroke-width:1}
+/* В шапке значок мал: непрочитанные круги не рисуем, остаётся пустой контур, который заполняется от центра */
+#hdr .prog circle{opacity:0}
+#hdr .prog circle:last-child{opacity:.45;stroke-width:.9}
+#hdr .prog circle.on{opacity:1;stroke-width:1.5}
+
+/* Плакат */
+.slide{position:relative;display:grid;min-height:100svh;overflow:clip;background:var(--paper);color:var(--ink)}
+.inner{position:relative;z-index:1;display:flex;flex-direction:column;gap:14px;width:100%;max-width:1120px;margin-inline:auto;
+  padding-block:calc(69px + env(safe-area-inset-top,0px)) 20px;
+  padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+.cover .inner{padding-top:16px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:34px;padding-bottom:8px;border-bottom:3px solid currentColor;
+  font:500 .74rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+/* overflow-wrap: длинное неразрывное имя или адрес в тексте (_CLAUDE_CODE_ASSUME_FIRST_PARTY…, ссылка на релиз)
+   распирало колонку шире экрана телефона — так уже ломался разбор в выпуске 2026-11-10 */
+.content{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-top:auto;overflow-wrap:anywhere}
+/* Новости идут лентой. Номер новости — маленький индекс перед заголовком, отдельного места не занимает */
+.st,.blk{min-height:0;border-top:1px solid var(--line)}
+.st .inner,.blk .inner{padding-block:calc(74px + env(safe-area-inset-top,0px)) 44px}
+.st .content,.blk .content{margin-top:0}
+.idx{display:inline-block;position:relative;top:.5em;margin-right:.55em;vertical-align:top;font:500 .27em/1 var(--f-mono);letter-spacing:.04em;opacity:.6}
+.hl{margin:0;font:800 clamp(2.35rem,10.6vw,5.4rem)/.93 var(--f-display);text-transform:uppercase;text-wrap:balance;overflow-wrap:anywhere}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:0 10px;font:400 .72rem/1.6 var(--f-mono);opacity:.8}
+.meta>*{white-space:nowrap}
+.meta>.also{white-space:normal}
+/* inline-block: иначе точка-разделитель после ссылки HN была бы подчёркнута вместе с ней */
+.meta>:not(:last-child)::after{content:"·";display:inline-block;margin-left:10px}
+/* Скрытый последний пункт (счётчик арсенала без ключа) не оставляет висящую точку */
+.meta>:has(+[hidden]:last-child)::after{content:none}
+/* Значок издания на белой плашке: тёмные значки не пропадают на ночном фоне */
+.fav{width:14px;height:14px;margin-right:6px;border-radius:3px;background:#fff;vertical-align:-2px}
+.thread{display:grid;gap:6px;justify-items:start;font:500 .9rem/1.4 var(--f-text)}
+.tag{display:inline-flex;align-items:center;min-height:34px;padding:0 10px;border:1.5px solid currentColor;background:none;
+  font:500 .68rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;cursor:pointer}
+span.tag{cursor:default}
+/* Прошлые дни сюжета лежат в разметке; со скриптом они показываются листом, а не под меткой */
+.js .thread .tl{display:none}
+.cols{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.body{margin:0;max-width:60ch;font:400 1.03rem/1.5 var(--f-text);text-wrap:pretty}
+.side{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-content:start}
+/* Вывод крупно и раньше подробностей: это самая полезная строка новости */
+.why{margin:0;padding-top:12px;border-top:1.5px solid currentColor;max-width:38ch;font:500 clamp(1.25rem,5vw,1.6rem)/1.3 var(--f-text);text-wrap:pretty}
+.why b,.label{display:block;margin-bottom:5px;font:500 .68rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+/* Термин в тексте: пунктир под словом, по нажатию рядом всплывает объяснение */
+.tw{all:unset;cursor:pointer;text-decoration:underline dotted;text-decoration-thickness:.06em;text-underline-offset:.16em}
+.tw:focus-visible{outline:2.5px solid currentColor;outline-offset:2px}
+.tt{position:fixed;z-index:40;max-width:min(320px,calc(100vw - 24px));padding:11px 13px 12px;border-radius:3px;background:var(--ink);color:var(--paper);
+  font:400 .9rem/1.42 var(--f-text);box-shadow:0 8px 28px rgb(0 0 0 / .28)}
+.tt b{display:block;margin-bottom:3px;font:500 .68rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+/* Без скрипта объяснение термина показывается под словом, когда оно в фокусе */
+html:not(.js) .tw{position:relative}
+html:not(.js) .tw:focus::after{content:attr(data-def);position:absolute;left:0;top:100%;z-index:5;width:min(280px,70vw);padding:9px 11px;border-radius:3px;
+  background:var(--ink);color:var(--paper);font:400 .86rem/1.4 var(--f-text);letter-spacing:0;text-transform:none}
+/* Термин, которого в видимом тексте дословно нет, остаётся строкой — объяснение не пропадает */
+.terms{margin:0;display:grid;gap:4px;max-width:60ch;font:400 .88rem/1.5 var(--f-text)}
+.terms dt{display:inline;font-weight:600}
+.terms dd{display:inline;margin:0}
+.terms dd::before{content:" — "}
+/* Команда — плакат наизнанку: фон цвета текста, текст цвета фона. Подпись видна только у непроверенного промпта */
+.term{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:0 10px;padding:6px 6px 6px 14px;border-radius:3px;background:var(--ink);color:var(--paper)}
+.term-bar{display:contents}
+.term-bar svg,.term-bar span{display:none}
+.term-bar.warn span{display:block;grid-column:1/-1;grid-row:1;padding:4px 0 6px;font:500 .68rem/1.4 var(--f-mono);letter-spacing:.06em;text-transform:uppercase}
+.term-bar.warn span::before{content:"";display:inline-block;width:8px;height:8px;margin-right:8px;background:var(--alarm)}
+.term pre{grid-column:1;grid-row:2;min-width:0;margin:0;overflow-x:auto}
+.term code{font:500 .9rem/1.6 var(--f-mono);white-space:pre}
+/* Промпт фишки — текст: переносится по ширине, а не уезжает за край экрана телефона */
+.term.wrap code{white-space:pre-wrap;overflow-wrap:anywhere}
+.term.wrap .copy{grid-column:1/-1;grid-row:3;justify-self:start;margin:6px 0 2px}
+.copy{grid-column:2;grid-row:2;min-height:36px;padding:0 12px;border:1.5px solid currentColor;border-radius:3px;background:none;font:600 .76rem var(--f-text);cursor:pointer}
+.act{display:flex;align-items:center;flex-wrap:wrap;gap:4px 18px;padding-top:2px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 22px;border:0;border-radius:3px;background:var(--ink);color:var(--paper);
+  font:600 .94rem var(--f-text);text-decoration:none;cursor:pointer}
+.lnk{display:inline-flex;align-items:center;min-height:46px;padding:0;border:0;background:none;color:inherit;font:600 .94rem var(--f-text);
+  text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:5px;cursor:pointer}
+.lnk.sm{min-height:34px;font:inherit;letter-spacing:inherit;text-transform:inherit}
+/* Разбор лежит в разметке закрытым: со скриптом его показывает лист, без скрипта он раскрывается на месте */
+.more summary{list-style:none;user-select:none}
+.more summary::-webkit-details-marker{display:none}
+.more[open]{flex-basis:100%}
+.more-body{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin-top:14px;overflow-wrap:anywhere}
+.more-body p,.sh-body p{margin:0;font:400 1.03rem/1.55 var(--f-text)}
+.vote{margin-left:auto;display:flex;gap:2px}
+.vote button{position:relative;width:46px;height:46px;display:grid;place-items:center;border:0;border-radius:3px;background:none;opacity:.75;cursor:pointer}
+.vote svg{width:19px;height:19px}
+.vote .on{opacity:1}
+.vote .on svg{fill:currentColor}
+.vote.err{outline:1.5px solid var(--alarm)}
+/* Чьи отметки: подпись или поле личного ключа (READER_SCRIPT) */
+.reader{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;margin-top:14px;font:400 .72rem/1.6 var(--f-mono)}
+.reader form{display:flex;flex-wrap:wrap;gap:8px;width:100%;max-width:30rem}
+.reader input{flex:1 1 12rem;min-width:0;min-height:46px;padding:0 12px;border:1.5px solid var(--line);border-radius:3px;
+  background:none;color:inherit;font:400 .9rem var(--f-mono)}
+/* Всплеск от «нравится»: два кольца, как у знака сигнала, и восемь искр */
+.burst{position:absolute;left:50%;top:50%;width:0;height:0;pointer-events:none}
+.burst b{position:absolute;left:-23px;top:-23px;width:46px;height:46px;border:2px solid var(--mood);border-radius:50%;opacity:0}
+.burst i{position:absolute;left:-1.5px;top:-5px;width:3px;height:10px;border-radius:2px;background:var(--mood);opacity:0}
+
+/* Обложка: дата во всю ширину цветом дня, от точки расходятся круги сигнала */
+.cover .content{padding-top:12svh}
+.rings{position:absolute;z-index:0;right:-38%;top:-16%;width:128%;max-width:880px;color:var(--mood);overflow:visible}
+.rings circle{fill:none;stroke:currentColor;stroke-width:.3;opacity:.34}
+.rings .dot{fill:currentColor;stroke:none;opacity:1}
+.mark{display:inline-flex;align-items:center;gap:8px;font:800 1.5rem/1 var(--f-display);text-transform:lowercase;text-decoration:none}
+.mark svg{width:18px;height:18px}
+.date{display:flex;align-items:flex-end;gap:.08em;font:900 var(--date-size,clamp(9rem,47vw,24rem))/.76 var(--f-display);letter-spacing:-.025em;color:var(--mood);font-variant-numeric:tabular-nums}
+.date small{padding-bottom:.5em;font:500 .74rem/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);writing-mode:vertical-rl;transform:rotate(180deg)}
+.cover .hl,.blk .hl,.end .hl{font-size:clamp(2rem,8.6vw,4.4rem)}
+
+/* Содержание и списки одной строкой: «Ещё за день», «Утром ты пропустил», отсеянное */
+.toc,.list{margin:0;padding:0;list-style:none}
+.toc a{display:grid;grid-template-columns:2.4em minmax(0,1fr);gap:0 6px;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--line);color:inherit;text-decoration:none}
+.toc .n{font:800 1.5rem/1 var(--f-display);font-variant-numeric:tabular-nums}
+.toc .t{font:500 1rem/1.3 var(--f-text)}
+.toc .k{grid-column:2;margin-top:3px;font:400 .68rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;opacity:.8}
+.toc a.read .t{opacity:.5}
+.toc a.read .n{opacity:.35}
+.list li{padding:11px 0;border-bottom:1px solid var(--line)}
+.list li>a:first-child{font:500 1rem/1.3 var(--f-text);text-decoration:none}
+.list li>a:first-child:hover,.toc a:hover .t{text-decoration:underline}
+.list .k{display:flex;flex-wrap:wrap;gap:0 10px;margin-top:3px;font:400 .68rem/1.6 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;opacity:.8}
+.try{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;padding:14px 0;border-bottom:1px solid var(--line)}
+.try>a{font:500 1rem/1.3 var(--f-text);text-decoration:none}
+.try>a:hover{text-decoration:underline}
+.noise ul{margin-top:8px;max-height:60svh;overflow:auto}
+.noise .list li>a:first-child{font-size:.9rem;font-weight:400}
+.fail{color:var(--alarm)}
+/* Без скрипта шапки с названием раздела нет: раздел подписан над своей первой новостью */
+html:not(.js) .grp::before{content:attr(data-label);display:block;max-width:1120px;margin-inline:auto;padding:26px 18px 0;
+  font:500 .72rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+
+/* Служебные страницы (архив, сюжет, арсенал, здоровье): верх без обложки и разделы без высоты экрана */
+.head{min-height:0}
+.head .inner{padding-top:16px;padding-bottom:28px}
+.head .content{margin-top:0;padding-top:34px}
+.sec{border-top:1px solid var(--line)}
+.sec .inner{padding-block:30px 38px}
+.sec .content{margin-top:0}
+.sec .hl{font-size:clamp(1.7rem,6.4vw,2.8rem)}
+output{font:inherit}
+/* Архив — стена обложек: цвет даты говорит, каким был день */
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;font:400 .68rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend span::before{content:"";width:9px;height:9px;background:var(--mood)}
+.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.tile{display:grid;align-content:start;gap:5px;min-width:0;overflow:hidden;padding:11px 10px 12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);color:inherit;text-decoration:none}
+/* nowrap: пока шрифт не загрузился, запасной шире — дата «10.11» переносилась по точке на две строки */
+.tile b{font:900 2.8rem/.8 var(--f-display);letter-spacing:-.02em;color:var(--mood);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tile i{font:400 .62rem var(--f-mono);font-style:normal;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.tile span{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font:400 .72rem/1.3 var(--f-text)}
+.tile:hover span{text-decoration:underline}
+/* Страница сюжета: та же хронология, что в листе сюжета, но событие — ссылка в свой выпуск */
+.tl a{display:block;margin-top:2px;font:500 1rem/1.4 var(--f-text);text-decoration:none}
+.tl a:hover{text-decoration:underline}
+.tl .meta{margin-top:4px}
+/* Арсенал: фишки списком по темам; на отмеченной «попробовал» — штамп поверх команды */
+.tip{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;padding:24px 0;border-bottom:1px solid var(--line)}
+.tip:last-child{border-bottom:0;padding-bottom:0}
+.tip h3{margin:0;font:800 clamp(1.5rem,5.6vw,2.1rem)/.96 var(--f-display);text-transform:uppercase;text-wrap:balance;overflow-wrap:anywhere}
+.tip .why{max-width:60ch;font-size:1.08rem}
+.tip-note{margin:0;font:400 .86rem/1.5 var(--f-text);opacity:.75}
+.cmd{position:relative;display:grid;grid-template-columns:minmax(0,1fr);gap:8px;justify-items:start}
+.cmd .term{justify-self:stretch}
+.stamp{position:absolute;right:10px;top:-20px;z-index:2;padding:2px 12px 0;border:3px solid var(--alarm);color:var(--alarm);
+  font:900 1.75rem/1.12 var(--f-display);letter-spacing:.05em;text-transform:uppercase;transform:rotate(-7deg);opacity:0;pointer-events:none}
+.tip.done .stamp{opacity:1}
+/* У фишки без команды штамп ложится на строку-примечание: текст уступает ему место */
+.tip.done .tip-note{padding-right:150px}
+.tried{display:inline-flex;align-items:center;gap:9px;min-height:46px;margin-right:auto;font:600 .94rem var(--f-text);cursor:pointer;user-select:none}
+.tried input{width:20px;height:20px;margin:0;accent-color:var(--ink);cursor:pointer}
+.tried.err{color:var(--alarm)}
+/* Здоровье: расход квоты полосой и цепочка попыток — какую модель просили и на какой закончилось */
+.quota{display:grid;gap:12px}
+.quota-row{display:grid;grid-template-columns:118px minmax(40px,1fr) 52px;gap:4px 12px;align-items:center;font:500 .95rem/1.3 var(--f-text)}
+.quota-row small{display:block;font:400 .68rem var(--f-mono);opacity:.75}
+.quota-row .fail{grid-column:2/-1;font:400 .72rem var(--f-mono)}
+.quota-num{text-align:right;font:500 .8rem var(--f-mono);font-variant-numeric:tabular-nums}
+.meter{height:8px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--ink)}
+.meter.warn i,.meter.full i{background:var(--alarm)}
+.run{padding:14px 0;border-bottom:1px solid var(--line)}
+.run .meta b{font-weight:500}
+.chains{display:grid;gap:8px;margin-top:8px}
+.chain{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;font:400 .9rem/1.4 var(--f-text)}
+.chain b{font-weight:600}
+.atts{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.atts i{font-style:normal;opacity:.6}
+.att{padding:1px 7px;border:1.5px solid currentColor;font:500 .72rem/1.6 var(--f-mono);white-space:nowrap;font-variant-numeric:tabular-nums}
+.att.bad{border-color:var(--alarm);background:color-mix(in srgb,var(--alarm) 16%,transparent)}
+.run-note{margin:8px 0 0;font:400 .86rem/1.5 var(--f-text)}
+.run-note.quiet{opacity:.75}
+.sources{margin-top:8px}
+.sources summary{width:fit-content;cursor:pointer;font:500 .86rem var(--f-text);text-decoration:underline;text-underline-offset:4px}
+
+/* Лист снизу: разбор новости, хронология сюжета или содержание */
+.scrim{position:fixed;inset:0;z-index:19;background:rgb(0 0 0 / .62);opacity:0;transition:opacity .3s}
+.scrim.open{opacity:1}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;flex-direction:column;max-width:720px;max-height:88svh;margin-inline:auto;overflow:hidden;
+  border-radius:14px 14px 0 0;background:var(--paper);color:var(--ink);transform:translateY(105%);transition:transform .46s cubic-bezier(.22,1,.36,1);touch-action:none}
+.sheet.open{transform:none}
+.sheet:focus{outline:none}
+.sh-head{position:relative;flex:none;padding:24px 60px 16px 18px;background:var(--ink);color:var(--paper)}
+.sh-head::before{content:"";position:absolute;left:50%;top:8px;width:38px;height:4px;margin-left:-19px;border-radius:2px;background:currentColor;opacity:.4}
+.sh-head h2{margin:6px 0 0;font:800 1.9rem/.93 var(--f-display);text-transform:uppercase;text-wrap:balance;overflow-wrap:anywhere}
+#sh-x{position:absolute;right:6px;top:14px;width:48px;height:48px;border:0;background:none;font:400 2rem/1 var(--f-text);cursor:pointer}
+.sh-body{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr);align-content:start;gap:16px;overflow:auto;overscroll-behavior:contain;overflow-wrap:anywhere;touch-action:pan-y;
+  padding:18px max(18px,env(safe-area-inset-right,0px)) calc(26px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))}
+.points{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.points li{display:grid;grid-template-columns:18px minmax(0,1fr);font:400 .98rem/1.5 var(--f-text)}
+.points li::before{content:"";width:8px;height:8px;margin-top:.5em;background:var(--mood)}
+.more-body .note,.sh-body .note{font:400 .95rem/1.5 var(--f-text);opacity:.85}
+.caveat{padding:12px 14px;border:1.5px solid currentColor;font:400 .92rem/1.5 var(--f-text)}
+.sh-nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 16px;padding-top:10px;border-top:1px solid var(--line)}
+.tl{margin:0;padding:0;list-style:none}
+.tl li{position:relative;padding:0 0 20px 26px}
+.tl li::before{content:"";position:absolute;left:0;top:.2em;width:12px;height:12px;border:2px solid var(--ink);border-radius:50%;background:var(--paper)}
+.tl li.now::before{border-color:var(--mood);background:var(--mood)}
+.tl li:not(:last-child)::after{content:"";position:absolute;left:5px;top:calc(.2em + 15px);bottom:1px;width:2px;background:var(--line)}
+.tl time{display:block;font:500 .7rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+.tl li>span{display:block;margin-top:2px;font:500 1rem/1.4 var(--f-text)}
+/* Заголовок, летящий из плаката в шапку листа */
+.flight{position:fixed;z-index:30;margin:0;pointer-events:none;transform-origin:0 0}
+
+@media (min-width:860px){
+  .inner,.hdr-in{max-width:1320px}
+  .inner{padding-bottom:30px}
+  .content{gap:20px}
+  .cols{grid-template-columns:1.15fr .85fr;gap:44px}
+  .hl{max-width:21em}
+  .toc,.list,.try,.tip,.quota,.run,.run-note.quiet,.tl{max-width:860px}
+  .sheet{top:0;left:auto;width:min(600px,46vw);max-height:none;margin:0;border-radius:0;transform:translateX(105%)}
+  .sh-head::before{display:none}
+  html:not(.js) .grp::before{max-width:1320px}
+}
+@media (prefers-reduced-motion:no-preference){
+  html{scroll-behavior:smooth}
+  /* Плакат собирается на подходе к экрану: заголовок открывается шторкой, текст поднимается следом */
+  .anim .slide .rv{opacity:0;transform:translateY(16px);transition:opacity .45s cubic-bezier(.22,1,.36,1),transform .45s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--d,0) * 40ms)}
+  .anim .slide.in .rv{opacity:1;transform:none}
+  .anim .slide .hl.rv{clip-path:inset(0 0 100% 0);transition:clip-path .55s cubic-bezier(.22,1,.36,1),opacity .3s,transform .55s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--d,0) * 40ms)}
+  .anim .slide.in .hl.rv{clip-path:inset(-20% -5% -20% -5%)}
+  .tt{animation:tt .18s ease-out}
+  @keyframes tt{from{opacity:0;transform:translateY(5px)}}
+  #fly span{animation:flyin 1.1s cubic-bezier(.22,1,.36,1) both}
+  @keyframes flyin{from{opacity:0;transform:translateX(12%)}}
+  .rings circle{animation:ring 4.8s ease-out infinite;animation-delay:calc(var(--i) * .32s)}
+  .rings .dot{animation:none}
+  @keyframes ring{0%{opacity:.1}10%{opacity:.95}55%{opacity:.16}100%{opacity:.1}}
+  /* Выпуск дочитан — по кругам проходит волна */
+  .prog.done circle{animation:beat .9s cubic-bezier(.3,1.5,.5,1) calc(var(--i) * 70ms) both}
+  @keyframes beat{40%{stroke-width:2.3;opacity:.55}}
+  .vote .on[data-v="up"] svg{animation:thumb .5s cubic-bezier(.3,1.7,.5,1)}
+  @keyframes thumb{0%{transform:scale(.7)}35%{transform:scale(1.4) rotate(-20deg)}70%{transform:scale(1.05) rotate(6deg)}}
+  .vote .on[data-v="down"] svg{animation:sink .4s ease-out}
+  @keyframes sink{40%{transform:translateY(5px) scale(.88)}}
+  .burst b{animation:ripple .6s cubic-bezier(.2,.8,.3,1) forwards}
+  .burst b+b{animation-delay:.12s}
+  @keyframes ripple{0%{opacity:.9;transform:scale(.4)}100%{opacity:0;transform:scale(1.8)}}
+  .burst i{animation:spark .55s cubic-bezier(.2,.8,.3,1) forwards}
+  @keyframes spark{0%{opacity:1;transform:rotate(var(--a)) translateY(-12px) scaleY(.3)}100%{opacity:0;transform:rotate(var(--a)) translateY(-36px) scaleY(1)}}
+}
+</style>
+</head>
+<body>
+<div id="fly" aria-hidden="true"><span>23.11</span></div><header id="hdr" hidden><button type="button" class="hdr-in" id="hdr-btn" aria-label="Содержание выпуска"><span id="hdr-date"></span><span id="hdr-sec"></span><span class="hdr-r"><span id="hdr-n"></span><svg class="prog" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="1.6" style="--i:0"/><circle cx="17" cy="17" r="4.3" style="--i:1"/><circle cx="17" cy="17" r="7.0" style="--i:2"/><circle cx="17" cy="17" r="9.7" style="--i:3"/><circle cx="17" cy="17" r="12.4" style="--i:4"/><circle cx="17" cy="17" r="15.1" style="--i:5"/></svg></span></button></header>
+<main id="deck">
+<section class="slide cover" id="cover" data-label=""><svg class="rings" viewBox="0 0 100 100" aria-hidden="true"><circle class="dot" cx="50" cy="50" r="1.6"/><circle cx="50" cy="50" r="6" style="--i:0"/><circle cx="50" cy="50" r="11" style="--i:1"/><circle cx="50" cy="50" r="16" style="--i:2"/><circle cx="50" cy="50" r="21" style="--i:3"/><circle cx="50" cy="50" r="26" style="--i:4"/><circle cx="50" cy="50" r="31" style="--i:5"/><circle cx="50" cy="50" r="36" style="--i:6"/><circle cx="50" cy="50" r="41" style="--i:7"/><circle cx="50" cy="50" r="46" style="--i:8"/></svg><div class="inner"><div class="bar"><a class="mark" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="16" cy="16" r="6" fill="currentColor"/></svg>сигнал</a><button type="button" class="lnk sm" id="theme" hidden>ночь</button></div><div class="content"><div class="date" role="img" aria-label="23 ноября · вечер"><span class="ph">23.11</span><small>понедельник · вечер</small></div><h1 class="hl rv" style="--d:1">Взломы ИИ⁠-⁠провайдеров и MSP-инструментов, Astra и Anthropic</h1><p class="body rv" style="--d:2">Главное за день: взломы на стыке ИИ и инфраструктуры. OpenRouter нашёл взломанных провайдеров, а ScreenConnect и Cisco Expressway уже используют в атаках. Из ИИ — доказательство теоремы от GPT-6.2 Astra, из денег — Nvidia без Хуанга и акции Anthropic после IPO.</p><div class="meta rv" style="--d:3"><span>6 событий · ≈2 мин чтения</span><span>тревожный день</span></div><div class="act rv" style="--d:4"><a class="btn" href="#main-story">Читать ↓</a><a class="lnk" href="#index">Содержание</a></div></div></div></section>
+<section class="slide blk" id="missed" data-owner hidden data-label="Утром ты пропустил"><div class="inner"><div class="content"><h2 class="hl rv">Утром ты пропустил</h2><ul class="list"><li><a href="2026-11-23.html#e-20261123-0">Главный научный сотрудник OpenAI предложил ограничить разработку мощных ИИ⁠-⁠моделей</a></li><li><a href="2026-11-23.html#e-20261123-1">Алиса Хуанг с весны 2025 года общалась с офицером китайской разведки MSS</a></li><li><a href="2026-11-23.html#e-20261123-2">Калифорния подала иск к OpenAI: в нём провалы безопасности ИИ</a></li></ul></div></div></section>
+<section class="slide blk" id="index" data-label="Содержание"><div class="inner"><div class="content"><ol class="toc"><li><a data-toc="0" href="#e-20261123-6"><span class="n">01</span><span class="t">OpenRouter отключил трёх провайдеров: месяцами крали промпты</span><span class="k">Безопасность</span></a></li><li><a data-toc="1" href="#e-20261123-8"><span class="n">02</span><span class="t">GPT-6.2 Astra сама доказала теорему, с которой другие ИИ не справились</span><span class="k">Модели</span></a></li><li><a data-toc="2" href="#e-20261123-10"><span class="n">03</span><span class="t">Минфин США не закрыл Дженсену Хуангу путь обратно в Nvidia</span><span class="k">Законы и цены</span></a></li><li><a data-toc="3" href="#e-20261123-11"><span class="n">04</span><span class="t">Акции Anthropic после рекордного IPO просели, а потом открылись выше</span><span class="k">Законы и цены</span></a></li><li><a data-toc="4" href="#e-20261123-7"><span class="n">05</span><span class="t">Через ScreenConnect хакеры захватывают ПК техников MSP без предупреждения</span><span class="k">Безопасность</span></a></li><li><a data-toc="5" href="#e-20261123-9"><span class="n">06</span><span class="t">CISA: дыру в Cisco Expressway уже используют в реальных атаках</span><span class="k">Безопасность</span></a></li><li><a href="#also-today"><span class="n"></span><span class="t">Ещё за день</span><span class="k">15 новостей одной строкой</span></a></li></ol></div></div></section>
+<section class="grp" id="main-story" data-label="Главное"><article class="slide st" id="e-20261123-6" data-entry="20261123-6" data-i="0" data-label="Главное"><div class="inner"><div class="content"><div class="thread rv"><a class="tag" href="story-s400.html">Сюжет · 2-й день →</a><b>Утечки у ИИ-провайдеров</b><ol class="tl"><li><time>22 ноя</time><span>Через ИИ⁠-⁠провайдеров месяцами крали промпты и AWS-ключи</span></li></ol></div><h2 class="hl rv" style="--d:1"><span class="idx">01</span>OpenRouter отключил трёх провайдеров: месяцами крали промпты</h2><div class="meta rv" style="--d:2"><span class="src"><img class="fav" src="https://icons.duckduckgo.com/ip3/xakep.ru.ico" alt="" width="14" height="14" loading="lazy">xakep.ru</span><span class="buzz">2 источника</span><span class="status">применяют</span><span class="also">также: SecurityWeek</span></div><div class="cols"><p class="body rv" style="--d:4">три провайдера, через которых OpenRouter гонял запросы к моделям, взломали, и месяцами кто⁠-⁠то мог читать промпты, которые через них шли. dragos разобрала почти два миллиона промптов. ну ёб твою мать, это же всё, что людишки туда совали. если через OpenRouter шли код, ключи или внутреннее, считайте эти промпты скомпрометированными за весь период взлома.</p></div><div class="act rv" style="--d:5"><details class="more"><summary class="btn">Разбор</summary><div class="more-body"><p class="more-lead">Dragos проверила, что реально происходит с данными, а не поверила обещаниям провайдеров: в тестовые запросы подбрасывали приманки, по которым видно, где именно утекло. Посредник вроде OpenRouter пересылает запрос провайдеру модели, и пользователь обычно не знает, кто его обработал.</p><ol class="points"><li>Приманки были такие: тестовые ключи AWS, пароли SSH, секретные URL и ссылки на приватные Git-репозитории. Каждый секрет уходил только в один запрос, поэтому место утечки видно по тому, где он всплыл.</li><li>Первая атака началась в июле 2026, самая масштабная пришлась на конец октября. За короткие окна злоумышленники перехватили все тестовые запросы одного провайдера и вытащили несколько сотен подставных AWS-ключей.</li><li>Ключи утекали даже из запросов, которые провайдер отклонил до передачи модели. Значит, доступ был на входе в инфраструктуру, а не на этапе обработки.</li><li>Похищенные ключи проверяли через несколько часов: смотрели S3-бакеты (файловые хранилища AWS), Secrets Manager и Parameter Store, пытались включить модели в AWS Bedrock и создать своих IAM-пользователей, чтобы закрепиться.</li><li>Китайская лаборатория открывала секретные URL более чем в половине случаев, а среди запросов с ZDR примерно в двух третях. Утечка шла и через американских посредников, которые давали доступ к её моделям.</li></ol><p class="note">Прямой доступ к моделям крупных провайдеров или локальный запуск модели: это варианты, которые советует Dragos.</p><div class="caveat"><b class="label">Ограничения</b>Флаг ZDR сам по себе не спасает, если инфраструктура провайдера взломана: часть запросов с этим флагом тоже утекла.</div><a class="lnk" href="https://xakep.ru/2026/11/23/openrouter-leak/">Первоисточник ↗</a></div></details><a class="lnk" href="https://xakep.ru/2026/11/23/openrouter-leak/">Источник ↗</a><span class="vote" data-id="20261123-6"><button type="button" data-v="up" aria-label="Полезно" title="Полезно"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v11M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9z"/></svg></button><button type="button" data-v="down" aria-label="Мимо" title="Мимо"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 14V3M9 18.1 10 14H4.2a2 2 0 0 1-1.9-2.6l2.3-7A2 2 0 0 1 6.5 3H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-2.8a2 2 0 0 0-1.8 1.1L12 22a3.1 3.1 0 0 1-3-3.9z"/></svg></button></span></div></div></div></article></section>
+<section class="grp" id="models" data-label="Модели и исследования"><article class="slide st" id="e-20261123-8" data-entry="20261123-8" data-i="1" data-label="Модели и исследования"><div class="inner"><div class="content"><div class="thread rv"><a class="tag" href="story-s382.html">Сюжет · 3-й день →</a><b>GPT-6.2 Astra и Sol</b><ol class="tl"><li><time>18 ноя</time><span>OpenAI выкатила GPT-6.2 Astra и Sol: Astra для тяжёлых задач, Sol для каждодневной работы</span></li><li><time>18 ноя</time><span>Astra от OpenAI на 20–600% дешевле, но отзывы на неё разошлись</span></li><li><time>20 ноя</time><span>GPT-6.2 для части кибер-задач просит подтвердить личность</span></li></ol></div><h2 class="hl rv" style="--d:1"><span class="idx">02</span>GPT-6.2 Astra сама доказала теорему, с которой другие ИИ не справились</h2><div class="meta rv" style="--d:2"><span class="src"><img class="fav" src="https://icons.duckduckgo.com/ip3/the-decoder.com.ico" alt="" width="14" height="14" loading="lazy">the-decoder.com</span><span class="status">исследование</span></div><div class="cols"><p class="body rv" style="--d:4">модель сама написала доказательство теоремы Смоктуновича о зазоре на Lean, и его можно проверить машиной. по данным Vals AI, это первый такой случай. нужных базовых утверждений в Mathlib не было, так что путь доказательства она выбрала сама. на Autoform-Hard решила 49 из 56 задач и вышла на первое место в таблице. охуенно, конечно.</p></div><div class="act rv" style="--d:5"><details class="more"><summary class="btn">Разбор</summary><div class="more-body"><p class="more-lead">Тест Autoform-Hard собрали Vals AI из подвыборки AutoformBench от Meta FAIR: это 56 задач, которые в исследовании Meta десять моделей не решили в рамках бюджета. Скепсиса вокруг таких результатов хватает: в октябре математики говорили, что OpenAI не понимает собственное доказательство по Навье–Стоксу, а часть из них призвала к бойкоту OpenAI из⁠-⁠за ИИ⁠-⁠доказательств, которые заполнили их область.</p><ol class="points"><li>Астра попыталась сдаться через 47 минут и восемь долларов, но система не приняла отказ: нерешённые задачи не принимаются, пока не потрачено $20.</li><li>После девяти минут молчания, пока модель искала новый подход, она за 94 минуты и $21,58 выдала доказательство на 1800 строк.</li><li>Ключевая метрика capacity взята из существующих исследований: она считает минимальное число элементов, которые добавляются на каждом шаге вычисления.</li><li>Сама теорема говорит, что при умножении базовых блоков рост либо очень медленный, либо очень быстрый, середины нет.</li><li>Ближайшие в таблице лидеров — GPT-6.2 Sol и Claude Fable 5.2, по 48 задач каждая.</li></ol><p class="note">Таблица лидеров и условия задач Autoform-Hard ведутся у Vals AI.</p><a class="lnk" href="https://the-decoder.com/gpt-6-2-astra-solved-a-math-theorem-no-other-ai-could-crack-then-invented-its-own-proof-strategy/">Первоисточник ↗</a></div></details><a class="lnk" href="https://the-decoder.com/gpt-6-2-astra-solved-a-math-theorem-no-other-ai-could-crack-then-invented-its-own-proof-strategy/">Источник ↗</a><span class="vote" data-id="20261123-8"><button type="button" data-v="up" aria-label="Полезно" title="Полезно"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v11M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9z"/></svg></button><button type="button" data-v="down" aria-label="Мимо" title="Мимо"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 14V3M9 18.1 10 14H4.2a2 2 0 0 1-1.9-2.6l2.3-7A2 2 0 0 1 6.5 3H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-2.8a2 2 0 0 0-1.8 1.1L12 22a3.1 3.1 0 0 1-3-3.9z"/></svg></button></span></div></div></div></article></section>
+<section class="grp" id="business" data-label="Законы, цены, люди"><article class="slide st" id="e-20261123-10" data-entry="20261123-10" data-i="2" data-label="Законы, цены, люди"><div class="inner"><div class="content"><h2 class="hl rv" style="--d:1"><span class="idx">03</span>Минфин США не закрыл Дженсену Хуангу путь обратно в Nvidia</h2><div class="meta rv" style="--d:2"><span class="src"><img class="fav" src="https://icons.duckduckgo.com/ip3/scmp.com.ico" alt="" width="14" height="14" loading="lazy">scmp.com</span><span class="status">анонс</span></div><div class="cols"><p class="body rv" style="--d:4">Бессент в эфире CBS сказал, что Хуанг может вернуться в Nvidia, и смягчил свою прежнюю позицию: раньше он просил совет директоров искать руководителя со стороны. Ну и поворот, не ожидал такого от министра финансов.</p></div><div class="act rv" style="--d:5"><details class="more"><summary class="btn">Разбор</summary><div class="more-body"><ol class="points"><li>Трамп незадолго до этого публично поддержал Хуанга, а Бессент в воскресном интервью CBS ушёл от вопроса о расхождении со своим прежним призывом искать руководителя снаружи.</li></ol><a class="lnk" href="https://www.scmp.com/tech/tech-war/article/3375427/us-treasury-secretary-leaves-door-open-jensen-huangs-return-nvidia">Первоисточник ↗</a></div></details><a class="lnk" href="https://www.scmp.com/tech/tech-war/article/3375427/us-treasury-secretary-leaves-door-open-jensen-huangs-return-nvidia">Источник ↗</a><span class="vote" data-id="20261123-10"><button type="button" data-v="up" aria-label="Полезно" title="Полезно"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v11M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9z"/></svg></button><button type="button" data-v="down" aria-label="Мимо" title="Мимо"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 14V3M9 18.1 10 14H4.2a2 2 0 0 1-1.9-2.6l2.3-7A2 2 0 0 1 6.5 3H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-2.8a2 2 0 0 0-1.8 1.1L12 22a3.1 3.1 0 0 1-3-3.9z"/></svg></button></span></div></div></div></article><article class="slide st" id="e-20261123-11" data-entry="20261123-11" data-i="3" data-label="Законы, цены, люди"><div class="inner"><div class="content"><div class="thread rv"><a class="tag" href="story-s282.html">Сюжет · 13-й день →</a><b>IPO Anthropic</b><ol class="tl"><li><time>21 ноя</time><span>Акции Anthropic за день потеряли почти весь прирост после рекордного IPO</span></li><li><time>22 ноя</time><span>Акции Anthropic после рекордного IPO за день почти обнулили прирост</span></li><li><time>23 ноя</time><span>Anthropic на IPO ограничила банки командами по четыре человека</span></li></ol></div><h2 class="hl rv" style="--d:1"><span class="idx">04</span>Акции Anthropic после рекордного IPO просели, а потом открылись выше</h2><div class="meta rv" style="--d:2"><span class="src"><img class="fav" src="https://icons.duckduckgo.com/ip3/bloomberg.com.ico" alt="" width="14" height="14" loading="lazy">bloomberg.com</span><span class="status">доступно</span><span class="also">также: Bloomberg</span></div><div class="cols"><p class="body rv" style="--d:4">на второй торговый день после рекордного ipo акции anthropic просели вместе со всеми ии⁠-⁠бумагами, и из⁠-⁠за этого s&amp;p 500 вошёл в техническую коррекцию. потом в премаркете в сша они вроде как отскочили вверх. и эта же распродажа долбит ожидания от следующих размещений китайских ии⁠-⁠компаний.</p></div><div class="act rv" style="--d:5"><a class="lnk" href="https://www.bloomberg.com/news/videos/2026-11-23/the-pulse-with-francine-lacqua-11-23-2026-video">Источник ↗</a><span class="vote" data-id="20261123-11"><button type="button" data-v="up" aria-label="Полезно" title="Полезно"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v11M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9z"/></svg></button><button type="button" data-v="down" aria-label="Мимо" title="Мимо"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 14V3M9 18.1 10 14H4.2a2 2 0 0 1-1.9-2.6l2.3-7A2 2 0 0 1 6.5 3H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-2.8a2 2 0 0 0-1.8 1.1L12 22a3.1 3.1 0 0 1-3-3.9z"/></svg></button></span></div></div></div></article></section>
+<section class="grp" id="security" data-label="Безопасность"><article class="slide st" id="e-20261123-7" data-entry="20261123-7" data-i="4" data-label="Безопасность"><div class="inner"><div class="content"><h2 class="hl rv" style="--d:1"><span class="idx">05</span>Через ScreenConnect хакеры захватывают ПК техников <button type="button" class="tw" data-def="провайдер, который удалённо обслуживает ИТ-инфраструктуру чужих компаний">MSP</button> без предупреждения</h2><div class="meta rv" style="--d:2"><span class="src"><img class="fav" src="https://icons.duckduckgo.com/ip3/thehackernews.com.ico" alt="" width="14" height="14" loading="lazy">thehackernews.com</span><span class="status">применяют</span></div><div class="cols"><p class="body rv" style="--d:4">вот это пиздец: <button type="button" class="tw" data-def="публичный номер уязвимости вида CVE-год-номер, по нему её находят в базах и патчах">CVE</button>-2026-84869 в клиенте ScreenConnect, оценка 9,9 из 10. гость сессии может передать и запустить вредоносный файл на ПК техника, который подключился к клиенту. атаки на серверы MSP-провайдеров фиксировали уже с 12 ноября, заплатка вышла. если техподдержка или MSP работает через ScreenConnect, проверяйте версию клиента и обновляйте до исправленной.</p></div><div class="act rv" style="--d:5"><details class="more"><summary class="btn">Разбор</summary><div class="more-body"><p class="more-lead">ПК техника MSP — лакомая цель: там обычно сидят RMM-консоли (панели удалённого управления клиентами), сохранённые пароли и доступ ко всем клиентам, так что один заражённый компьютер открывает много организаций.</p><ol class="points"><li>Батник update_224ac089.bat расшифровывает токен Telegram-бота и ID чата (Base64 — способ закодировать текст в набор символов), докладывает о новом заражении и качает MSI-установщик, замаскированный под обновление Windows. По словам Huntress, вся цепочка заняла около 9 секунд.</li><li>Перед основной полезной нагрузкой гость присылает безобидный файл marker.txt через две секунды после входа техника в сессию. Так атакующий проверяет, что эксплойт работает на этой цели.</li><li>Поддельные гости регистрируются через адрес ретранслятора из публичных установщиков ScreenConnect. Huntress насчитала 2408 несанкционированных сессий с 3 ноября на 118 самохостящихся серверах 109 организаций, и почти все подключались с одного IP у IONOS.</li><li>Отдельная волна: тысячи несанкционированных гостевых сессий с именами бирж BITMEX-BOT, KUCOIN-SRV и LAPTOP-BINANCE, чтобы техник сам подключился. Дальнейших вредоносных действий в этих сессиях не замечено.</li><li>Целевая атака на сервер MSP в октябре: злоумышленник заходил гостем в три реальные сессии техника и просил клиента запустить файл, который клал Sync.bat в папку автозагрузки Windows.</li></ol><p class="note">Проверить версию клиента ScreenConnect на машинах техников: нужна 26.6.5 или новее.</p><div class="caveat"><b class="label">Ограничения</b>Если сразу поставить заплатку нельзя, по словам Huntress, помогает убрать право TransferFiles у ролей и групп сессий. Заражённые ПК стоит изолировать и сменить все учётные данные, доступные с них.</div><a class="lnk" href="https://thehackernews.com/2026/11/hackers-exploit-critical-screenconnect.html">Первоисточник ↗</a></div></details><a class="lnk" href="https://thehackernews.com/2026/11/hackers-exploit-critical-screenconnect.html">Источник ↗</a><span class="vote" data-id="20261123-7"><button type="button" data-v="up" aria-label="Полезно" title="Полезно"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v11M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9z"/></svg></button><button type="button" data-v="down" aria-label="Мимо" title="Мимо"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 14V3M9 18.1 10 14H4.2a2 2 0 0 1-1.9-2.6l2.3-7A2 2 0 0 1 6.5 3H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-2.8a2 2 0 0 0-1.8 1.1L12 22a3.1 3.1 0 0 1-3-3.9z"/></svg></button></span></div></div></div></article><article class="slide st" id="e-20261123-9" data-entry="20261123-9" data-i="5" data-label="Безопасность"><div class="inner"><div class="content"><div class="thread rv"><a class="tag" href="story-s390.html">Сюжет · 3-й день →</a><b>Zero-day в vCenter</b><ol class="tl"><li><time>20 ноя</time><span>Китайская APT эксплуатировала дыру в VMware vCenter с сентября, патч вышел</span></li><li><time>20 ноя</time><span>Китайская шпионская группа с сентября ломала vCenter через zero-day</span></li><li><time>21 ноя</time><span>CISA добавила в список активных атак дыры в vCenter, Cisco, SAP и Apache</span></li></ol></div><h2 class="hl rv" style="--d:1"><span class="idx">06</span>CISA: дыру в Cisco Expressway уже используют в реальных атаках</h2><div class="meta rv" style="--d:2"><span class="src"><img class="fav" src="https://icons.duckduckgo.com/ip3/bleepingcomputer.com.ico" alt="" width="14" height="14" loading="lazy">bleepingcomputer.com</span><span class="status">применяют</span></div><div class="cols"><p class="body rv" style="--d:4">опять! expressway — это шлюз cisco для видеосвязи, и в нём пропатчили критическую дыру, которая даёт выполнять команды на железке. cisa уже предупредила федералов, что её реально юзают в атаках. если expressway смотрит в интернет — проверь, стоит ли свежая версия с фиксом, потому что дыру уже эксплуатируют, и тянуть с этим нельзя.</p></div><div class="act rv" style="--d:5"><details class="more"><summary class="btn">Разбор</summary><div class="more-body"><p class="more-lead">Две недели назад CISA так же пометила уязвимость в Cisco BroadWorks (CVE-2026-20320) как используемую. По данным Malbear Labs, китайскоязычная группа применяла её в автономных ИИ⁠-⁠атаках на европейского телеком-провайдера и 13 организаций из его дата-центров и облака.</p><ol class="points"><li>Cisco в конце октября выпустила патчи и написала, что не знает ни об активной эксплуатации, ни о публичных PoC (рабочих примерах эксплойта).</li><li>Федеральным ведомствам дан срок три дня по BOD 26-04 (обязательной директиве CISA), а частным компаниям CISA советует ставить патч в приоритете.</li><li>F6 видела, как неназванный ИИ⁠-⁠ассистент помог атакующим получить root (полные права администратора) на внешних Expressway. Через один из двух взломанных узлов они попали ещё в два узла кластера во внутренней сети.</li><li>Дальше атакующие готовили инструменты: Python-скрипты искали доступные SMB-ресурсы (общие сетевые папки), работали с SQL Server и WinRM (удалённым управлением Windows) и смотрели репозитории GitLab, чтобы выгрузить учётные данные.</li><li>С ноября 2021 CISA отметила в своём списке эксплуатируемых уязвимостей 103 уязвимости Cisco, и семь из них использовали группы программ-вымогателей (ransomware).</li></ol><p class="note">Каталог KEV от CISA публичный: там можно проверить, какие уязвимости Cisco уже отмечены как используемые.</p><div class="caveat"><b class="label">Ограничения</b>Уязвимость касается устройств Expressway-C и Expressway-E, настроенных в кластер. По словам Cisco, для атаки через базу данных нужно владеть cookies.</div><a class="lnk" href="https://www.bleepingcomputer.com/news/security/cisa-flags-critical-cisco-expressway-rce-flaw-as-actively-exploited/">Первоисточник ↗</a></div></details><a class="lnk" href="https://www.bleepingcomputer.com/news/security/cisa-flags-critical-cisco-expressway-rce-flaw-as-actively-exploited/">Источник ↗</a><span class="vote" data-id="20261123-9"><button type="button" data-v="up" aria-label="Полезно" title="Полезно"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v11M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9z"/></svg></button><button type="button" data-v="down" aria-label="Мимо" title="Мимо"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 14V3M9 18.1 10 14H4.2a2 2 0 0 1-1.9-2.6l2.3-7A2 2 0 0 1 6.5 3H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-2.8a2 2 0 0 0-1.8 1.1L12 22a3.1 3.1 0 0 1-3-3.9z"/></svg></button></span></div></div></div></article></section>
+<section class="slide blk" id="also-today" data-label="Ещё за день"><div class="inner"><div class="content"><h2 class="hl rv">Ещё за день</h2><ol class="list"><li><a href="https://www.securityweek.com/crowdstrike-to-acquire-zscaler-in-43-9-billion-deal/">CrowdStrike покупает Zscaler за $43,9 млрд, всё акциями — одна из крупнейших сделок в кибербезопасности</a><span class="k"><span>SecurityWeek</span><span class="buzz">4 источника</span></span></li><li><a href="https://z.ai/blog/glm-5.4">GLM-5.4 на 750 млрд параметров от Z.ai; в Zhipu Coding Plan — с картинками и миллионом токенов контекста</a><span class="k"><span>Techmeme</span><span class="buzz">3 источника</span><a class="buzz" href="https://news.ycombinator.com/item?id=50609685">HN 292 ▲ · 133 комм.</a></span></li><li><a href="https://www.theguardian.com/technology/2026/nov/23/apple-iphone-duo-review-most-novel-interesting-iphone-in-almost-a-decade">Первый складной iPhone, Duo, стоит £1 999 ($1 999) — самый дорогой у Apple, по обзору The Guardian</a><span class="k"><span>The Guardian</span></span></li><li><a href="https://www.theregister.com/virtualization/2026/11/23/google-claims-last-weeks-critical-vmware-bug-was-under-attack-in-september/5311547">Google: баг в vCenter эксплуатировали ещё в сентябре; связанная с Китаем ARMORY CASTLE знала о нём заранее</a><span class="k"><span>The Register</span></span></li><li><a href="https://thehackernews.com/2026/11/n-able-discloses-critical-mail-assure.html">N-able нашла критичную SSRF-дыру CVE-2026-134624 в Mail Assure при расследовании взлома</a><span class="k"><span>The Hacker News</span></span></li><li><a href="https://thehackernews.com/2026/11/hackers-exploit-critical-aspnet-anti.html">Idunno.AntiCsrf: критичная дыра (CVSS 9,3) с выполнением кода без входа уже эксплуатируется, библиотеку советуют бросить</a><span class="k"><span>The Hacker News</span></span></li><li><a href="https://therecord.media/austrian-foreign-ministry-says-website-hacked">Австрийский МИД: взломщики залезли на сайт и получили имена и контакты сотрудников в Вене и посольствах</a><span class="k"><span>The Record</span></span></li><li><a href="https://xakep.ru/2026/11/23/binance-hack-transfers/">Через кошелёк, связанный с октябрьским взломом Binance, ушли 137 602 ETH (около $248 млн)</a><span class="k"><span>Хакер</span></span></li><li><a href="https://xakep.ru/2026/11/23/retadup-coffeeloader/">Ожил USB-червь Retadup, закрытый в 2019-м: теперь ставит CoffeeLoader; Касперский отбил 15 000 попыток</a><span class="k"><span>Хакер</span></span></li><li><a href="https://technode.com/2026/11/23/minimax-publishes-ai-discovered-cryptographic-attacks-with-papers-and-code/">MiniMax: внутренняя ИИ⁠-⁠модель нашла атаки на экспериментальные криптосхемы; статьи и код уже выложены</a><span class="k"><span>TechNode</span></span></li><li><a href="https://www.wired.com/story/states-sue-spacex-over-grok-deepfakes/">Орегон и Вирджиния судятся с компаниями Маска, в том числе SpaceX: слабая защита от сексуальных дипфейков Grok</a><span class="k"><span>Wired</span><span class="buzz">2 источника</span></span></li><li><a href="https://www.securityweek.com/badbox-3-0-ad-fraud-operation-generating-40-billion-daily-bid-requests-disrupted/">Операцию BadBox 3.0 с 40 млрд рекламных запросов в день через дешёвые устройства сорвали</a><span class="k"><span>SecurityWeek</span></span></li><li><a href="https://habr.com/ru/companies/ruvds/articles/1111158/?utm_campaign=1111158&amp;utm_source=habrahabr&amp;utm_medium=rss">GlobalSign начала отзывать SSL-сертификаты российских компаний; по оценкам рынка, под удар до 20 тыс. доменов</a><span class="k"><span>Хабр · ИБ</span></span></li><li><a href="https://thehackernews.com/2026/11/ai-assisted-cyberattacks-trigger.html">Индийский CERT-In предупредил: атаки с помощью ИИ уже дают несанкционированные платежи в банках и финтехе</a><span class="k"><span>The Hacker News</span></span></li><li><a href="https://www.bloomberg.com/news/videos/2026-11-23/how-trump-s-ai-chip-crackdown-may-hit-southeast-asia-video">Новые правила США по ИИ⁠-⁠чипам касаются дата-центров в Сингапуре, Малайзии, Таиланде и Индонезии</a><span class="k"><span>Bloomberg</span></span></li></ol></div></div></section>
+<section class="slide end" id="end" data-label="Конец выпуска"><div class="inner"><div class="content"><svg class="prog" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="1.6" style="--i:0"/><circle cx="17" cy="17" r="4.3" style="--i:1"/><circle cx="17" cy="17" r="7.0" style="--i:2"/><circle cx="17" cy="17" r="9.7" style="--i:3"/><circle cx="17" cy="17" r="12.4" style="--i:4"/><circle cx="17" cy="17" r="15.1" style="--i:5"/></svg><h2 class="hl rv" id="verdict">Конец выпуска</h2><p class="body rv" style="--d:1">Из 276 просмотренных новостей новых 105, в выпуск прошло 6. Ещё 78 отсеяно как шум.</p><details class="noise rv" id="noise"><summary class="lnk">Отсеяно как шум: 78</summary><p class="body">Больше всего: Techmeme 11, Bloomberg 11, Financial Times 11, Хабр · ИБ 11, TechNode 6</p><ul class="list"><li><a href="https://www.bloomberg.com/news/articles/2026-11-23/arm-ceo-extends-contract-through-2033-after-nvidia-approach">Arm CEO Rene Haas extends his contract through 2033 and will become SoftBank vice chair on December 1; a recruiting firm approached him over becoming Nvidia CEO (Bloomberg)</a><span class="k">Techmeme</span></li><li><a href="https://www.bloomberg.com/news/articles/2026-11-23/marlowe-raises-277-million-to-bolster-alternatives-to-nvidia-chips">Marlowe, which develops cloud infrastructure and performance tools to optimize non-Nvidia AI chips, raised a $277M seed led by Accel at a $1.15B valuation (Dina Bass/Bloomberg)</a><span class="k">Techmeme</span></li><li><a href="https://www.bloomberg.com/news/articles/2026-11-23/bret-taylor-s-sierra-finalizing-more-than-1-75-billion-round">Bret Taylor&#x27;s customer service AI startup Sierra says it&#x27;s finalizing a $1.75B+ round led by Lightspeed and Greenoaks at a $30B valuation, up from $15.8B in May (Bloomberg)</a><span class="k">Techmeme</span></li><li><a href="https://www.washingtonpost.com/technology/2026/11/23/how-nvidia-fought-years-washington-sell-its-prized-chips-china/">Sources: Jensen Huang developed a close relationship with Trump and made lobbying calls to secure AI chip sales to China, which he called a $50B per year market (Ian Duncan/Washington Post)</a><span class="k">Techmeme</span></li><li><a href="https://www.ft.com/content/c269cf3e-2275-4244-9a86-f412c8521b4f">US ports are facing an escalating volume of cyber threats; the Port of LA logged 120M thwarted attempts in August alone, nearly double its 2023 monthly average (Financial Times)</a><span class="k">Techmeme</span></li><li><a href="https://www.bloomberg.com/news/articles/2026-11-23/defense-ai-startup-agon-raises-70-million-series-a-from-vcs-ex-sequoia-boss">London-based defense simulation software startup Agon raised $70M led by Northzone at a $450M valuation, after emerging from stealth with $30M earlier in 2026 (Mark Bergen/Bloomberg)</a><span class="k">Techmeme</span></li><li><a href="https://www.washingtonpost.com/politics/2026/11/22/trump-hosts-crypto-traders-demand-his-meme-coin-fades/">President Trump hosted a dinner on Sunday for the top $TRUMP collectors; an analysis finds the entry cost was as low as $518, down from its $55K peak in 2025 (Isaac Arnsdorf/Washington Post)</a><span class="k">Techmeme</span></li><li><a href="https://www.nytimes.com/2026/11/23/world/asia/china-us-nuclear-ai.html?unlocked_article_code=1.SlE.7MPS.E8d7eCsFiexw&amp;smid=url-share">Chinese civilian and military studies show a growing concern that US AI advances may cut nuclear decision-making to 90 seconds, undermining Beijing&#x27;s deterrent (Chris Buckley/New York Times)</a><span class="k">Techmeme</span></li><li><a href="https://www.ft.com/content/d194e93b-8d3c-42eb-85dd-46d58c4f2a80">A look at AECJ, an Amazon employee group with over 1,000 members that is stepping up efforts to slow Amazon&#x27;s data center expansion and spark debate over AI use (Rafe Rosner-Uddin/Financial Times)</a><span class="k">Techmeme</span></li><li><a href="https://www.axios.com/pro/biotech-deals/2026/11/17/aevius-22m-clinical-intelligence-platform">Boston-based Aevius, whose foundation models analyze patient health using medical records, imaging, and other data, raised a $22M seed led by Insight Partners (Katherine Davis/Axios)</a><span class="k">Techmeme</span></li><li><a href="https://www.axios.com/pro/all-deals/2026/11/17/compute-pricing-startup-compute-desk-45-million-lightspeed">Compute Desk, which is building capital markets infrastructure to price, trade, hedge, and clear compute, raised a $45M seed led by Lightspeed (Lucinda Shen/Axios)</a><span class="k">Techmeme</span></li><li><a href="https://github.com/ggml-org/llama.cpp/releases/tag/b12653">llama.cpp b12653: ggml : update cmake MATH_LIBRARY check (#32864)</a><span class="k">GitHub · llama.cpp</span></li><li><a href="https://github.com/AFK-surf/xnulinux">XNU Linux: Full OS X GUI Userspace on Linux</a><span class="k">Hacker News</span></li><li><a href="https://spelunkr.tv">Free alternative TV network built from the Internet Archive&#x27;s forgotten videos</a><span class="k">Hacker News</span></li><li><a href="https://www.audubon.org/magazine/birds-of-gta-6-field-guide-vice-city-wildlife">The Birds of GTA 6: A Field Guide to Vice City and Leonida&#x27;s Wildlife</a><span class="k">Hacker News</span></li><li><a href="https://www.theverge.com/ai-artificial-intelligence/1039874/walmart-agent-gateway-meta-muse-black-friday">Meta Muse can do your Black Friday shopping at Walmart</a><span class="k">The Verge</span></li><li><a href="https://arstechnica.com/reviews/2026/11/review-the-asus-proart-p16-offers-a-glimpse-of-a-future-powered-by-local-ai/">Review: The Asus ProArt P16 offers a glimpse of a future powered by local AI</a><span class="k">Ars Technica</span></li><li><a href="https://www.wired.com/story/livestream-will-anyone-keep-us-safe-from-ai/">Submit Your Questions: Will Anyone Keep You Safe From AI?</a><span class="k">Wired</span></li><li><a href="https://www.wired.com/story/goodbye-world-the-end-of-programmers/">Goodbye, World: The End of Programmers</a><span class="k">Wired</span></li><li><a href="https://www.theregister.com/os-platforms/2026/11/23/old-school-linux-desktops-find-fresh-routes-to-wayland/5311349">Old-school Linux desktops find fresh routes to Wayland</a><span class="k">The Register</span></li><li><a href="https://www.theregister.com/applications/2026/11/23/airbus-may-be-leaving-microsoft-office-but-for-its-36000-defense-staff-office-isnt-leaving-them/5311325">Airbus may be leaving Microsoft Office, but for its 36,000 defense staff, Office isn&#x27;t leaving them</a><span class="k">The Register</span></li><li><a href="https://www.theregister.com/columnists/2026/11/23/when-microsoft-apple-and-the-faa-cant-keep-it-up-its-a-system-of-a-down/5311363">When Microsoft, Apple, and the FAA can&#x27;t keep it up, it&#x27;s a system of a down</a><span class="k">The Register</span></li><li><a href="https://www.theregister.com/science/2026/11/23/software-issues-have-even-reached-mercury-as-bepicolombo-probe-arrives-in-uncertain-state/5311554">Software issues have even reached Mercury as BepiColombo probe arrives in uncertain state</a><span class="k">The Register</span></li><li><a href="https://www.theregister.com/personal-tech/2026/11/23/techie-turned-his-too-easy-job-interview-into-a-trap/5311213">Techie turned his too-easy job interview into a trap</a><span class="k">The Register</span></li><li><a href="https://www.scmp.com/economy/china-economy/article/3375495/steel-style-chinas-flagship-ai-factories-move-beyond-heavy-industry">From steel to style: China’s ‘flagship’ AI factories move beyond heavy industry</a><span class="k">SCMP</span></li><li><a href="https://www.scmp.com/business/china-business/article/3375442/brain-computer-interface-boom-enters-next-phase-china-pushes-shape-global-standards">As brain-computer interface boom enters next phase, China pushes to shape global standards</a><span class="k">SCMP</span></li><li><a href="https://www.scmp.com/business/markets/article/3375424/new-19-month-low-hong-kong-stocks-plunge-ai-sell-spreads-asia">Hong Kong stocks rebound to pare steep losses following US tech rout</a><span class="k">SCMP</span></li><li><a href="https://www.scmp.com/news/world/article/3375414/us-detains-chinese-princeton-student-chinas-space-mining-road-map-5-weekend-reads-you-missed">US detains Chinese Princeton student; China’s space mining road map: 5 weekend reads you missed</a><span class="k">SCMP</span></li><li><a href="https://technode.com/2026/11/23/huaweis-osta-brand-reportedly-plans-tablets-laptops-and-wearables/">Huawei’s OSTA brand reportedly plans tablets, laptops and wearables</a><span class="k">TechNode</span></li><li><a href="https://technode.com/2026/11/23/honor-previews-six-head-3d-printer-as-it-enters-consumer-printing-market/">Honor previews six-head 3D printer as it enters consumer printing market</a><span class="k">TechNode</span></li><li><a href="https://technode.com/2026/11/23/ant-group-leads-100-million-round-in-humanoid-startup-simplexity-robotics/">Ant Group leads $100 million round in humanoid startup Simplexity Robotics</a><span class="k">TechNode</span></li><li><a href="https://technode.com/2026/11/23/xiaomi-reportedly-hires-former-xpeng-europe-executive-ahead-of-2027-car-launch/">Xiaomi reportedly hires former Xpeng Europe executive ahead of 2027 car launch</a><span class="k">TechNode</span></li><li><a href="https://technode.com/2026/11/23/ant-group-unveils-ai-health-ring-and-wristband-under-afu-brand/">Ant Group unveils AI health ring and wristband under Afu brand</a><span class="k">TechNode</span></li><li><a href="https://technode.com/2026/11/23/do-you-really-need-an-ai-wearable-to-remember-every-moment/">Do you really need an AI wearable to remember every moment?</a><span class="k">TechNode</span></li><li><a href="https://sifted.eu/articles/plural-fund-ai-podcast/">Plural’s Sten Tamkivi on its €1bn fund, defence tech and why Europe didn’t miss the AI wave</a><span class="k">Sifted</span></li><li><a href="https://sifted.eu/articles/why-ai-startups-should-build-governance-early-brnd/">Why AI startups should build governance early</a><span class="k">Sifted</span></li><li><a href="https://sifted.eu/articles/acorda-pre-seed/">Eileen Burbidge backs Monzo alums’ anti-fraud startup in £1.8m pre-seed</a><span class="k">Sifted</span></li><li><a href="https://sifted.eu/articles/black-forest-labs-nvidia-a16z-andreas-blattmann-interview/">Backed by Nvidia and a16z, Black Forest Labs sets its sights on world models</a><span class="k">Sifted</span></li><li><a href="https://www.bloomberg.com/news/articles/2026-11-23/next-supplier-hit-by-cyberattack-in-latest-uk-retail-breach">Next Supplier Hit by Cyberattack in Latest UK Retail Breach</a><span class="k">Bloomberg</span></li><li><a href="https://www.bloomberg.com/news/newsletters/2026-11-23/anthropic-may-find-its-ipo-was-the-easy-part">Anthropic May Find Its IPO Was The Easy Part</a><span class="k">Bloomberg</span></li><li><a href="https://www.bloomberg.com/news/newsletters/2026-11-23/jensen-huang-affair-aftermath-could-push-china-further-behind-us-in-ai-race">Jensen Huang Affair Aftermath Could Push China Further Behind US in AI Race</a><span class="k">Bloomberg</span></li><li><a href="https://www.bloomberg.com/news/articles/2026-11-23/shoprite-investec-deepen-retail-banking-mobile-bets-with-dni">Shoprite Buys DNI Stake to Grow Fintech, Mobile Through Partnership With Investec</a><span class="k">Bloomberg</span></li><li><a href="https://www.bloomberg.com/news/articles/2026-11-23/german-billionaires-who-backed-biontech-are-investing-in-catalym">German Billionaires Who Backed BioNTech Are Investing in Catalym</a><span class="k">Bloomberg</span></li><li><a href="https://www.bloomberg.com/news/videos/2026-11-23/us-market-in-for-pretty-painful-ride-pickering-says-video">US Market in for &#x27;Pretty Painful Ride,&#x27; Pickering Says</a><span class="k">Bloomberg</span></li><li><a href="https://www.bloomberg.com/news/videos/2026-11-23/futures-rally-following-ai-selloff-havens-decline">Futures Rally Following AI Selloff, Havens Decline</a><span class="k">Bloomberg</span></li><li><a href="https://www.bloomberg.com/news/videos/2026-11-23/what-a-town-of-vibecoders-says-about-the-chinese-economy-video">What a Town of Vibecoders Says About the Chinese Economy</a><span class="k">Bloomberg</span></li><li><a href="https://www.bloomberg.com/news/videos/2026-11-23/how-plug-in-solar-is-sweeping-across-the-us-video">How Plug-In Solar Is Sweeping the US</a><span class="k">Bloomberg</span></li><li><a href="https://www.bloomberg.com/news/articles/2026-11-23/nvidia-backed-ai-company-firmus-mulls-1-5-billion-bond-offering">Nvidia-Backed AI Company Firmus Mulls $1.5 Billion Bond Offering</a><span class="k">Bloomberg</span></li><li><a href="https://www.bloomberg.com/news/videos/2026-11-23/what-s-next-for-ai-trade-asia-tech-stocks-video">What’s Next for AI Trade &amp; Asia Tech Stocks?</a><span class="k">Bloomberg</span></li><li><a href="https://www.ft.com/content/a561a19d-fdd6-4cab-9ae9-58d8e0efbd0e?syn-25a6b1a6=1">Palmer Luckey’s start-up bank hits $1bn in loans</a><span class="k">Financial Times</span></li><li><a href="https://www.ft.com/content/771104b5-1c74-42e4-81a5-cc30bcbefb02">Is the solution to survey problems to make up the data?</a><span class="k">Financial Times</span></li><li><a href="https://www.ft.com/content/b3f020fc-2617-4432-bced-af2a0b120133?syn-25a6b1a6=1">Ukraine blows up Russian warship in Libya’s Benghazi naval base</a><span class="k">Financial Times</span></li><li><a href="https://www.ft.com/content/d97f37d0-588e-488c-b10e-035900367aa4?syn-25a6b1a6=1">South Korean minister says he is too old to tackle AI exam cheating</a><span class="k">Financial Times</span></li><li><a href="https://www.ft.com/content/046984ab-9a7c-41fd-804c-fb356db28099?syn-25a6b1a6=1">From rotation to contagion</a><span class="k">Financial Times</span></li><li><a href="https://www.ft.com/content/aa71d6bc-bbca-4e95-81b1-20895ac0cb59?syn-25a6b1a6=1">What happens when bubbles burst</a><span class="k">Financial Times</span></li><li><a href="https://www.ft.com/content/1e5a9d70-221d-461d-ae03-dc235b1db340?syn-25a6b1a6=1">Novartis rejects AI industry hopes to cure cancer in five to 10 years</a><span class="k">Financial Times</span></li><li><a href="https://www.ft.com/content/54b6f97e-7818-4902-9755-63d9a4867a2d?syn-25a6b1a6=1">Consultants reap public sector boom thanks to AI and cyber security</a><span class="k">Financial Times</span></li><li><a href="https://www.ft.com/content/13b9bee8-f7e4-4b02-ad78-2e358ff43240?syn-25a6b1a6=1">Grant Thornton warns AI audits could trigger ‘race to the bottom’</a><span class="k">Financial Times</span></li><li><a href="https://www.ft.com/content/e49add11-3cc8-4edd-8daa-db8daaf994dd?syn-25a6b1a6=1">The problem with the circular AI economy</a><span class="k">Financial Times</span></li><li><a href="https://www.ft.com/content/add930b5-5a4c-4226-a778-ffdd009915f0">Progressives are not radical enough on economics</a><span class="k">Financial Times</span></li><li><a href="https://www.bleepingcomputer.com/news/security/call-center-operator-gets-8-years-for-helping-scam-30-000-americans/">Call center operator gets 8 years for helping scam 30,000 Americans</a><span class="k">BleepingComputer</span></li><li><a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-confirms-printing-issues-after-kb5132043-windows-hotpatch/">Microsoft confirms Windows printing issues affecting Forcepoint users</a><span class="k">BleepingComputer</span></li><li><a href="https://thehackernews.com/2026/11/hackers-exploited-glinet-cloud-flaw-to.html">Hackers Exploited GL.iNet Cloud Flaw to Install Malware on Routers and KVM Devices</a><span class="k">The Hacker News</span></li><li><a href="https://www.securityweek.com/sap-netweaver-cisco-expressway-flaws-exploited-in-attacks/">SAP NetWeaver, Cisco Expressway Flaws Exploited in Attacks</a><span class="k">SecurityWeek</span></li><li><a href="https://xakep.ru/2026/11/23/crypto-exchange-scam/">Мошенники похитили более $37 млн у американских инвесторов через фейковые криптобиржи</a><span class="k">Хакер</span></li><li><a href="https://xakep.ru/2026/11/23/1984-attack/">Исландский хостинг 1984 отключился из-за кибератаки</a><span class="k">Хакер</span></li><li><a href="https://xakep.ru/2026/11/23/gta-vi-scams/">Криптоскамеры используют выход GTA VI для обмана фанатов</a><span class="k">Хакер</span></li><li><a href="https://habr.com/ru/companies/ruvds/articles/1111122/?utm_campaign=1111122&amp;utm_source=habrahabr&amp;utm_medium=rss">Аналитика по итогам внедрения адаптивной SPI-системы</a><span class="k">Хабр · ИБ</span></li><li><a href="https://habr.com/ru/companies/selectel/articles/1111192/?utm_campaign=1111192&amp;utm_source=habrahabr&amp;utm_medium=rss">Selectel запустил услугу по аттестации ИС требованиям 117 приказа ФСТЭК России</a><span class="k">Хабр · ИБ</span></li><li><a href="https://habr.com/ru/companies/bitrix/articles/1110932/?utm_campaign=1110932&amp;utm_source=habrahabr&amp;utm_medium=rss">Безопасный вайб-кодинг без ИТ-подготовки: задаем агенту правила генерации безопасного кода веб-приложения</a><span class="k">Хабр · ИБ</span></li><li><a href="https://habr.com/ru/articles/1111118/?utm_campaign=1111118&amp;utm_source=habrahabr&amp;utm_medium=rss">Microsoft признала утерю части писем во время глобального сбоя в работе Outlook</a><span class="k">Хабр · ИБ</span></li><li><a href="https://habr.com/ru/companies/securityvison/articles/1111102/?utm_campaign=1111102&amp;utm_source=habrahabr&amp;utm_medium=rss">Обзор требований и мер по обеспечению безопасности значимых объектов критической информационной инфраструктуры</a><span class="k">Хабр · ИБ</span></li><li><a href="https://habr.com/ru/articles/1111316/?utm_campaign=1111316&amp;utm_source=habrahabr&amp;utm_medium=rss">GrapheneOS обвинила Google в создании препятствий для других производителей Android‑смартфонов</a><span class="k">Хабр · ИБ</span></li><li><a href="https://habr.com/ru/articles/1111150/?utm_campaign=1111150&amp;utm_source=habrahabr&amp;utm_medium=rss">В США женщину выселили из квартиры из‑за разрешения от ИИ‑бота не платить аренду</a><span class="k">Хабр · ИБ</span></li><li><a href="https://habr.com/ru/articles/1111110/?utm_campaign=1111110&amp;utm_source=habrahabr&amp;utm_medium=rss">Signal ограничил создание скриншотов из‑за ИИ‑агентов</a><span class="k">Хабр · ИБ</span></li><li><a href="https://habr.com/ru/companies/F6/articles/1111084/?utm_campaign=1111084&amp;utm_source=habrahabr&amp;utm_medium=rss">«Вам повестка в суд»: новый сценарий телефонных мошенников с имитацией взлома, утечками и дипфейками</a><span class="k">Хабр · ИБ</span></li><li><a href="https://habr.com/ru/companies/ruvds/articles/1108162/?utm_campaign=1108162&amp;utm_source=habrahabr&amp;utm_medium=rss">PHP после октября — обновляйтесь, пока не поздно</a><span class="k">Хабр · ИБ</span></li><li><a href="https://habr.com/ru/articles/1111164/?utm_campaign=1111164&amp;utm_source=habrahabr&amp;utm_medium=rss">Периметр умер, да здравствует сетка: почему классический NGFW образца 2020 года сегодня не спасает</a><span class="k">Хабр · ИБ</span></li></ul></details><div class="meta rv" style="--d:2"><span>собрано 23.11 в 18:08</span><span class="fail">Не собрались: gnews_ai, reddit, reddit_tips</span></div><div class="reader" id="reader" hidden></div><div class="act rv" style="--d:3"><a class="btn" href="#cover">К началу ↑</a><a class="lnk" href="2026-11-23.html">← Прошлый выпуск</a><a class="lnk" href="archive.html">Архив</a><a class="lnk" href="tips.html">Арсенал фишек</a><a class="lnk" href="health.html">Здоровье</a></div></div></div></section>
+</main>
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-t" tabindex="-1" hidden>
+  <div class="sh-head"><div class="label" id="sh-k"></div><h2 id="sh-t"></h2><button type="button" id="sh-x" aria-label="Закрыть">×</button></div>
+  <div class="sh-body" id="sh-b"></div>
+</div>
+<div class="tt" id="tip" role="tooltip" hidden></div>
+<script>
+(() => {
+  const root = document.documentElement, themeBtn = document.getElementById("theme");
+  root.classList.add("js");
+  const dark = () => root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  const paintTheme = () => { themeBtn.textContent = dark() ? "день" : "ночь"; };
+  if (themeBtn) {
+    themeBtn.hidden = false; paintTheme();
+    themeBtn.addEventListener("click", () => {
+      root.dataset.theme = dark() ? "light" : "dark"; paintTheme();
+      // Хранилище браузера бывает закрыто (частный режим): тема сменится, но в следующий раз вернётся системная
+      try { localStorage.setItem("theme", root.dataset.theme); } catch (e) { return; }
+    });
+  }
+  document.addEventListener("click", e => {
+    const b = e.target.closest(".copy"); if (!b) return;
+    const code = b.closest(".term").querySelector("code");
+    const ok = () => { b.textContent = "Скопировано"; setTimeout(() => { b.textContent = "Скопировать"; }, 1600); };
+    // Буфер обмена закрыт (встроенный браузер, нет разрешения): выделяем текст, чтобы его можно было скопировать руками
+    const select = () => { const r = document.createRange(); r.selectNodeContents(code); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); b.textContent = "Выделено"; };
+    try { navigator.clipboard.writeText(code.textContent).then(ok, select); } catch (err) { select(); }
+  });
+})();
+</script><script>
+(() => {
+  const FB = "https://ai-digest-feedback.versage1998.workers.dev", box = document.getElementById("reader");
+  const KEY_RE = /^[oc]_[A-Za-z0-9_-]{32,128}$/, NAMES = {owner: "владелец", colleague: "коллега"};
+  const known = r => r === "owner" || r === "colleague" ? r : null;
+  const get = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+  const put = (k, v) => { try { if (v) localStorage.setItem(k, v); else localStorage.removeItem(k); return true; } catch (e) { return false; } };
+  let key = get("reader:key"), role = key ? known(get("reader:role")) : null, editing = false, note = "";
+  // Без принятого ключа о ключах на странице ни следа (решение владельца 2026-11-19: коллега и гость видят обычный
+  // выпуск). Поле открывается только по адресу с #ключ на конце — так владелец ставит ключ в новом браузере
+  const entry = (() => { try { return decodeURIComponent(location.hash) === "#ключ"; } catch (e) { return false; } })();
+  // Строка в теле уходит как text/plain — простой запрос без preflight, поэтому keepalive у «прочитано» работает
+  const ask = (path, k, extra) => fetch(FB + path, {method: "POST", body: k, ...extra});
+  function show() {
+    // Пальцы, галочки и блок «Утром ты пропустил» (он по отметкам владельца) — только тому, чей ключ принят
+    document.querySelectorAll(".vote,.tried").forEach(el => { el.hidden = !role; });
+    document.querySelectorAll("[data-owner]").forEach(el => { el.hidden = role !== "owner"; });
+    document.querySelectorAll("[data-reader-only]").forEach(el => { el.hidden = !role; });
+    if (!box) return;
+    const text = document.createElement("span");
+    if (role && !editing) {
+      text.textContent = "Отметки: " + NAMES[role];
+      const change = document.createElement("button");
+      change.type = "button"; change.className = "lnk sm"; change.textContent = "Сменить ключ";
+      change.addEventListener("click", () => { editing = true; note = ""; show(); });
+      box.replaceChildren(text, change);
+    } else {
+      text.textContent = note || (editing ? "Новый личный ключ" : "В этом браузере отметки не сохраняются — нужен личный ключ");
+      const form = document.createElement("form"), input = document.createElement("input"), save = document.createElement("button");
+      input.type = "password"; input.autocomplete = "off"; input.placeholder = "Личный ключ"; input.setAttribute("aria-label", "Личный ключ");
+      save.type = "submit"; save.className = "btn"; save.textContent = "Сохранить";
+      form.append(input, save);
+      form.addEventListener("submit", e => { e.preventDefault(); adopt(input.value.trim()); });
+      box.replaceChildren(text, form);
+    }
+    box.hidden = !role && !entry;
+  }
+  function adopt(k) {
+    if (!KEY_RE.test(k)) { note = "Это не личный ключ — проверь, что он скопирован целиком"; show(); return; }
+    ask("/r/who", k).then(r => r.ok ? r.json() : Promise.reject(r.status)).then(({reader}) => {
+      // Другой читатель в этом браузере: оценки, «прочитано» и галочки прежнего ключа не его
+      if (k !== key) {
+        try { Object.keys(localStorage).filter(n => /^[vrt]:/.test(n)).forEach(n => localStorage.removeItem(n)); }
+        catch (e) { /* хранилище закрыто — чистить нечего */ }
+      }
+      if (!put("reader:key", k) || !put("reader:role", known(reader))) { note = "Браузер не даёт сохранить ключ"; show(); return; }
+      // Адрес с #ключ не остаётся в истории и не уйдёт дальше, если ссылку скопируют
+      if (entry) history.replaceState(null, "", location.pathname + location.search);
+      location.reload();
+    }).catch(status => { note = status === 401 ? "Ключ не принят" : "Воркер не ответил — попробуй ещё раз"; show(); });
+  }
+  // Подпись — сразу по последнему ответу воркера, затем ключ проверяется заново: отозванный перестаёт работать
+  if (key) ask("/r/who", key).then(r => {
+    if (r.status === 401) { role = null; note = "Ключ больше не принимается — нужен новый"; put("reader:role", ""); show(); return; }
+    if (r.ok) return r.json().then(({reader}) => { if (known(reader) !== role) { role = known(reader); put("reader:role", role); show(); } });
+  }).catch(() => { /* сеть недоступна: остаётся последняя подтверждённая роль */ });
+  show();
+  window.reader = {can: () => Boolean(key && role), post: (path, extra) => ask(path, key, extra)};
+})();
+</script><script>
+(() => {
+  const R = window.reader, can = () => Boolean(R && R.can());
+  const root = document.documentElement, $ = id => document.getElementById(id);
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const deck = $("deck"), hdr = $("hdr"), sheet = $("sheet"), scrim = $("scrim"), shBody = $("sh-b"), tip = $("tip");
+  const slides = [...document.querySelectorAll(".slide")], stories = slides.filter(s => s.classList.contains("st"));
+  const N = stories.length, progs = [...document.querySelectorAll(".prog")];
+  const nn = i => String(i + 1).padStart(2, "0");
+  // Хранилище браузера бывает закрыто (частный режим, запрет для сайта): страница работает и без памяти о выборе
+  const recall = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+  const remember = (k, v) => { try { localStorage.setItem(k, v); } catch (e) { return; } };
+  const go = (el, now) => el.scrollIntoView({block: "start", behavior: now || reduced ? "instant" : "smooth"});
+  hdr.hidden = false;
+
+  // Прочитано: задержался на новости, открыл разбор или ушёл к первоисточнику. Круг закрашивается сразу,
+  // а в браузере отметка запоминается только после ответа воркера: при сбое сети следующий раз отправит её снова
+  const read = new Set(), verdict = $("verdict");
+  const count = () => { if (verdict && N) verdict.textContent = read.size === N ? "Сигнал принят" : "Прочитано " + read.size + " из " + N; };
+  function paint(i) {
+    read.add(i);
+    progs.forEach(p => p.children[i].classList.add("on"));
+    document.querySelectorAll('[data-toc="' + i + '"]').forEach(a => a.classList.add("read"));
+    if (read.size === N) progs.forEach(p => p.classList.add("done"));
+    count();
+  }
+  function markRead(s) {
+    const i = +s.dataset.i, id = s.dataset.entry;
+    if (!read.has(i)) paint(i);
+    if (!can() || !id || recall("r:" + id)) return;
+    // keepalive: клик по первоисточнику уводит со страницы, и без него браузер оборвал бы запрос
+    R.post("/r/read?e=" + encodeURIComponent(id), {keepalive: true})
+      .then(r => { if (r.ok) remember("r:" + id, "1"); })
+      .catch(() => { /* сеть недоступна: отметки в браузере нет, следующая задержка или клик отправит её снова */ });
+  }
+  stories.forEach(s => { if (s.dataset.entry && recall("r:" + s.dataset.entry)) paint(+s.dataset.i); });
+  count();
+
+  if ("IntersectionObserver" in window) {
+    root.classList.add("anim");
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add("in"); }), {threshold: .01, rootMargin: "0px 0px 12% 0px"});
+    slides.forEach(s => io.observe(s));
+  }
+
+  // Дата: один элемент поверх страницы. Пока обложка уезжает, он сжимается и встаёт в шапку — и остаётся там
+  const fly = $("fly"), ph = document.querySelector(".cover .ph"), anchor = $("hdr-date"), cover = $("cover");
+  let P0, T, sEnd, D;
+  function measure() {
+    const r = ph.getBoundingClientRect();
+    hdr.style.transform = "none";
+    const a = anchor.getBoundingClientRect();
+    P0 = {x: r.left, y: r.top + scrollY}; T = {x: a.left, y: a.top}; sEnd = a.height / r.height;
+    D = Math.max(240, cover.offsetHeight - a.bottom - 8);
+    root.style.setProperty("--date-w", Math.ceil(r.width * sEnd) + "px");
+  }
+  // Дата всегда во всю ширину колонки: кегль считается от ширины набранной строки
+  function fitDate() {
+    root.style.removeProperty("--date-size");
+    const box = ph.closest(".content").clientWidth - 30, w = ph.getBoundingClientRect().width, fs = parseFloat(getComputedStyle(ph).fontSize);
+    root.style.setProperty("--date-size", Math.min(fs * box / w, innerHeight * .36, 400) + "px");
+  }
+  function place() {
+    const y = scrollY, p = Math.min(1, Math.max(0, y / D)), e = reduced ? (p < 1 ? 0 : 1) : p * p * (3 - 2 * p);
+    const fromY = P0.y - y;
+    fly.style.transform = "translate(" + (P0.x + (T.x - P0.x) * e) + "px," + (fromY + (T.y - fromY) * e) + "px) scale(" + (1 + (sEnd - 1) * e) + ")";
+    hdr.style.transform = "translateY(" + (Math.min(1, Math.max(0, (p - .72) / .28)) - 1) * 102 + "%)";
+  }
+
+  // Текущий плакат — тот, что лежит на линии в 40% высоты экрана. Новость прочитана, если на ней задержались
+  // дольше DWELL_MS (решение владельца 2026-11-10: 6–7 секунд, секунды из макета мало — так считается и пролистанное)
+  const DWELL_MS = 6500;
+  let cur = -1, dwell = 0;
+  function arm() {
+    clearTimeout(dwell);
+    const s = slides[cur];
+    if (!s || !s.classList.contains("st") || document.hidden || sheet.classList.contains("open")) return;
+    dwell = setTimeout(() => { if (!document.hidden && !sheet.classList.contains("open")) markRead(s); }, DWELL_MS);
+  }
+  function setCur(i) {
+    if (i === cur) return;
+    cur = i; const s = slides[i], st = s.classList.contains("st");
+    $("hdr-sec").textContent = s.dataset.label || ""; $("hdr-n").textContent = st ? nn(+s.dataset.i) + " / " + N : "";
+    arm();
+  }
+  function onScroll() {
+    place();
+    const line = innerHeight * .4;
+    for (let i = 0; i < slides.length; i++) { const r = slides[i].getBoundingClientRect(); if (r.top <= line && r.bottom > line) { setCur(i); break; } }
+  }
+  function refit() { fitDate(); measure(); onScroll(); }
+  // Под открытым листом страница стоит на месте: на касаниях html не запирается (см. page.html), а прокрутить её
+  // можно и без жеста — тап по строке состояния iPhone возвращает страницу к началу. Чужую прокрутку откатываем
+  // Держим не число пикселей, а новость: поворот телефона или смена ширины окна перевёрстывают страницу,
+  // и прежняя позиция пришлась бы на другую новость
+  let tick = false, held = null, heldEl = null, heldOff = 0;
+  const hold = el => { heldEl = el; heldOff = el.getBoundingClientRect().top; held = scrollY; };
+  addEventListener("scroll", () => {
+    if (held !== null && Math.abs(scrollY - held) > 1) { scrollTo({top: held, behavior: "instant"}); return; }
+    hideTip(); if (tick) return; tick = true; requestAnimationFrame(() => { tick = false; onScroll(); });
+  }, {passive: true});
+  addEventListener("resize", () => {
+    refit();
+    if (held !== null) { held = scrollY + heldEl.getBoundingClientRect().top - heldOff; scrollTo({top: held, behavior: "instant"}); }
+  });
+  document.addEventListener("visibilitychange", arm);
+  root.classList.add("fly"); refit();
+  document.fonts.ready.then(refit);
+  document.fonts.addEventListener("loadingdone", refit);
+
+  // Лист снизу. Пока он открыт, страница под ним не листается: прокрутка заперта и жесты мимо текста листа гасятся
+  let opener = null, hiddenHl = null, sheetStory = null;
+  function showSheet(kicker, title, nodes, from) {
+    const t = $("sh-t");
+    $("sh-k").textContent = kicker; if (from) t.innerHTML = from.innerHTML; else t.textContent = title;
+    t.style.cssText = ""; shBody.replaceChildren(...nodes); shBody.scrollTop = 0;
+    opener = document.activeElement;
+    sheet.hidden = scrim.hidden = false; root.classList.add("locked"); deck.inert = true; hold(slides[cur] || deck);
+    if (from && !reduced) {
+      // Заголовок в листе — точная уменьшенная копия заголовка плаката (те же переносы), поэтому перелёт заканчивается без скачка
+      const r = from.getBoundingClientRect(), cs = getComputedStyle(from), fs = parseFloat(cs.fontSize), k = Math.min(.72, 30 / fs);
+      t.style.cssText = "font-size:" + fs * k + "px;line-height:" + parseFloat(cs.lineHeight) / fs + ";max-width:" + Math.ceil(r.width * k) + "px;opacity:0";
+      sheet.style.transition = "none"; sheet.style.transform = "none";
+      const tr = t.getBoundingClientRect(), css = getComputedStyle(root);
+      sheet.style.transform = ""; void sheet.offsetHeight; sheet.style.transition = "";
+      const c = from.cloneNode(true);
+      c.className = "hl flight";
+      c.style.cssText = "left:" + r.left + "px;top:" + r.top + "px;width:" + r.width + "px;font-size:" + fs + "px";
+      document.body.append(c);
+      from.style.visibility = "hidden"; hiddenHl = from;
+      c.animate([{transform: "none", color: css.getPropertyValue("--ink")}, {transform: "translate(" + (tr.left - r.left) + "px," + (tr.top - r.top) + "px) scale(" + k + ")", color: css.getPropertyValue("--paper")}],
+        {duration: 520, easing: "cubic-bezier(.22,1,.36,1)", fill: "forwards"}).onfinish = () => { t.style.opacity = 1; c.remove(); };
+    }
+    void sheet.offsetHeight; void scrim.offsetHeight;
+    sheet.classList.add("open"); scrim.classList.add("open");
+    sheet.focus({preventScroll: true});
+    clearTimeout(dwell);
+  }
+  function closeSheet() {
+    sheet.style.transition = ""; sheet.style.transform = "";
+    sheet.classList.remove("open"); scrim.classList.remove("open"); root.classList.remove("locked"); deck.inert = false; held = null;
+    if (hiddenHl) { hiddenHl.style.visibility = ""; hiddenHl = null; }
+    sheetStory = null;
+    setTimeout(() => { if (!sheet.classList.contains("open")) sheet.hidden = scrim.hidden = true; }, 480);
+    if (opener) opener.focus({preventScroll: true});
+    arm();
+  }
+  // Текст разбора лежит в разметке новости: лист показывает его копию. Разборы можно читать подряд, не закрывая лист
+  const withMore = stories.filter(s => s.querySelector(".more-body"));
+  const kicker = s => "Разбор · " + nn(+s.dataset.i) + " / " + N;
+  function breakdown(s) {
+    const at = withMore.indexOf(s), prev = withMore[at - 1], next = withMore[at + 1];
+    const nav = document.createElement("div");
+    nav.className = "sh-nav";
+    nav.innerHTML = (prev ? '<button type="button" class="lnk" data-more-go="' + prev.dataset.i + '">← Предыдущий</button>' : "<span></span>")
+      + (next ? '<button type="button" class="btn" data-more-go="' + next.dataset.i + '">Следующий разбор →</button>' : '<button type="button" class="btn" data-close>Закрыть</button>');
+    return [...s.querySelector(".more-body").cloneNode(true).childNodes, nav];
+  }
+  function openBreakdown(s) {
+    showSheet(kicker(s), "", breakdown(s), s.querySelector(".hl"));
+    sheetStory = s; markRead(s);
+  }
+  function swapBreakdown(s) {
+    if (hiddenHl) { hiddenHl.style.visibility = ""; hiddenHl = null; }
+    const t = $("sh-t");
+    t.style.cssText = ""; t.innerHTML = s.querySelector(".hl").innerHTML;
+    $("sh-k").textContent = kicker(s);
+    shBody.replaceChildren(...breakdown(s)); shBody.scrollTop = 0;
+    go(s, true); hold(s); onScroll(); clearTimeout(dwell);
+    sheetStory = s; markRead(s);
+    if (!reduced) shBody.animate([{opacity: 0, transform: "translateY(10px)"}, {opacity: 1, transform: "none"}], {duration: 260, easing: "ease-out"});
+  }
+  // Содержание из любого места: нажатие на верхнюю строку
+  function openToc() {
+    const toc = document.querySelector("#index .toc");
+    if (toc) showSheet(N ? "Прочитано " + read.size + " из " + N : "", "Содержание", [toc.cloneNode(true)]);
+  }
+  function openThread(tag) {
+    const box = tag.closest(".thread"), s = tag.closest(".st"), list = box.querySelector(".tl").cloneNode(true), name = box.querySelector("b");
+    const title = s.querySelector(".hl").cloneNode(true);
+    title.querySelector(".idx")?.remove();
+    const now = document.createElement("li"), time = document.createElement("time"), text = document.createElement("span");
+    now.className = "now"; time.textContent = "сегодня"; text.textContent = title.textContent;
+    now.append(time, text); list.append(now);
+    const nodes = [list];
+    if (tag.href) { const all = document.createElement("a"); all.className = "lnk"; all.href = tag.href; all.textContent = "Вся хронология →"; nodes.push(all); }
+    showSheet(tag.textContent.replace(" →", ""), name ? name.textContent : "Сюжет", nodes);
+  }
+  function showTip(el) {
+    const b = document.createElement("b");
+    b.textContent = el.textContent;
+    tip.replaceChildren(b, el.dataset.def); tip.hidden = false;
+    const r = el.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
+    tip.style.left = Math.max(12, Math.min(innerWidth - w - 12, r.left + r.width / 2 - w / 2)) + "px";
+    tip.style.top = (r.bottom + 10 + h < innerHeight ? r.bottom + 10 : r.top - h - 10) + "px";
+  }
+  function hideTip() { tip.hidden = true; }
+
+  // Смахивание листа вниз закрывает его; текст разбора при этом прокручивается как обычно
+  let drag = null;
+  sheet.addEventListener("touchstart", e => { drag = {y: e.touches[0].clientY, at: Date.now(), on: false, dy: 0}; }, {passive: true});
+  sheet.addEventListener("touchmove", e => {
+    if (!drag) return;
+    const dy = e.touches[0].clientY - drag.y, scrolls = shBody.contains(e.target) && shBody.scrollHeight > shBody.clientHeight;
+    if (!drag.on) {
+      if (scrolls && !(shBody.scrollTop <= 0 && dy > 0)) return;
+      if (dy <= 0) { e.preventDefault(); return; }
+      drag.on = true; sheet.style.transition = "none";
+    }
+    e.preventDefault(); drag.dy = dy;
+    sheet.style.transform = "translateY(" + Math.max(0, dy) + "px)";
+  }, {passive: false});
+  sheet.addEventListener("touchend", () => {
+    const d = drag; drag = null;
+    if (!d || !d.on) return;
+    if (d.dy > 110 || d.dy / (Date.now() - d.at) > .6) closeSheet(); else { sheet.style.transition = ""; sheet.style.transform = ""; }
+  });
+  scrim.addEventListener("touchmove", e => e.preventDefault(), {passive: false});
+  scrim.addEventListener("click", closeSheet);
+  document.addEventListener("click", e => { if (!e.target.closest(".tw,.tt")) hideTip(); }, true);
+
+  // Оценка уходит в воркер; палец закрашивается сразу, а при сбое возвращается прежний выбор
+  const setVote = (box, v) => box.querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
+  document.querySelectorAll(".vote").forEach(box => { const saved = recall("v:" + box.dataset.id); if (saved) setVote(box, saved); });
+  function vote(b) {
+    const box = b.closest(".vote"), id = box.dataset.id, v = b.dataset.v, was = box.querySelector(".on")?.dataset.v || "";
+    if (v === was || !can()) return;
+    box.classList.remove("err"); setVote(box, v);
+    if (v === "up" && !reduced) {
+      const el = document.createElement("span");
+      el.className = "burst";
+      el.innerHTML = "<b></b><b></b>" + Array.from({length: 8}, (x, k) => '<i style="--a:' + k * 45 + 'deg"></i>').join("");
+      b.append(el); setTimeout(() => el.remove(), 800);
+      // Вибрации нет на iPhone и в части встроенных окон — эффект остаётся только зрительным
+      if (navigator.vibrate) navigator.vibrate(12);
+    }
+    R.post("/r/vote?e=" + encodeURIComponent(id) + "&v=" + v)
+      .then(r => { if (!r.ok) throw new Error(r.status); remember("v:" + id, v); })
+      .catch(() => { setVote(box, was); box.classList.add("err"); });
+  }
+
+  document.addEventListener("click", e => {
+    const t = e.target.closest("button,a,summary"); if (!t) return;
+    const s = t.closest(".st") || sheetStory;
+    if (t.classList.contains("tw")) { e.preventDefault(); showTip(t); }
+    else if (t.matches(".more>summary")) { e.preventDefault(); openBreakdown(t.closest(".st")); }
+    else if (t.dataset.moreGo) swapBreakdown(stories[+t.dataset.moreGo]);
+    else if ("close" in t.dataset || t.id === "sh-x") closeSheet();
+    else if (t.matches(".thread .tag") && t.parentElement.querySelector(".tl")) { e.preventDefault(); openThread(t); }
+    else if (t.id === "hdr-btn") openToc();
+    else if (t.matches(".vote button")) vote(t);
+    else if (t.matches('a[href^="#"]')) {
+      const to = $(decodeURIComponent(t.getAttribute("href").slice(1)));
+      if (!to) return;
+      e.preventDefault();
+      if (sheet.classList.contains("open")) closeSheet();
+      go(to); history.replaceState(null, "", t.getAttribute("href"));
+    }
+    else if (s && t.matches('a[href^="http"]')) markRead(s);
+  });
+  // Esc закрывает лист; j и k листают плакаты, o открывает разбор текущей новости
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") hideTip();
+    if (sheet.classList.contains("open")) { if (e.key === "Escape") closeSheet(); return; }
+    if (e.metaKey || e.ctrlKey || e.altKey || /input|textarea/i.test(e.target.tagName)) return;
+    const step = e.key === "j" ? 1 : e.key === "k" ? -1 : 0;
+    // Скрытый слайд («Утром ты пропустил» не владельцу) прокрутить нельзя: на нём j/k застряли бы
+    let to = cur + step;
+    while (step && slides[to]?.hidden) to += step;
+    // За краем — к началу текущего слайда: k на прокрученной обложке возвращает наверх
+    if (step) go(slides[to] || slides[Math.max(cur, 0)]);
+    else if (e.key === "o" && slides[cur]?.querySelector(".more-body")) openBreakdown(slides[cur]);
+  });
+})();
+</script>
+</body>
+</html>

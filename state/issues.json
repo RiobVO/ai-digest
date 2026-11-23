@@ -1,6 +1,62 @@
 [
  {
   "date": "2026-11-23",
+  "slot": "evening",
+  "headline": "Взломы ИИ-провайдеров и MSP-инструментов, Astra и Anthropic",
+  "page": "2026-11-23-evening.html",
+  "entries": [
+   {
+    "id": "20261123-6",
+    "title": "OpenRouter отключил трёх провайдеров: месяцами крали промпты",
+    "section": "security",
+    "source": "xakep",
+    "url": "https://xakep.ru/2026/11/23/openrouter-leak/",
+    "story": "s400"
+   },
+   {
+    "id": "20261123-7",
+    "title": "Через ScreenConnect хакеры захватывают ПК техников MSP без предупреждения",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/hackers-exploit-critical-screenconnect.html",
+    "story": "s405"
+   },
+   {
+    "id": "20261123-8",
+    "title": "GPT-6.2 Astra сама доказала теорему, с которой другие ИИ не справились",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/gpt-6-2-astra-solved-a-math-theorem-no-other-ai-could-crack-then-invented-its-own-proof-strategy/",
+    "story": "s382"
+   },
+   {
+    "id": "20261123-9",
+    "title": "CISA: дыру в Cisco Expressway уже используют в реальных атаках",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/cisa-flags-critical-cisco-expressway-rce-flaw-as-actively-exploited/",
+    "story": "s390"
+   },
+   {
+    "id": "20261123-10",
+    "title": "Минфин США не закрыл Дженсену Хуангу путь обратно в Nvidia",
+    "section": "business",
+    "source": "scmp_tech",
+    "url": "https://www.scmp.com/tech/tech-war/article/3375427/us-treasury-secretary-leaves-door-open-jensen-huangs-return-nvidia",
+    "story": "s406"
+   },
+   {
+    "id": "20261123-11",
+    "title": "Акции Anthropic после рекордного IPO просели, а потом открылись выше",
+    "section": "business",
+    "source": "bloomberg_tech",
+    "url": "https://www.bloomberg.com/news/videos/2026-11-23/the-pulse-with-francine-lacqua-11-23-2026-video",
+    "story": "s282"
+   }
+  ]
+ },
+ {
+  "date": "2026-11-23",
   "slot": "morning",
   "headline": "Лимиты на мощные модели, иск к OpenAI, дело Nvidia и агенты в git",
   "page": "2026-11-23.html",
