@@ -30,14 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-22T22:18:12.478065+00:00",
-   "keys": [
-    "openai.com/index/perplexity-and-intelligence",
-    "title:openai shares its models perplexity or how well they predict data and urges pacing limits based on such metrics citing a possible 2027 avalanche of ai gains jakub pachocki openai"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-11-23T01:18:12.305672+00:00",
    "keys": [
     "oreilly.com/radar/what-happened-to-silicon-valley",
@@ -162,18 +154,26 @@
   {
    "at": "2026-11-23T21:18:12.551704+00:00",
    "keys": [
-    "title:dario is hyping the dangers so oss models are illegal and he stays in control",
-    "twitter.com/ylecun/status/2124550037912920090"
-   ],
-   "strength": 5
-  },
-  {
-   "at": "2026-11-23T21:18:12.551704+00:00",
-   "keys": [
     "arm.jonpalmisc.com",
     "title:per arm s request this site will be discontinued on 4 december 2026"
    ],
    "strength": 5
+  },
+  {
+   "at": "2026-11-23T22:18:13.635571+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMihgFBVV95cUxOMXp1STlpUER4eTFwVkNSOTJUOWpscmdUdW9wSWtaSkhWZlM2b3VJZjZtUjVGaVdJOThraXZfVjhfcjlBQXpDTGtOZUpLaWM3bGFVNEY3MVJuazdkNlU2bVNsMnBTaWhiSkNmVjA5d3dEYmsyLUtmd2ZXdUJkRUR6WHc5LVplZw?oc=5",
+    "title:crowdstrike needed an ai boost it s spending 44 billion on it"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-23T22:18:13.635571+00:00",
+   "keys": [
+    "title:dario is hyping the dangers so oss models are illegal and he stays in control",
+    "twitter.com/ylecun/status/2124550037912920090"
+   ],
+   "strength": 7
   }
  ],
  "undated": {
