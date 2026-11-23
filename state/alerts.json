@@ -112,6 +112,46 @@
     "z.ai/blog/glm-5.4"
    ],
    "strength": 5
+  },
+  {
+   "at": "2026-11-23T19:18:11.185087+00:00",
+   "keys": [
+    "bloomberg.com/news/articles/2026-11-23/zscaler-s-chaudhrys-to-reap-14-5-billion-from-crowdstrike-deal",
+    "title:zscaler s chaudhrys to reap 14 5 billion from crowdstrike deal"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-23T19:18:11.185087+00:00",
+   "keys": [
+    "therecord.media/crowdstrike-zscaler",
+    "title:crowdstrike to purchase zscaler for 43 9 billion"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-23T19:18:11.185087+00:00",
+   "keys": [
+    "cnbc.com/2026/11/23/nvidia-jensen-huang-ceo.html",
+    "title:nvidia reinstates jensen huang as ceo"
+   ],
+   "strength": 12
+  },
+  {
+   "at": "2026-11-23T19:18:11.185087+00:00",
+   "keys": [
+    "ladybird.org/posts/alpha",
+    "title:ladybird is now in alpha"
+   ],
+   "strength": 7
+  },
+  {
+   "at": "2026-11-23T19:18:11.185087+00:00",
+   "keys": [
+    "deepmind.google/blog/finding-faster-quantum-algorithms-with-agents-and-formal-verification",
+    "title:finding faster quantum algorithms with agents and formal verification"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
