@@ -152,14 +152,6 @@
    "strength": 9
   },
   {
-   "at": "2026-11-23T21:18:12.551704+00:00",
-   "keys": [
-    "arm.jonpalmisc.com",
-    "title:per arm s request this site will be discontinued on 4 december 2026"
-   ],
-   "strength": 5
-  },
-  {
    "at": "2026-11-23T22:18:13.635571+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMihgFBVV95cUxOMXp1STlpUER4eTFwVkNSOTJUOWpscmdUdW9wSWtaSkhWZlM2b3VJZjZtUjVGaVdJOThraXZfVjhfcjlBQXpDTGtOZUpLaWM3bGFVNEY3MVJuazdkNlU2bVNsMnBTaWhiSkNmVjA5d3dEYmsyLUtmd2ZXdUJkRUR6WHc5LVplZw?oc=5",
@@ -174,6 +166,38 @@
     "twitter.com/ylecun/status/2124550037912920090"
    ],
    "strength": 7
+  },
+  {
+   "at": "2026-11-23T23:18:11.049135+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMimwFBVV95cUxNMGlQZEhnQWtTdXo0akRIWlV3UTJwNjYxbXZ4Q2pocFhlRFJkeXlsZ2p6S2J1NkZVTDVrcDd5MW1yamhyakZyYkhkaVk4cmdhQU5FWXNLLW1YMUM2NlhzWngyWlFKT0kzYmdzZ1M3THp1TS1ya1FSQ0VIVmNCNFp4RlNwTkFQMzZCT2hxTERmU2pDa0l0MDdsNTNHcw?oc=5",
+    "title:how the crowdstrike zscaler deal will secure autonomous ai"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-23T23:18:11.049135+00:00",
+   "keys": [
+    "arm.jonpalmisc.com",
+    "title:per arm s request this site will be discontinued on 4 december 2026"
+   ],
+   "strength": 7
+  },
+  {
+   "at": "2026-11-23T23:18:11.049135+00:00",
+   "keys": [
+    "github.com/glushchenko/fsnotes/discussions/2056",
+    "title:apple removed my open source app from eu app stores after 9 years"
+   ],
+   "strength": 4
+  },
+  {
+   "at": "2026-11-23T23:18:11.049135+00:00",
+   "keys": [
+    "openai.com/index/introducing-shirudo",
+    "title:openai and cisco introduce shirudo"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
