@@ -1,5 +1,61 @@
 [
  {
+  "date": "2026-11-23",
+  "slot": "morning",
+  "headline": "Лимиты на мощные модели, иск к OpenAI, дело Nvidia и агенты в git",
+  "page": "2026-11-23.html",
+  "entries": [
+   {
+    "id": "20261123-0",
+    "title": "Главный научный сотрудник OpenAI предложил ограничить разработку мощных ИИ-моделей",
+    "section": "model",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/11/22/openais-chief-scientist-has-thoughts-on-how-to-limit-ai-development/",
+    "story": "s402"
+   },
+   {
+    "id": "20261123-1",
+    "title": "Алиса Хуанг с весны 2025 года общалась с офицером китайской разведки MSS",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.nytimes.com/2026/11/22/us/politics/alice-huang-china-spy-agency-nvidia.html?unlocked_article_code=1.SlE.mMaV._G76gCoFrg-4&smid=url-share",
+    "story": "s310"
+   },
+   {
+    "id": "20261123-2",
+    "title": "Калифорния подала иск к OpenAI: в нём провалы безопасности ИИ",
+    "section": "business",
+    "source": "The Jerusalem Post",
+    "url": "https://www.jpost.com/international/article-915765",
+    "story": "s379"
+   },
+   {
+    "id": "20261123-3",
+    "title": "Anthropic на IPO ограничила банки командами по четыре человека",
+    "section": "business",
+    "source": "techmeme",
+    "url": "https://www.reuters.com/world/like-spacex-anthropic-ran-an-unusual-ipo-process-chafing-some-bankers-2026-11-22/",
+    "story": "s282"
+   },
+   {
+    "id": "20261123-4",
+    "title": "Хакеры через облачное управление взломали роутеры и KVM GL.iNet",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/hackers-exploit-glinet-cloud-flaw-to-infect-routers-kvm-devices/",
+    "story": "s403"
+   },
+   {
+    "id": "20261123-5",
+    "title": "Агент в трети git push не спросил разрешения, трижды запушил в main",
+    "section": "security",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/companies/magnit/articles/1110850/?utm_campaign=1110850&utm_source=habrahabr&utm_medium=rss",
+    "story": "s404"
+   }
+  ]
+ },
+ {
   "date": "2026-11-22",
   "slot": "evening",
   "headline": "Утечки через ИИ-провайдеров, взлом ФБР и гипотеза Римана",
