@@ -30,22 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-23T11:18:11.330927+00:00",
-   "keys": [
-    "bloomberg.com/news/videos/2026-11-23/crowdstrike-to-acquire-zscaler-in-44-billion-deal-video",
-    "title:crowdstrike to acquire zscaler in 44 billion cybersecurity deal"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-23T12:18:11.625999+00:00",
-   "keys": [
-    "securityweek.com/crowdstrike-to-acquire-zscaler-in-43-9-billion-deal",
-    "title:crowdstrike to acquire zscaler in 43 9 billion deal"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-23T13:18:11.712257+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMinwFBVV95cUxPWk9vLVo5TU5xTDBsVDE3R2IxMXlFVVJBT0JPYzNHNm8yZ29Ed2NoMWpSczh6NUpnODJZM1BaWGxqUHBOc0ladTI0MGNUYmZDaTM5cmF4OWZVY05DWXRidi1MZHZFdUtFZmJWVURVQmRjcnhreFlXOWRMcGhfUXhMakdqdWlLYVhUenFILU5QOFhoeFQwc2tUYm53SnZ4aTQ?oc=5",
