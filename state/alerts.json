@@ -21,14 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-23T21:18:12.551704+00:00",
-   "keys": [
-    "ladybird.org/posts/alpha",
-    "title:ladybird is now in alpha"
-   ],
-   "strength": 9
-  },
-  {
    "at": "2026-11-23T22:18:13.635571+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMihgFBVV95cUxOMXp1STlpUER4eTFwVkNSOTJUOWpscmdUdW9wSWtaSkhWZlM2b3VJZjZtUjVGaVdJOThraXZfVjhfcjlBQXpDTGtOZUpLaWM3bGFVNEY3MVJuazdkNlU2bVNsMnBTaWhiSkNmVjA5d3dEYmsyLUtmd2ZXdUJkRUR6WHc5LVplZw?oc=5",
@@ -167,6 +159,14 @@
     "title:how gemini is changing the game for golden state s organization and fans"
    ],
    "strength": 1
+  },
+  {
+   "at": "2026-11-24T21:18:15.287665+00:00",
+   "keys": [
+    "title:tidal bans ai generated music",
+    "variety.com/2026/music/news/tidal-bans-ai-generated-music-1236956924"
+   ],
+   "strength": 3
   }
  ],
  "undated": {
