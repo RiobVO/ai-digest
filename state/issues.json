@@ -1,5 +1,87 @@
 [
  {
+  "date": "2026-11-24",
+  "slot": "morning",
+  "headline": "Хуанг вернулся в Nvidia, GPT-6.2 Sol в ChatGPT, Claude Ship и взломы",
+  "page": "2026-11-24.html",
+  "entries": [
+   {
+    "id": "20261124-0",
+    "title": "Совет Nvidia вернул Дженсена Хуанга в CEO после отставки",
+    "section": "business",
+    "source": "techcrunch",
+    "url": "https://techcrunch.com/2026/11/23/nvidia-reverses-course-and-brings-jensen-huang-back-as-ceo/",
+    "story": "s406"
+   },
+   {
+    "id": "20261124-1",
+    "title": "В ChatGPT в обычном чате по умолчанию теперь GPT-6.2 Sol, катят по всему миру",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/openai-updates-chatgpt-to-handle-complex-everyday-questions-web-searches-and-images-more-reliably/",
+    "story": "s382"
+   },
+   {
+    "id": "20261124-2",
+    "title": "Claude теперь сам ревьюит, правит и апрувит пулл-реквесты в GitHub",
+    "section": "dev",
+    "source": "verge",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/1040134/anthropic-claude-ship-ai-pull-requests",
+    "story": "s407"
+   },
+   {
+    "id": "20261124-3",
+    "title": "Через дыру в Azure API Management крали API-ключи, в том числе у норвежской энергетики",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/microsoft-azure-flaw-exploited-to-steal-customers-api-credentials/",
+    "story": "s408"
+   },
+   {
+    "id": "20261124-4",
+    "title": "Орегон и Вирджиния подали в суд на SpaceX из-за сексуальных картинок от Grok",
+    "section": "business",
+    "source": "verge",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/1040255/x-grok-ai-deepfakes-oregon-virginia-lawsuit",
+    "story": "s409"
+   },
+   {
+    "id": "20261124-5",
+    "title": "Хакеры взломали внутреннюю сеть южнокорейской энергокомпании KEPCO",
+    "section": "security",
+    "source": "bleepingcomputer",
+    "url": "https://www.bleepingcomputer.com/news/security/south-koreas-power-giant-kepco-confirms-data-breach-impacting-15-million/",
+    "story": "s410"
+   },
+   {
+    "id": "20261124-6",
+    "title": "Запусти claude doctor: теперь он проверяет связь с API и показывает код ответа",
+    "section": "tips",
+    "source": "gh_claude_code",
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.331",
+    "story": "",
+    "summary": "В терминале в папке проекта запусти команду и посмотри новый блок про API: доступен ли он и что вернул.",
+    "why": "Сразу видно, достучался ли Claude Code до API, с каким HTTP-статусом или текстом ошибки.",
+    "copy": "claude doctor",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Открой терминал в папке проекта.",
+     "Запусти claude doctor.",
+     "Посмотри новый блок про API: доступен ли он и какой HTTP-статус или ошибку вернул."
+    ]
+   },
+   {
+    "id": "20261124-7",
+    "title": "Аудит своего кода показал: сервер мог тихо подменить постквантовый ключ",
+    "section": "voices",
+    "source": "habr_infosec",
+    "url": "https://habr.com/ru/articles/1111408/?utm_campaign=1111408&utm_source=habrahabr&utm_medium=rss",
+    "story": ""
+   }
+  ]
+ },
+ {
   "date": "2026-11-23",
   "slot": "evening",
   "headline": "Взломы ИИ-провайдеров и MSP-инструментов, Astra и Anthropic",
