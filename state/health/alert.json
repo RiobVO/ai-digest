@@ -1,6 +1,4 @@
 [
-{"at": "2026-10-25T07:18:23Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
-{"at": "2026-10-25T08:18:16Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [{"at": "2026-10-25T08:18:15Z", "call": "triage", "asked": "gemini-3.5-flash-lite", "served": "gemini-3.5-flash-lite", "status": 200, "seconds": 0.6, "thinking": 0, "error": ""}], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-10-25T09:18:21Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-10-25T10:21:53Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-10-25T11:18:17Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [{"at": "2026-10-25T11:18:15Z", "call": "triage", "asked": "gemini-3.5-flash-lite", "served": "gemini-3.5-flash-lite", "status": 200, "seconds": 2.3, "thinking": 0, "error": ""}], "failed": {}, "sources": {}, "events": {}},
@@ -713,5 +711,6 @@
 {"at": "2026-11-24T04:18:25Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [{"at": "2026-11-24T04:18:24Z", "call": "triage", "asked": "gemini-3.5-flash-lite", "served": "gemini-3.5-flash-lite", "status": 200, "seconds": 1.0, "thinking": 0, "error": ""}], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-11-24T05:18:22Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [{"at": "2026-11-24T05:18:21Z", "call": "triage", "asked": "gemini-3.5-flash-lite", "served": "gemini-3.5-flash-lite", "status": 200, "seconds": 0.9, "thinking": 0, "error": ""}], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-11-24T06:18:17Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
-{"at": "2026-11-24T07:18:16Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}}
+{"at": "2026-11-24T07:18:16Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
+{"at": "2026-11-24T08:19:06Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [{"at": "2026-11-24T08:19:05Z", "call": "triage", "asked": "gemini-3.5-flash-lite", "served": "gemini-3.5-flash-lite", "status": 200, "seconds": 0.8, "thinking": 0, "error": ""}], "failed": {"the_decoder": "ConnectTimeout", "the_record": "HTTPStatusError"}, "sources": {}, "events": {}}
 ]
