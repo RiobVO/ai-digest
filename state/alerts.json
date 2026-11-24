@@ -30,22 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-23T15:18:13.408556+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMiiwFBVV95cUxQT0N6eHducGhQY2ZyMTlRNjZOZHhoSnp0aGdkVTJsU2t0TnVhTGwtU0RVTVFFbXh1T0E1Z3BIWXJBdXgzbG1hQ2k0Znl2RFJLOUdLUGh2RjJSVHBidkdycXFzRDR3dzlyd0hXcHE3RmNSYnNRaEdQNWIyMHpYZzU0R0VTM0JKcVVpQTVz0gGQAUFVX3lxTE9rVEo0OGV5SWVvM3VzRHUtUEZKUkZVNjlxcWdyTGZKZDVlZ1M5QTNhbWszQ0hxOGhTXzh1MXVycXI0WVBoVHpBUHNhN0h2YXBYVVk2WFBSdFBXUWdPSS1qNUc1dk5obHpjSDNZdUFfamM1bFA3RV9fdm5jM1FoUFlGLVVOQjN4WjR3ZXNUR0M0MQ?oc=5",
-    "title:crowdstrike to buy zscaler in 44 billion deal as ai supercharges cyberattacks"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-23T15:18:13.408556+00:00",
-   "keys": [
-    "title:z ai launches glm 5 4 a 750b parameter flagship model built on its loop transformer architecture reaching intelligence levels comparable to 2t 3t models z ai",
-    "z.ai/blog/glm-5.4"
-   ],
-   "strength": 5
-  },
-  {
    "at": "2026-11-23T19:18:11.185087+00:00",
    "keys": [
     "bloomberg.com/news/articles/2026-11-23/zscaler-s-chaudhrys-to-reap-14-5-billion-from-crowdstrike-deal",
@@ -226,12 +210,20 @@
    "strength": 4
   },
   {
-   "at": "2026-11-24T15:18:10.433884+00:00",
+   "at": "2026-11-24T16:18:14.591099+00:00",
    "keys": [
     "michaelharley.net/posts/2026/11/01/llm-agents-work-for-their-parent-companies-not-for-you",
     "title:llm agents work for their parent companies not for you"
    ],
-   "strength": 3
+   "strength": 5
+  },
+  {
+   "at": "2026-11-24T16:18:14.591099+00:00",
+   "keys": [
+    "blog.google/products-and-platforms/products/gemini/gemini-golden-state",
+    "title:how gemini is changing the game for golden state s organization and fans"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
