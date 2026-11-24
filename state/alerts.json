@@ -21,38 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-23T23:18:11.049135+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMimwFBVV95cUxNMGlQZEhnQWtTdXo0akRIWlV3UTJwNjYxbXZ4Q2pocFhlRFJkeXlsZ2p6S2J1NkZVTDVrcDd5MW1yamhyakZyYkhkaVk4cmdhQU5FWXNLLW1YMUM2NlhzWngyWlFKT0kzYmdzZ1M3THp1TS1ya1FSQ0VIVmNCNFp4RlNwTkFQMzZCT2hxTERmU2pDa0l0MDdsNTNHcw?oc=5",
-    "title:how the crowdstrike zscaler deal will secure autonomous ai"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-23T23:18:11.049135+00:00",
-   "keys": [
-    "arm.jonpalmisc.com",
-    "title:per arm s request this site will be discontinued on 4 december 2026"
-   ],
-   "strength": 7
-  },
-  {
-   "at": "2026-11-23T23:18:11.049135+00:00",
-   "keys": [
-    "github.com/glushchenko/fsnotes/discussions/2056",
-    "title:apple removed my open source app from eu app stores after 9 years"
-   ],
-   "strength": 4
-  },
-  {
-   "at": "2026-11-23T23:18:11.049135+00:00",
-   "keys": [
-    "openai.com/index/introducing-shirudo",
-    "title:openai and cisco introduce shirudo"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-24T00:18:13.112933+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMikAFBVV95cUxPWEl5VnF5ODZFMmFZaXJZdjd6RFFNM0lsQWkwVVZFV1FSdTg0d3piT012Q0dfaFcwUWpQWEJ1Vjg5Qk81RkV3VW1kNHFOZ3BmZERnX25RSHZxS1RGSnB2cGJaaS1DWU1EN1d2eVR4NTNZQm56TjVoVUNsOFY1ZUc5NWVQUFY2ZjloZmE0MnFYVi0?oc=5",
@@ -149,6 +117,16 @@
    "keys": [
     "title:tidal bans ai generated music",
     "variety.com/2026/music/news/tidal-bans-ai-generated-music-1236956924"
+   ],
+   "strength": 3
+  },
+  {
+   "at": "2026-11-24T23:18:12.856358+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMi9wFBVV95cUxQdTZvdDU1ZUY0VlpxX2ZYM0hNMW16Q2dhTklvOUkyWmRaRXFkdUxzaFVRUkF3U0J4bDJMYzZjZTBTNkp3cmhuZ0RPNll3bkFwZjQyTE9RQVBOdWFzRW0tUVEtT3dtWE9mTi03OE5KRk0tUzFOMEVETlMybWdnakhGTHN1UUpzNU1zSFV1bkJGWEFRLVA1dDkzYXpmYmp4RjhwNS1SWkdxZHhwTFBxV05EZThBbkxOTUR2T29mbWhNeHhTMHViM251OU5HMDJGamczcEVLNVFuUm1SREFJUlo4VW5hY0VXdUxYNWlFeUdvQ0d3X0RfaEtR?oc=5",
+    "news.google.com/rss/articles/CBMikwFBVV95cUxQbEdHU1ZWMjgzb1lYODBaTEJpdWNXUXVpUmlDTmVxSTBjUVlOYlBBWmZXSzVrMWR3SE9NYTg5cVNuemZFZHlJdU1PdGdybnh1NUFQVTVINkJUUk1Sb0hmNnI5YS1LQTl5SUJibWpWekVQU1BqR3NuQWhVeHZlUVJ3bDEtRmZZNmVHWVFFRTA2RUhFcTQ?oc=5",
+    "news.google.com/rss/articles/CBMilAFBVV95cUxPR2RWSXVSMW5kSjJNdVlEcEppLWVKdnA3RzNCM2k3d1ZzTi0zYlRidlVScTh0ZnlPTFhhd2lWX2JUT0pjdEJSR3Q3bXQxMWlkOXBYNzlKcWVPTnFtZ0RSdXBDUVlUUVRKcHUwVjZzZzMxbEstcE5VM3o4S09rS2dPbDhnSDJpV0FkSU9xb21IMVpsdG1x0gGcAUFVX3lxTE84Tk1TUWZaSnNMUGlaek12aXRwXzZhc1ZXRTJWQ1NrYTBhVUNtSmF3RWdqTHJ0X1lyQlBISkt5akM2NHhxOERuWWlZRHkyY1NfUVFnaDdHMnFrcDlHcXh6eDNXdUtSR3NzMFc2bFpiRDhLRE1JVUg4UEs3UG12NjNybV9YdkZLS2U2TDk5MklhR200V2loN01vNE12NA?oc=5",
+    "title:drops for nvidia anthropic and other ai stocks drag the us market back down"
    ],
    "strength": 3
   }
