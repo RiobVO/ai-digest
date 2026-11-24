@@ -21,22 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-23T20:18:10.661834+00:00",
-   "keys": [
-    "blog.google/products-and-platforms/products/search/google-search-personal-intelligence-apps",
-    "title:a more tailored google search that s uniquely yours"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-23T20:18:10.661834+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/nvidia-technologies-holidays-2026",
-    "title:merry making play build and create with nvidia technologies this holiday season"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-23T21:18:12.551704+00:00",
    "keys": [
     "ladybird.org/posts/alpha",
