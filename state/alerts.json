@@ -30,22 +30,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-23T13:18:11.712257+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMinwFBVV95cUxPWk9vLVo5TU5xTDBsVDE3R2IxMXlFVVJBT0JPYzNHNm8yZ29Ed2NoMWpSczh6NUpnODJZM1BaWGxqUHBOc0ladTI0MGNUYmZDaTM5cmF4OWZVY05DWXRidi1MZHZFdUtFZmJWVURVQmRjcnhreFlXOWRMcGhfUXhMakdqdWlLYVhUenFILU5QOFhoeFQwc2tUYm53SnZ4aTQ?oc=5",
-    "title:premarket movers chip stocks lead ai rebound crowdstrike falls"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-23T13:18:11.712257+00:00",
-   "keys": [
-    "ft.com/content/762bd05d-8e20-4abf-9bc5-4e6f9bf628cb?syn-25a6b1a6=1",
-    "title:crowdstrike to buy zscaler in 44bn deal as cyber threats mount"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-23T15:18:13.408556+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMiiwFBVV95cUxQT0N6eHducGhQY2ZyMTlRNjZOZHhoSnp0aGdkVTJsU2t0TnVhTGwtU0RVTVFFbXh1T0E1Z3BIWXJBdXgzbG1hQ2k0Znl2RFJLOUdLUGh2RjJSVHBidkdycXFzRDR3dzlyd0hXcHE3RmNSYnNRaEdQNWIyMHpYZzU0R0VTM0JKcVVpQTVz0gGQAUFVX3lxTE9rVEo0OGV5SWVvM3VzRHUtUEZKUkZVNjlxcWdyTGZKZDVlZ1M5QTNhbWszQ0hxOGhTXzh1MXVycXI0WVBoVHpBUHNhN0h2YXBYVVk2WFBSdFBXUWdPSS1qNUc1dk5obHpjSDNZdUFfamM1bFA3RV9fdm5jM1FoUFlGLVVOQjN4WjR3ZXNUR0M0MQ?oc=5",
@@ -208,6 +192,22 @@
     "title:ai driven nightmare leads to woman s eviction from her apartment"
    ],
    "strength": 5
+  },
+  {
+   "at": "2026-11-24T13:18:13.782597+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMijwFBVV95cUxPSTZiSGZHWHV5WVpPSHkxZlNlUmVBTHVhWWRjc3Y2NmtMV3gyMW5jZHFXOXowS0pibWtfQkhzaktRbFlxSWQtY2s2eDFXSzBpa01LVkl5VGNiWGxHQWltRl9SMmVRLTQxSWxRSHNfRHFyc1JBbTNkS0hoaUhqRGFoLUZfbnFzUk83Zkc5c3paNA?oc=5",
+    "title:ai animated crowdstrike s buy of zscaler"
+   ],
+   "strength": 1
+  },
+  {
+   "at": "2026-11-24T13:18:13.782597+00:00",
+   "keys": [
+    "theregister.com/security/2026/11/24/crowdstrike-splashes-44b-on-zscaler-customers-brace-for-the-bill/5311877",
+    "title:crowdstrike splashes 44b on zscaler customers brace for the bill"
+   ],
+   "strength": 1
   }
  ],
  "undated": {
