@@ -21,14 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-24T21:18:15.287665+00:00",
-   "keys": [
-    "title:tidal bans ai generated music",
-    "variety.com/2026/music/news/tidal-bans-ai-generated-music-1236956924"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-11-24T23:18:12.856358+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMi9wFBVV95cUxQdTZvdDU1ZUY0VlpxX2ZYM0hNMW16Q2dhTklvOUkyWmRaRXFkdUxzaFVRUkF3U0J4bDJMYzZjZTBTNkp3cmhuZ0RPNll3bkFwZjQyTE9RQVBOdWFzRW0tUVEtT3dtWE9mTi03OE5KRk0tUzFOMEVETlMybWdnakhGTHN1UUpzNU1zSFV1bkJGWEFRLVA1dDkzYXpmYmp4RjhwNS1SWkdxZHhwTFBxV05EZThBbkxOTUR2T29mbWhNeHhTMHViM251OU5HMDJGamczcEVLNVFuUm1SREFJUlo4VW5hY0VXdUxYNWlFeUdvQ0d3X0RfaEtR?oc=5",
@@ -76,14 +68,6 @@
    "strength": 4
   },
   {
-   "at": "2026-11-25T20:18:14.130153+00:00",
-   "keys": [
-    "1password.com/blog/update-on-nov-2026-security-incident",
-    "title:1password security incident"
-   ],
-   "strength": 6
-  },
-  {
    "at": "2026-11-25T21:18:13.571876+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMijgFBVV95cUxNc2pDVk04eWJZS3JYNHBSWnFiTEFGaE82Z0tIaGg5MWp4Q2JzLVY0R2h2T2x6N2t0MEJuaXE2YTBkR05mSklkYS1ONXg0dEVqZ2dxMWxTTGVlZHpVajRkUl8xeXV1aVd2aG9Sc3lDX3V4dmZpWVg2ZHZ1Qm02Y0ROeEJYeWNBUzhhYm9zaGN3?oc=5",
@@ -122,12 +106,20 @@
    "strength": 31
   },
   {
-   "at": "2026-11-25T21:18:13.571876+00:00",
+   "at": "2026-11-25T22:18:10.058733+00:00",
    "keys": [
     "scottaaronson.blog?p=10379",
     "title:holy shit holy shit holy shit holy shit the magnitude of what s now happening"
    ],
-   "strength": 4
+   "strength": 6
+  },
+  {
+   "at": "2026-11-25T22:18:10.058733+00:00",
+   "keys": [
+    "1password.com/blog/update-on-nov-2026-security-incident",
+    "title:1password security incident"
+   ],
+   "strength": 8
   }
  ],
  "undated": {
