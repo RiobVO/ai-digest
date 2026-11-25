@@ -21,22 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-24T16:18:14.591099+00:00",
-   "keys": [
-    "michaelharley.net/posts/2026/11/01/llm-agents-work-for-their-parent-companies-not-for-you",
-    "title:llm agents work for their parent companies not for you"
-   ],
-   "strength": 5
-  },
-  {
-   "at": "2026-11-24T16:18:14.591099+00:00",
-   "keys": [
-    "blog.google/products-and-platforms/products/gemini/gemini-golden-state",
-    "title:how gemini is changing the game for golden state s organization and fans"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-24T21:18:15.287665+00:00",
    "keys": [
     "title:tidal bans ai generated music",
