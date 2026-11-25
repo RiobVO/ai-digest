@@ -197,18 +197,18 @@ async function listVotes(request, env) {
 // Расписание GitHub Actions на новом репозитории часами не срабатывало и опаздывает в пиковые минуты,
 // поэтому время держит cron Cloudflare, а GitHub только исполняет. Ключи — ровно строки из wrangler.jsonc.
 const JOBS = {
-  "7 3 * * *": { workflow: "digest.yml", slot: "morning", label: "утренний выпуск" },
-  "7 13 * * *": { workflow: "digest.yml", slot: "evening", label: "вечерний выпуск" },
+  // Выпуск в день один (решение владельца 25.11.2026); до этого был ещё вечерний, "7 13 * * *"
+  "7 3 * * *": { workflow: "digest.yml", issue: true, label: "выпуск дня" },
   "17 * * * *": { workflow: "alert.yml", label: "проверка срочных" },
 };
 const TASHKENT_OFFSET_MS = 5 * 3600 * 1000;
 const SUNDAY = 0;
 
 function dispatchBody(job, scheduledTime) {
-  if (!job.slot) return { ref: "main" };
-  // Итог недели — с утренним выпуском воскресенья по Ташкенту; день берём из запланированного времени, а не фактического
+  if (!job.issue) return { ref: "main" };
+  // Итог недели — с выпуском воскресенья по Ташкенту; день берём из запланированного времени, а не фактического
   const sunday = new Date(scheduledTime + TASHKENT_OFFSET_MS).getUTCDay() === SUNDAY;
-  return { ref: "main", inputs: { daily: "true", slot: job.slot, weekly: String(job.slot === "morning" && sunday) } };
+  return { ref: "main", inputs: { daily: "true", weekly: String(sunday) } };
 }
 
 async function runSchedule(controller, env) {
@@ -230,7 +230,7 @@ async function runSchedule(controller, env) {
   if (response.ok) return;
   // Без запуска workflow его собственное оповещение о сбое не сработает — предупреждаем отсюда.
   // Часовую проверку срочных не дублируем в Telegram, иначе при истёкшем токене было бы сообщение каждый час
-  if (job.slot) {
+  if (job.issue) {
     await callTelegram(env, "sendMessage", {
       chat_id: env.OWNER_CHAT_ID,
       text: `⚠️ ИИ-дайджест: ${job.label} не запущен — GitHub ответил ${response.status}. Проверь токен SCHEDULER_TOKEN.`,

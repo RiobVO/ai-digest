@@ -3,9 +3,10 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 Personal AI/tech news digest for one Russian-speaking reader (Tashkent): collects ~40 feeds, Gemini selects and explains,
-publishes a static page to GitHub Pages and a message to Telegram. Twice a day, plus hourly breaking alerts and a Sunday weekly summary.
+publishes a static page to GitHub Pages and a message to Telegram. Once a day at 08:07 Tashkent (owner decision 2026-11-25;
+there was also an 18:07 evening issue before, he hardly opened it), plus hourly breaking alerts and a Sunday weekly summary.
 A second reader, the owner's colleague (owner decision 2026-11-19), reads the same issue: no own selection or model calls,
-the morning/evening issue and breaking alerts in Telegram (no tips, no weekly, no failure notices), own marks on the page
+the daily issue and breaking alerts in Telegram (no tips, no weekly, no failure notices), own marks on the page
 that never reach the owner's data or the pipeline.
 
 ## Commands
@@ -88,7 +89,7 @@ Chrome at 390 and 1400 px in both themes. On Windows a Chrome window is never na
 - Free-tier queue to 3.8 Flash reached 80 s before any work (2026-10-21), select needs another 1–2 min (≈44K tokens):
   timeout is `llm.TIMEOUT` = 360 s. A successful 3.8 answer takes a median 150 s (max 354 s); the connection is
   sometimes dropped at ≈260 s (`RemoteProtocolError`) — those cost 4–6 minutes and a request each.
-- `eval` spends the same daily quota (2 calls on 3.8 + 1 on 3.6 per run): 1–2 runs a day, never right before the 08:07 / 18:07 builds.
+- `eval` spends the same daily quota (2 calls on 3.8 + 1 on 3.6 per run): 1–2 runs a day, never right before the 08:07 build.
 - `antigravity-*` models accept only the Interactions API (no JSON mode) — unusable with `llm.generate`.
 
 ## Architecture
@@ -102,9 +103,11 @@ Three parts, wired together across repos/services:
 ### Scheduling flow
 
 GitHub cron is not used (it was unreliable). Cloudflare cron in `worker/wrangler.jsonc` → `scheduled()` in
-`worker/src/index.js` → `workflow_dispatch` of `digest.yml` (morning/evening slot, `weekly=true` on Sunday morning
-Tashkent) or `alert.yml`. Keys of `JOBS` in `index.js` must be **exactly** the cron strings in `wrangler.jsonc`.
-All human-facing time is Tashkent, UTC+5 (`DISPLAY_TZ` in `render.py`); evening slot starts at 13:00 (`memory.EVENING_FROM_HOUR`).
+`worker/src/index.js` → `workflow_dispatch` of `digest.yml` (`weekly=true` on Sunday, Tashkent) or `alert.yml`. Keys of `JOBS` in `index.js` must be **exactly** the cron strings in `wrangler.jsonc`.
+All human-facing time is Tashkent, UTC+5 (`DISPLAY_TZ` in `render.py`). One issue a day: the page is `YYYY-MM-DD.html`
+whatever the hour of the build, a same-day rebuild replaces it. Archived issues of the two-a-day era keep
+`"slot": "evening"` and their `…-evening.html` pages; `render` and `Archive.add` still read that mark, nothing writes it.
+Deploy order when the dispatch inputs change: worker first, then the workflow — GitHub rejects an undeclared input (422).
 
 ### `build` pipeline (`digest/__main__.py:build`)
 
@@ -133,7 +136,7 @@ Site pages besides issues (all built with the `page.html` shell via `render._she
   failure, every Gemini attempt (`llm.generate` → `health.record_call`, labeled by `generate_first(call=…)`) and source
   fetch into `state/health/<command>.json` (one run per line, 30 days). Separate files because `digest.yml` and
   `alert.yml` push concurrently. Never store Gemini response text there — the page is public. Quota day = Pacific midnight.
-- **State is committed last.** In CI: build → deploy Pages → send Telegram → commit `state/` + `site/`. A failed run
+- **State is committed last.** In CI: build → deploy Pages (up to three attempts, actions/deploy-pages#451) → send Telegram → commit `state/` + `site/`. A failed run
   leaves news unseen so the rerun picks them up; it commits only `state/health` and, if build/weekly itself failed,
   publishes HEAD's site plus the fresh `health.html` (`git archive`). `alert.yml` commits `state/alerts.json` and
   `state/health/alert.json` (always), in its own concurrency group; both push with `pull --rebase` retries. Expect many `chore(digest): …` bot commits on `origin/main`.
@@ -144,8 +147,7 @@ Site pages besides issues (all built with the `page.html` shell via `render._she
   without the secret; `alert` sends to the colleague only after `state.save`, so a blocked bot never repeats an alert
   to the owner.
 - **Tips during the day** (`digest/tip.py`, `python -m digest tip`) ride the hourly `alert.yml` run: every tip of
-  today's issues gets its own random hour (morning tips 10–18, evening 19–23 Tashkent, evenly spread, seeded by date
-  and slot), and each run sends at most one due tip, with sound, logging it in `state/tip.json`. No Gemini call.
+  today's issue gets its own random hour (10–18 Tashkent, evenly spread, seeded by the date), and each run sends at most one due tip, with sound, logging it in `state/tip.json`. No Gemini call.
   Tips are therefore not listed in the issue's Telegram message.
 - **`body_from_feed = true`** (Reddit sources): Reddit pages answer 403 to CI runners, so `Item.body` keeps the full
   post from the feed and `fetch.fill_from_feed` uses it where the article fetch failed. Tip steps (`details.points`)
@@ -194,11 +196,10 @@ Site pages besides issues (all built with the `page.html` shell via `render._she
   the worker checks the role mark on the secret too, so swapped secrets refuse everyone. The owner writes to the
   original KV keys `vote:` / `read:` / `tried:` (never migrate them), the colleague to `colleague:vote:` /
   `colleague:read:` / `colleague:tried:`, which `GET /votes` never lists. The old `/vote`, `/read`, `/tried` are gone:
-  pages built before 2026-11-19 sent no key, so their clicks can't be attributed and now get 404. Read marks of the
-  owner feed «Утром ты пропустил» in the evening issue (`memory.missed_in_morning`); on the page that block is
-  `data-owner hidden` and shown only to the owner key, and the colleague's Telegram copy (`out/colleague.json`,
-  sent with secret `TELEGRAM_COLLEAGUE_CHAT_ID`) has no such block.
-- **Anchors** `id="e-<entry id>"` on story cards are linked from the arsenal, story pages, «Утром ты пропустил» and
+  pages built before 2026-11-19 sent no key, so their clicks can't be attributed and now get 404. Read marks feed
+  nothing in the pipeline now (the «Утром ты пропустил» block went away with the evening issue): they only fill the
+  progress rings and the build log. The colleague gets the same `out/message.json` (secret `TELEGRAM_COLLEAGUE_CHAT_ID`).
+- **Anchors** `id="e-<entry id>"` on story cards are linked from the arsenal, story pages and
   the Telegram messages (`telegram.py`, `tip.py`) — keep them when the card markup changes.
 - **Pre-releases**: `fetch.PRERELEASE` matches a suffix right after the version digit (`v1.2.3-rc1`, `-nightly.`,
   `-preview.`), not a word in the title.

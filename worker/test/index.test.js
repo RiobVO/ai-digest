@@ -166,26 +166,31 @@ test("после голоса кнопки под сообщением отме�
 const tick = (cron, iso) => ({ cron, scheduledTime: Date.parse(iso) });
 const dispatches = () => telegramCalls.filter((c) => c.url.includes("api.github.com"));
 
-test("расписание запускает утренний и вечерний выпуски и часовую проверку срочных", async () => {
+test("расписание запускает один выпуск в день и часовую проверку срочных", async () => {
   env.SCHEDULER_TOKEN = "gh";
   await worker.scheduled(tick("7 3 * * *", "2026-10-17T03:07:00Z"), env);
-  await worker.scheduled(tick("7 13 * * *", "2026-10-17T13:07:00Z"), env);
   await worker.scheduled(tick("17 * * * *", "2026-10-17T05:17:00Z"), env);
-  const [morning, evening, alert] = dispatches();
-  assert.match(morning.url, /\/actions\/workflows\/digest\.yml\/dispatches$/);
-  assert.deepEqual(morning.body, { ref: "main", inputs: { daily: "true", slot: "morning", weekly: "false" } });
-  assert.deepEqual(evening.body, { ref: "main", inputs: { daily: "true", slot: "evening", weekly: "false" } });
+  const [issue, alert] = dispatches();
+  assert.match(issue.url, /\/actions\/workflows\/digest\.yml\/dispatches$/);
+  assert.deepEqual(issue.body, { ref: "main", inputs: { daily: "true", weekly: "false" } });
   assert.match(alert.url, /\/actions\/workflows\/alert\.yml\/dispatches$/);
   assert.deepEqual(alert.body, { ref: "main" });
 });
 
-test("итог недели — только с утренним выпуском воскресенья по Ташкенту", async () => {
+test("вечернего запуска в расписании больше нет", async () => {
+  // Решение владельца 25.11.2026: один выпуск в день. Оставшийся в Cloudflare старый cron не должен молча ничего запустить
+  env.SCHEDULER_TOKEN = "gh";
+  await assert.rejects(worker.scheduled(tick("7 13 * * *", "2026-10-17T13:07:00Z"), env), /неизвестное расписание/);
+  assert.equal(dispatches().length, 0);
+});
+
+test("итог недели — с выпуском воскресенья по Ташкенту", async () => {
   env.SCHEDULER_TOKEN = "gh";
   await worker.scheduled(tick("7 3 * * *", "2026-10-18T03:07:00Z"), env);   // воскресенье, 08:07
-  await worker.scheduled(tick("7 13 * * *", "2026-10-18T13:07:00Z"), env);  // воскресенье, 18:07
-  const [morning, evening] = dispatches();
-  assert.equal(morning.body.inputs.weekly, "true");
-  assert.equal(evening.body.inputs.weekly, "false");
+  await worker.scheduled(tick("7 3 * * *", "2026-10-19T03:07:00Z"), env);   // понедельник
+  const [sunday, monday] = dispatches();
+  assert.equal(sunday.body.inputs.weekly, "true");
+  assert.equal(monday.body.inputs.weekly, "false");
 });
 
 test("отказ GitHub роняет запуск по расписанию, а токен не попадает в ошибку", async () => {
@@ -205,7 +210,7 @@ test("сбой запуска выпуска присылает владельц
   await assert.rejects(worker.scheduled(tick("7 3 * * *", "2026-10-17T03:07:00Z"), env));
   const warn = calls.find((c) => c.url.endsWith("/sendMessage"));
   assert.equal(warn.body.chat_id, "42");
-  assert.match(warn.body.text, /утренний выпуск не запущен/);
+  assert.match(warn.body.text, /выпуск дня не запущен/);
   assert.ok(!warn.body.text.includes("secret-gh-token"));
 });
 

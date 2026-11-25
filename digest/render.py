@@ -121,9 +121,8 @@ READER_SCRIPT = """<script>
   // Строка в теле уходит как text/plain — простой запрос без preflight, поэтому keepalive у «прочитано» работает
   const ask = (path, k, extra) => fetch(FB + path, {method: "POST", body: k, ...extra});
   function show() {
-    // Пальцы, галочки и блок «Утром ты пропустил» (он по отметкам владельца) — только тому, чей ключ принят
+    // Пальцы и галочки — только тому, чей ключ принят
     document.querySelectorAll(".vote,.tried").forEach(el => { el.hidden = !role; });
-    document.querySelectorAll("[data-owner]").forEach(el => { el.hidden = role !== "owner"; });
     document.querySelectorAll("[data-reader-only]").forEach(el => { el.hidden = !role; });
     if (!box) return;
     const text = document.createElement("span");
@@ -439,11 +438,8 @@ PAGE_SCRIPT = """<script>
     if (sheet.classList.contains("open")) { if (e.key === "Escape") closeSheet(); return; }
     if (e.metaKey || e.ctrlKey || e.altKey || /input|textarea/i.test(e.target.tagName)) return;
     const step = e.key === "j" ? 1 : e.key === "k" ? -1 : 0;
-    // Скрытый слайд («Утром ты пропустил» не владельцу) прокрутить нельзя: на нём j/k застряли бы
-    let to = cur + step;
-    while (step && slides[to]?.hidden) to += step;
     // За краем — к началу текущего слайда: k на прокрученной обложке возвращает наверх
-    if (step) go(slides[to] || slides[Math.max(cur, 0)]);
+    if (step) go(slides[cur + step] || slides[Math.max(cur, 0)]);
     else if (e.key === "o" && slides[cur]?.querySelector(".more-body")) openBreakdown(slides[cur]);
   });
 })();
@@ -681,8 +677,8 @@ def _card(n: int, entry: Entry, votes: bool, label: str) -> str:
             f'<div class="content">{"".join(parts)}</div></div></article>')
 
 
-def _block(anchor: str, title: str, body: str, attrs: str = "") -> str:
-    return (f'<section class="slide blk" id="{anchor}"{attrs} data-label="{title}"><div class="inner"><div class="content">'
+def _block(anchor: str, title: str, body: str) -> str:
+    return (f'<section class="slide blk" id="{anchor}" data-label="{title}"><div class="inner"><div class="content">'
             f'<h2 class="hl rv">{title}</h2>{body}</div></div></section>')
 
 
@@ -706,15 +702,6 @@ def _also_today(more: list[Mention]) -> str:
                    f'<span class="k"><span>{escape(source_label(m.item.source))}</span>{_buzz(m.item)}</span></li>'
                    for m in more)
     return _block("also-today", "Ещё за день", f'<ol class="list">{rows}</ol>')
-
-
-def _missed(missed: list[dict], morning_page: str, owner_only: bool) -> str:
-    links = "".join(f'<li><a href="{escape(morning_page)}#e-{escape(m["id"])}">{_rich(m["title"])}</a></li>'
-                    for m in missed)
-    # Блок построен по отметкам владельца: коллеге и гостю он чужой. Когда читателей различает воркер, блок скрыт,
-    # и READER_SCRIPT открывает его только ключу владельца
-    return _block("missed", "Утром ты пропустил", f'<ul class="list">{links}</ul>',
-                  " data-owner hidden" if owner_only else "")
 
 
 def issue_summary(entries: list[Entry], kind: str = "day") -> str:
@@ -799,8 +786,7 @@ def _previous_issue(issues: list[dict] | None, page_name: str) -> str:
 
 def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str], *,
                 feedback_url: str = "", issues: list[dict] | None = None, kind: str = "day", period: str = "",
-                page_name: str = "", slot: str = "morning", missed: list[dict] | None = None,
-                morning_page: str = "", og_image: str = "") -> str:
+                page_name: str = "", og_image: str = "") -> str:
     votes = bool(feedback_url)
     # Героем идёт событие: если модель вернула одни авторские посты и фишки, «Главного» нет, они остаются в разделах
     top = next((e for e in digest.entries if e.section not in EXTRA_SECTIONS), None)
@@ -848,17 +834,14 @@ def render_page(digest: Digest, stats: dict, when: datetime, failures: list[str]
         funnel = (f"За неделю вышло {plural(stats['issues'], 'выпуск', 'выпуска', 'выпусков')} и "
                   f"{plural(stats['events'], 'событие', 'события', 'событий')}; в итог прошло {count}.")
     else:
-        evening = slot == "evening"
-        small = f"{WEEKDAYS[local.weekday()].lower()} · {'вечер' if evening else 'утро'}"
-        spoken = f"{human_date(when)}{' · вечер' if evening else ''}"
+        small = WEEKDAYS[local.weekday()].lower()
+        spoken = human_date(when)
         meta = [issue_summary(digest.entries), MOODS[day_mood].label]
         funnel = (f"Из {stats['raw']} просмотренных новостей новых {stats['merged']}, в выпуск прошло {count}."
                   + (f" Ещё {len(digest.noise)} отсеяно как шум." if digest.noise else ""))
 
     first = "main-story" if top else (_card_id(0, digest.entries[0]) if digest.entries else "")
     body = [_cover(digest.headline, digest.lead, date, small, spoken, meta, first, bool(toc))]
-    if missed:
-        body.append(_missed(missed, morning_page, votes))
     if toc:
         body.append(f'<section class="slide blk" id="index" data-label="Содержание"><div class="inner"><div class="content">'
                     f'<ol class="toc">{"".join(toc)}</ol></div></div></section>')
@@ -934,7 +917,8 @@ def render_archive(issues: list[dict], when: datetime) -> str:
         day_mood = mood([e.get("section", "") for e in issue["entries"]])
         events = plural(len(issue["entries"]), "событие", "события", "событий")
         tiles.append(f'<a class="tile" data-mood="{day_mood}" href="{escape(issue["page"])}" title="{events}">'
-                     f'<b>{day:%d.%m}</b><i>{"вечер" if issue.get("slot") == "evening" else "утро"}</i>'
+                     # Подпись — только у вечерних выпусков той поры, когда их было два в день (до 25.11.2026)
+                     f'<b>{day:%d.%m}</b>{"<i>вечер</i>" if issue.get("slot") == "evening" else ""}'
                      f'<span>{escape(typo(issue["headline"]))}</span></a>')
     legend = "".join(f'<span data-mood="{name}">{label}</span>' for name, label in MOOD_LEGEND.items())
     wall = (f'<section class="sec" id="wall"><div class="inner"><div class="content">'
@@ -950,7 +934,7 @@ MODEL_NAME = re.compile(r"gemini-(\d+(?:\.\d+)*)-(flash|pro)(-lite)?")
 CLAUDE_NAME = re.compile(r"claude-([a-z]+)-(\d+)-(\d+)")
 CALL_LABELS = {"select": "Отбор", "extras": "Ещё за день и фишки", "explain": "Разборы", "weekly": "Итог недели",
                "triage": "Отсев срочных", "alert": "Текст срочной", "numbers": "Проверка чисел"}
-# Квота израсходована на эту долю — полоса краснеет: до вечернего выпуска может не хватить
+# Квота израсходована на эту долю — полоса краснеет: до следующего выпуска может не хватить
 QUOTA_WARN = 0.75
 
 
@@ -968,7 +952,8 @@ def model_label(name: str) -> str:
 
 def _run_title(run: dict) -> str:
     if run["kind"] == "build":
-        return "Вечерний выпуск" if run.get("slot") == "evening" else "Утренний выпуск"
+        # Вечерние запуски (до 25.11.2026) остаются в журнале 30 дней; после 25.12.2026 ветку можно убрать
+        return "Вечерний выпуск" if run.get("slot") == "evening" else "Выпуск"
     return {"weekly": "Итог недели", "alert": "Срочные"}.get(run["kind"], run["kind"])
 
 

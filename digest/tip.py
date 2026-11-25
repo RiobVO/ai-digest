@@ -14,20 +14,19 @@ from digest.telegram import TG_LIMIT, _clip, _visible
 
 log = logging.getLogger(__name__)
 
-# Окна по Ташкенту: утренние фишки — после выпуска 8:07 и до вечернего, вечерние — после 18:07 и до тихих часов
-# срочных (23:00). Что не успело уйти до тихих часов, остаётся в выпуске и арсенале
-WINDOWS = {"morning": (10, 18), "evening": (19, 23)}
+# Окно по Ташкенту: после выпуска в 8:07 и до конца рабочего дня. Выпуск в день один (с 25.11.2026); пока был
+# и вечерний, его фишки шли с 19 до 23. Что не ушло за день, остаётся в выпуске и арсенале
+WINDOW = (10, 18)
 
 
 def tip_hours(issue: dict) -> dict[str, int]:
     """Час каждой фишки выпуска: окно делится на равные отрезки, фишка — в случайный час своего отрезка, поэтому
-    они идут в течение дня, а не пачкой. Зерно — дата и выпуск: часовые запуски сходятся в тех же часах, ничего
+    они идут в течение дня, а не пачкой. Зерно — дата выпуска: часовые запуски сходятся в тех же часах, ничего
     не храня; строковое зерно random не зависит от PYTHONHASHSEED, на любом раннере часы те же."""
-    slot = issue.get("slot", "morning")
-    start, end = WINDOWS.get(slot, WINDOWS["morning"])
+    start, end = WINDOW
     tips = [e["id"] for e in issue["entries"] if e.get("section") == "tips"]
     span = (end - start) / max(len(tips), 1)
-    rng = random.Random(f"{issue['date']}-{slot}")
+    rng = random.Random(issue["date"])
     return {tip: start + int(n * span) + rng.randrange(max(int(span), 1)) for n, tip in enumerate(tips)}
 
 
@@ -37,8 +36,7 @@ def due_tips(issues: list[dict], now: datetime, sent: list[str]) -> list[tuple[d
         return []
     local = now.astimezone(DISPLAY_TZ)
     due = []
-    # Архив — новые сверху: идём с конца, чтобы при равных часах утренняя фишка шла раньше вечерней
-    for issue in reversed([i for i in issues if i["date"] == local.date().isoformat()]):
+    for issue in (i for i in issues if i["date"] == local.date().isoformat()):
         hours = tip_hours(issue)
         due += [(hours[e["id"]], issue, e) for e in issue["entries"]
                 if e.get("id") in hours and hours[e["id"]] <= local.hour and e["id"] not in sent]

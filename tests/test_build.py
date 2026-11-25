@@ -75,7 +75,6 @@ def env(tmp_path, monkeypatch):
     config.write_text(CONFIG, encoding="utf-8")
     monkeypatch.setenv("GEMINI_API_KEY", "k")
     monkeypatch.setenv("SITE_URL", "https://me.github.io/ai-digest/")
-    monkeypatch.setenv("ISSUE_SLOT", "morning")
     monkeypatch.setattr(main, "OUT", tmp_path / "out")
     monkeypatch.setattr(main, "fetch_all", lambda sources, now: (raw_items(now), ["dead: ConnectError"]))
     monkeypatch.setattr(main, "fetch_feedback", lambda url, token: None)
@@ -125,26 +124,28 @@ def test_build_ships_page_message_and_state_that_agree(env):
     assert "Арсенал фишек" in (args.site / "tips.html").read_text(encoding="utf-8")
 
 
-def test_colleague_gets_the_same_evening_issue_without_the_owner_missed_block(env, monkeypatch):
+def test_one_issue_a_day_has_one_page_and_one_message_for_both_readers(env, monkeypatch):
+    # Решение владельца 25.11.2026: один выпуск в день вместо утреннего и вечернего (вечерний он почти не открывал).
+    # Сборка в любой час пишет страницу дня; блока «Утром ты пропустил» больше нет, и коллеге уходит то же сообщение
     tmp, args = env
     today = datetime.now(timezone.utc).astimezone(DISPLAY_TZ).date()
     args.state_dir.mkdir()
-    morning = [{"date": today.isoformat(), "slot": "morning", "headline": "Утро", "page": f"{today}.html",
-                "entries": [{"id": f"{today:%Y%m%d}-0", "title": "Утренняя новость", "section": "model",
+    earlier = [{"date": today.isoformat(), "slot": "morning", "headline": "Утро", "page": f"{today}.html",
+                "entries": [{"id": f"{today:%Y%m%d}-0", "title": "Непрочитанная новость", "section": "model",
                              "source": "x", "url": "https://x.io/a", "story": ""}]}]
-    (args.state_dir / "issues.json").write_text(json.dumps(morning, ensure_ascii=False), encoding="utf-8")
+    (args.state_dir / "issues.json").write_text(json.dumps(earlier, ensure_ascii=False), encoding="utf-8")
+    # Значение, которое присылал прежний планировщик: вечерней страницы оно больше не создаёт
     monkeypatch.setenv("ISSUE_SLOT", "evening")
-    # Утром владелец ничего не открыл: блок «Утром ты пропустил» строится по его отметкам — и только для него
     monkeypatch.setattr(main, "fetch_feedback", lambda url, token: ([], set()))
     main.build(args)
-    owner = json.loads((tmp / "out" / "message.json").read_text(encoding="utf-8"))
-    colleague = json.loads((tmp / "out" / "colleague.json").read_text(encoding="utf-8"))
-    assert "Утром ты пропустил" in owner["text"] and "Утренняя новость" in owner["text"]
-    assert "Утром ты пропустил" not in colleague["text"] and "Утренняя новость" not in colleague["text"]
-    assert colleague["url"] == owner["url"]
-    assert colleague["text"].splitlines()[:2] == owner["text"].splitlines()[:2]
-    assert "OpenAI выкатила модель" in colleague["text"] and "Разбор целиком" in colleague["text"]
-
+    message = json.loads((tmp / "out" / "message.json").read_text(encoding="utf-8"))
+    assert message["url"].endswith(f"/{today}.html") and not list(args.site.glob("*-evening.html"))
+    assert "пропустил" not in message["text"] and "Непрочитанная новость" not in message["text"]
+    assert message["text"].splitlines()[1].startswith("<i>ИИ-дайджест · ")
+    assert "пропустил" not in (args.site / f"{today}.html").read_text(encoding="utf-8")
+    # Отдельного сообщения для коллеги нет: без блока по отметкам владельца оно совпало бы с основным
+    assert not (tmp / "out" / "colleague.json").exists()
+    assert "slot" not in json.loads((args.state_dir / "issues.json").read_text(encoding="utf-8"))[0]
 
 def test_also_today_gets_decoded_links_and_reaches_page_and_message(env, monkeypatch):
     tmp, args = env
@@ -477,19 +478,16 @@ def test_health_is_saved_and_shown_even_when_the_build_fails(env, monkeypatch):
     args.run = main.build
     main.run_with_health(args)
     run = json.loads((args.state_dir / "health" / "build.json").read_text(encoding="utf-8"))[-1]
-    assert run["outcome"] == "ok" and run["slot"] == "morning"
+    assert run["outcome"] == "ok" and "slot" not in run
     assert run["failed"] == {} and run["events"] == {"openai": 1, "verge": 1}
     assert "Здоровье дайджеста" in (args.site / "health.html").read_text(encoding="utf-8")
 
     monkeypatch.setattr(main, "fetch_all", lambda sources, now: ([], ["x: ConnectError", "dead: ConnectError"]))
-    monkeypatch.setenv("ISSUE_SLOT", "evening")
     with pytest.raises(SystemExit):
         main.run_with_health(args)
     # Упавший выпуск state не сохраняет, но запись о сбое — именно то, ради чего панель нужна
     runs = json.loads((args.state_dir / "health" / "build.json").read_text(encoding="utf-8"))
     assert len(runs) == 2 and "ни один источник" in runs[-1]["outcome"]
-    # Слот известен до отбора: упавший вечерний выпуск не должен выглядеть утренним
-    assert runs[-1]["slot"] == "evening"
 
 
 def test_dry_run_leaves_health_untouched(env):
@@ -499,15 +497,14 @@ def test_dry_run_leaves_health_untouched(env):
     assert not (args.state_dir / "health").exists()
 
 
-def test_build_failing_before_any_work_still_records_its_slot(env, monkeypatch):
+def test_build_failing_before_any_work_is_still_recorded(env, monkeypatch):
     tmp, args = env
     args.run = main.build
-    monkeypatch.setenv("ISSUE_SLOT", "evening")
     monkeypatch.delenv("GEMINI_API_KEY")
     with pytest.raises(KeyError):
         main.run_with_health(args)
     run = json.loads((args.state_dir / "health" / "build.json").read_text(encoding="utf-8"))[-1]
-    assert run["slot"] == "evening" and run["outcome"] == "KeyError"
+    assert run["outcome"] == "KeyError"
 
 
 def test_alert_recheck_failing_on_every_model_shelves_the_news_instead_of_retrying_hourly(env, monkeypatch):

@@ -17,8 +17,7 @@ from digest.cover import make_cover
 from digest.dedup import dedupe
 from digest.fetch import attach_discussions, fetch_all, fetch_articles, fill_from_feed, resolve_gnews
 from digest.llm import LlmError, cap_events, cap_hot, cap_section, explain, extras, generate_first, select, verify_copies
-from digest.memory import (Archive, Stories, fetch_feedback, issue_slot, missed_in_morning, preferences_prompt,
-                           record_issue, resolve_votes)
+from digest.memory import Archive, Stories, fetch_feedback, preferences_prompt, record_issue, resolve_votes
 from digest.models import Item
 from digest.mood import mood
 from digest.render import (DISPLAY_TZ, MONTHS, cover_date, render_archive, render_health, render_page,
@@ -83,10 +82,6 @@ def _cover(site: Path, page_name: str, headline: str, date: str, day_mood: str =
 def build(args: argparse.Namespace) -> None:
     now = datetime.now(timezone.utc)
     today = now.astimezone(DISPLAY_TZ).date()
-    # Слот — первым делом: панель здоровья подписывает им и сбой до любой работы (нет ключа, битый конфиг),
-    # иначе упавший вечерний выпуск выглядел бы утренним
-    slot = issue_slot(now, os.environ.get("ISSUE_SLOT", ""))
-    health.RUN.slot = slot
     config = tomllib.loads(args.config.read_text(encoding="utf-8"))
     settings = config["digest"]
     api_key = os.environ["GEMINI_API_KEY"]
@@ -147,18 +142,15 @@ def build(args: argparse.Namespace) -> None:
     unmachine(digest.entries)
     retell(digest.entries, texts, records, paid_models(settings))
 
-    # Утренний выпуск сохраняет прежнее имя страницы, вечерний — свою: ссылки на старые выпуски не ломаются
-    page_name = f"{today:%Y-%m-%d}.html" if slot == "morning" else f"{today:%Y-%m-%d}-evening.html"
-    morning_page = f"{today:%Y-%m-%d}.html"
-    # Оценённая запись тоже считается увиденной: чтобы поставить 👍/👎, её прочитали
-    opened = reads | {v["id"] for v in votes} if received is not None else None
-    missed = missed_in_morning(archive, today, opened) if slot == "evening" else []
-    record_issue(archive, stories, today, digest.headline, page_name, digest.entries, slot)
+    # Выпуск в день один (решение владельца 25.11.2026: вечерний он почти не открывал), страница названа по дате.
+    # Вечерние страницы прежних выпусков (…-evening.html) остаются в архиве как есть
+    page_name = f"{today:%Y-%m-%d}.html"
+    record_issue(archive, stories, today, digest.headline, page_name, digest.entries)
     health.record_events([e.item.source for e in digest.entries])
 
     og_image = _cover(args.site, page_name, digest.headline, cover_date(now), mood([e.section for e in digest.entries]))
     page = render_page(digest, stats, now, failures, feedback_url=feedback_url, issues=archive.issues, page_name=page_name,
-                       slot=slot, missed=missed, morning_page=morning_page, og_image=og_image)
+                       og_image=og_image)
     args.site.mkdir(parents=True, exist_ok=True)
     for name in (page_name, "index.html"):
         (args.site / name).write_text(page, encoding="utf-8")
@@ -168,12 +160,8 @@ def build(args: argparse.Namespace) -> None:
         (args.site / name).write_text(html, encoding="utf-8")
 
     page_url = f"{os.environ['SITE_URL'].rstrip('/')}/{page_name}"
-    label = "Утренний дайджест" if slot == "morning" else "Вечерний дайджест"
-    morning_url = f"{os.environ['SITE_URL'].rstrip('/')}/{morning_page}"
-    message = build_message(digest, page_url, now, label=label, missed=missed, morning_url=morning_url)
-    _write_message("message.json", message, page_url)
-    # Коллеге — тот же выпуск без «Утром ты пропустил»: блок построен по отметкам владельца
-    _write_message("colleague.json", build_message(digest, page_url, now, label=label), page_url)
+    # Одно сообщение и владельцу, и коллеге: блока по отметкам владельца («Утром ты пропустил») больше нет
+    _write_message("message.json", build_message(digest, page_url, now), page_url)
     log.info("страница %s, сообщение в out/message.json", args.site / page_name)
     # State сохраняем только после успешного отбора: упавший запуск не должен «съесть» новости
     if not args.dry_run:

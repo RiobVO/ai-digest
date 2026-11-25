@@ -175,13 +175,13 @@ def test_archive_is_a_wall_of_covers_coloured_by_the_mood_of_each_issue():
     issues = [issue("2026-11-09", "evening", ["security", "business"]), issue("2026-11-09", "morning", ["model", "security"]),
               issue("2026-11-08", "evening", ["business"] * 3), issue("2026-11-08", "morning", ["business"] * 9)]
     page = render_archive(issues, WHEN)
-    tiles = re.findall(r'<a class="tile" data-mood="([a-z]+)" href="([^"]+)" title="([^"]+)"><b>([0-9.]+)</b><i>([а-я]+)</i>', page)
+    tiles = re.findall(r'<a class="tile" data-mood="([a-z]+)" href="([^"]+)" title="([^"]+)"><b>([0-9.]+)</b>(?:<i>([а-я]+)</i>)?', page)
     # Настроение считается из разделов записей архива: главная про безопасность — тревожный, модель — релиз,
     # мало событий — тихий, иначе обычный
     assert tiles == [("alarm", "2026-11-09-evening.html", "2 события", "09.11", "вечер"),
-                     ("release", "2026-11-09-morning.html", "2 события", "09.11", "утро"),
+                     ("release", "2026-11-09-morning.html", "2 события", "09.11", ""),
                      ("quiet", "2026-11-08-evening.html", "3 события", "08.11", "вечер"),
-                     ("calm", "2026-11-08-morning.html", "9 событий", "08.11", "утро")]
+                     ("calm", "2026-11-08-morning.html", "9 событий", "08.11", "")]
     for name, label in (("alarm", "тревожный"), ("release", "релиз"), ("quiet", "тихий"), ("calm", "обычный")):
         assert f'<span data-mood="{name}">{label}</span>' in page
     assert "<span>4 выпуска</span><span>16 событий</span>" in page
@@ -293,18 +293,6 @@ def test_telegram_line_shows_loud_coverage():
     assert "3 издания" in text.splitlines()[3]
 
 
-def test_evening_issue_is_labelled_in_crumbs():
-    page = render_page(sample(), STATS, WHEN, failures=[], slot="evening")
-    assert "16 октября · вечер" in page
-
-
-def test_evening_page_lists_missed_morning_news_with_links():
-    missed = [{"id": "20261017-1", "title": "Пропущенное <важное>"}]
-    page = render_page(sample(), STATS, WHEN, failures=[], slot="evening", missed=missed, morning_page="2026-10-17.html")
-    block = page[page.index("Утром ты пропустил"):]
-    assert 'href="2026-10-17.html#e-20261017-1"' in block and "Пропущенное &lt;важное&gt;" in block
-
-
 def test_cards_carry_entry_id_for_read_marks_when_feedback_is_on():
     digest = sample()
     digest.entries[0].id, digest.entries[1].id = "20261016-0", "20261016-1"
@@ -339,13 +327,13 @@ def test_arsenal_restores_remembered_ticks_only_for_an_accepted_key():
     assert script.index("if (R.can())") < script.index('localStorage.getItem("t:"')
 
 
-def test_keyboard_paging_skips_slides_hidden_from_this_reader():
-    # «Утром ты пропустил» скрыт от коллеги и гостя: j/k на него не встают и не застревают
+def test_keyboard_paging_past_the_edge_returns_to_the_start_of_the_slide():
     page = render_page(sample(), STATS, WHEN, failures=[], feedback_url="https://fb.example")
     keys = page[page.index('e.key === "j"'):][:400]
-    assert "slides[to]?.hidden" in keys
-    # За краем — к началу текущего слайда, как до скрытых слайдов: k на прокрученной обложке возвращает наверх
-    assert "slides[to] || slides[Math.max(cur, 0)]" in keys
+    # За краем — к началу текущего слайда: k на прокрученной обложке возвращает наверх
+    assert "slides[cur + step] || slides[Math.max(cur, 0)]" in keys
+    # Скрытых слайдов не осталось: единственным был «Утром ты пропустил» (блок владельца в вечернем выпуске)
+    assert "data-owner" not in page and "?.hidden" not in keys
 
 
 def test_reader_without_a_key_sees_no_trace_of_keys_unless_the_hidden_entry_is_opened():
@@ -365,34 +353,6 @@ def test_without_the_worker_the_page_asks_for_no_reader_key():
     # Без скрипта читателя window.reader не появляется, и скрипт страницы ничего не шлёт
     assert 'id="reader"' not in page and "window.reader =" not in page and "const FB" not in page
     assert 'id="reader"' not in render_tips(TIP_ISSUES, WHEN)
-
-
-def _section_tag(page: str, anchor: str) -> str:
-    match = re.search(rf'<section[^>]*id="{anchor}"[^>]*>', page)
-    assert match, anchor
-    return match.group(0)
-
-
-def test_missed_morning_block_is_shown_only_to_the_owner_key():
-    # Блок построен по отметкам владельца: коллеге или гостю он чужой и подписан «ты пропустил»
-    missed = [{"id": "20261017-1", "title": "Пропущенное"}]
-    page = render_page(sample(), STATS, WHEN, failures=[], slot="evening", missed=missed,
-                       morning_page="2026-10-17.html", feedback_url="https://fb.example")
-    tag = _section_tag(page, "missed")
-    assert "data-owner" in tag and " hidden" in tag
-    assert 'querySelectorAll("[data-owner]")' in page and 'role !== "owner"' in page
-    # Без воркера читателей не различить — блок, как раньше, виден сразу
-    local = render_page(sample(), STATS, WHEN, failures=[], slot="evening", missed=missed,
-                        morning_page="2026-10-17.html")
-    assert " hidden" not in _section_tag(local, "missed")
-
-
-def test_telegram_evening_message_mentions_missed_morning_news():
-    missed = [{"id": "20261017-1", "title": "Пропущенное"}]
-    text = build_message(sample(), "https://x.io/e.html", WHEN, label="Вечерний дайджест", missed=missed,
-                         morning_url="https://x.io/2026-10-17.html")
-    assert "Утром ты пропустил" in text
-    assert '<a href="https://x.io/2026-10-17.html#e-20261017-1">Пропущенное</a>' in text
 
 
 def test_contents_list_every_entry_with_a_link_to_its_card():
@@ -760,10 +720,10 @@ def test_page_text_is_typeset_but_titles_for_previews_and_commands_are_not():
     assert "<code>ollama run x -v в папке</code>" in page
 
 
-def test_cover_shows_the_date_weekday_slot_and_mood():
-    page = render_page(sample(), STATS, WHEN, failures=[], slot="evening")
+def test_cover_shows_the_date_weekday_and_mood():
+    page = render_page(sample(), STATS, WHEN, failures=[])
     cover = page[page.index('id="cover"'):page.index("</section>", page.index('id="cover"'))]
-    assert '<span class="ph">16.10</span><small>пятница · вечер</small>' in cover
+    assert '<span class="ph">16.10</span><small>пятница</small>' in cover
     assert '<div id="fly" aria-hidden="true"><span>16.10</span></div>' in page
     assert "<h1" in cover and "Открытые веса &lt;день&gt;" in cover and "Главное за сутки." in cover
     assert '<a class="btn" href="#main-story">Читать ↓</a><a class="lnk" href="#index">Содержание</a>' in cover

@@ -1,14 +1,13 @@
 """Память между выпусками: архив, сюжетные линии и оценки читателя. Всё хранится JSON-файлами в state/."""
 import json
 import logging
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 from pathlib import Path
 from textwrap import shorten
 
 import httpx
 
 from digest.llm import EXTRA_SECTIONS, Entry
-from digest.render import DISPLAY_TZ
 
 log = logging.getLogger(__name__)
 
@@ -17,21 +16,8 @@ STORY_RETENTION_DAYS = 30
 STORY_PREV_SHOWN = 3
 STORY_NAME_MAX = 60
 FEEDBACK_IN_PROMPT = 20
-MISSED_SHOWN = 3
-# Сборка до этого часа по Ташкенту — утренний выпуск, после — вечерний
-EVENING_FROM_HOUR = 13
 
 
-SLOTS = ("morning", "evening")
-
-
-def issue_slot(now: datetime, forced: str = "") -> str:
-    """Выпуск задаёт планировщик по запланированному времени; по часам сборки — только при ручном запуске."""
-    if forced:
-        if forced not in SLOTS:
-            raise ValueError(f"неизвестный выпуск {forced!r}, ожидается одно из {SLOTS}")
-        return forced
-    return "evening" if now.astimezone(DISPLAY_TZ).hour >= EVENING_FROM_HOUR else "morning"
 
 
 def _issue_of(event: dict) -> str:
@@ -75,11 +61,11 @@ class Archive:
                 for e in i["entries"] + i.get("replaced", [])]
         return max(used, default=-1) + 1
 
-    def add(self, day: date, headline: str, page: str, entries: list[Entry], slot: str = "morning") -> None:
-        # Выпуск определяется страницей, а не датой: в один день их два — утренний и вечерний
+    def add(self, day: date, headline: str, page: str, entries: list[Entry]) -> None:
+        # Выпуск определяется страницей, а не датой: до 25.11.2026 в день их было два, и у вечерних в архиве
+        # осталась метка "slot": "evening" — по ней они стоят выше утреннего того же дня
         previous = next((i for i in self.issues if i["page"] == page), None)
-        issue = {"date": day.isoformat(), "slot": slot, "headline": headline, "page": page,
-                 "entries": [_archived(e) for e in entries]}
+        issue = {"date": day.isoformat(), "headline": headline, "page": page, "entries": [_archived(e) for e in entries]}
         if previous:
             # Пересборка заменяет выпуск, но записи прежней версии остаются для разбора старых голосов
             issue["replaced"] = previous.get("replaced", []) + previous["entries"]
@@ -153,14 +139,14 @@ class Stories:
         _dump(self.path, {"next": self.next, "stories": self.stories})
 
 
-def record_issue(archive: Archive, stories: Stories, day: date, headline: str, page: str, entries: list[Entry],
-                 slot: str = "morning") -> None:
+def record_issue(archive: Archive, stories: Stories, day: date, headline: str, page: str,
+                 entries: list[Entry]) -> None:
     """Порядок важен: id записей → сюжеты (им нужны id) → архив (ему нужен уже назначенный сюжет)."""
     start = archive.next_index(day)
     for n, e in enumerate(entries):
         e.id = f"{day:%Y%m%d}-{start + n}"
     stories.apply(entries, day, page)
-    archive.add(day, headline, page, entries, slot)
+    archive.add(day, headline, page, entries)
 
 
 def resolve_votes(votes: list[dict], archive: Archive) -> list[dict]:
@@ -195,7 +181,8 @@ def preferences_prompt(feedback: list[dict]) -> str:
 
 def fetch_feedback(feedback_url: str, token: str) -> tuple[list[dict], set[str]] | None:
     """Оценки и отметки «прочитано» из воркера. Недоступный воркер не должен срывать выпуск — тогда идём без них.
-    None — «неизвестно»: пустой ответ означал бы «ничего не прочитано», и вечер объявил бы пропущенным всё утро."""
+    None — «неизвестно»: недоступный воркер не равен «оценок нет». Отметки чтения сейчас идут только в лог сборки:
+    блок «Утром ты пропустил», который по ним строился, ушёл вместе с вечерним выпуском (25.11.2026)."""
     if not feedback_url or not token:
         return None
     try:
@@ -206,12 +193,3 @@ def fetch_feedback(feedback_url: str, token: str) -> tuple[list[dict], set[str]]
     except (httpx.HTTPError, ValueError, KeyError) as exc:
         log.error("обратная связь из воркера не получена: %s", exc)
         return None
-
-
-def missed_in_morning(archive: Archive, day: date, opened: set[str] | None) -> list[dict]:
-    """Что из утреннего выпуска читатель не открыл и не оценил. Записи в выпуске уже идут по убыванию важности.
-    opened=None — отметки неизвестны (воркер недоступен): тогда не утверждаем, что что-то пропущено."""
-    morning = next((i for i in archive.issues if i["page"] == f"{day.isoformat()}.html"), None)
-    if morning is None or opened is None:
-        return []
-    return [e for e in morning["entries"] if e["id"] not in opened][:MISSED_SHOWN]

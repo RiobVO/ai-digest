@@ -45,14 +45,8 @@ def _visible(text: str) -> int:
     return len(unescape(TAG.sub("", text)))
 
 
-def build_message(digest: Digest, page_url: str, when: datetime, label: str = "ИИ-дайджест",
-                  missed: list[dict] | None = None, morning_url: str = "") -> str:
+def build_message(digest: Digest, page_url: str, when: datetime, label: str = "ИИ-дайджест") -> str:
     head = [f"<b>{escape(_clip(digest.headline, 200))}</b>", f"<i>{escape(label)} · {human_date(when)}</i>", ""]
-    if missed:
-        head.append("<b>Утром ты пропустил:</b>")
-        head += [f'• <a href="{escape(morning_url)}#e-{escape(m["id"])}">{escape(_clip(m["title"], 200))}</a>'
-                 for m in missed]
-        head.append("")
     body = []
     shown = digest.entries[:SHOWN]
     if shown:

@@ -186,3 +186,12 @@ def test_paid_model_gets_a_short_readable_label_in_the_chain_of_attempts():
     # Без своего правила платная модель подписывалась «Claude haiku 5 5»
     assert model_label("claude-haiku-5-5") == "Haiku 5.5"
     assert model_label("gemini-3.5-flash-lite") == "3.5 Flash-Lite" and model_label("gemini-flash-latest") == "Flash latest"
+
+
+def test_run_is_titled_as_the_issue_and_old_evening_runs_keep_their_name():
+    # С 25.11.2026 выпуск в день один; вечерние запуски ещё 30 дней видны в журнале под прежним именем
+    new = {**evening_2110()[0], "at": "2026-10-22T03:10:51Z"}
+    del new["slot"]
+    page = render_health(evening_2110() + [new], SETTINGS, utc(2026, 10, 22, 4))
+    assert "<span>Вечерний выпуск</span>" in page and "<span>Выпуск</span>" in page
+    assert "Утренний выпуск" not in page

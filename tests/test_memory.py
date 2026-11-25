@@ -1,3 +1,4 @@
+import json
 from datetime import date
 
 from digest.llm import Entry
@@ -165,69 +166,17 @@ def test_same_day_rebuild_replaces_story_events_of_that_day(tmp_path):
     assert names == ["Линия B"]
 
 
-def test_morning_and_evening_issues_live_side_by_side(tmp_path):
-    archive, stories = Archive(tmp_path / "issues.json"), Stories(tmp_path / "stories.json")
-    day = date(2026, 10, 17)
-    morning = [entry("A", story_name="Линия A"), entry("B")]
-    record_issue(archive, stories, day, "Утро", "2026-10-17.html", morning)
-    evening = [entry("C", story=morning[0].story)]
-    record_issue(archive, stories, day, "Вечер", "2026-10-17-evening.html", evening, slot="evening")
-    # Номера за день сквозные: голос за утреннюю запись не должен попасть на вечернюю
-    assert [e.id for e in morning + evening] == ["20261017-0", "20261017-1", "20261017-2"]
-    assert [i["headline"] for i in archive.issues] == ["Вечер", "Утро"]
-    # Вечер продолжает утренний сюжет и не стирает его утреннее событие
-    titles = [ev["title"] for ev in stories.stories[morning[0].story]["events"]]
-    assert titles == ["A", "C"]
-    assert evening[0].story_prev == [("2026-10-17", "A")]
-
-
-def test_rebuilding_evening_keeps_the_morning(tmp_path):
-    archive, stories = Archive(tmp_path / "issues.json"), Stories(tmp_path / "stories.json")
-    day = date(2026, 10, 17)
-    record_issue(archive, stories, day, "Утро", "2026-10-17.html", [entry("A", story_name="A")])
-    record_issue(archive, stories, day, "Вечер v1", "2026-10-17-evening.html", [entry("B", story_name="B")], slot="evening")
-    record_issue(archive, stories, day, "Вечер v2", "2026-10-17-evening.html", [entry("C", story_name="C")], slot="evening")
-    assert [i["headline"] for i in archive.issues] == ["Вечер v2", "Утро"]
-    events = [ev["title"] for s in stories.stories.values() for ev in s["events"]]
-    assert sorted(events) == ["A", "C"]
-
-
-def test_issue_slot_follows_tashkent_clock():
-    from datetime import datetime, timezone
-    from digest.memory import issue_slot
-    assert issue_slot(datetime(2026, 10, 17, 3, tzinfo=timezone.utc)) == "morning"   # 08:00 Ташкент
-    assert issue_slot(datetime(2026, 10, 17, 13, tzinfo=timezone.utc)) == "evening"  # 18:00 Ташкент
-
-
-
-def test_missed_lists_unopened_morning_entries_in_issue_order(tmp_path):
-    from digest.memory import missed_in_morning
-    archive, stories = Archive(tmp_path / "issues.json"), Stories(tmp_path / "stories.json")
-    day = date(2026, 10, 17)
-    record_issue(archive, stories, day, "Утро", "2026-10-17.html", [entry(t) for t in "ABCDE"])
-    missed = missed_in_morning(archive, day, opened={"20261017-0", "20261017-2"})
-    assert [m["title"] for m in missed] == ["B", "D", "E"]
-    assert missed_in_morning(archive, date(2026, 10, 18), opened=set()) == []
-
-
-def test_scheduler_slot_wins_over_late_start():
-    import pytest
-    from datetime import datetime, timezone
-    from digest.memory import issue_slot
-    late_morning = datetime(2026, 10, 17, 9, tzinfo=timezone.utc)  # 14:00 Ташкент — утренний запуск сильно опоздал
-    assert issue_slot(late_morning, forced="morning") == "morning"
-    assert issue_slot(late_morning, forced="") == "evening"
-    with pytest.raises(ValueError):
-        issue_slot(late_morning, forced="noon")
-
-
-def test_missed_is_empty_when_read_marks_are_unknown(tmp_path):
-    from digest.memory import missed_in_morning
-    archive, stories = Archive(tmp_path / "issues.json"), Stories(tmp_path / "stories.json")
-    day = date(2026, 10, 17)
-    record_issue(archive, stories, day, "Утро", "2026-10-17.html", [entry(t) for t in "ABC"])
-    # Воркер недоступен: нельзя объявлять пропущенным то, что могли прочитать
-    assert missed_in_morning(archive, day, opened=None) == []
+def test_evening_issues_of_the_two_a_day_era_stay_above_their_morning(tmp_path):
+    # До 25.11.2026 выпусков было два в день: в архиве они остались и при добавлении нового не должны перемешаться
+    path = tmp_path / "issues.json"
+    old = [{"date": "2026-10-17", "slot": "morning", "headline": "Утро", "page": "2026-10-17.html", "entries": []},
+           {"date": "2026-10-17", "slot": "evening", "headline": "Вечер", "page": "2026-10-17-evening.html", "entries": []}]
+    path.write_text(json.dumps(old, ensure_ascii=False), encoding="utf-8")
+    archive, stories = Archive(path), Stories(tmp_path / "stories.json")
+    record_issue(archive, stories, date(2026, 10, 18), "Новый", "2026-10-18.html", [entry("A")])
+    assert [i["headline"] for i in archive.issues] == ["Новый", "Вечер", "Утро"]
+    # Новому выпуску метка времени суток не нужна: он в день один
+    assert "slot" not in archive.issues[0]
 
 
 def test_archive_keeps_tip_text_topic_and_verified_copy_for_the_arsenal(tmp_path):

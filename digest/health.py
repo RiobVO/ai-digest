@@ -24,7 +24,6 @@ class Run:
     sources: dict[str, int] = field(default_factory=dict)
     failed: dict[str, str] = field(default_factory=dict)
     events: dict[str, int] = field(default_factory=dict)
-    slot: str = ""
 
 
 RUN = Run()
@@ -78,7 +77,7 @@ def load_all(folder: Path, now: datetime) -> list[dict]:
 
 
 def save(path: Path, kind: str, now: datetime, outcome: str, keep_sources: bool = True) -> None:
-    run = {"at": _stamp(now), "kind": kind, "slot": RUN.slot, "outcome": outcome, "calls": RUN.calls,
+    run = {"at": _stamp(now), "kind": kind, "outcome": outcome, "calls": RUN.calls,
            # Срочные проверяются каждый час: счётчики всех источников раздули бы файл, сбои — нет
            "failed": RUN.failed, "sources": RUN.sources if keep_sources else {}, "events": RUN.events}
     cutoff = _stamp(now - timedelta(days=RETENTION_DAYS))

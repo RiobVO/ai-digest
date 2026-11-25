@@ -13,10 +13,6 @@ on:
         description: "Собрать итог недели (планировщик ставит сам утром в воскресенье)"
         type: boolean
         default: false
-      slot:
-        description: "Выпуск: morning или evening; пусто — по текущему часу Ташкента"
-        type: string
-        default: ""
 
 permissions:
   contents: write
@@ -78,8 +74,6 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           FEEDBACK_TOKEN: ${{ secrets.FEEDBACK_TOKEN }}
-          # Утро или вечер задаёт планировщик по запланированному времени: опоздавший запуск не сменит выпуск
-          ISSUE_SLOT: ${{ inputs.slot }}
         run: python -m digest build
 
       - name: Build weekly
@@ -133,7 +127,8 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python -m digest send
 
-      # Коллеге — тот же выпуск без «Утром ты пропустил» (блок по отметкам владельца); итог недели, фишки и сообщения
+      # Коллеге — то же сообщение, что владельцу (выпуск в день один, блока по отметкам владельца нет); итог
+      # недели, фишки и сообщения
       # о сбое — только владельцу. Сбой доставки (не нажал Start, заблокировал бота) не должен ронять прогон: state
       # не закоммитился бы, и следующий запуск собрал бы выпуск заново. Без секрета шаг ничего не делает
       - name: Send to colleague
@@ -144,7 +139,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_COLLEAGUE_CHAT_ID }}
         run: |
           [ -n "$TELEGRAM_CHAT_ID" ] || exit 0
-          python -m digest send --message colleague.json
+          python -m digest send
 
       - name: Send weekly to Telegram
         if: steps.plan.outputs.weekly == 'true'
