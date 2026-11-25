@@ -21,22 +21,6 @@
  ],
  "rejected": [
   {
-   "at": "2026-11-24T13:18:13.782597+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMijwFBVV95cUxPSTZiSGZHWHV5WVpPSHkxZlNlUmVBTHVhWWRjc3Y2NmtMV3gyMW5jZHFXOXowS0pibWtfQkhzaktRbFlxSWQtY2s2eDFXSzBpa01LVkl5VGNiWGxHQWltRl9SMmVRLTQxSWxRSHNfRHFyc1JBbTNkS0hoaUhqRGFoLUZfbnFzUk83Zkc5c3paNA?oc=5",
-    "title:ai animated crowdstrike s buy of zscaler"
-   ],
-   "strength": 1
-  },
-  {
-   "at": "2026-11-24T13:18:13.782597+00:00",
-   "keys": [
-    "theregister.com/security/2026/11/24/crowdstrike-splashes-44b-on-zscaler-customers-brace-for-the-bill/5311877",
-    "title:crowdstrike splashes 44b on zscaler customers brace for the bill"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-24T14:18:24.101044+00:00",
    "keys": [
     "ft.com/content/fda29491-ca21-4172-9889-52ffc6d4a25d?syn-25a6b1a6=1",
