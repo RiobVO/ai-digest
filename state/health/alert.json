@@ -1,5 +1,4 @@
 [
-{"at": "2026-10-26T07:18:39Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-10-26T08:18:40Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-10-26T09:18:15Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-10-26T10:18:15Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
@@ -713,5 +712,6 @@
 {"at": "2026-11-25T04:18:27Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-11-25T05:18:24Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
 {"at": "2026-11-25T06:18:22Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [{"at": "2026-11-25T06:18:21Z", "call": "triage", "asked": "gemini-3.5-flash-lite", "served": "gemini-3.5-flash-lite", "status": 200, "seconds": 0.9, "thinking": 0, "error": ""}], "failed": {}, "sources": {}, "events": {}},
-{"at": "2026-11-25T07:18:18Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}}
+{"at": "2026-11-25T07:18:18Z", "kind": "alert", "slot": "", "outcome": "ok", "calls": [], "failed": {}, "sources": {}, "events": {}},
+{"at": "2026-11-25T08:18:23Z", "kind": "alert", "outcome": "ok", "calls": [{"at": "2026-11-25T08:18:23Z", "call": "triage", "asked": "gemini-3.5-flash-lite", "served": "gemini-3.5-flash-lite", "status": 200, "seconds": 0.7, "thinking": 0, "error": ""}], "failed": {}, "sources": {}, "events": {}}
 ]
