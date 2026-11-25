@@ -32,14 +32,19 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+      url: ${{ steps.deploy.outputs.page_url || steps.deploy_2.outputs.page_url || steps.deploy_3.outputs.page_url }}
     env:
       SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
       FEEDBACK_URL: ${{ vars.FEEDBACK_URL }}
       RUN_DAILY: ${{ inputs.daily }}
       WEEKLY_INPUT: ${{ inputs.weekly }}
     steps:
+      # Ветка, а не коммит запуска: перезапуск упавшего прогона иначе берёт старый коммит, а первая попытка уже
+      # записала на GitHub журнал здоровья. 24.11 такой повтор собрал и отправил выпуск, но не сохранил state
+      # (конфликт в state/health/build.json при pull --rebase), и новости выпуска остались «непоказанными»
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
 
       - uses: actions/setup-python@v5
         with:
@@ -91,7 +96,34 @@ jobs:
         with:
           path: site
 
+      # GitHub показывает загруженную страницу в списке артефактов не сразу: deploy-pages искал её через 0,3 с,
+      # получал «No artifacts named "github-pages"» и ронял уже собранный выпуск — 24.11 вечером и 25.11 утром.
+      # Сбой на стороне GitHub, массовый с 22.11 (actions/deploy-pages#451; задержка у других — от 2 до 46 с).
+      # Поэтому пауза и до трёх попыток. Повторяется только выкладка: вторая загрузка дала бы два артефакта
+      # с одним именем, а это другая ошибка. Убрать паузу и повторы, когда #451 закроют
+      - name: Wait for the Pages artifact to be listed
+        run: sleep 10
+
       - id: deploy
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+
+      - name: Wait before the second deploy attempt
+        if: steps.deploy.outcome == 'failure'
+        run: sleep 30
+
+      - id: deploy_2
+        if: steps.deploy.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+
+      - name: Wait before the last deploy attempt
+        if: steps.deploy_2.outcome == 'failure'
+        run: sleep 90
+
+      # Последняя попытка — без continue-on-error: страница не выложена — выпуск в Telegram не уходит
+      - id: deploy_3
+        if: steps.deploy_2.outcome == 'failure'
         uses: actions/deploy-pages@v4
 
       - name: Send to Telegram
