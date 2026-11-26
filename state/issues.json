@@ -1,5 +1,94 @@
 [
  {
+  "date": "2026-11-26",
+  "headline": "Хуанг вернулся в Nvidia, Gemini 4 Neon и три взлома",
+  "page": "2026-11-26.html",
+  "entries": [
+   {
+    "id": "20261126-0",
+    "title": "Совет Nvidia вернул Хуанга в CEO через 11 дней после отставки",
+    "section": "business",
+    "source": "wired_ai",
+    "url": "https://www.wired.com/story/jensen-huang-apologizes-to-nvidia-employees-in-first-all-hands-since-his-return/",
+    "story": "s406"
+   },
+   {
+    "id": "20261126-1",
+    "title": "Google выпустила Gemini 4 Neon: обгоняет Astra и Fable на LiveBench",
+    "section": "model",
+    "source": "latent_space",
+    "url": "https://latent.space/p/ainews-gemini-4-neon-marks-gdm-s-full-return-as-a-frontier-lab/",
+    "story": "s387"
+   },
+   {
+    "id": "20261126-2",
+    "title": "Claude Ship: агент сам решает, одобрить ли pull request в GitHub",
+    "section": "product",
+    "source": "the_register",
+    "url": "https://www.theregister.com/ai-and-ml/2026/11/24/claude-ship-puts-ai-at-the-helm-of-pull-request-approvals/5311883",
+    "story": "s407"
+   },
+   {
+    "id": "20261126-3",
+    "title": "Через дыру в Azure API Management крали токены и секреты",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/microsoft-fixes-azure-api-management.html",
+    "story": "s408"
+   },
+   {
+    "id": "20261126-4",
+    "title": "Взломщики через GitHub-аккаунт сотрудника залезли в бэкенд 1Password",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://techcrunch.com/2026/11/25/1password-said-hackers-broke-into-its-internal-systems-but-customer-passwords-are-safe/",
+    "story": "s411"
+   },
+   {
+    "id": "20261126-5",
+    "title": "FinCEN Минфина США отключил часть систем после взлома",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/us-treasurys-fincen-takes-some-systems.html",
+    "story": "s412"
+   },
+   {
+    "id": "20261126-6",
+    "title": "В settings.json добавь хук PreSkillShellCommand, чтобы отсекать shell-команды навыков",
+    "section": "tips",
+    "source": "gh_claude_code",
+    "url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.332",
+    "story": "",
+    "summary": "Открой свой settings.json и пропиши в нём хук PreSkillShellCommand; нужна версия 2.1.332 или новее. На 2.1.331 и старше файл с этим именем при старте откроет диалог.",
+    "why": "Хук может отказать в inline shell-командах навыка или команды ещё при загрузке, до их выполнения.",
+    "copy": "PreSkillShellCommand",
+    "copy_untrusted": false,
+    "topic": "claude_code",
+    "steps": [
+     "Обнови Claude Code до версии 2.1.332 или новее.",
+     "Открой свой файл settings.json.",
+     "Добавь в settings.json хук PreSkillShellCommand, который отказывает в запуске встроенных shell-команд навыка или команды при загрузке."
+    ]
+   },
+   {
+    "id": "20261126-7",
+    "title": "Саймон Уиллисон: за год у LLM и агентов для кода было три резких скачка",
+    "section": "voices",
+    "source": "simon_willison",
+    "url": "https://simonwillison.net/2026/Nov/24/llm-inflection-points/",
+    "story": ""
+   },
+   {
+    "id": "20261126-8",
+    "title": "Армин Ронахер хочет убрать отравление мьютексов из Rust",
+    "section": "voices",
+    "source": "armin_ronacher",
+    "url": "https://lucumr.pocoo.org/2026/11/25/poisoning/",
+    "story": ""
+   }
+  ]
+ },
+ {
   "date": "2026-11-24",
   "slot": "morning",
   "headline": "Хуанг вернулся в Nvidia, GPT-6.2 Sol в ChatGPT, Claude Ship и взломы",
