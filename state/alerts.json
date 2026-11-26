@@ -1,27 +1,6 @@
 {
- "sent": [
-  {
-   "at": "2026-11-23T15:18:13.408556+00:00",
-   "day": "2026-11-23",
-   "title": "Nvidia вернула Дженсена Хуанга в CEO, акции выросли больше чем на 30%",
-   "keys": [
-    "nvidianews.nvidia.com/news/nvidia-board-reinstates-jensen-huang-as-president-ceo-and-board-director",
-    "title:nvidia s board unanimously votes to reinstate jensen huang as ceo president and board director after finding no national security risk nvda jumps 30 nvidia newsroom"
-   ]
-  }
- ],
+ "sent": [],
  "rejected": [
-  {
-   "at": "2026-11-25T15:18:11.206657+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMimAFBVV95cUxPNjBCVmtNS3VpZkJwdHItVkFWbTI2WjZEZjRPaS1Ic3hnSEd5UE9KX2pwTHZBeENLaVQwaDlzOEs5aFVvd05Od1ZudXAzZWhXd3d4SmpCZkRza0gzVlZrblpDZXNFM1NMRFhJRExjMGp4bElGejJYajYtb1R4Sk9xcW9PaEptSkV6SDlNMUl3ZTd4Z19vR3FORQ?oc=5",
-    "news.google.com/rss/articles/CBMingFBVV95cUxQU1B5ZmJjTnloTFhNUkxTZkJaYUhJSlJwam9zQmlBcnFZUnJZZWVCc01PeUdyZFQyc1BNVWgybEVycGVUWW95QjRMN3JDZHYzR2VQQi1TdUtMVmRMQlc4SnFKZFhrcllzTmozWGRtU00wcER1Y285ZW5BRldSLVdjMW9wLVR1eEEwdlJHSi1mSDl0dzZlLU5aVEhSWmdJUQ?oc=5",
-    "news.google.com/rss/articles/CBMiqAFBVV95cUxNODFwVkJQMWYyMS1taTZjOUdRMVNUSWNQeDZCZU1WVnM3T3RCNzhZMFJfaG4xMlZKQU4zaDBpVHJRMGhkZnhlRVFpdkwwOFY4aDIzQUlMa01VMTdsMkZzS3lRU3gtbDc1aGR5T1JvMENqeWVZVW9QVmZ3SlozUm9WOFlpdk82amdtNy1lM05QOXhvcUFBRjMxS2JwWFQ1QUtnWU4xdVdtT20?oc=5",
-    "news.google.com/rss/articles/CBMiqgFBVV95cUxQNDlWaVNLMGhDTHpmeHc1MmJNNDVIcVZ0WVNDUnhyYlZlS3BGR1lGdThQYWppcW5NSkxpbXhscG4tZkttMUJqZmhRNmI2OHNYbjBJSnRjdG1fNXpxelg0dm5kTFJjOVhCQ255VWhNYmkydHpmRnlaRnh0aWFvZHhLVmVfSVBMLVh4Q2tPVUNJUjloT3NJLXFsTExDcGUzbF9TeXRxMDg0dFJJUQ?oc=5",
-    "title:what to know before using ai agents for black friday shopping"
-   ],
-   "strength": 4
-  },
   {
    "at": "2026-11-25T21:18:13.571876+00:00",
    "keys": [
