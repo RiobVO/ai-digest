@@ -2,14 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-26T14:18:14.673546+00:00",
-   "keys": [
-    "blogs.nvidia.com/blog/geforce-now-thursday-community-war-thunder-reward",
-    "title:come for the games stay for the community with geforce now"
-   ],
-   "strength": 1
-  },
-  {
    "at": "2026-11-26T17:18:18.993619+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMif0FVX3lxTE00WDllMnhOMFJKOXg4MldvbncxNWFOcXJON2xNMnVQNTJTdUMzNFlrZU5INUg1a0ZWVnQ1ZlB0cTJBaDAtSmUzTTAzZkQ1dC1Bb1BFZjN3ckRTRGlNQ2xjMDlKclAtbWE1aFg1OTlDWHpiTkRlSC1tcXAzMEpjZHM?oc=5",
@@ -68,6 +60,16 @@
    "keys": [
     "construct22.com",
     "title:the group chat where your ai talks behind your back"
+   ],
+   "strength": 3
+  },
+  {
+   "at": "2026-11-27T14:18:14.821956+00:00",
+   "keys": [
+    "bloomberg.com/news/videos/2026-11-27/nvidia-blackwell-chips-turn-up-at-china-site-video",
+    "news.google.com/rss/articles/CBMigwFBVV95cUxPLUw4NDgtbzJCdU1NalA5Vkw5b24tUVY0ajh0WXo3N0Y4ZHZsUmNBSGVYblBPc1pCZVJERTFsM3lZeHo4OThDd2RRekczWDBsYmdfYXVPWmtlZUJnMkRFVll2YlVBQVNFZVlFNEtBeWphZ0N2djcyWnpQM3BjZTZDRGlrSQ?oc=5",
+    "news.google.com/rss/articles/CBMitgFBVV95cUxOajRDYnpkT2kwWEdlR2REeG93cnBZdkdsYmo3dTFmaVp3enZYN3Jid0RYVWZwNXJvcE00OG5FNjdwd0MzQXpFV1gzeUxkdnhxTVNoaGVNRmpnRllMTGY4emNtNW9VYnc4RWZVX0I2WExQNy1Ha21aV0FNWWVUb0FacnFLM01rUWRudjBCdGJpbGxCVUx3dl9KMEtZb0pyYURCTG1iWW5xUmNpaDlnc0lsMVpldmV6QQ?oc=5",
+    "title:nvidia blackwell chips turn up at china site tied to alice huang"
    ],
    "strength": 3
   }
