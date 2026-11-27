@@ -1,5 +1,60 @@
 [
  {
+  "date": "2026-11-27",
+  "headline": "ARTEX в госатаках, доказательство Римана от ИИ",
+  "page": "2026-11-27.html",
+  "entries": [
+   {
+    "id": "20261127-0",
+    "title": "ИИ-фреймворк ARTEX берут госхакеры Китая и КНДР, по СМИ — им же взломали ЦРУ",
+    "section": "security",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/microsoft-details-how-state-backed-hackers-use-the-artex-ai-framework-to-automate-cyberattacks/",
+    "story": "s372"
+   },
+   {
+    "id": "20261127-1",
+    "title": "Аронсон: важнее само доказательство Римана, а то, что его выдал ИИ",
+    "section": "model",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/former-openai-researcher-says-the-riemann-proof-matters-less-than-the-fact-that-an-ai-system-can-produce-it/",
+    "story": "s393"
+   },
+   {
+    "id": "20261127-2",
+    "title": "OpenAI ошиблась со скидкой: лимиты у Astra кончатся на 40% быстрее",
+    "section": "product",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/gpt-6-2-astra-users-now-hit-limits-40-faster-after-openai-patched-a-pricing-error/",
+    "story": "s382"
+   },
+   {
+    "id": "20261127-3",
+    "title": "Северокорейская PolinRider отравила более 7600 GitHub-репозиториев",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/north-korea-linked-polinrider-poisons.html",
+    "story": "s413"
+   },
+   {
+    "id": "20261127-4",
+    "title": "1Password: украли исходники и данные клиентов, но хранилища, по словам компании, целы",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/1password-hacked-customer-data-and.html",
+    "story": "s411"
+   },
+   {
+    "id": "20261127-5",
+    "title": "Британский регулятор FCA жалуется: Meta не дала проверить Muse до запуска",
+    "section": "product",
+    "source": "wired_ai",
+    "url": "https://www.wired.com/story/meta-refused-to-share-muse-for-testing-uk-financial-watchdog-complains/",
+    "story": "s392"
+   }
+  ]
+ },
+ {
   "date": "2026-11-26",
   "headline": "Хуанг вернулся в Nvidia, Gemini 4 Neon и три взлома",
   "page": "2026-11-26.html",
