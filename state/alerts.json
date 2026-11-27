@@ -2,30 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-26T17:18:18.993619+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMif0FVX3lxTE00WDllMnhOMFJKOXg4MldvbncxNWFOcXJON2xNMnVQNTJTdUMzNFlrZU5INUg1a0ZWVnQ1ZlB0cTJBaDAtSmUzTTAzZkQ1dC1Bb1BFZjN3ckRTRGlNQ2xjMDlKclAtbWE1aFg1OTlDWHpiTkRlSC1tcXAzMEpjZHM?oc=5",
-    "news.google.com/rss/articles/CBMif0FVX3lxTE1HdUVuNmxjbWd2RURoTXBCbFhOUFZoQ0ZMdXV0Ykt0LUhnSlF3VjR4UnRfUmV6X3Z6RW1lTm8yZUpjY0QzTTRTQnFJODV5dEZKWGdkcU1BOHBlRXZhM2RjWjFzclRrSkJtbm9MYXROQ0h3aGZJYTE0MFozeXFPWHM?oc=5",
-    "news.google.com/rss/articles/CBMif0FVX3lxTE8zTV9ycXNhNFQtaGl1X2t3VlBTSHhROUtzb3JMcHp6bFEweWVQb0QwVHk1THUzOU5pcjYtYlZ4NW5Tb0ExWHo2cENsZEExWTR6Ym9LcjRCS2wycEpfUkEwYjZQcjNuVTVnRHpQajBGLUc2QkFpOFlVeTNrd3R1eVk?oc=5",
-    "news.google.com/rss/articles/CBMif0FVX3lxTFB3Zzl1X043MlFFZnZfU1R6dXplWnNPSzNTSXBBWGk2RHdOa1BydTdXZE5POERqTnZMMlhZNFZGdWVIeHN4OENHU21DNFVKQWpTNkdyZEVvOTB4eUczaGRMaW5WTGR4RG5GQjNEbTQtbTNxZFNQcXBpRS13VkZIWUU?oc=5",
-    "news.google.com/rss/articles/CBMigAFBVV95cUxNN0tIVjhHYW9zM3dsTnVFMHpCMW5MWWRNak8zOGlBMWowS2ZleWt6Qm8yaUJEZUc5VGFUUUFJZEZrVXpsY1luR015aU1oc0hLZGh0UTVfTGd2YmVOSWYxQ0xSVEQ1SzlnLU9ENEN5LWxtRlRJNHNvRWdJbURlZmlsYw?oc=5",
-    "news.google.com/rss/articles/CBMiggFBVV95cUxOYXRkUURhaXkwVThyUzVMQmVkcjJBdDkxWnhhS2lMU09pU2NfNW5lVE1nQms5MVZ1MXJLN2pGSjJVZXV5dVFDdDQ3MVBITnBvUHFkQ0RUOVNDTHN5VnlNUm5GaVhHM21UeTZacmVFSXg1amVnMk4yVFgxemh4MUQ1WVNB?oc=5",
-    "news.google.com/rss/articles/CBMiggFBVV95cUxPakNKSHd6Zmdhd0tMMjVDRE1veXRocmhrYi1PT2p3MVNmQ2NTVHFIT0dwMnJ1dEhzaUswZWJMS2kwWmtKN2k0M0luVXlBTkJRVVZPSHU4eXhFaUNJbWdYVUY0SW96c1RPbG1vUHVNRDJQT3ZxTXBhRGFreGJwajdMN1dn?oc=5",
-    "news.google.com/rss/articles/CBMihgFBVV95cUxPZTZzZWVrMF8wbnNfbFFyRWl3T3JHV2JYeC01RU9aRWU5ZXhIaE9UX0I1dnZya05oaWJRbHVoVXJLOEJEcVptUUo5NllvRlFCOV9INkRaemdZYmZ0enJ2Qmc1ME1TM0FnWDl3RFY4eTlUUlB2azNjdzBhdXRWb0dvbkJlTUZRZw?oc=5",
-    "news.google.com/rss/articles/CBMijAFBVV95cUxOdmhYMzlyUktFTmZnM1hMWnljNlFlWE91YjU2MkVwRllzQTNXZXRWbXJoMGd5Z0N0a0hiUWt3NHhzNV9sVWVxaGZhWnpSM1c5M21qWVRKbTYtSWNMbGNlVmwybEJWYlZfLW9WRDZsZHlTbDhOcVR5cWQ0ZXM0WE5fOXozWXdTaXFvMVRrVw?oc=5",
-    "title:how to avoid ai scams while holiday shopping"
-   ],
-   "strength": 9
-  },
-  {
-   "at": "2026-11-26T18:18:08.971030+00:00",
-   "keys": [
-    "news.ycombinator.com/item?id=50655664",
-    "title:tell hn happy thanksgiving"
-   ],
-   "strength": 4
-  },
-  {
    "at": "2026-11-27T02:18:13.449637+00:00",
    "keys": [
     "janlukas.blog/posts/ai-self-hosting",
