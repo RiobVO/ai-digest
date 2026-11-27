@@ -2,16 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-26T06:18:10.024263+00:00",
-   "keys": [
-    "news.google.com/rss/articles/CBMi_gFBVV95cUxPcDZ5eVV3Z000Wk04c0l2ZjhFMEFFRlRNaFFUcldiS214NTRXN3l6NzJqLTg0S3MzS1VpaGlOOXZPY25fbzhLeWdOalJXYTRZaDRPTXdWOU1Fc0x3c3BpRDJCSzUyQzUzbXA4VW5Nc0ZhYjBEMF8yU0p4QV9Id1k4QXM3aXA4cUliSllMd3B0N2NZRXBLcmVyS3lmbkhBR29uM3ZMemJVeG02UEQ3aDZqVWp0TUtNVnV1aHY2ckhMdjRzX1lkMnVHUDYzQlRhdTNBYUVmMWhZMnV4UUdNbzhEUXJNR3VEZGx0VEFRYmRRTmRGUUNFM0ltRTlLLXVwdw?oc=5",
-    "news.google.com/rss/articles/CBMi_gFBVV95cUxQUTdZS05QZ2p0MHBENzhvbWdIYjVnRFNxcU9IMFNObkJsaWlua09QRXRENFlLUVJmVFktczdqV1Z0S29vMUZyUEk0M002ekNZTWIyelJQZGVHblBobjRxUDJfUmlReXFFaTdWeEVqNGE3emlLVzYzaFFBdU12aW55bk9HcFl2N0daNlNlVWZYZTEyRlRBU2hLdkw3WFZBbVVhNjVnZVEtejdGaXRaVDlOY05fZGFjWUtQZEsyX3hoOHJkblM1eGMtRVVUempHWGZWd2dhUDlpRzhRNmRtQVVMU1JPbm1VeFJwNW9FOU5ieThrTTBQM0VOU2x1NTZDZw?oc=5",
-    "news.google.com/rss/articles/CBMilwFBVV95cUxPRm5zRmt6UVpKbW85Z080Mzh3MXFQWG9KQkNJZnlLNzNNVmZxenRZVlFsTGxoc09tT2czVkhOUFpxUTZod2h0cTF6a1ZTTHNwaGxkRnVySFBuSkYwOVhoMEZ1cVBFODVkcXAydkJGRDJTd2ZMSXZMMnNPa25FZTNYZjhUclpOMk9ud19aSUtfRVNRWVFMZHA4?oc=5",
-    "title:asian shares rebound led by ai stocks after wall street pares sharp losses"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-11-26T14:18:14.673546+00:00",
    "keys": [
     "blogs.nvidia.com/blog/geforce-now-thursday-community-war-thunder-reward",
@@ -62,6 +52,16 @@
     "title:as google threatens to cut schools search access los angeles blocks ai features"
    ],
    "strength": 5
+  },
+  {
+   "at": "2026-11-27T06:18:11.190839+00:00",
+   "keys": [
+    "news.google.com/rss/articles/CBMi-AFBVV95cUxPRjRLUVBIREJiNWQySExjbEV3aGVBT2R5NmNUSDY4Tm40UWotYkpRNU1fQW94R3E5cDhvY2lNeVpwWFpvYUZNeUhHR2xPRWZYeHJBWi1OVXNNRW1RQ2ZpS05kZkNmNTNDRWhQNjBha3ZuSkxsM3ljNm9UVnI4WDFtN0dPbWcxRjY2VERqVW95aFFyMHJmQzNfdDZ5VjdPZUlGM3k3UG5TV1RDSkhkbWV1cVBSVUJTMWYzemxZWWVGdnBPLXhDZHpaczhZOE9kZGJCWTZPSVM4cnJ4Y0Jlc3J2cE1kdk9IRUZSSjJrMFY5TENBd2JITHJZWA?oc=5",
+    "news.google.com/rss/articles/CBMi0AFBVV95cUxQSmtkQjJLNF9admNJM1BpNVhuRm1WRjdmOUp6MEVaZjNzbTdldG9JcnRHcF9CdWJyNTgzNUhYNWRUTXVyc003LVh5VWlmMmM3c0J1Y21JQ2VHWlliQlFIc3R3TlZSS3Q5N2xTSVZaNWVyblRxZzBuUE1xM1RlazNPdkpMNXAtR25tWTMxMEl1cFNzN3ZER3FtZTZwd0VuZTVwVXRXbWdyNkY2Q3BRQ1FRRHFlWThhck5ra2tUOGwwUlZFengxVDdIRU9Eamt2ckda?oc=5",
+    "news.google.com/rss/articles/CBMiogFBVV95cUxQWkt5OU9rSlNUam1waVVQSzc0cWNjMWk3N0xXSnk5Q1p4UlVHSG5JdGpkZGxVLWI5bW9QOVUwMGRsOExnNkc1VkZWUHllWWQxOV9QX0xTLUVxbGcxOFV3NHQxUnpUQUJRTFh6aXZ6MlpOb3d0eHRucTNQOERjNHlfS01YTlk3dTBwX2ZfWVFjdER1Tkl5V0NDODlzclpSckpUT3c?oc=5",
+    "title:dollar lingers near 22 month peak as ai worries simmer kiwi rises"
+   ],
+   "strength": 3
   }
  ],
  "undated": {
