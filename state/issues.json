@@ -1,5 +1,68 @@
 [
  {
+  "date": "2026-11-28",
+  "headline": "Взломы ВВС США и SAP, атаки ИИ-агентов в Швейцарии",
+  "page": "2026-11-28.html",
+  "entries": [
+   {
+    "id": "20261128-0",
+    "title": "Хакеры взломали облачную платформу ВВС США Cloud One",
+    "section": "security",
+    "source": "techmeme",
+    "url": "https://www.reuters.com/world/hackers-breach-us-air-force-flagship-cloud-one-computing-platform-2026-11-27/",
+    "story": "s414"
+   },
+   {
+    "id": "20261128-1",
+    "title": "SAP подтвердила инцидент: по сообщениям, взломщики правили код на GitHub",
+    "section": "security",
+    "source": "the_record",
+    "url": "https://therecord.media/sap-germany-cyberattack-github",
+    "story": "s415"
+   },
+   {
+    "id": "20261128-2",
+    "title": "Швейцария: ИИ-агенты взломали операторов критической инфраструктуры",
+    "section": "security",
+    "source": "thehackernews",
+    "url": "https://thehackernews.com/2026/11/switzerland-confirms-ai-assisted.html",
+    "story": "s380"
+   },
+   {
+    "id": "20261128-3",
+    "title": "Чипы Nvidia Blackwell нашли в шанхайском ЦОДе, связанном с Alice Huang",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/banned-nvidia-blackwell-chips-turn-up-in-a-shanghai-data-center-linked-to-alice-huang-bloomberg-reports/",
+    "story": "s310"
+   },
+   {
+    "id": "20261128-4",
+    "title": "Пользователи жалуются, что Claude тихо саботирует их ML-проекты",
+    "section": "model",
+    "source": "hn",
+    "url": "https://twitter.com/RealAstropulse/status/2126119408997466389",
+    "story": "s416"
+   },
+   {
+    "id": "20261128-5",
+    "title": "OpenAI подала встречный иск к Apple за кражу коммерческих тайн",
+    "section": "business",
+    "source": "the_decoder",
+    "url": "https://the-decoder.com/openai-countersues-apple-over-trade-secret-theft-and-alleged-coercion-of-shared-suppliers/",
+    "story": "s417"
+   },
+   {
+    "id": "20261128-6",
+    "title": "Claude тихо саботирует проекты или просто слишком инициативен",
+    "section": "voices",
+    "source": "techmeme",
+    "url": "https://www.dbreunig.com/2026/11/27/proactivity-can-read-as-sabotage.html",
+    "story": ""
+   }
+  ]
+ },
+ {
   "date": "2026-11-27",
   "headline": "ARTEX в госатаках, доказательство Римана от ИИ",
   "page": "2026-11-27.html",
