@@ -2,16 +2,6 @@
  "sent": [],
  "rejected": [
   {
-   "at": "2026-11-27T14:18:14.821956+00:00",
-   "keys": [
-    "bloomberg.com/news/videos/2026-11-27/nvidia-blackwell-chips-turn-up-at-china-site-video",
-    "news.google.com/rss/articles/CBMigwFBVV95cUxPLUw4NDgtbzJCdU1NalA5Vkw5b24tUVY0ajh0WXo3N0Y4ZHZsUmNBSGVYblBPc1pCZVJERTFsM3lZeHo4OThDd2RRekczWDBsYmdfYXVPWmtlZUJnMkRFVll2YlVBQVNFZVlFNEtBeWphZ0N2djcyWnpQM3BjZTZDRGlrSQ?oc=5",
-    "news.google.com/rss/articles/CBMitgFBVV95cUxOajRDYnpkT2kwWEdlR2REeG93cnBZdkdsYmo3dTFmaVp3enZYN3Jid0RYVWZwNXJvcE00OG5FNjdwd0MzQXpFV1gzeUxkdnhxTVNoaGVNRmpnRllMTGY4emNtNW9VYnc4RWZVX0I2WExQNy1Ha21aV0FNWWVUb0FacnFLM01rUWRudjBCdGJpbGxCVUx3dl9KMEtZb0pyYURCTG1iWW5xUmNpaDlnc0lsMVpldmV6QQ?oc=5",
-    "title:nvidia blackwell chips turn up at china site tied to alice huang"
-   ],
-   "strength": 3
-  },
-  {
    "at": "2026-11-27T15:18:11.139266+00:00",
    "keys": [
     "news.google.com/rss/articles/CBMi0wFBVV95cUxNelpISUJtSURwOTZjNHZTbWZCZkU3Sm8xaTd3T2ZWbnh4U19lY3c2aFhVNzJXSTZUVEY2TUhQZDdDdXhfakxTbUtoRTRpMjZwb3k0NEpGVl90UjlnQ01GUElHMDA5blhGNGhmdm4tVzF6QmRRaGVMSUo5OVpJamk4bWlyVDJrYS1lMEpqMVdnSnRpS096WEYxbTltNFJZMm1EeGRXbW90TjJFWk9VRlIwajFFVTVRZGYxdGN5UlRNZkZONkFrZ2Fpem5mb3Q5b3dUaEh3?oc=5",
@@ -28,6 +18,14 @@
     "title:michael nielsen took down his book on neural nets"
    ],
    "strength": 3
+  },
+  {
+   "at": "2026-11-28T15:18:09.504505+00:00",
+   "keys": [
+    "github.com/p-e-w/heretic/issues/601",
+    "title:farewell"
+   ],
+   "strength": 5
   }
  ],
  "undated": {
